@@ -38,15 +38,15 @@
 
 ## RAG
 
-* [🧬 Embeddings](rag/embeddings.md)
-* [📚 Document Loaders](rag/document-loaders.md)
+* [Embeddings](rag/embeddings.md)
+* [Document Loaders](rag/document-loaders.md)
 * [RAG (Retrieval-Augmented Generation)](rag/rag.md)
 
 ## Advanced
 
-* [🌐 MCP Server - Model Context Protocol Server](advanced/mcp-server.md)
-* [🔌 MCP Client - Model Context Protocol](advanced/mcp-client.md)
-* [🎯 Event System](advanced/events.md)
+* [MCP Server - Model Context Protocol Server](advanced/mcp-server.md)
+* [MCP Client - Model Context Protocol](advanced/mcp-client.md)
+* [Event System](advanced/events.md)
 * [🛠️ Utility Functions](advanced/utilities.md)
 * [Advanced Topics](advanced/advanced.md)
 * [Reference](advanced/reference/README.md)
@@ -81,4 +81,4 @@
 * [Building Custom Transformers](extending-boxlang-ai/custom-transformer.md)
 * [Building Custom Memory](extending-boxlang-ai/custom-memory.md)
 * [Building Custom Document Loaders](extending-boxlang-ai/custom-loader.md)
-* [🧬 Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
+* [Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)

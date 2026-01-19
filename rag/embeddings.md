@@ -1,4 +1,8 @@
-# 🧬 Embeddings
+---
+icon: objects-column
+---
+
+# Embeddings
 
 Generate numerical vector representations of text that capture semantic meaning. Embeddings power semantic search, recommendations, clustering, and similarity detection.
 
@@ -53,10 +57,10 @@ graph TB
 
 **Key Properties:**
 
-- Similar meanings = Close vectors
-- Different meanings = Distant vectors
-- Math operations preserve semantic relationships
-- Dimension count varies by model (typically 768-3072)
+* Similar meanings = Close vectors
+* Different meanings = Distant vectors
+* Math operations preserve semantic relationships
+* Dimension count varies by model (typically 768-3072)
 
 ## 🔧 The `aiEmbed()` Function
 
@@ -467,7 +471,7 @@ if ( duplicates.len() ) {
 
 ### RAG (Retrieval Augmented Generation)
 
-Combine embeddings with AI chat for intelligent Q&A:
+Combine embeddings with AI chat for intelligent Q\&A:
 
 ```java
 // Knowledge base
@@ -684,21 +688,21 @@ matches.each( match => {
 
 **Models:**
 
-- `text-embedding-3-small` (1536 dimensions) - Default, balanced
-- `text-embedding-3-large` (3072 dimensions) - Highest quality
-- `text-embedding-ada-002` (1536 dimensions) - Legacy
+* `text-embedding-3-small` (1536 dimensions) - Default, balanced
+* `text-embedding-3-large` (3072 dimensions) - Highest quality
+* `text-embedding-ada-002` (1536 dimensions) - Legacy
 
 **Pros:**
 
-- High quality embeddings
-- Good for English text
-- Supports dimension reduction
+* High quality embeddings
+* Good for English text
+* Supports dimension reduction
 
 **Cons:**
 
-- Requires API key
-- Costs money
-- Data sent to OpenAI servers
+* Requires API key
+* Costs money
+* Data sent to OpenAI servers
 
 **Usage:**
 
@@ -714,22 +718,22 @@ embedding = aiEmbed(
 
 **Models:**
 
-- `nomic-embed-text` (768 dimensions) - Recommended
-- `mxbai-embed-large` (1024 dimensions) - High quality
-- Many others available
+* `nomic-embed-text` (768 dimensions) - Recommended
+* `mxbai-embed-large` (1024 dimensions) - High quality
+* Many others available
 
 **Pros:**
 
-- Completely free
-- Runs locally
-- Private - data stays on your machine
-- No API key needed
+* Completely free
+* Runs locally
+* Private - data stays on your machine
+* No API key needed
 
 **Cons:**
 
-- Requires Ollama installation
-- Slightly lower quality than OpenAI
-- Slower than API calls
+* Requires Ollama installation
+* Slightly lower quality than OpenAI
+* Slower than API calls
 
 **Setup:**
 
@@ -756,19 +760,19 @@ embedding = aiEmbed(
 
 **Models:**
 
-- `text-embedding-004` (768 dimensions)
-- `embedding-001` (768 dimensions) - Legacy
+* `text-embedding-004` (768 dimensions)
+* `embedding-001` (768 dimensions) - Legacy
 
 **Pros:**
 
-- Good quality
-- Google infrastructure
-- Competitive pricing
+* Good quality
+* Google infrastructure
+* Competitive pricing
 
 **Cons:**
 
-- Requires API key
-- Data sent to Google
+* Requires API key
+* Data sent to Google
 
 **Usage:**
 
@@ -784,25 +788,25 @@ embedding = aiEmbed(
 
 **Models:**
 
-- `voyage-3` (1024 dimensions) - Latest, highest quality
-- `voyage-3-lite` (512 dimensions) - Faster, more efficient
-- `voyage-code-3` (1024 dimensions) - Optimized for code
-- `voyage-finance-2` (1024 dimensions) - Financial documents
-- `voyage-law-2` (1024 dimensions) - Legal documents
+* `voyage-3` (1024 dimensions) - Latest, highest quality
+* `voyage-3-lite` (512 dimensions) - Faster, more efficient
+* `voyage-code-3` (1024 dimensions) - Optimized for code
+* `voyage-finance-2` (1024 dimensions) - Financial documents
+* `voyage-law-2` (1024 dimensions) - Legal documents
 
 **Pros:**
 
-- State-of-the-art quality for RAG and semantic search
-- Specialized models for specific domains
-- `input_type` parameter optimizes for queries vs documents
-- Excellent performance on retrieval benchmarks
+* State-of-the-art quality for RAG and semantic search
+* Specialized models for specific domains
+* `input_type` parameter optimizes for queries vs documents
+* Excellent performance on retrieval benchmarks
 
 **Cons:**
 
-- Embeddings only (no chat support)
-- Requires API key
-- Free tier has 3 RPM rate limit
-- Data sent to Voyage servers
+* Embeddings only (no chat support)
+* Requires API key
+* Free tier has 3 RPM rate limit
+* Data sent to Voyage servers
 
 **Setup:**
 
@@ -850,10 +854,10 @@ financeEmb = aiEmbed(
 
 **When to Use Voyage:**
 
-- Building RAG (Retrieval Augmented Generation) systems
-- Semantic search requiring highest accuracy
-- Domain-specific applications (code, finance, legal)
-- When you can optimize queries vs documents separately
+* Building RAG (Retrieval Augmented Generation) systems
+* Semantic search requiring highest accuracy
+* Domain-specific applications (code, finance, legal)
+* When you can optimize queries vs documents separately
 
 **Note:** Voyage specializes in embeddings only. For chat completions, use OpenAI, Claude, or another provider.
 
@@ -861,25 +865,25 @@ financeEmb = aiEmbed(
 
 **Models:**
 
-- `embed-english-v3.0` (1024 dimensions) - Latest English model, best quality
-- `embed-multilingual-v3.0` (1024 dimensions) - Supports 100+ languages
-- `embed-english-light-v3.0` (384 dimensions) - Faster, lighter version
-- `embed-english-v2.0` (4096 dimensions) - Legacy, larger model
+* `embed-english-v3.0` (1024 dimensions) - Latest English model, best quality
+* `embed-multilingual-v3.0` (1024 dimensions) - Supports 100+ languages
+* `embed-english-light-v3.0` (384 dimensions) - Faster, lighter version
+* `embed-english-v2.0` (4096 dimensions) - Legacy, larger model
 
 **Pros:**
 
-- Excellent multilingual support (100+ languages)
-- `input_type` parameter optimizes for different use cases
-- Multiple model sizes for speed/quality tradeoffs
-- Also offers chat capabilities
-- Good documentation and examples
-- Competitive pricing
+* Excellent multilingual support (100+ languages)
+* `input_type` parameter optimizes for different use cases
+* Multiple model sizes for speed/quality tradeoffs
+* Also offers chat capabilities
+* Good documentation and examples
+* Competitive pricing
 
 **Cons:**
 
-- Requires API key
-- Data sent to Cohere servers
-- Rate limits on free tier
+* Requires API key
+* Data sent to Cohere servers
+* Rate limits on free tier
 
 **Setup:**
 
@@ -953,18 +957,18 @@ lightEmb = aiEmbed(
 
 **Input Types:**
 
-- `search_query` - Optimize for search queries
-- `search_document` - Optimize for documents being searched
-- `clustering` - Optimize for clustering tasks
-- `classification` - Optimize for classification tasks
+* `search_query` - Optimize for search queries
+* `search_document` - Optimize for documents being searched
+* `clustering` - Optimize for clustering tasks
+* `classification` - Optimize for classification tasks
 
 **When to Use Cohere:**
 
-- Need multilingual embeddings (100+ languages)
-- Want to optimize separately for queries vs documents
-- Building search, clustering, or classification systems
-- Need both embeddings and chat in one provider
-- Want multiple model size options
+* Need multilingual embeddings (100+ languages)
+* Want to optimize separately for queries vs documents
+* Building search, clustering, or classification systems
+* Need both embeddings and chat in one provider
+* Want multiple model size options
 
 ## Best Practices
 
@@ -1131,9 +1135,9 @@ function interpretSimilarity( score ) {
 
 Embeddings enable powerful semantic understanding:
 
-- **Generate**: Use `aiEmbed()` for single or batch processing
-- **Search**: Compare vectors with cosine similarity
-- **Optimize**: Cache embeddings, batch requests, choose right model
-- **Apply**: Semantic search, clustering, recommendations, RAG
+* **Generate**: Use `aiEmbed()` for single or batch processing
+* **Search**: Compare vectors with cosine similarity
+* **Optimize**: Cache embeddings, batch requests, choose right model
+* **Apply**: Semantic search, clustering, recommendations, RAG
 
 Start with OpenAI for quality, try Ollama for privacy and cost savings!

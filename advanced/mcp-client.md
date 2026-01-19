@@ -1,4 +1,8 @@
-# 🔌 MCP Client - Model Context Protocol
+---
+icon: plug
+---
+
+# MCP Client - Model Context Protocol
 
 The BoxLang AI Module includes built-in support for the Model Context Protocol (MCP), a standardized way for AI applications to connect to external data sources and tools.
 
@@ -584,7 +588,7 @@ class extends="testbox.system.BaseSpec" {
 
 ## Related Documentation
 
-* [BoxLang AI Module](../../)
+* [BoxLang AI Module](../)
 * [AI Tools](../main-components/tools.md)
 * [AI Agents](../main-components/agents.md)
 

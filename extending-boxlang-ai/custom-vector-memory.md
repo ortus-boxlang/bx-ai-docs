@@ -1,4 +1,8 @@
-# 🧬 Custom Vector Memory
+---
+icon: memory
+---
+
+# Custom Vector Memory
 
 This guide shows you how to create custom vector memory implementations by extending `BaseVectorMemory` and implementing the `IVectorMemory` interface. Custom vector memories allow you to integrate with any vector database or implement specialized semantic search behaviors.
 

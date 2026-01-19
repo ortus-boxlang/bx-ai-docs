@@ -1,4 +1,8 @@
-# 📚 Document Loaders
+---
+icon: books
+---
+
+# Document Loaders
 
 Document loaders are a powerful feature for importing content from various sources (files, directories, URLs, databases) into a standardized `Document` format that can be processed by AI workflows, stored in vector databases, or used for retrieval-augmented generation (RAG).
 
