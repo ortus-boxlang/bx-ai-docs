@@ -1,13 +1,16 @@
 ---
 description: >-
-  Learn how to get started with the BoxLang AI module, including installation,
-  basic usage, and key features.
+  The easiest way to build AI-powered applications, and autonomous agents on the JVM. Connect to OpenAI, Claude, Gemini, and more with under 10 lines of code.
 icon: crosshairs-simple
 ---
 
 # Overview
 
-Welcome to BoxLang AI! This section covers everything you need to get up and running with AI-powered features in your BoxLang applications.
+**BoxLang AI is the fastest path** from idea to production-grade AI applications. With a single line of code, connect to 12+ providers including OpenAI, Claude, Gemini, Grok, and Ollama. BoxLang AI delivers a unified API, autonomous agent architecture, multi-tenant memory systems, and enterprise-ready integrations—giving you everything needed to build sophisticated AI applications without the complexity.
+
+We recommend you use **simple chat functions** (`aiChat()`, `aiMessage()`) when you want to quickly add AI capabilities to existing applications. Use **AI Agents and Pipelines** when you have more advanced needs that require autonomous reasoning, tool calling, memory systems, RAG, and multi-step workflows.
+
+BoxLang AI agents are built with composable pipelines and memory systems to provide streaming execution, tool integration, multi-tenant isolation, persistence, and more. You can start simple and scale to complex workflows as your needs grow.
 
 ## 📚 In This Section
 
