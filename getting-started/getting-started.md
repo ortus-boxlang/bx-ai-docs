@@ -13,7 +13,7 @@ Welcome to BoxLang AI! This section covers everything you need to get up and run
 
 ### 📦 [Installation](installation/)
 
-Quick guide to installing the BoxLang AI module.
+Quick guide to installing BoxLang AI.
 
 **What you'll learn:**
 
@@ -153,24 +153,27 @@ println( result );
 
 ```javascript
 person = aiChat(
-    message: "Extract info: John is 30 and lives in NYC",
-    structured: {
-        name: "string",
-        age: "numeric",
-        city: "string"
+    messages: "Extract info: John is 30 and lives in NYC",
+    options: {
+        returnFormat: {
+            name: "string",
+            age: "numeric",
+            city: "string"
+        }
     }
-);
-println( person.name ); // "John"
+)
+println( person.name ) // "John"
 ```
 
 ### AI Agent
 
 ```javascript
-agent = aiAgent()
-    .withInstructions( "You are a helpful assistant" )
-    .withMemory( "windowed" )
-    .build();
+// Create an agent with defaults:
+// - memory from global config (window) by default
+// - model and provider from global config
+agent = aiAgent( name: "MyAgent" ).withInstructions( "You are a helpful assistant" );
 
+// Run the agent with a user prompt
 response = agent.run( "Hello! Remember my name is Alice." );
 ```
 
@@ -181,7 +184,7 @@ response = agent.run( "Hello! Remember my name is Alice." );
 After mastering the basics, explore these advanced topics:
 
 * **🔄** [**Pipelines**](../main-components/main-components/overview.md) - Build composable AI workflows
-* **💭** [**Memory Systems**](../main-components/memory/) - Maintain conversation context
+* **💭** [**Memory Systems**](../main-components/memory/README.md) - Maintain conversation context
 * **🛠️** [**Tools**](../main-components/tools.md) - Enable AI to call functions
 * **📄** [**Document Loaders**](../rag/document-loaders.md) - Process various file formats
 * **🔮** [**Vector Memory**](../main-components/vector-memory.md) - Semantic search with embeddings
@@ -190,6 +193,6 @@ After mastering the basics, explore these advanced topics:
 
 ## ❓ Need Help?
 
-* **💬 Questions?** Check the [main documentation](../)
 * **🐛 Found a bug?** [Report it on GitHub](https://github.com/ortus-boxlang/bx-ai/issues)
-* **💡 Have an idea?** [Start a discussion](https://github.com/ortus-boxlang/bx-ai/discussions)
+* **💡 Have an idea?** [Start a discussion](https://community.ortussolutions.com)
+* **🆘 Professional Support?** [AI Services](https://ai.ortussolutions.com)

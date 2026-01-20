@@ -132,14 +132,17 @@ result = aiChat(
 
 ```java
 result = aiChat(
-    message: "Extract: John is 30, works as developer in NYC",
-    structured: {
-        name: "string",
-        age: "numeric",
-        job: "string",
-        location: "string"
+    messages: "Extract: John is 30, works as developer in NYC",
+    options: {
+        returnFormat: {
+            name: "string",
+            age: "numeric",
+            job: "string",
+            location: "string"
+        }
     }
 );
+println( result.name ); // "John"
 ```
 
 ---
