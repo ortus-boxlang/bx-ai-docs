@@ -124,11 +124,13 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | `aiChatAsync()`   | Non-blocking chat request      | Future      | Background processing, parallel requests |
 | `aiChatRequest()` | Build structured chat requests | AiRequest   | Complex requests with tools              |
 | `aiChatStream()`  | Real-time streaming responses  | void        | Live chat, progressive output            |
+| `aiService()` | Get AI service instances | Service     | Multi-provider management |
 
 ### 🏗️ Pipeline Components
 
 | BIF             | Purpose                   | Return Type | Example Use Case                 |
 | --------------- | ------------------------- | ----------- | -------------------------------- |
+| `aiAgent()`    | Create AI agents          | AiAgent     | Autonomous assistants, multi-turn |
 | `aiMessage()`   | Build message pipelines   | AiMessage   | Reusable prompts, templates      |
 | `aiModel()`     | Create model runnables    | AiModel     | Pipeline integration             |
 | `aiTransform()` | Create data transformers  | Transformer | Pipeline data processing         |
@@ -151,15 +153,16 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | BIF          | Purpose                    | Return Type  | Example Use Case            |
 | ------------ | -------------------------- | ------------ | --------------------------- |
 | `aiChunk()`  | Split text into chunks     | Array        | Processing large documents  |
-| `aiTokens()` | Estimate token counts      | Numeric      | Cost estimation, limits     |
 | `aiEmbed()`  | Generate vector embeddings | Array/Struct | Semantic search, similarity |
+| `aiPopulate()` | Populate a class instance, struct, or array from JSON data or struct.   | Any |  This is useful for testing, custom workflows, or working with cached AI responses.   |
+| `aiTokens()` | Estimate token counts      | Numeric      | Cost estimation, limits     |
 
-### ⚙️ Service Management
+### ⚙️ MCP (Model Context Protocol)
 
 | BIF           | Purpose                  | Return Type | Example Use Case          |
 | ------------- | ------------------------ | ----------- | ------------------------- |
-| `aiService()` | Get AI service instances | Service     | Multi-provider management |
 | `MCP()`       | Connect to MCP servers   | MCPClient   | External tools, resources |
+| `MCPServer()` | Create MCP server instances | MCPServer   | Expose tools to agents    |
 
 ***
 
