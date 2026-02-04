@@ -288,7 +288,7 @@ Fired when an AI chat request object is created via `aiChatRequest()`.
 
 | Argument    | Type           | Description                |
 | ----------- | ----------- | -------------------------- |
-| `aiRequest` | `AiRequest` | The created request object |
+| `aiRequest` | `AiChatRequest` | The created request object |
 
 ````
 
@@ -474,7 +474,7 @@ Fired before an AI model is invoked (before sending to provider).
 | Argument  | Type        | Description             |
 | --------- | ----------- | ----------------------- |
 | `model`   | `AiModel`   | The model being invoked |
-| `request` | `AiRequest` | The request being sent  |
+| `request` | `AiChatRequest` | The request being sent  |
 
 ````
 
@@ -518,7 +518,7 @@ Fired immediately before sending the HTTP request to the AI provider for chat op
 | Argument     | Type        | Description                    |
 | ------------ | ----------- | ------------------------------ |
 | `dataPacket` | `Struct`    | The HTTP request data packet   |
-| `aiRequest`  | `AiRequest` | The AI request object          |
+| `aiRequest`  | `AiChatRequest` | The AI request object          |
 | `provider`   | `IService`  | The service making the request |
 
 ````
@@ -564,7 +564,7 @@ Fired after receiving the HTTP response from the AI provider for chat operations
 
 | Argument      | Type        | Description                       |
 | ------------- | ----------- | --------------------------------- |
-| `aiRequest`   | `AiRequest` | The original request              |
+| `aiRequest`   | `AiChatRequest` | The original request              |
 | `response`    | `Struct`    | The deserialized response         |
 | `rawResponse` | `Struct`    | The raw HTTP response             |
 | `provider`    | `IService`  | The service that made the request |
@@ -621,7 +621,7 @@ Fired after an AI model completes its invocation.
 | Argument  | Type        | Description                       |
 | --------- | ----------- | --------------------------------- |
 | `model`   | `AiModel`   | The model that was invoked        |
-| `request` | `AiRequest` | The request that was sent         |
+| `request` | `AiChatRequest` | The request that was sent         |
 | `results` | `Any`       | The results returned by the model |
 
 ````
@@ -812,7 +812,7 @@ Fired when an error occurs during AI operations (chat, embeddings, or streaming)
 | `errorMessage`     | `String`             | Formatted error message                          |
 | `provider`         | `IService`           | The provider where error occurred                |
 | `operation`        | `String`             | Operation type: "chat", "embeddings", "stream"   |
-| `aiRequest`        | `AiRequest`          | The request that caused the error (if available) |
+| `aiRequest`        | `AiChatRequest`          | The request that caused the error (if available) |
 | `embeddingRequest` | `AiEmbeddingRequest` | For embedding errors                             |
 | `canRetry`         | `Boolean`            | Whether operation can be retried                 |
 
@@ -906,7 +906,7 @@ Fired when a provider returns a 429 (rate limit) HTTP status code.
 | `operation`  | `String`    | Operation type: "chat", "embeddings"  |
 | `statusCode` | `String`    | HTTP status code (429)                |
 | `errorData`  | `Struct`    | Error response from provider          |
-| `aiRequest`  | `AiRequest` | The request that hit the limit        |
+| `aiRequest`  | `AiChatRequest` | The request that hit the limit        |
 | `retryAfter` | `String`    | Retry-After header value (if present) |
 
 ````
@@ -1138,7 +1138,7 @@ Fired when token usage information is available from the AI provider response.
 | `usageMetadata`    | `Struct`    | Custom tracking data (cost center, project, etc.) (v2.1.0+) |
 | `providerOptions`  | `Struct`    | Provider-specific options from request (v2.1.0+)        |
 | `timestamp`        | `DateTime`  | When the event fired (v2.1.0+)                           |
-| `aiRequest`        | `AiRequest` | The request object                                       |
+| `aiRequest`        | `AiChatRequest` | The request object                                       |
 | `usage`            | `Struct`    | Full usage object from provider                          |
 
 ````

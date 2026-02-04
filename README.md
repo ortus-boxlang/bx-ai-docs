@@ -123,7 +123,7 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | ----------------- | ------------------------------ | ----------- | ---------------------------------------- |
 | `aiChat()`        | Simple one-shot chat request   | String      | Quick Q\&A, content generation           |
 | `aiChatAsync()`   | Non-blocking chat request      | Future      | Background processing, parallel requests |
-| `aiChatRequest()` | Build structured chat requests | AiRequest   | Complex requests with tools              |
+| `aiChatRequest()` | Build structured chat requests | AiChatRequest   | Complex requests with tools              |
 | `aiChatStream()`  | Real-time streaming responses  | void        | Live chat, progressive output            |
 | `aiService()` | Get AI service instances | Service     | Multi-provider management |
 

@@ -72,19 +72,19 @@ interface {
     IAiService function configure( required any apiKey );
 
     /**
-     * Invoke the provider service with a AiRequest object
-     * @aiRequest The AiRequest object to send to the provider
+     * Invoke the provider service with a AiChatRequest object
+     * @aiRequest The AiChatRequest object to send to the provider
      * @return The response from the service
      */
-    function invoke( required AiRequest aiRequest );
+    function invoke( required AiChatRequest aiRequest );
 
     /**
      * Invoke the provider service in streaming mode
-     * @aiRequest The AiRequest object to send to the provider
+     * @aiRequest The AiChatRequest object to send to the provider
      * @callback A callback function called with each chunk: function( chunk )
      * @return void
      */
-    function invokeStream( required AiRequest aiRequest, required function callback );
+    function invokeStream( required AiChatRequest aiRequest, required function callback );
 
     /**
      * Generate embeddings for the given input text(s)
@@ -235,7 +235,7 @@ class extends="BaseService" {
      * Override chat to customize authentication
      */
     @override
-    function chat( required AiRequest aiRequest ) {
+    function chat( required AiChatRequest aiRequest ) {
         // Build data packet
         var dataPacket = {
             "model": arguments.aiRequest.getModel(),
@@ -298,7 +298,7 @@ class extends="BaseService" {
      * Override chat to transform request format
      */
     @override
-    function chat( required AiRequest aiRequest ) {
+    function chat( required AiChatRequest aiRequest ) {
         // Transform to provider's format
         var dataPacket = {
             "modelName": arguments.aiRequest.getModel(),
@@ -358,7 +358,7 @@ class extends="BaseService" {
      * Override chatStream to handle custom streaming format
      */
     @override
-    function chatStream( required AiRequest aiRequest, required function callback ) {
+    function chatStream( required AiChatRequest aiRequest, required function callback ) {
         var userCallback = arguments.callback;
         var thisAiRequest = arguments.aiRequest;
 
@@ -445,7 +445,7 @@ If your provider supports tools, format them correctly:
 class extends="BaseService" {
 
     @override
-    function chat( required AiRequest aiRequest ) {
+    function chat( required AiChatRequest aiRequest ) {
         var dataPacket = {
             "model": arguments.aiRequest.getModel(),
             "messages": arguments.aiRequest.getAiMessage().getMessages()
@@ -593,7 +593,7 @@ class extends="BaseService" {
      * Override chat for custom authentication and format
      */
     @override
-    function chat( required AiRequest aiRequest ) {
+    function chat( required AiChatRequest aiRequest ) {
         // Transform messages for Acme's format
         var messages = arguments.aiRequest.getAiMessage().getMessages();
         var acmeMessages = [];
@@ -687,7 +687,7 @@ class extends="BaseService" {
      * Override streaming for Acme's SSE format
      */
     @override
-    function chatStream( required AiRequest aiRequest, required function callback ) {
+    function chatStream( required AiChatRequest aiRequest, required function callback ) {
         var userCallback = arguments.callback;
         var thisAiRequest = arguments.aiRequest;
 
@@ -1143,7 +1143,7 @@ class extends="BaseSpec" {
 
             it( "should make chat request", function() {
                 // Mock HTTP request or use test endpoint
-                var aiRequest = new AiRequest()
+                var aiRequest = new AiChatRequest()
                     .setModel( "acme-gpt-turbo" )
                     .setMessages([ { role: "user", content: "test" }])
                     .setApiKey( "test-key" );
@@ -1181,7 +1181,7 @@ class extends="BaseSpec" {
                 var service = new AcmeAIService()
                     .configure( variables.apiKey );
 
-                var aiRequest = new AiRequest()
+                var aiRequest = new AiChatRequest()
                     .setModel( "acme-gpt-turbo" )
                     .setMessages([
                         { role: "user", content: "Say hello" }
@@ -1198,7 +1198,7 @@ class extends="BaseSpec" {
                     .configure( variables.apiKey );
 
                 var chunks = [];
-                var aiRequest = new AiRequest()
+                var aiRequest = new AiChatRequest()
                     .setModel( "acme-gpt-turbo" )
                     .setMessages([
                         { role: "user", content: "Count to 3" }

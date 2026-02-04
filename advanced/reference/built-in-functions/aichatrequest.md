@@ -39,7 +39,7 @@ Messages can be:
 
 ## Returns
 
-Returns an `AiRequest` object with fluent API for:
+Returns an `AiChatRequest` object with fluent API for:
 
 * Adding messages: `addMessage()`, `addSystemMessage()`, `addUserMessage()`
 * Setting parameters: `setParams()`, `setOptions()`, `setHeaders()`
