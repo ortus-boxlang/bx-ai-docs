@@ -498,7 +498,7 @@ CREATE TABLE ai_conversations (
 
 ## Vector Memory Multi-Tenancy
 
-All 11 vector memory providers support multi-tenant isolation:
+All 12 vector memory providers support multi-tenant isolation:
 
 ### BoxVector (In-Memory)
 

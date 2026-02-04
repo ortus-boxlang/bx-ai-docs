@@ -581,7 +581,7 @@ response = aiChat([
 * Stores documents as embeddings
 * Semantic search by meaning
 * Used for: RAG, knowledge bases, document Q\&A
-* Types: ChromaDB, PostgreSQL, Pinecone, Qdrant, etc.
+* Types: ChromaDB, PostgreSQL, Pinecone, Qdrant, OpenSearch, etc.
 
 **When to use each**:
 

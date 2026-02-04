@@ -103,18 +103,19 @@ salesResults = salesChat.getRelevant( "plan", 5 )       // Only sales messages
 
 ### Storage Strategy by Provider
 
-| Provider  | Storage Method               | Filter Type        |
-| --------- | ---------------------------- | ------------------ |
-| BoxVector | Metadata                     | In-memory filter   |
-| Chroma    | Metadata                     | $and operator      |
-| Milvus    | Metadata                     | filter expressions |
-| MySQL     | Dedicated columns            | SQL WHERE          |
-| Postgres  | Dedicated columns            | SQL WHERE          |
-| Pinecone  | Metadata                     | $eq operators      |
-| Qdrant    | Payload root                 | match filters      |
-| TypeSense | Root fields                  | := filters         |
-| Weaviate  | Properties root              | GraphQL Equal      |
-| Hybrid    | Delegates to vector provider | Provider-specific  |
+| Provider    | Storage Method               | Filter Type        |
+| ----------- | ---------------------------- | ------------------ |
+| BoxVector   | Metadata                     | In-memory filter   |
+| Chroma      | Metadata                     | $and operator      |
+| Milvus      | Metadata                     | filter expressions |
+| MySQL       | Dedicated columns            | SQL WHERE          |
+| OpenSearch  | Metadata                     | bool filter        |
+| Postgres    | Dedicated columns            | SQL WHERE          |
+| Pinecone    | Metadata                     | $eq operators      |
+| Qdrant      | Payload root                 | match filters      |
+| TypeSense   | Root fields                  | := filters         |
+| Weaviate    | Properties root              | GraphQL Equal      |
+| Hybrid      | Delegates to vector provider | Provider-specific  |
 
 All providers support `getAllDocuments()`, `getRelevant()`, and `findSimilar()` with automatic tenant filtering.
 
@@ -260,6 +261,7 @@ agent.run( "What was my last invoice amount?" )
 | **ChromaDB**   | Python integration, local dev           | ⚙️ Moderate | Free      | Good        | ✅            |
 | **PostgreSQL** | Existing Postgres infrastructure        | ⚙️ Moderate | Low       | Good        | ✅            |
 | **MySQL**      | Existing MySQL 9+ infrastructure        | ⚙️ Moderate | Low       | Good        | ✅            |
+| **OpenSearch** | AWS integration, enterprise search      | ⚙️ Moderate | Free/Paid | Excellent   | ✅            |
 | **TypeSense**  | Fast typo-tolerant search, autocomplete | ⚙️ Easy     | Free/Paid | Excellent   | ✅            |
 | **Pinecone**   | Production, cloud-first                 | ⚙️ Easy     | Paid      | Excellent   | ✅            |
 | **Qdrant**     | Self-hosted, high performance           | ⚙️ Complex  | Free/Paid | Excellent   | ✅            |
@@ -282,6 +284,7 @@ agent.run( "What was my last invoice amount?" )
 
 * **PostgreSQL**: If you already use Postgres
 * **MySQL**: If you already use MySQL 9+
+* **OpenSearch**: AWS infrastructure, enterprise search features
 * **TypeSense**: Fast typo-tolerant search with low latency
 * **Qdrant**: Best performance for self-hosted
 * **Milvus**: Enterprise-grade, handles billions of vectors
@@ -692,6 +695,221 @@ exported = memory.export()
 
 * **Community Edition** (Free): VECTOR data type, app-layer distance calculations
 * **HeatWave** (Oracle Cloud): Native DISTANCE() function, VECTOR INDEX, GPU acceleration
+
+***
+
+### OpenSearchVectorMemory
+
+[OpenSearch](https://opensearch.org/) distributed search and analytics engine with k-NN vector search capabilities.
+
+**Features:**
+
+* AWS Elasticsearch-compatible service
+* k-NN vector search with HNSW algorithm
+* Enterprise-grade security
+* Multi-tenant isolation
+* Advanced filtering and aggregations
+* AWS integration (IAM, CloudWatch)
+
+**Requirements:**
+
+* OpenSearch 1.x+ or AWS OpenSearch Service
+* HTTP/HTTPS access to cluster
+* API credentials or AWS IAM authentication
+
+**Setup:**
+
+```bash
+# Docker (quickest way)
+docker run -p 9200:9200 -p 9600:9600 \
+  -e "discovery.type=single-node" \
+  -e "plugins.security.disabled=true" \
+  opensearchproject/opensearch:latest
+
+# Docker Compose
+services:
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+
+# Or use AWS OpenSearch Service (managed)
+# Create domain in AWS Console or via Terraform/CloudFormation
+```
+
+**Configuration:**
+
+```javascript
+// Basic OpenSearch configuration
+memory = aiMemory( "opensearch", {
+    collection: "ai_conversations",
+    embeddingProvider: "openai",
+    embeddingModel: "text-embedding-3-small",
+    host: "localhost",               // OpenSearch host
+    port: 9200,                      // Default OpenSearch port
+    protocol: "http",                // Use "https" for AWS OpenSearch
+    dimensions: 1536,                // Must match embedding model
+    engine: "nmslib",                // Options: "nmslib", "faiss", "lucene"
+    spaceType: "cosinesimil",        // Options: "l2", "cosinesimil", "innerproduct"
+    m: 16,                           // HNSW algorithm parameter (higher = better accuracy)
+    efConstruction: 512,             // HNSW construction parameter
+    efSearch: 512                    // Search-time HNSW parameter
+} )
+```
+
+**AWS OpenSearch Configuration:**
+
+```javascript
+// AWS OpenSearch Service
+memory = aiMemory( "opensearch", {
+    collection: "production_memory",
+    embeddingProvider: "bedrock",
+    embeddingModel: "amazon.titan-embed-text-v1",
+    host: "search-my-domain.us-west-2.es.amazonaws.com",
+    port: 443,
+    protocol: "https",
+    username: "admin",               // Master user
+    password: "Complex-Password123!", // From AWS Console
+    region: "us-west-2",             // AWS region
+    dimensions: 1536,
+    engine: "faiss",                 // FAISS for AWS OpenSearch
+    spaceType: "cosinesimil"
+} )
+```
+
+**AWS IAM Authentication:**
+
+```javascript
+// Using AWS IAM credentials (no username/password)
+memory = aiMemory( "opensearch", {
+    collection: "enterprise_memory",
+    embeddingProvider: "bedrock",
+    embeddingModel: "amazon.titan-embed-text-v1",
+    host: "vpc-private-domain.us-west-2.es.amazonaws.com",
+    port: 443,
+    protocol: "https",
+    region: "us-west-2",
+    useIAM: true,                    // Enable IAM authentication
+    accessKeyId: "AKIAIOSFODNN7EXAMPLE",      // AWS credentials
+    secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    dimensions: 1536
+} )
+```
+
+**Usage Example:**
+
+```javascript
+// Create OpenSearch vector memory
+memory = aiMemory( "opensearch", {
+    collection: "customer_support",
+    host: "localhost",
+    port: 9200,
+    protocol: "http",
+    embeddingProvider: "openai",
+    embeddingModel: "text-embedding-3-small",
+    engine: "nmslib",
+    spaceType: "cosinesimil"
+} )
+
+// Use with agent
+agent = aiAgent(
+    name: "Support Bot",
+    memory: memory
+)
+
+// Semantic search with OpenSearch
+agent.run( "How do I reset my password?" )
+agent.run( "What are the payment options?" )
+```
+
+**Multi-Tenant Configuration:**
+
+```javascript
+// Per-user isolation
+memory = aiMemory( "opensearch",
+    key: createUUID(),
+    userId: "user123",
+    config: {
+        collection: "shared_collection",
+        embeddingProvider: "openai",
+        embeddingModel: "text-embedding-3-small",
+        host: "localhost",
+        port: 9200,
+        protocol: "http",
+        engine: "nmslib"
+    }
+)
+
+// Per-conversation isolation
+memory = aiMemory( "opensearch",
+    key: createUUID(),
+    userId: "user123",
+    conversationId: "chat456",
+    config: {
+        collection: "all_conversations",
+        embeddingProvider: "bedrock",
+        embeddingModel: "amazon.titan-embed-text-v1",
+        host: "search-domain.us-west-2.es.amazonaws.com",
+        port: 443,
+        protocol: "https",
+        region: "us-west-2",
+        username: "admin",
+        password: "password"
+    }
+)
+
+// Access identifiers
+userId = memory.getUserId()
+conversationId = memory.getConversationId()
+
+// Export includes identifiers
+exported = memory.export()
+// { userId: "user123", conversationId: "chat456", ... }
+```
+
+**Best For:**
+
+* AWS infrastructure integration
+* Enterprise search applications
+* Large-scale vector search (billions of vectors)
+* Applications requiring advanced filtering
+* Organizations already using Elasticsearch/OpenSearch
+* Compliance-heavy environments (HIPAA, SOC2)
+
+**OpenSearch Advantages:**
+
+* **AWS Integration**: Native IAM, CloudWatch, VPC support
+* **Enterprise Features**: RBAC, audit logging, encryption at rest
+* **Scalability**: Horizontal scaling, cluster management
+* **Flexibility**: Multiple k-NN algorithms (HNSW, FAISS, Lucene)
+* **Cost-Effective**: AWS reserved instances, spot instances
+
+**Pricing:**
+
+* **Self-Hosted**: Free (open source)
+* **AWS OpenSearch Service**:
+  * On-Demand: Per-hour instance pricing
+  * Reserved Instances: Up to 72% savings
+  * Storage: $0.135/GB-month (standard)
+
+**When to Choose OpenSearch:**
+
+* Already using AWS infrastructure
+* Need enterprise-grade security and compliance
+* Require advanced search capabilities (filtering, aggregations)
+* Building large-scale applications (> 1B vectors)
+* Need tight AWS service integration (Lambda, S3, etc.)
+
+**Performance Notes:**
+
+* HNSW algorithm provides excellent recall/performance balance
+* FAISS engine for maximum performance on AWS
+* Lucene engine for exact search (100% recall)
+* Index configuration (m, efConstruction, efSearch) impacts performance vs accuracy
 
 ***
 

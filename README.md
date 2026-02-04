@@ -41,7 +41,8 @@ graph TB
 
     Vectors --> VectorSet1["ChromaDB<br/>PostgreSQL<br/>Qdrant<br/>MySQL"]
     Vectors --> VectorSet2["Pinecone<br/>TypeSense<br/>Weaviate<br/>BoxVector"]
-    Vectors --> VectorNote["10+ Vector DBs"]
+    Vectors --> VectorSet3["Milvus<br/>OpenSearch<br/>Hybrid"]
+    Vectors --> VectorNote["12 Vector DBs"]
 
     style App fill:#4CAF50,stroke:#333,stroke-width:2px,color:#fff
     style Module fill:#2196F3,stroke:#333,stroke-width:2px,color:#fff
@@ -67,7 +68,7 @@ graph TB
 * 📝 **Template System**: Create reusable prompts with dynamic placeholders
 * 🤖 **AI Agents**: Autonomous agents with memory, tools, and reasoning
 * 📄 **Document Loaders**: Load and process various file formats for RAG
-* 🧠 **Vector Memory**: Semantic search with 10+ vector database integrations
+* 🧠 **Vector Memory**: Semantic search with 12 vector database integrations
 
 ### Supported Providers
 

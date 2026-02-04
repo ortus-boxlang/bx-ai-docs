@@ -197,7 +197,7 @@ Choose the right memory type for your use case:
 | **Historical Awareness** | None        | Excellent          | Limited       | Perfect      | None             | Perfect            |
 | **Persistence**          | None        | None               | Session scope | File system  | Cache provider   | Database           |
 
-> **Need Semantic Search?** Check out [Vector Memory](../vector-memory.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, and Hybrid memory combining recent + semantic.
+> **Need Semantic Search?** Check out [Vector Memory](../vector-memory.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, OpenSearch, and Hybrid memory combining recent + semantic.
 
 ### Windowed Memory
 

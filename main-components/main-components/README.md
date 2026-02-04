@@ -379,7 +379,7 @@ results = memory.getRelevant( "French capital", 1 )
 
 * Embedding generation
 * Similarity search
-* Vector stores (Chroma, Pinecone, etc.)
+* Vector stores (Chroma, Pinecone, OpenSearch, etc.)
 * RAG workflows
 
 → [**Read Vector Memory Guide**](../vector-memory.md)

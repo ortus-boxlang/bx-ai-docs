@@ -435,7 +435,7 @@ Stores chat history to maintain context across interactions.
 
 Stores documents as embeddings for semantic search. Enables RAG.
 
-**Types**: ChromaDB, PostgreSQL, Pinecone, Qdrant, Weaviate, MySQL, TypeSense, BoxVector, Milvus
+**Types**: ChromaDB, PostgreSQL, Pinecone, Qdrant, Weaviate, MySQL, TypeSense, BoxVector, Milvus, OpenSearch
 
 **Use cases**:
 
