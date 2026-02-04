@@ -52,7 +52,7 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 25 | [afterAIPipelineRun](events.md#25-afteraipipelinerun)   | After pipeline completes         | `sequence`, `result`, `executionTime`             |
 | 26 | [onAIError](events.md#26-onaierror)                     | Error occurs                     | `error`, `errorMessage`, `provider`, `canRetry`   |
 | 27 | [onAIRateLimitHit](events.md#27-onairatelimithit)       | Rate limit detected (429)        | `provider`, `statusCode`, `retryAfter`            |
-| 28 | [onAITokenCount](events.md#28-onaitokencount)           | Token usage available            | `provider`, `model`, `totalTokens`                |
+| 28 | [onAITokenCount](events.md#28-onaitokencount)           | Token usage available            | `provider`, `model`, `totalTokens`, `tenantId`, `usageMetadata` |
 | 29 | [onMCPServerCreate](events.md#29-onmcpservercreate)     | MCP server instance created      | `server`, `name`, `description`                   |
 | 30 | [onMCPServerRemove](events.md#30-onmcpserverremove)     | MCP server instance removed      | `name`                                            |
 | 31 | [onMCPRequest](events.md#31-onmcprequest)               | Before processing MCP request    | `server`, `requestData`, `serverName`             |
@@ -1126,16 +1126,20 @@ Fired when token usage information is available from the AI provider response.
 
 #### Event Arguments
 
-| Argument           | Type        | Description                          |
-| ------------------ | ----------- | ------------------------------------ |
-| `provider`         | `IService`  | The provider used                    |
-| `operation`        | `String`    | Operation type: "chat", "embeddings" |
-| `model`            | `String`    | Model name                           |
-| `promptTokens`     | `Numeric`   | Input tokens used                    |
-| `completionTokens` | `Numeric`   | Output tokens used                   |
-| `totalTokens`      | `Numeric`   | Total tokens (prompt + completion)   |
-| `aiRequest`        | `AiRequest` | The request object                   |
-| `usage`            | `Struct`    | Full usage object from provider      |
+| Argument           | Type        | Description                                              |
+| ------------------ | ----------- | -------------------------------------------------------- |
+| `provider`         | `IService`  | The provider used                                        |
+| `operation`        | `String`    | Operation type: "chat", "embeddings"                     |
+| `model`            | `String`    | Model name                                               |
+| `promptTokens`     | `Numeric`   | Input tokens used                                        |
+| `completionTokens` | `Numeric`   | Output tokens used                                       |
+| `totalTokens`      | `Numeric`   | Total tokens (prompt + completion)                       |
+| `tenantId`         | `String`    | Tenant identifier for multi-tenant billing (v2.1.0+)     |
+| `usageMetadata`    | `Struct`    | Custom tracking data (cost center, project, etc.) (v2.1.0+) |
+| `providerOptions`  | `Struct`    | Provider-specific options from request (v2.1.0+)        |
+| `timestamp`        | `DateTime`  | When the event fired (v2.1.0+)                           |
+| `aiRequest`        | `AiRequest` | The request object                                       |
+| `usage`            | `Struct`    | Full usage object from provider                          |
 
 ````
 
@@ -1288,6 +1292,301 @@ class {
     }
 }
 ````
+
+***
+
+#### Multi-Tenant Usage Tracking (v2.1.0+)
+
+Track AI usage per tenant for billing and cost allocation. Works with **aiChat()**, **aiChatAsync()**, **aiChatStream()**, and **AI Agent runnables**.
+
+```javascript
+// Set tenant context in AI chat requests
+result = aiChat(
+    messages: "Analyze this data",
+    options: {
+        tenantId: "customer_acme",
+        usageMetadata: {
+            costCenter: "engineering",
+            projectId: "proj-2024-ml",
+            userId: "john@acme.com",
+            department: "R&D"
+        }
+    }
+)
+
+// Set tenant context in AI agents
+agent = aiAgent(
+    name: "Assistant",
+    memory: aiMemory( "simple" )
+)
+
+result = agent.run(
+    input: "Help me with this task",
+    options: {
+        tenantId: "customer_acme",
+        usageMetadata: {
+            costCenter: "support",
+            ticketId: "TICK-12345",
+            priority: "high"
+        }
+    }
+)
+
+// Set tenant context in model runnables
+model = aiModel( provider: "openai" )
+
+result = model.run(
+    input: "Generate a report",
+    params: { temperature: 0.7 },
+    options: {
+        tenantId: "org_finance",
+        usageMetadata: {
+            department: "accounting",
+            reportType: "quarterly"
+        }
+    }
+)
+```
+
+**Interceptor for Multi-Tenant Billing:**
+
+```javascript
+class {
+
+    property name="billingService" inject="BillingService";
+
+    function onAITokenCount( event, interceptData ) {
+        // Extract tenant context
+        var tenantId = interceptData.tenantId ?: "unknown";
+        var usageMetadata = interceptData.usageMetadata ?: {};
+        
+        // Provider and model info
+        var provider = interceptData.provider.getProviderName();
+        var model = interceptData.model;
+        
+        // Token usage
+        var totalTokens = interceptData.totalTokens;
+        var promptTokens = interceptData.promptTokens;
+        var completionTokens = interceptData.completionTokens;
+        
+        // Calculate cost
+        var cost = calculateCost(
+            provider: provider,
+            model: model,
+            promptTokens: promptTokens,
+            completionTokens: completionTokens
+        );
+        
+        // Store usage for tenant billing
+        billingService.recordUsage({
+            tenantId: tenantId,
+            provider: provider,
+            model: model,
+            operation: interceptData.operation,
+            totalTokens: totalTokens,
+            promptTokens: promptTokens,
+            completionTokens: completionTokens,
+            estimatedCost: cost,
+            timestamp: interceptData.timestamp,
+            metadata: usageMetadata
+        });
+        
+        // Check tenant quota
+        var tenantQuota = billingService.getTenantQuota( tenantId );
+        var currentUsage = billingService.getCurrentMonthUsage( tenantId );
+        
+        if ( currentUsage.cost + cost > tenantQuota.limit ) {
+            // Send alert
+            emailService.send(
+                to: tenantQuota.alertEmail,
+                subject: "AI Usage Quota Alert: #tenantId#",
+                body: "Current usage: $#currentUsage.cost# + $#cost# exceeds limit: $#tenantQuota.limit#"
+            );
+            
+            // Optionally block further usage
+            if ( tenantQuota.hardLimit ) {
+                throw(
+                    type: "QuotaExceeded",
+                    message: "Tenant #tenantId# has exceeded their AI usage quota"
+                );
+            }
+        }
+        
+        // Log for analytics
+        writeLog(
+            type: "info",
+            file: "ai-usage",
+            text: "Tenant=#tenantId#, Provider=#provider#, Model=#model#, Tokens=#totalTokens#, Cost=$#numberFormat(cost,'0.0000')#, Metadata=#serializeJSON(usageMetadata)#"
+        );
+    }
+}
+```
+
+**Multi-Provider Tracking Example:**
+
+```javascript
+// Track usage across different providers
+class TenantUsageTracker {
+
+    property name="usageDB" inject="UsageDatabase";
+    
+    function onAITokenCount( event, interceptData ) {
+        var tenantId = interceptData.tenantId;
+        
+        // Skip if no tenant context
+        if ( isNull( tenantId ) || tenantId == "" ) return;
+        
+        var usageRecord = {
+            tenantId: tenantId,
+            provider: interceptData.provider.getProviderName(),
+            model: interceptData.model,
+            operation: interceptData.operation,
+            tokens: {
+                prompt: interceptData.promptTokens,
+                completion: interceptData.completionTokens,
+                total: interceptData.totalTokens
+            },
+            cost: calculateProviderCost( interceptData ),
+            timestamp: interceptData.timestamp,
+            metadata: interceptData.usageMetadata ?: {},
+            providerOptions: interceptData.providerOptions ?: {}
+        };
+        
+        // Store in database
+        usageDB.insertUsage( usageRecord );
+        
+        // Update real-time metrics
+        metricsService.increment( "ai.usage.#tenantId#.tokens", usageRecord.tokens.total );
+        metricsService.increment( "ai.usage.#tenantId#.requests", 1 );
+        metricsService.gauge( "ai.usage.#tenantId#.cost", usageRecord.cost );
+        
+        // Track by cost center if provided
+        if ( structKeyExists( usageRecord.metadata, "costCenter" ) ) {
+            var costCenter = usageRecord.metadata.costCenter;
+            metricsService.increment( 
+                "ai.usage.#tenantId#.#costCenter#.cost", 
+                usageRecord.cost 
+            );
+        }
+    }
+    
+    private function calculateProviderCost( data ) {
+        // Provider-specific pricing (per 1M tokens)
+        var pricing = {
+            "openai": {
+                "gpt-4o": { prompt: 2.50, completion: 10.00 },
+                "gpt-4o-mini": { prompt: 0.150, completion: 0.600 }
+            },
+            "bedrock": {
+                "claude-3-sonnet": { prompt: 3.00, completion: 15.00 },
+                "claude-3-haiku": { prompt: 0.25, completion: 1.25 }
+            },
+            "ollama": {
+                // Free for local models
+                "*": { prompt: 0, completion: 0 }
+            },
+            "deepseek": {
+                "deepseek-chat": { prompt: 0.14, completion: 0.28 }
+            }
+        };
+        
+        var provider = data.provider.getProviderName();
+        var model = data.model;
+        
+        // Get pricing for this provider/model
+        var modelPricing = { prompt: 0, completion: 0 };
+        
+        if ( structKeyExists( pricing, provider ) ) {
+            // Try exact model match
+            if ( structKeyExists( pricing[ provider ], model ) ) {
+                modelPricing = pricing[ provider ][ model ];
+            } else {
+                // Try wildcard match
+                for ( var pattern in pricing[ provider ] ) {
+                    if ( pattern == "*" || findNoCase( pattern, model ) ) {
+                        modelPricing = pricing[ provider ][ pattern ];
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Calculate cost
+        var promptCost = ( data.promptTokens / 1000000 ) * modelPricing.prompt;
+        var completionCost = ( data.completionTokens / 1000000 ) * modelPricing.completion;
+        
+        return promptCost + completionCost;
+    }
+}
+```
+
+**Usage Metadata Examples:**
+
+```javascript
+// Example 1: Department-level tracking
+aiChat(
+    messages: "Generate report",
+    options: {
+        tenantId: "company_xyz",
+        usageMetadata: {
+            department: "marketing",
+            costCenter: "CC-4501",
+            campaign: "spring-2026"
+        }
+    }
+)
+
+// Example 2: Project-based tracking
+aiChat(
+    messages: "Analyze customer data",
+    options: {
+        tenantId: "client_acme",
+        usageMetadata: {
+            projectId: "proj-analytics-2026",
+            projectName: "Customer Insights",
+            billableHours: true,
+            clientPO: "PO-12345"
+        }
+    }
+)
+
+// Example 3: User-level tracking
+aiChat(
+    messages: "Help me with code",
+    options: {
+        tenantId: "org_developers",
+        usageMetadata: {
+            userId: "john.doe@company.com",
+            team: "backend",
+            feature: "api-optimization"
+        }
+    }
+)
+
+// Example 4: Geographic tracking
+aiChat(
+    messages: "Translate content",
+    options: {
+        tenantId: "saas_customer_456",
+        usageMetadata: {
+            region: "us-west",
+            datacenter: "pdx-1",
+            customerTier: "enterprise"
+        }
+    }
+)
+```
+
+**Benefits of Multi-Tenant Tracking:**
+
+* ✅ **Accurate Billing**: Attribute AI costs to specific tenants/customers
+* ✅ **Cost Allocation**: Track usage by department, project, or cost center
+* ✅ **Quota Management**: Enforce per-tenant usage limits
+* ✅ **Analytics**: Understand which tenants/projects use AI most
+* ✅ **Chargeback**: Generate detailed usage reports for internal billing
+* ✅ **Provider Agnostic**: Works with all AI providers (OpenAI, Bedrock, Ollama, etc.)
+
+****
 
 ### Event Priority Reference
 

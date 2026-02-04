@@ -20,6 +20,7 @@ AI Agents are autonomous entities that can reason, use tools, and maintain conve
 * [Pipeline Integration](agents.md#pipeline-integration)
 * [Agents with Document Loaders & RAG](agents.md#-agents-with-document-loaders--rag)
 * [Agents with Transformers](agents.md#-agents-with-transformers)
+* [Multi-Tenant Usage Tracking](agents.md#-multi-tenant-usage-tracking-v210)
 * [Advanced Patterns](agents.md#advanced-patterns)
   * [Sub-Agents (Delegation)](agents.md#sub-agents-delegation)
   * [Event Interception](agents.md#event-interception)
@@ -1005,6 +1006,255 @@ try {
     response = "I encountered an error. Please try again."
 }
 ```
+
+***
+
+## 🏢 Multi-Tenant Usage Tracking (v2.1.0+)
+
+Track AI usage per tenant for billing and cost allocation when using agents. This enables accurate cost attribution in multi-tenant applications.
+
+### Agent with Tenant Context
+
+```javascript
+// Create agent
+supportAgent = aiAgent(
+    name: "SupportBot",
+    memory: aiMemory( "simple" ),
+    instructions: "You are a helpful support assistant"
+)
+
+// Run with tenant context
+response = supportAgent.run(
+    input: "How do I reset my password?",
+    options: {
+        tenantId: "customer_acme",
+        usageMetadata: {
+            department: "support",
+            ticketId: "TICK-12345",
+            userId: "john@acme.com",
+            priority: "high"
+        }
+    }
+)
+```
+
+### Multi-Tenant Agent Wrapper
+
+```javascript
+class TenantAgent {
+
+    property name="agent";
+    property name="tenantId";
+    property name="defaultMetadata";
+
+    function init(
+        required any agent,
+        required string tenantId,
+        struct defaultMetadata = {}
+    ) {
+        variables.agent = arguments.agent
+        variables.tenantId = arguments.tenantId
+        variables.defaultMetadata = arguments.defaultMetadata
+        return this
+    }
+
+    function run(
+        required string input,
+        struct additionalMetadata = {},
+        struct params = {}
+    ) {
+        // Merge metadata
+        var metadata = variables.defaultMetadata.copy()
+        metadata.append( arguments.additionalMetadata )
+
+        // Run agent with tenant context
+        return variables.agent.run(
+            input: arguments.input,
+            params: arguments.params,
+            options: {
+                tenantId: variables.tenantId,
+                usageMetadata: metadata
+            }
+        )
+    }
+
+    function stream(
+        required string input,
+        required function onChunk,
+        struct additionalMetadata = {},
+        struct params = {}
+    ) {
+        var metadata = variables.defaultMetadata.copy()
+        metadata.append( arguments.additionalMetadata )
+
+        return variables.agent.stream(
+            input: arguments.input,
+            onChunk: arguments.onChunk,
+            params: arguments.params,
+            options: {
+                tenantId: variables.tenantId,
+                usageMetadata: metadata
+            }
+        )
+    }
+}
+
+// Usage - Create tenant-specific agent wrapper
+customerAgent = new TenantAgent(
+    agent: aiAgent( name: "Assistant", memory: aiMemory( "simple" ) ),
+    tenantId: "customer_xyz",
+    defaultMetadata: {
+        department: "sales",
+        region: "us-west"
+    }
+)
+
+// All interactions automatically include tenant context
+response1 = customerAgent.run(
+    input: "What are our product features?",
+    additionalMetadata: { feature: "product-info" }
+)
+
+response2 = customerAgent.run(
+    input: "Show me pricing",
+    additionalMetadata: { feature: "pricing" }
+)
+```
+
+### Per-User Agent Tracking
+
+```javascript
+function createUserAgent( required string userId, required string tenantId ) {
+    return aiAgent(
+        name: "PersonalAssistant",
+        memory: aiMemory( "simple", {
+            userId: arguments.userId  // Memory isolation
+        } ),
+        instructions: "You are a personal AI assistant"
+    ).run(
+        input: message,
+        options: {
+            tenantId: arguments.tenantId,
+            usageMetadata: {
+                userId: arguments.userId,
+                sessionId: createUUID(),
+                timestamp: now()
+            }
+        }
+    )
+}
+
+// Usage
+agent = createUserAgent(
+    userId: "john.doe@company.com",
+    tenantId: "org_enterprise"
+)
+
+response = agent.run( "Schedule a meeting" )
+```
+
+### Agent Pipeline with Tenant Tracking
+
+```javascript
+// Create agent pipeline with tenant context
+pipeline = aiAgent( name: "Analyzer", memory: aiMemory( "simple" ) )
+    .to( aiTransform( response => response.toUpper() ) )
+    .to( aiTransform( response => response.trim() ) )
+
+// Run pipeline with tenant tracking
+result = pipeline.run(
+    input: "Analyze customer sentiment",
+    options: {
+        tenantId: "client_analytics_500",
+        usageMetadata: {
+            projectId: "sentiment-2026",
+            costCenter: "CC-AI-001",
+            billable: true
+        }
+    }
+)
+```
+
+### Multi-Tenant Agent Factory
+
+```javascript
+class AgentFactory {
+
+    function createAgentForTenant(
+        required string tenantId,
+        required struct tenantConfig
+    ) {
+        // Get tenant-specific settings
+        var tools = getTenantTools( arguments.tenantId )
+        var instructions = getTenantInstructions( arguments.tenantConfig )
+        var memory = aiMemory( "simple", {
+            userId: arguments.tenantId
+        } )
+
+        // Create agent
+        var agent = aiAgent(
+            name: "TenantAgent-#arguments.tenantId#",
+            tools: tools,
+            memory: memory,
+            instructions: instructions
+        )
+
+        // Wrap with tenant context
+        return new TenantAgent(
+            agent: agent,
+            tenantId: arguments.tenantId,
+            defaultMetadata: {
+                tenantName: arguments.tenantConfig.name,
+                tier: arguments.tenantConfig.tier,
+                features: arguments.tenantConfig.features
+            }
+        )
+    }
+
+    private function getTenantTools( tenantId ) {
+        // Return tenant-specific tools
+        return [
+            aiTool( "lookup_data", "Look up data", lookupHandler ),
+            aiTool( "generate_report", "Generate report", reportHandler )
+        ]
+    }
+
+    private function getTenantInstructions( config ) {
+        return "You are an AI assistant for #config.name#. " &
+               "Tier: #config.tier#. Available features: #config.features.toList()#"
+    }
+}
+
+// Usage
+factory = new AgentFactory()
+
+// Create agent for specific tenant
+customerAgent = factory.createAgentForTenant(
+    tenantId: "acme_corp",
+    tenantConfig: {
+        name: "ACME Corporation",
+        tier: "enterprise",
+        features: [ "analytics", "reports", "ai-assistant" ]
+    }
+)
+
+// All usage automatically tracked to tenant
+response = customerAgent.run( "Generate quarterly report" )
+```
+
+### Benefits
+
+* ✅ **Accurate Attribution**: All agent interactions tracked to specific tenants
+* ✅ **Tool Usage Tracking**: Track not just AI calls but also tool executions per tenant
+* ✅ **Memory Isolation**: Combine with multi-tenant memory for complete data separation
+* ✅ **Cost Transparency**: Show customers exactly what they're paying for
+* ✅ **Quota Enforcement**: Implement per-tenant limits via event interceptors
+
+**See Also**:
+* [Event System - onAITokenCount](../advanced/events.md#multi-tenant-usage-tracking-v210) for interceptor-based billing
+* [Multi-Tenant Memory Guide](memory/multi-tenant-memory.md) for memory isolation patterns
+
+***
 
 ## Real-World Examples
 

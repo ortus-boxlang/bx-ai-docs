@@ -18,6 +18,7 @@ Master advanced AI interaction techniques including multi-turn conversations, AI
 * [Multimodal Content](advanced-chatting.md#-multimodal-content)
 * [JSON Mode](advanced-chatting.md#-json-mode)
 * [Advanced Parameters](advanced-chatting.md#-advanced-parameters)
+* [Multi-Tenant Usage Tracking](advanced-chatting.md#-multi-tenant-usage-tracking-v210)
 * [Best Practices](advanced-chatting.md#-best-practices)
 
 ***
@@ -1183,6 +1184,144 @@ function codeAssistant( required string task ) {
     return code
 }
 ```
+
+***
+
+## 🏢 Multi-Tenant Usage Tracking (v2.1.0+)
+
+Track AI usage per tenant for accurate billing, cost allocation, and quota management.
+
+### Basic Usage
+
+```javascript
+// Single chat with tenant context
+result = aiChat(
+    messages: "Analyze customer data",
+    options: {
+        tenantId: "customer_acme",
+        usageMetadata: {
+            costCenter: "analytics",
+            projectId: "proj-2026-insights",
+            userId: "analyst@acme.com"
+        }
+    }
+)
+```
+
+### Async Requests with Tenant Tracking
+
+```javascript
+// Track tenant usage in async operations
+future = aiChatAsync(
+    messages: "Generate monthly report",
+    params: { model: "gpt-4o" },
+    options: {
+        tenantId: "org_finance",
+        usageMetadata: {
+            department: "accounting",
+            reportType: "monthly",
+            fiscalYear: 2026
+        }
+    }
+)
+
+result = future.get()
+```
+
+### Streaming with Tenant Context
+
+```javascript
+// Stream responses with tenant tracking
+aiChatStream(
+    messages: "Write a detailed analysis",
+    ( chunk ) => {
+        print( chunk.choices?.first()?.delta?.content ?: "" )
+    },
+    params: { temperature: 0.7 },
+    options: {
+        tenantId: "client_enterprise_500",
+        usageMetadata: {
+            clientTier: "enterprise",
+            feature: "ai-reports",
+            billable: true
+        }
+    }
+)
+```
+
+### Multi-Tenant Conversation Manager
+
+```javascript
+class TenantConversationManager {
+
+    property name="tenantId";
+    property name="usageMetadata";
+    property name="messages" type="array";
+
+    function init(
+        required string tenantId,
+        struct usageMetadata = {}
+    ) {
+        variables.tenantId = arguments.tenantId
+        variables.usageMetadata = arguments.usageMetadata
+        variables.messages = []
+        return this
+    }
+
+    function chat( required string message ) {
+        // Add user message
+        variables.messages.append({
+            role: "user",
+            content: arguments.message
+        })
+
+        // Send with tenant context
+        response = aiChat(
+            variables.messages,
+            options: {
+                tenantId: variables.tenantId,
+                usageMetadata: variables.usageMetadata
+            }
+        )
+
+        // Add assistant response
+        variables.messages.append({
+            role: "assistant",
+            content: response
+        })
+
+        return response
+    }
+
+    function getConversationHistory() {
+        return variables.messages
+    }
+}
+
+// Usage
+tenantChat = new TenantConversationManager(
+    tenantId: "customer_xyz",
+    usageMetadata: {
+        costCenter: "CC-2501",
+        department: "marketing"
+    }
+)
+
+response1 = tenantChat.chat( "What's our customer retention rate?" )
+response2 = tenantChat.chat( "How can we improve it?" )
+```
+
+### Benefits
+
+* ✅ **Accurate Billing**: Attribute AI costs to specific tenants/customers
+* ✅ **Cost Allocation**: Track usage by department, project, or cost center
+* ✅ **Quota Management**: Enforce per-tenant usage limits via interceptors
+* ✅ **Analytics**: Understand which tenants/projects use AI most
+* ✅ **Chargeback**: Generate detailed usage reports for internal billing
+
+**See Also**: [Event System - onAITokenCount](../../advanced/events.md#multi-tenant-usage-tracking-v210) for interceptor-based billing logic.
+
+***
 
 ## Best Practices
 
