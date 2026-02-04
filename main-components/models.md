@@ -93,6 +93,42 @@ model = aiModel( "ollama" )
 model = aiModel( "openai", "sk-your-key-here" )
 ```
 
+### Service Configuration with Options (v2.1.0+)
+
+```java
+// Pass options to configure the service provider
+model = aiModel(
+    provider: "openai",
+    options: {
+        baseURL: "https://custom-endpoint.com",
+        timeout: 60,
+        headers: {
+            "X-Custom-Header": "value"
+        }
+    }
+)
+
+// Ollama with custom base URL
+model = aiModel(
+    provider: "ollama",
+    options: {
+        baseURL: "http://my-ollama-server:11434"
+    }
+)
+
+// OpenAI with multiple service options
+model = aiModel(
+    provider: "openai",
+    apiKey: "sk-custom-key",
+    options: {
+        timeout: 120,
+        logRequest: true,
+        logResponse: true,
+        maxRetries: 3
+    }
+)
+```
+
 ### Model Configuration
 
 ```java

@@ -1359,16 +1359,16 @@ class {
         // Extract tenant context
         var tenantId = interceptData.tenantId ?: "unknown";
         var usageMetadata = interceptData.usageMetadata ?: {};
-        
+
         // Provider and model info
         var provider = interceptData.provider.getProviderName();
         var model = interceptData.model;
-        
+
         // Token usage
         var totalTokens = interceptData.totalTokens;
         var promptTokens = interceptData.promptTokens;
         var completionTokens = interceptData.completionTokens;
-        
+
         // Calculate cost
         var cost = calculateCost(
             provider: provider,
@@ -1376,7 +1376,7 @@ class {
             promptTokens: promptTokens,
             completionTokens: completionTokens
         );
-        
+
         // Store usage for tenant billing
         billingService.recordUsage({
             tenantId: tenantId,
@@ -1390,11 +1390,11 @@ class {
             timestamp: interceptData.timestamp,
             metadata: usageMetadata
         });
-        
+
         // Check tenant quota
         var tenantQuota = billingService.getTenantQuota( tenantId );
         var currentUsage = billingService.getCurrentMonthUsage( tenantId );
-        
+
         if ( currentUsage.cost + cost > tenantQuota.limit ) {
             // Send alert
             emailService.send(
@@ -1402,7 +1402,7 @@ class {
                 subject: "AI Usage Quota Alert: #tenantId#",
                 body: "Current usage: $#currentUsage.cost# + $#cost# exceeds limit: $#tenantQuota.limit#"
             );
-            
+
             // Optionally block further usage
             if ( tenantQuota.hardLimit ) {
                 throw(
@@ -1411,7 +1411,7 @@ class {
                 );
             }
         }
-        
+
         // Log for analytics
         writeLog(
             type: "info",
@@ -1429,13 +1429,13 @@ class {
 class TenantUsageTracker {
 
     property name="usageDB" inject="UsageDatabase";
-    
+
     function onAITokenCount( event, interceptData ) {
         var tenantId = interceptData.tenantId;
-        
+
         // Skip if no tenant context
         if ( isNull( tenantId ) || tenantId == "" ) return;
-        
+
         var usageRecord = {
             tenantId: tenantId,
             provider: interceptData.provider.getProviderName(),
@@ -1451,25 +1451,25 @@ class TenantUsageTracker {
             metadata: interceptData.usageMetadata ?: {},
             providerOptions: interceptData.providerOptions ?: {}
         };
-        
+
         // Store in database
         usageDB.insertUsage( usageRecord );
-        
+
         // Update real-time metrics
         metricsService.increment( "ai.usage.#tenantId#.tokens", usageRecord.tokens.total );
         metricsService.increment( "ai.usage.#tenantId#.requests", 1 );
         metricsService.gauge( "ai.usage.#tenantId#.cost", usageRecord.cost );
-        
+
         // Track by cost center if provided
         if ( structKeyExists( usageRecord.metadata, "costCenter" ) ) {
             var costCenter = usageRecord.metadata.costCenter;
-            metricsService.increment( 
-                "ai.usage.#tenantId#.#costCenter#.cost", 
-                usageRecord.cost 
+            metricsService.increment(
+                "ai.usage.#tenantId#.#costCenter#.cost",
+                usageRecord.cost
             );
         }
     }
-    
+
     private function calculateProviderCost( data ) {
         // Provider-specific pricing (per 1M tokens)
         var pricing = {
@@ -1489,13 +1489,13 @@ class TenantUsageTracker {
                 "deepseek-chat": { prompt: 0.14, completion: 0.28 }
             }
         };
-        
+
         var provider = data.provider.getProviderName();
         var model = data.model;
-        
+
         // Get pricing for this provider/model
         var modelPricing = { prompt: 0, completion: 0 };
-        
+
         if ( structKeyExists( pricing, provider ) ) {
             // Try exact model match
             if ( structKeyExists( pricing[ provider ], model ) ) {
@@ -1510,11 +1510,11 @@ class TenantUsageTracker {
                 }
             }
         }
-        
+
         // Calculate cost
         var promptCost = ( data.promptTokens / 1000000 ) * modelPricing.prompt;
         var completionCost = ( data.completionTokens / 1000000 ) * modelPricing.completion;
-        
+
         return promptCost + completionCost;
     }
 }

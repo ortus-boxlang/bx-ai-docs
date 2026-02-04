@@ -5,16 +5,17 @@ Create an AI Model runnable that wraps a service provider for use in pipelines. 
 ## Syntax
 
 ```javascript
-aiModel(provider, apiKey, tools)
+aiModel(provider, apiKey, tools, options)
 ```
 
 ## Parameters
 
-| Parameter  | Type   | Required | Default      | Description                                                             |
-| ---------- | ------ | -------- | ------------ | ----------------------------------------------------------------------- |
-| `provider` | string | No       | (config)     | The provider to use (openai, claude, ollama, etc.)                      |
-| `apiKey`   | string | No       | (config/env) | Optional API key override                                               |
-| `tools`    | any    | No       | `[]`         | ITool instance or array of Tool instances for tool-augmented generation |
+| Parameter  | Type   | Required | Default      | Description                                                                              |
+| ---------- | ------ | -------- | ------------ | ---------------------------------------------------------------------------------------- |
+| `provider` | string | No       | (config)     | The provider to use (openai, claude, ollama, etc.)                                       |
+| `apiKey`   | string | No       | (config/env) | Optional API key override                                                                |
+| `tools`    | any    | No       | `[]`         | ITool instance or array of Tool instances for tool-augmented generation                  |
+| `options`  | struct | No       | `{}`         | Service configuration options (baseURL, timeout, headers, etc.) passed to provider (v2.1.0+) |
 
 ## Returns
 
@@ -85,6 +86,45 @@ result = aiMessage( "What is AI?" )
 ```javascript
 // Override API key
 model = aiModel( "openai", "sk-custom-key-123" );
+
+result = aiMessage( "Hello" )
+    .to( model )
+    .run();
+```
+
+### With Service Options (v2.1.0+)
+
+```javascript
+// Pass options to seed the service
+model = aiModel(
+    provider: "openai",
+    options: {
+        baseURL: "https://custom-endpoint.com",
+        timeout: 60,
+        headers: {
+            "X-Custom-Header": "value"
+        }
+    }
+);
+
+// Using Ollama with custom base URL
+model = aiModel(
+    provider: "ollama",
+    options: {
+        baseURL: "http://my-ollama-server:11434"
+    }
+);
+
+// With multiple options
+model = aiModel(
+    provider: "openai",
+    apiKey: "sk-custom-key",
+    options: {
+        timeout: 120,
+        logRequest: true,
+        logResponse: true
+    }
+);
 
 result = aiMessage( "Hello" )
     .to( model )
@@ -303,6 +343,7 @@ result2 = aiMessage( "Search for AI" ).to( model ).run();
 * 🔧 **Tool Support**: Bind tools for function calling capabilities
 * 📦 **Reusable**: Create once, use in multiple pipelines
 * 🚀 **Events**: Fires `onAIModelCreate` event for interceptors
+* ⚙️ **Service Options**: Pass `options` struct to configure provider-specific settings (baseURL, timeout, headers) (v2.1.0+)
 * 💡 **Difference**: Use `aiModel()` for pipelines, `aiService()` for direct invocation
 * ⚡ **Performance**: Same underlying service, just different interface
 
