@@ -23,31 +23,41 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 
 ### All Available Events
 
-| #  | Event                                                   | When Fired                      | Key Data                                          |
-| -- | ------------------------------------------------------- | ------------------------------- | ------------------------------------------------- |
-| 1  | [onAIMessageCreate](events.md#1-onaimessagecreate)      | Message template created        | `message`                                         |
-| 2  | [onAIRequestCreate](events.md#2-onairequestcreate)      | Request object instantiated     | `aiRequest`                                       |
-| 3  | [onAIProviderRequest](events.md#3-onaiproviderrequest)  | Before provider creation        | `provider`, `apiKey`                              |
-| 4  | [onAIProviderCreate](events.md#4-onaiprovidercreate)    | Provider instance created       | `provider`                                        |
-| 5  | [onAIModelCreate](events.md#5-onaimodelcreate)          | Model runnable created          | `model`, `service`                                |
-| 6  | [onAITransformCreate](events.md#6-onaitransformcreate)  | Transform runnable created      | `transform`                                       |
-| 7  | [beforeAIModelInvoke](events.md#7-beforeaimodelinvoke)  | Before model execution          | `model`, `request`                                |
-| 8  | [onAIRequest](events.md#8-onairequest)                  | Before HTTP request sent        | `dataPacket`, `aiRequest`, `provider`             |
-| 9  | [onAIResponse](events.md#9-onairesponse)                | After HTTP response received    | `response`, `rawResponse`, `provider`             |
-| 10 | [afterAIModelInvoke](events.md#10-afteraimodelinvoke)   | After model execution completes | `model`, `request`, `results`                     |
-| 11 | [onAIToolCreate](events.md#11-onaitoolcreate)           | Tool created                    | `tool`, `name`, `description`                     |
-| 12 | [beforeAIToolExecute](events.md#12-beforeaitoolexecute) | Before tool execution           | `tool`, `name`, `arguments`                       |
-| 13 | [afterAIToolExecute](events.md#13-afteraitoolexecute)   | After tool execution            | `tool`, `results`, `executionTime`                |
-| 14 | [onAIError](events.md#14-onaierror)                     | Error occurs                    | `error`, `errorMessage`, `provider`, `canRetry`   |
-| 15 | [onAIRateLimitHit](events.md#15-onairatelimithit)       | Rate limit detected (429)       | `provider`, `statusCode`, `retryAfter`            |
-| 16 | [beforeAIPipelineRun](events.md#16-beforeaipipelinerun) | Before pipeline starts          | `sequence`, `stepCount`, `input`                  |
-| 17 | [afterAIPipelineRun](events.md#17-afteraipipelinerun)   | After pipeline completes        | `sequence`, `result`, `executionTime`             |
-| 18 | [onAITokenCount](events.md#18-onaitokencount)           | Token usage available           | `provider`, `model`, `totalTokens`                |
-| 19 | [onMCPServerCreate](events.md#19-onmcpservercreate)     | MCP server instance created     | `server`, `name`, `description`                   |
-| 20 | [onMCPServerRemove](events.md#20-onmcpserverremove)     | MCP server instance removed     | `name`                                            |
-| 21 | [onMCPRequest](events.md#21-onmcprequest)               | Before processing MCP request   | `server`, `requestData`, `serverName`             |
-| 22 | [onMCPResponse](events.md#22-onmcpresponse)             | After processing MCP response   | `server`, `response`, `requestData`               |
-| 23 | [onMCPError](events.md#23-onmcperror)                   | Exception during MCP operations | `server`, `context`, `exception`, request details |
+| #  | Event                                                   | When Fired                       | Key Data                                          |
+| -- | ------------------------------------------------------- | -------------------------------- | ------------------------------------------------- |
+| 1  | [onAIMessageCreate](events.md#1-onaimessagecreate)      | Message template created         | `message`                                         |
+| 2  | [onAIChatRequestCreate](events.md#2-onaichatrequestcreate) | Chat request object instantiated | `aiRequest`                                       |
+| 3  | [onAIProviderRequest](events.md#3-onaiproviderrequest)  | Before provider creation         | `provider`, `apiKey`                              |
+| 4  | [onAIProviderCreate](events.md#4-onaiprovidercreate)    | Provider instance created        | `provider`                                        |
+| 5  | [onMissingAiProvider](events.md#5-onmissingaiprovider)  | Provider not found               | `provider`, `options`                             |
+| 6  | [onAIModelCreate](events.md#6-onaimodelcreate)          | Model runnable created           | `model`, `service`                                |
+| 7  | [onAITransformerCreate](events.md#7-onaitransformercreate) | Transform runnable created    | `transform`                                       |
+| 8  | [onAIAgentCreate](events.md#8-onaiagentcreate)          | Agent instance created           | `agent`, `name`                                   |
+| 9  | [beforeAIAgentRun](events.md#9-beforeaiagentrun)        | Before agent execution           | `agent`, `input`                                  |
+| 10 | [afterAIAgentRun](events.md#10-afteraiagentrun)         | After agent execution            | `agent`, `result`                                 |
+| 11 | [beforeAIModelInvoke](events.md#11-beforeaimodelinvoke) | Before model execution           | `model`, `request`                                |
+| 12 | [onAIChatRequest](events.md#12-onaichatrequest)         | Before chat HTTP request         | `dataPacket`, `aiRequest`, `provider`             |
+| 13 | [onAIChatResponse](events.md#13-onaichatresponse)       | After chat HTTP response         | `response`, `rawResponse`, `provider`             |
+| 14 | [afterAIModelInvoke](events.md#14-afteraimodelinvoke)   | After model execution completes  | `model`, `request`, `results`                     |
+| 15 | [beforeAIEmbed](events.md#15-beforeaiembed)             | Before embedding generation      | `embeddingRequest`, `service`                     |
+| 16 | [onAIEmbedRequest](events.md#16-onaiembedrequest)       | Before embedding HTTP request    | `dataPacket`, `embeddingRequest`, `provider`      |
+| 17 | [onAIEmbedResponse](events.md#17-onaiembedresponse)     | After embedding HTTP response    | `response`, `rawResponse`, `provider`             |
+| 18 | [afterAIEmbed](events.md#18-afteraiembed)               | After embedding generation       | `embeddingRequest`, `service`, `result`           |
+| 19 | [onAIToolCreate](events.md#19-onaitoolcreate)           | Tool created                     | `tool`, `name`, `description`                     |
+| 20 | [beforeAIToolExecute](events.md#20-beforeaitoolexecute) | Before tool execution            | `tool`, `name`, `arguments`                       |
+| 21 | [afterAIToolExecute](events.md#21-afteraitoolexecute)   | After tool execution             | `tool`, `results`, `executionTime`                |
+| 22 | [onAiLoaderCreate](events.md#22-onailoadercreate)       | Document loader created          | `loader`, `type`                                  |
+| 23 | [onAiMemoryCreate](events.md#23-onaimemorycreate)       | Memory instance created          | `memory`, `type`                                  |
+| 24 | [beforeAIPipelineRun](events.md#24-beforeaipipelinerun) | Before pipeline starts           | `sequence`, `stepCount`, `input`                  |
+| 25 | [afterAIPipelineRun](events.md#25-afteraipipelinerun)   | After pipeline completes         | `sequence`, `result`, `executionTime`             |
+| 26 | [onAIError](events.md#26-onaierror)                     | Error occurs                     | `error`, `errorMessage`, `provider`, `canRetry`   |
+| 27 | [onAIRateLimitHit](events.md#27-onairatelimithit)       | Rate limit detected (429)        | `provider`, `statusCode`, `retryAfter`            |
+| 28 | [onAITokenCount](events.md#28-onaitokencount)           | Token usage available            | `provider`, `model`, `totalTokens`                |
+| 29 | [onMCPServerCreate](events.md#29-onmcpservercreate)     | MCP server instance created      | `server`, `name`, `description`                   |
+| 30 | [onMCPServerRemove](events.md#30-onmcpserverremove)     | MCP server instance removed      | `name`                                            |
+| 31 | [onMCPRequest](events.md#31-onmcprequest)               | Before processing MCP request    | `server`, `requestData`, `serverName`             |
+| 32 | [onMCPResponse](events.md#32-onmcpresponse)             | After processing MCP response    | `server`, `response`, `requestData`               |
+| 33 | [onMCPError](events.md#33-onmcperror)                   | Exception during MCP operations  | `server`, `context`, `exception`, request details |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -268,15 +278,15 @@ function onAIMessageCreate( event, interceptData ) {
 
 ***
 
-### 2. onAIRequestCreate
+### 2. onAIChatRequestCreate
 
-Fired when an AI request object is created via `aiChatRequest()`.
+Fired when an AI chat request object is created via `aiChatRequest()`.
 
-**When**: Request object instantiation **Frequency**: Once per `aiChatRequest()` call
+**When**: Chat request object instantiation **Frequency**: Once per `aiChatRequest()` call
 
 #### Event Arguments
 
-| Argument    | Type        | Description                |
+| Argument    | Type           | Description                |
 | ----------- | ----------- | -------------------------- |
 | `aiRequest` | `AiRequest` | The created request object |
 
@@ -285,7 +295,7 @@ Fired when an AI request object is created via `aiChatRequest()`.
 #### Example
 
 ```java
-function onAIRequestCreate( event, interceptData ) {
+function onAIChatRequestCreate( event, interceptData ) {
     var request = interceptData.aiRequest;
 
     // Add tracking metadata
@@ -497,11 +507,11 @@ function beforeAIModelInvoke( event, interceptData ) {
 
 ***
 
-### 8. onAIRequest
+### 8. onAIChatRequest
 
-Fired immediately before sending the HTTP request to the AI provider.
+Fired immediately before sending the HTTP request to the AI provider for chat operations.
 
-**When**: Before HTTP request **Frequency**: Every API call (including streaming)
+**When**: Before chat HTTP request **Frequency**: Every chat API call (including streaming)
 
 #### Event Arguments
 
@@ -516,7 +526,7 @@ Fired immediately before sending the HTTP request to the AI provider.
 #### Example
 
 ```java
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     var dataPacket = interceptData.dataPacket;
     var request = interceptData.aiRequest;
     var provider = interceptData.provider;
@@ -544,11 +554,11 @@ function onAIRequest( event, interceptData ) {
 
 ***
 
-### 9. onAIResponse
+### 9. onAIChatResponse
 
-Fired after receiving the HTTP response from the AI provider.
+Fired after receiving the HTTP response from the AI provider for chat operations.
 
-**When**: After HTTP response **Frequency**: Every API call (including streaming)
+**When**: After chat HTTP response **Frequency**: Every chat API call (including streaming)
 
 #### Event Arguments
 
@@ -564,7 +574,7 @@ Fired after receiving the HTTP response from the AI provider.
 #### Example
 
 ```java
-function onAIResponse( event, interceptData ) {
+function onAIChatResponse( event, interceptData ) {
     var response = interceptData.response;
     var request = interceptData.aiRequest;
     var provider = interceptData.provider;
@@ -2124,7 +2134,7 @@ class {
 // interceptors/AISecurityCompliance.bx
 class {
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         var request = interceptData.aiRequest;
         var user = getAuthenticatedUser();
 
@@ -2151,7 +2161,7 @@ class {
         });
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         // Log for compliance
         auditLog({
             userId: interceptData.aiRequest.getMetadata().userId,
