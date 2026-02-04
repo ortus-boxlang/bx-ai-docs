@@ -29,6 +29,8 @@ This guide covers detailed setup instructions for all supported AI providers, he
   * [🔎 Perplexity](provider-setup.md#-perplexity)
   * [🧡 Cohere](provider-setup.md#-cohere)
   * [🚀 Voyage](provider-setup.md#-voyage)
+  * [🟠 AWS Bedrock](provider-setup.md#-aws-bedrock)
+  * [🐳 Docker Desktop AI Models](provider-setup.md#-docker-desktop-ai-models)
 * [🦙 Local AI with Ollama](provider-setup.md#-local-ai-with-ollama)
   * [Why Ollama?](provider-setup.md#why-ollama)
   * [Installation Methods](provider-setup.md#installation-methods)
@@ -72,18 +74,22 @@ This guide covers detailed setup instructions for all supported AI providers, he
 | **Perplexity**  | Cloud   | Research, citations            | \$$    | Fast    | 8K      |
 | **Cohere**      | Cloud   | Embeddings, multilingual       | \$$    | Fast    | 128K    |
 | **Voyage**      | Cloud   | State-of-art embeddings        | \$$    | Fast    | N/A     |
+| **Bedrock**     | Cloud   | AWS enterprise, multi-model    | \$$$   | Fast    | 200K    |
+| **Docker Desktop** | Local   | Docker-managed models       | Free   | Fast    | Varies  |
 
 ### 💡 Recommendations by Use Case
 
-* **General Chatbot**: OpenAI (GPT-4), Claude (Sonnet)
-* **Long Documents**: Claude (200K context), Gemini (1M context)
+* **General Chatbot**: OpenAI (GPT-4), Claude (Sonnet), Bedrock (Claude)
+* **Long Documents**: Claude (200K context), Gemini (1M context), Bedrock (Claude)
 * **Code Generation**: DeepSeek, OpenAI (GPT-4)
 * **Fast Responses**: Groq, Gemini
-* **Privacy/Offline**: Ollama (local)
+* **Privacy/Offline**: Ollama (local), Docker Desktop (local)
+* **Enterprise/AWS**: Bedrock (IAM auth, inference profiles)
 * **Embeddings/RAG**: Voyage, Cohere, OpenAI
 * **Research**: Perplexity (citations)
-* **Cost-Effective**: Ollama (free), DeepSeek, Gemini
-* **Multimodal**: Gemini, OpenAI (GPT-4)
+* **Cost-Effective**: Ollama (free), Docker Desktop (free), DeepSeek, Gemini
+* **Multimodal**: Gemini, OpenAI (GPT-4), Bedrock (Claude)
+* **Easy Local Setup**: Docker Desktop (managed), Ollama (native)
 
 ***
 
@@ -537,6 +543,156 @@ result = aiChat(
 ```
 
 **Note**: Voyage is embedding-only (use with `aiEmbed()` or vector memory)
+
+***
+
+### 🟠 AWS Bedrock
+
+**Best for**: Enterprise AWS deployments with Claude, Titan, Llama, and Mistral models
+
+**Get Started**: [AWS Bedrock Console](https://console.aws.amazon.com/bedrock/)
+
+**Configuration**:
+
+```json
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "provider": "bedrock",
+        "apiKey": "AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY",
+        "defaultParams": {
+          "model": "anthropic.claude-3-5-sonnet-20241022-v2:0"
+        },
+        "providerOptions": {
+          "region": "us-east-1"
+        }
+      }
+    }
+  }
+}
+```
+
+**Environment Variables**:
+
+```bash
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+export AWS_REGION="us-east-1"
+```
+
+**Example Usage**:
+
+```javascript
+// Basic chat
+result = aiChat( provider: "bedrock", messages: "Hello!" )
+
+// With inference profiles
+result = aiChat(
+    provider: "bedrock",
+    messages: "Analyze this data",
+    options: {
+        providerOptions: {
+            inferenceProfileArn: "arn:aws:bedrock:us-east-1:123456789012:inference-profile/my-profile"
+        }
+    }
+)
+
+// Streaming support
+aiChatStream(
+    provider: "bedrock",
+    messages: "Tell me a story",
+    onChunk: ( chunk ) => writeOutput( chunk.content )
+)
+```
+
+**Available Models**:
+- Claude: `anthropic.claude-3-5-sonnet-20241022-v2:0`, `anthropic.claude-3-opus-20240229`
+- Titan: `amazon.titan-text-premier-v1:0`
+- Llama: `meta.llama3-3-70b-instruct-v1:0`
+- Mistral: `mistral.mistral-large-2407-v1:0`
+
+**Special Features**:
+* ✅ **Full streaming support** (v2.1.0+)
+* ✅ **Inference profiles** for cost optimization
+* ✅ **IAM-based authentication** for enterprise security
+* ✅ **Cross-region inference** for global deployments
+* ✅ **All model families**: Claude, Titan, Llama, Mistral
+
+***
+
+### 🐳 Docker Desktop AI Models
+
+**Best for**: Local AI with Docker Desktop's built-in model support
+
+**Get Started**: [Docker Desktop AI](https://docs.docker.com/desktop/features/ai/)
+
+**Prerequisites**:
+- Docker Desktop 4.36+ with AI features enabled
+- Models available through Docker Desktop AI catalog
+
+**Configuration**:
+
+```javascript
+// Docker Desktop models use OpenAI-compatible API
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "providers": {
+          "docker-llama": {
+            "params": {
+              "model": "llama-3.2-1b"
+            },
+            "options": {
+              "baseURL": "http://localhost:11435/v1"
+            }
+          },
+          "docker-phi": {
+            "params": {
+              "model": "phi-4"
+            },
+            "options": {
+              "baseURL": "http://localhost:11435/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Example Usage**:
+
+```javascript
+// Use Docker Desktop models
+result = aiChat(
+    provider: "docker-llama",
+    messages: "What is BoxLang?"
+)
+
+// Stream responses
+aiChatStream(
+    provider: "docker-phi",
+    messages: "Explain AI",
+    onChunk: ( chunk ) => writeOutput( chunk.content )
+)
+```
+
+**Available Models**:
+
+* Meta Llama 3.2 (1B, 3B)
+* Microsoft Phi-4
+* Other models from Docker AI catalog
+
+**Special Features**:
+
+* ✅ **Zero configuration** - Models managed by Docker Desktop
+* ✅ **No API keys required** - Local authentication
+* ✅ **OpenAI-compatible** - Works with existing code
+* ✅ **Easy model switching** - Managed through Docker Desktop UI
+* ✅ **Privacy-first** - All processing local
 
 ***
 

@@ -13,45 +13,51 @@ Welcome to the **BoxLang AI Module** - your unified gateway to integrating AI ca
 
 BoxLang AI is a comprehensive library that brings enterprise-grade artificial intelligence capabilities to the JVM ecosystem. Whether you're building chatbots, content generators, code assistants, RAG systems, or complex AI workflows, this module provides everything you need.
 
-
-
 ```mermaid
-graph TB
-    App["🚀 Your App"]
+graph LR
+    User["👤 User Query<br/>'What did the Q4<br/>report say?'"]
 
-    App --> Module["⚡ BoxLang AI"]
+    User --> Agent["🤖 AI Agent<br/>(Autonomous)"]
 
-    Module --> Components["Core Components"]
-    Components --> Agents["🤖 Agents"]
-    Components --> Pipelines["🔗 Pipelines"]
-    Components --> Memory["💭 Memory"]
-    Components --> Tools["🛠️ Tools"]
-    Components --> Documents["📄 Documents"]
+    Agent --> Memory["💭 Memory Check<br/>(Conversation Context)"]
+    Memory --> VectorSearch["🔍 Vector Search<br/>(Semantic Retrieval)"]
 
-    Module --> Providers["AI Providers"]
-    Module --> Loaders["Document Loaders"]
-    Module --> Vectors["Vector Stores"]
+    VectorSearch --> VectorDB[("📊 Vector Store<br/>Pinecone • Qdrant<br/>Postgres • OpenSearch")]
 
-    Providers --> OpenAI["OpenAI<br/>Gemini<br/>Cohere<br/>DeepSeek"]
-    Providers --> Claude["Claude<br/>Groq<br/>Ollama<br/>(Local AI)"]
+    Agent --> Tools["🛠️ Tools<br/>(Real-time Data)"]
+    Tools --> API["🌐 APIs<br/>Weather • DB<br/>Calendar • Stock"]
 
-    Loaders --> LoaderSet1["Text<br/>Markdown<br/>XML<br/>HTTP"]
-    Loaders --> LoaderSet2["CSV<br/>JSON<br/>PDF<br/>Directory"]
-    Loaders --> LoaderNote["14 Loader Types"]
+    Agent --> Docs["📄 Documents"]
+    Docs --> Loaders["📥 Document Loaders<br/>PDF • Markdown • CSV<br/>HTTP • SQL • Web"]
+    Loaders --> Chunks["✂️ Chunking<br/>(Smart Splitting)"]
+    Chunks --> Embed["🔢 Embeddings"]
+    Embed --> VectorDB
 
-    Vectors --> VectorSet1["ChromaDB<br/>PostgreSQL<br/>Qdrant<br/>MySQL"]
-    Vectors --> VectorSet2["Pinecone<br/>TypeSense<br/>Weaviate<br/>BoxVector"]
-    Vectors --> VectorSet3["Milvus<br/>OpenSearch<br/>Hybrid"]
-    Vectors --> VectorNote["12 Vector DBs"]
+    VectorDB --> Context["📋 Retrieved Context<br/>(Top-K Results)"]
+    Context --> Augment["➕ Augmented Prompt<br/>(Query + Context)"]
 
-    style App fill:#4CAF50,stroke:#333,stroke-width:2px,color:#fff
-    style Module fill:#2196F3,stroke:#333,stroke-width:2px,color:#fff
-    style Components fill:#9C27B0,stroke:#333,stroke-width:2px,color:#fff
-    style Providers fill:#FF9800,stroke:#333,stroke-width:2px,color:#fff
-    style Loaders fill:#FF9800,stroke:#333,stroke-width:2px,color:#fff
-    style Vectors fill:#FF9800,stroke:#333,stroke-width:2px,color:#fff
-    style LoaderNote fill:#FFC107,stroke:#333,stroke-width:1px,color:#000
-    style VectorNote fill:#FFC107,stroke:#333,stroke-width:1px,color:#000
+    Memory --> Augment
+    API --> Augment
+
+    Augment --> Provider["🚀 AI Provider<br/>OpenAI • Claude<br/>Gemini • Ollama<br/>Bedrock • Groq"]
+
+    Provider --> Response["💬 AI Response<br/>(Contextual Answer)"]
+    Response --> Agent
+    Agent --> User
+
+    Response -.->|Save| Memory
+    Response -.->|Update| VectorDB
+
+    style User fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style Agent fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style Provider fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style Response fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style VectorDB fill:#00BCD4,stroke:#006064,stroke-width:2px,color:#fff
+    style Memory fill:#E91E63,stroke:#880E4F,stroke-width:2px,color:#fff
+    style Tools fill:#FFC107,stroke:#F57F17,stroke-width:2px,color:#000
+    style VectorSearch fill:#009688,stroke:#004D40,stroke-width:2px,color:#fff
+    style Context fill:#8BC34A,stroke:#558B2F,stroke-width:2px,color:#fff
+    style Augment fill:#FF5722,stroke:#BF360C,stroke-width:2px,color:#fff
 ```
 
 ### ✨ Key Features
@@ -70,11 +76,83 @@ graph TB
 * 📄 **Document Loaders**: Load and process various file formats for RAG
 * 🧠 **Vector Memory**: Semantic search with 12 vector database integrations
 
-### Supported Providers
+### 📡 Supported Providers
 
 BoxLang supports a variety of AI providers out of the box. You can also create custom providers by following our [Custom Provider Guide](extending-boxlang-ai/custom-providers.md).
 
-<table><thead><tr><th width="170.41796875">Provider</th><th width="135.0078125">Type</th><th>Best For</th></tr></thead><tbody><tr><td><strong>Claude</strong></td><td>Cloud</td><td>Long context, detailed analysis</td></tr><tr><td><strong>Cohere</strong></td><td>Cloud</td><td>Embeddings, multilingual, chat, tool calling</td></tr><tr><td><strong>DeepSeek</strong></td><td>Cloud</td><td>Code generation, reasoning</td></tr><tr><td><strong>Gemini</strong></td><td>Cloud</td><td>Google integration, multimodal</td></tr><tr><td><strong>Grok</strong></td><td>Cloud</td><td>Real-time data, Twitter integration</td></tr><tr><td><strong>Groq</strong></td><td>Cloud</td><td>Ultra-fast inference, LPU architecture</td></tr><tr><td><strong>HuggingFace</strong></td><td>Cloud</td><td>Open-source models, community-driven</td></tr><tr><td><strong>Ollama</strong></td><td>Local</td><td>Privacy, offline use, no API costs</td></tr><tr><td><strong>OpenAI</strong></td><td>Cloud</td><td>General purpose, GPT-5, etc</td></tr><tr><td><strong>OpenRouter</strong></td><td>Gateway</td><td>Access multiple models through one API</td></tr><tr><td><strong>Perplexity</strong></td><td>Cloud</td><td>Research, citations, factual answers</td></tr><tr><td><strong>Voyage</strong></td><td>Cloud</td><td>State-of-the-art embeddings, specialized for RAG</td></tr></tbody></table>
+| Provider | Type | Best For |
+| --- | --- | --- |
+| **Bedrock** | Cloud | AWS enterprise, multi-model (Claude, Titan, Llama, Mistral) |
+| **Claude** | Cloud | Long context, detailed analysis |
+| **Cohere** | Cloud | Embeddings, multilingual, chat, tool calling |
+| **DeepSeek** | Cloud | Code generation, reasoning |
+| **Docker Desktop** | Local | Docker-managed models, easy local AI |
+| **Gemini** | Cloud | Google integration, multimodal |
+| **Grok** | Cloud | Real-time data, Twitter integration |
+| **Groq** | Cloud | Ultra-fast inference, LPU architecture |
+| **HuggingFace** | Cloud | Open-source models, community-driven |
+| **Ollama** | Local | Privacy, offline use, no API costs |
+| **OpenAI** | Cloud | General purpose, GPT-5, etc |
+| **OpenRouter** | Gateway | Access multiple models through one API |
+| **Perplexity** | Cloud | Research, citations, factual answers |
+| **Voyage** | Cloud | State-of-the-art embeddings, specialized for RAG |
+
+### 🗃️ Supported Memory Types
+
+BoxLang AI provides 20+ memory types for conversation history and semantic search. All memory types support multi-tenant isolation with `userId` and `conversationId`.
+
+| Memory Type | Vector | Best For | Storage | Multi-Tenant |
+| --- | --- | --- | --- | --- |
+| **Windowed** | ❌ | Recent N messages, simple context | In-memory | ✅ |
+| **Summary** | ❌ | Long conversations with summarization | In-memory | ✅ |
+| **Session** | ❌ | Web sessions, survives page refresh | HTTP Session | ✅ |
+| **File** | ❌ | Persistent storage, file-based | File System | ✅ |
+| **Cache** | ❌ | Fast retrieval, distributed cache | CacheBox | ✅ |
+| **JDBC** | ❌ | Enterprise database storage | Any JDBC DB | ✅ |
+| **BoxVector** | ✅ | Development, prototyping | In-memory | ✅ |
+| **Chroma** | ✅ | Python integration, local dev | ChromaDB | ✅ |
+| **Postgres** | ✅ | Existing PostgreSQL infrastructure | PostgreSQL | ✅ |
+| **MySQL** | ✅ | Existing MySQL 9+ infrastructure | MySQL | ✅ |
+| **OpenSearch** | ✅ | AWS integration, enterprise search | OpenSearch | ✅ |
+| **TypeSense** | ✅ | Fast typo-tolerant search | TypeSense | ✅ |
+| **Pinecone** | ✅ | Production cloud-native | Pinecone Cloud | ✅ |
+| **Qdrant** | ✅ | Self-hosted, high performance | Qdrant | ✅ |
+| **Weaviate** | ✅ | GraphQL, knowledge graphs | Weaviate | ✅ |
+| **Milvus** | ✅ | Enterprise, massive scale | Milvus | ✅ |
+| **Hybrid** | ✅ | Recent + semantic combined | Vector + Standard | ✅ |
+
+**📖 Learn More**: [Standard Memory Guide](main-components/memory/) · [Vector Memory Guide](main-components/vector-memory.md)
+
+### 📋 Supported Document Loaders
+
+BoxLang AI provides 12 document loaders for importing content from various sources into standardized `Document` format for RAG workflows.
+
+| Loader | File Types | Best For | Features |
+| --- | --- | --- | --- |
+| **TextLoader** | `.txt`, `.text` | Plain text files | Simple text ingestion |
+| **MarkdownLoader** | `.md`, `.markdown` | Markdown documents | Header splitting, code removal |
+| **HTMLLoader** | `.html`, `.htm` | HTML pages | Tag extraction, script/style removal |
+| **CSVLoader** | `.csv` | Tabular data | Row/column modes, filtering |
+| **JSONLoader** | `.json` | JSON data | Field extraction, array handling |
+| **XMLLoader** | `.xml` | XML documents | XPath queries, attribute extraction |
+| **PDFLoader** | `.pdf` | PDF documents | Text extraction, page splitting |
+| **LogLoader** | `.log` | Log files | Pattern matching, timestamp parsing |
+| **HTTPLoader** | URLs | Web content | HTTP/S, headers, authentication |
+| **FeedLoader** | RSS/Atom | RSS/Atom feeds | Feed parsing, item extraction |
+| **SQLLoader** | SQL queries | Database records | JDBC datasources, query execution |
+| **DirectoryLoader** | Folders | Batch loading | Recursive scanning, type detection |
+| **WebCrawlerLoader** | Websites | Web crawling | Multi-page, depth control, link following |
+
+**Key Features:**
+
+* ✅ **Fluent API** - Chain configuration methods
+* ✅ **Memory Integration** - Direct ingestion with `toMemory()`
+* ✅ **Automatic Chunking** - Split large documents
+* ✅ **Async Support** - Load documents asynchronously
+* ✅ **Multi-Memory Fan-out** - Ingest to multiple vector stores
+* ✅ **Transform/Filter** - Apply transformations during load
+
+**📖 Learn More**: [Document Loaders Guide](rag/document-loaders.md) · [Custom Loaders](extending-boxlang-ai/custom-loader.md)
 
 ### 🚀 Use Cases
 
