@@ -13,7 +13,7 @@ Get the BoxLang AI module installed and ready to use in minutes.
 
 * [System Requirements](./#-system-requirements)
 * [Installation Methods](./#-installation-methods)
-* [Quick Configuration](./#-quick-configuration)
+* [Module Configuration](./#-module-configuration)
 * [Running Ollama with Docker](./#-running-ollama-with-docker)
 * [Verification](./#-verification)
 * [Next Steps](./#-next-steps)
@@ -70,7 +70,7 @@ Then run:
 box install
 ```
 
-### 🔧 Quick Configuration
+### 🔧 Module Configuration
 
 Set up your first AI provider in `boxlang.json`:
 
@@ -129,6 +129,60 @@ For free, local AI with no API costs:
   }
 }
 ```
+
+#### Predefined Providers (v2.1.0+)
+
+Configure multiple providers with default parameters and service options:
+
+```json
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "provider": "openai",
+        "apiKey": "${OPENAI_API_KEY}",
+        "providers": {
+          "openai": {
+            "params": {
+              "model": "gpt-4"
+            },
+            "options": {
+              "apiKey": "${OPENAI_API_KEY}"
+            }
+          },
+          "ollama": {
+            "params": {
+              "model": "qwen2.5:0.5b-instruct"
+            },
+            "options": {
+              "baseURL": "http://my-ollama-server:11434"
+            }
+          },
+          "claude": {
+            "params": {
+              "model": "claude-3-5-sonnet-20241022"
+            },
+            "options": {
+              "apiKey": "${CLAUDE_API_KEY}",
+              "timeout": 120
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Benefits of predefined providers:**
+
+- ✅ **Centralized configuration** - All provider settings in one place
+- ✅ **Default parameters** - Set model, temperature, and other params per provider
+- ✅ **Service options** - Configure custom endpoints, timeouts, headers, and API keys
+- ✅ **Environment-specific** - Easy to override for dev/staging/production
+- ✅ **Simplified code** - Just reference provider name: `aiModel("ollama")`
+
+When you use `aiModel("ollama")`, it automatically applies the predefined `params` and `options` for that provider.
 
 **📖 For detailed provider setup, see** [**Provider Setup Guide**](provider-setup.md)
 

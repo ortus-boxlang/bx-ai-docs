@@ -141,6 +141,8 @@ agent = aiAgent(
 )
 ```
 
+💡 **Tip**: Use [predefined providers](../getting-started/installation/#-predefined-providers-v210) in module configuration to centrally manage model defaults and service options (v2.1.0+).
+
 ### Agent with Tools
 
 Tools enable agents to perform real-world actions:

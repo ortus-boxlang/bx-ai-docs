@@ -175,6 +175,7 @@ response = aiChat(
 
 * **Defaults to "single" format**: Unlike pipelines, `aiChat()` defaults to returning just the content string for convenience
 * **Automatic provider selection**: If no provider specified, uses module configuration default
+* **Predefined Providers**: Configure default `params` and `options` per provider in module settings - see [Module Configuration](../../../getting-started/installation/#-predefined-providers-v210) (v2.1.0+)
 * **API key detection**: Automatically detects keys from environment variables like `OPENAI_API_KEY`, `CLAUDE_API_KEY`, etc.
 * **Synchronous**: Blocks until response received. Use `aiChatAsync()` for async execution
 * **Message normalization**: Simple strings are automatically converted to `{ role: "user", content: "..." }` format

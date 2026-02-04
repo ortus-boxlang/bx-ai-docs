@@ -129,6 +129,36 @@ model = aiModel(
 )
 ```
 
+### Predefined Providers (v2.1.0+)
+
+Configure default params and options for providers in your module configuration for centralized management:
+
+```javascript
+// After defining providers in boxlang.json:
+// "providers": {
+//   "openai": {
+//     "params": { "model": "gpt-4" },
+//     "options": { "apiKey": "sk-..." }
+//   },
+//   "ollama": {
+//     "params": { "model": "qwen2.5:0.5b-instruct" },
+//     "options": { "baseURL": "http://my-ollama-server:11434" }
+//   }
+// }
+
+// Simple usage - automatically applies predefined params and options
+model = aiModel( "openai" )  // Uses gpt-4 and configured API key
+model = aiModel( "ollama" )  // Uses custom server and model
+
+// Override predefined settings at runtime
+model = aiModel(
+    provider: "openai",
+    params: { temperature: 0.9 }  // Merged with predefined params
+)
+```
+
+**📖 See** [**Module Configuration**](../getting-started/installation/#-predefined-providers-v210) for complete setup guide.
+
 ### Model Configuration
 
 ```java

@@ -595,6 +595,8 @@ ollama pull qwen2.5
 
 ### BoxLang Configuration
 
+#### Basic Configuration
+
 ```json
 {
   "modules": {
@@ -612,6 +614,58 @@ ollama pull qwen2.5
 ```
 
 **Note**: Ollama doesn't require an API key for local use.
+
+#### Custom Ollama Server URL (v2.1.0+)
+
+If you're running Ollama on a custom port, remote server, or Docker container with custom configuration, use the predefined providers approach:
+
+```json
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "provider": "ollama",
+        "providers": {
+          "ollama": {
+            "params": {
+              "model": "llama3.2"
+            },
+            "options": {
+              "baseURL": "http://my-ollama-server:11434"
+            }
+          },
+          "ollama-docker": {
+            "params": {
+              "model": "qwen2.5:0.5b-instruct"
+            },
+            "options": {
+              "baseURL": "http://192.168.1.100:11434"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Now you can use different Ollama instances:
+
+```javascript
+// Uses my-ollama-server:11434
+result = aiChat( "Hello", { provider: "ollama" } )
+
+// Uses Docker container at 192.168.1.100
+result = aiChat( "Hello", { provider: "ollama-docker" } )
+```
+
+**💡 Benefits:**
+
+- Configure once, use everywhere
+- Easy to switch between local/remote Ollama instances
+- No need to pass baseURL in every `aiModel()` or `aiChat()` call
+
+**📖 See** [**Predefined Providers Configuration**](./#-predefined-providers-v210) for more details.
 
 ### Verify Installation
 

@@ -344,6 +344,7 @@ result2 = aiMessage( "Search for AI" ).to( model ).run();
 * 📦 **Reusable**: Create once, use in multiple pipelines
 * 🚀 **Events**: Fires `onAIModelCreate` event for interceptors
 * ⚙️ **Service Options**: Pass `options` struct to configure provider-specific settings (baseURL, timeout, headers) (v2.1.0+)
+* 🎯 **Predefined Providers**: Configure default `params` and `options` for providers in module settings for centralized management - see [Module Configuration](../../../getting-started/installation/#-predefined-providers-v210) (v2.1.0+)
 * 💡 **Difference**: Use `aiModel()` for pipelines, `aiService()` for direct invocation
 * ⚡ **Performance**: Same underlying service, just different interface
 
