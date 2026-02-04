@@ -792,37 +792,228 @@ server = MCPServer( "enterprise" )
     .registerTool( toolTwo )
 ```
 
-**Security Priority:**
+### Security Processing Order 🔐
 
-1. **Body size check** - Happens first (reject oversized payloads immediately)
-2. **CORS validation** - Checks Origin header against allowed patterns
-3. **Basic authentication** - HTTP Basic Auth credentials check
-4. **API key validation** - Custom provider callback execution
-5. **Request processing** - Only if all checks pass
+When an HTTP request arrives at your MCP server, security checks are executed in this order:
+
+```mermaid
+graph TB
+    START[HTTP Request Arrives]
+
+    START --> CHECK1[1. Body Size Check]
+    CHECK1 -->|Exceeds Limit| E1[❌ 413 Payload Too Large]
+    CHECK1 -->|OK| CHECK2[2. CORS Validation]
+
+    CHECK2 -->|OPTIONS Request| PREFLIGHT[Handle CORS Preflight]
+    PREFLIGHT --> HEADERS1[Add CORS + Security Headers]
+    HEADERS1 --> E2[✅ 200 OK - Preflight Success]
+
+    CHECK2 -->|Invalid Origin| E3[❌ 403 Forbidden - CORS]
+    CHECK2 -->|OK| CHECK3[3. Basic Authentication]
+
+    CHECK3 -->|No Credentials| E4[❌ 401 Unauthorized]
+    CHECK3 -->|Invalid| E5[❌ 401 Unauthorized]
+    CHECK3 -->|OK or Not Required| CHECK4[4. API Key Validation]
+
+    CHECK4 -->|No API Key| E6[❌ 401 Unauthorized]
+    CHECK4 -->|Invalid| E7[❌ 401 Unauthorized]
+    CHECK4 -->|OK or Not Required| PROCESS[5. Process MCP Request]
+
+    PROCESS --> HEADERS2[Add Security Headers]
+    HEADERS2 --> SUCCESS[✅ 200 OK + Response]
+
+    style START fill:#4A90E2
+    style CHECK1 fill:#BD10E0
+    style CHECK2 fill:#BD10E0
+    style CHECK3 fill:#BD10E0
+    style CHECK4 fill:#BD10E0
+    style PROCESS fill:#7ED321
+    style SUCCESS fill:#50E3C2
+    style E1 fill:#FF6B6B
+    style E2 fill:#50E3C2
+    style E3 fill:#FF6B6B
+    style E4 fill:#FF6B6B
+    style E5 fill:#FF6B6B
+    style E6 fill:#FF6B6B
+    style E7 fill:#FF6B6B
+```
+
+**Processing Flow Details:**
+
+**1️⃣ Body Size Check** (First Line of Defense)
+
+* Executed immediately on request receipt
+* Rejects oversized payloads before any processing
+* Returns `413 Payload Too Large` if limit exceeded
+* Zero overhead if limit is `0` (unlimited)
+
+**2️⃣ CORS Validation** (Cross-Origin Security)
+
+* Checks `Origin` header against allowed patterns
+* Handles OPTIONS preflight requests
+* Adds `Access-Control-*` headers to allowed origins
+* Returns `403 Forbidden` if origin not allowed
+* Skipped if no CORS configuration
+
+**3️⃣ Basic Authentication** (Credential Verification)
+
+* Checks `Authorization: Basic` header
+* Validates base64-encoded credentials
+* Returns `401 Unauthorized` with `WWW-Authenticate` header if invalid
+* Skipped if not configured
+
+**4️⃣ API Key Validation** (Custom Authentication)
+
+* Extracts key from `X-API-Key` or `Authorization: Bearer` headers
+* Calls custom provider function with key and request context
+* Returns `401 Unauthorized` if provider returns false or throws
+* Skipped if no provider configured
+
+**5️⃣ Request Processing** (Only After All Checks Pass)
+
+* Parses JSON-RPC request
+* Routes to appropriate MCP method (tools/list, tools/call, etc.)
+* Executes tool/resource/prompt logic
+* Adds security headers to response
+
+**Short-Circuit Behavior:**
+
+Each security layer can short-circuit the request:
+
+* Failed checks immediately return error responses
+* No further processing occurs after a failure
+* Security headers are always added to error responses
+* Events are fired for all security failures
+
+**Example - All Security Layers Active:**
+
+```javascript
+server = MCPServer( "secure" )
+    // Layer 1: Limit payload size
+    .withBodyLimit( 1048576 )  // 1MB max
+
+    // Layer 2: Restrict origins
+    .withCors( [ "https://app.example.com", "*.trusted.com" ] )
+
+    // Layer 3: Require basic auth
+    .withBasicAuth( "admin", getEnv( "ADMIN_PASSWORD" ) )
+
+    // Layer 4: Validate API keys
+    .withApiKeyProvider( ( apiKey, requestData ) => {
+        return apiKeyService.validate( apiKey, requestData.method )
+    } )
+
+    .registerTool( sensitiveToolHere )
+```
+
+**Request Flow with All Layers:**
+
+```javascript
+// Request must satisfy ALL conditions:
+✅ Body size ≤ 1MB
+✅ Origin matches https://app.example.com or *.trusted.com
+✅ Basic auth credentials are "admin:password"
+✅ API key passes custom validation
+➡️ Only then: Process the MCP request
+```
 
 ### Security Headers 🛡️
 
-The MCP server automatically includes industry-standard security headers in all responses:
+The MCP server automatically includes industry-standard security headers in **all HTTP responses** (both success and error).
 
-**Headers Included:**
+#### Headers Included
 
-* `X-Content-Type-Options: nosniff` - Prevents MIME type sniffing
-* `X-Frame-Options: DENY` - Prevents clickjacking attacks
-* `X-XSS-Protection: 1; mode=block` - Enables XSS filtering
-* `Referrer-Policy: strict-origin-when-cross-origin` - Controls referrer information
-* `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'` - Restricts resource loading
-* `Strict-Transport-Security: max-age=31536000; includeSubDomains` - Forces HTTPS (when applicable)
-* `Permissions-Policy: geolocation=(), microphone=(), camera=()` - Disables sensitive browser features
+| Header | Value | Purpose |
+|--------|-------|---------|
+| **X-Content-Type-Options** | `nosniff` | Prevents MIME type sniffing attacks |
+| **X-Frame-Options** | `DENY` | Prevents clickjacking by blocking iframe embedding |
+| **X-XSS-Protection** | `1; mode=block` | Enables browser XSS filtering |
+| **Referrer-Policy** | `strict-origin-when-cross-origin` | Controls referrer information leakage |
+| **Content-Security-Policy** | `default-src 'none'; frame-ancestors 'none'` | Restricts resource loading and iframe embedding |
+| **Strict-Transport-Security** | `max-age=31536000; includeSubDomains` | Forces HTTPS for 1 year (HTTPS only) |
+| **Permissions-Policy** | `geolocation=(), microphone=(), camera=()` | Disables sensitive browser features |
 
-**Automatic Application:**
+#### Automatic Application
 
-Security headers are added to:
+Security headers are automatically added to:
 
-* ✅ Successful responses (200 OK)
-* ✅ Error responses (400, 401, 404, 413, 500)
-* ✅ CORS preflight responses (OPTIONS)
+* ✅ **Successful responses** (200 OK) - All MCP method responses
+* ✅ **Error responses** (400, 401, 403, 404, 413, 500) - All error conditions
+* ✅ **CORS preflight responses** (OPTIONS) - Before CORS headers
+* ✅ **Authentication failures** (401) - Even when auth fails
+* ✅ **Rate limit responses** (429) - Custom error handling
 
-No configuration needed - these headers are applied automatically to enhance security posture.
+#### Header Details
+
+**X-Content-Type-Options: nosniff**
+
+* Prevents browsers from MIME-sniffing responses
+* Forces browser to respect declared Content-Type
+* Protects against serving malicious content as benign types
+
+**X-Frame-Options: DENY**
+
+* Blocks all attempts to embed MCP server in iframes
+* Prevents UI redressing/clickjacking attacks
+* More restrictive than `SAMEORIGIN`
+
+**Content-Security-Policy**
+
+* `default-src 'none'` - Blocks all resource loading by default
+* `frame-ancestors 'none'` - Prevents iframe embedding (modern alternative to X-Frame-Options)
+* Suitable for API-only endpoints
+
+**Strict-Transport-Security (HSTS)**
+
+* Only included when request uses HTTPS
+* Instructs browsers to always use HTTPS for future requests
+* `max-age=31536000` - Policy valid for 1 year
+* `includeSubDomains` - Applies to all subdomains
+
+**Permissions-Policy**
+
+* Disables access to sensitive browser APIs
+* `geolocation=()` - No location access
+* `microphone=()` - No microphone access
+* `camera=()` - No camera access
+
+#### When Headers Are Applied
+
+```javascript
+// Every response gets security headers
+┌──────────────────────────────────────┐
+│ HTTP/1.1 200 OK                      │
+│ Content-Type: application/json       │
+│ X-Content-Type-Options: nosniff      │ ← Automatic
+│ X-Frame-Options: DENY                │ ← Automatic
+│ X-XSS-Protection: 1; mode=block      │ ← Automatic
+│ ... (all security headers)           │ ← Automatic
+├──────────────────────────────────────┤
+│ {"jsonrpc":"2.0","result":{...}}     │
+└──────────────────────────────────────┘
+```
+
+**No Configuration Required** - Security headers are applied automatically by the `HTTPTransport` layer. You don't need to configure anything to benefit from these protections.
+
+#### Verifying Security Headers
+
+Test with curl:
+
+```bash
+# View all response headers
+curl -I http://localhost/~bxai/mcp.bxm?server=myApp
+
+# Check specific security header
+curl -I http://localhost/~bxai/mcp.bxm?server=myApp | grep X-Content-Type
+# X-Content-Type-Options: nosniff
+```
+
+Or use browser developer tools:
+
+1. Open Network tab
+2. Make request to MCP endpoint
+3. View Response Headers
+4. Verify security headers are present
 
 ## Tool Registration
 
