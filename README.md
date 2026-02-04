@@ -1,15 +1,15 @@
 ---
-description: The official AI library for the BoxLang JVM dynamic language.
+description: BoxLang AI is a comprehensive library that brings enterprise-grade artificial intelligence capabilities to the JVM ecosystem. Whether you're building chatbots, content generators, code assistants, RAG systems, or complex AI workflows, this library provides everything you need.
 icon: house-chimney-heart
 ---
 
 # Introduction
 
-Welcome to the **BoxLang AI Module** - your unified gateway to integrating AI capabilities into BoxLang applications. This module provides an elegant, easy-to-use API for interacting with multiple AI providers, from simple chat requests to complex multi-agent systems.
+Welcome to the **BoxLang AI Library** - your unified gateway to integrating AI capabilities into any JVM application. This library provides an elegant, easy-to-use API for interacting with multiple AI providers, from simple chat requests to complex multi-agent systems.
 
 <figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-## 🎯 What is BoxLang AI?
+## 🙋 What is BoxLang AI?
 
 BoxLang AI is a comprehensive library that brings enterprise-grade artificial intelligence capabilities to the JVM ecosystem. Whether you're building chatbots, content generators, code assistants, RAG systems, or complex AI workflows, this module provides everything you need.
 
@@ -63,20 +63,20 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 
 | Provider | Type | Best For |
 | --- | --- | --- |
-| **Bedrock** | Cloud | AWS enterprise, multi-model (Claude, Titan, Llama, Mistral) |
-| **Claude** | Cloud | Long context, detailed analysis |
-| **Cohere** | Cloud | Embeddings, multilingual, chat, tool calling |
-| **DeepSeek** | Cloud | Code generation, reasoning |
-| **Docker Desktop** | Local | Docker-managed models, easy local AI |
-| **Gemini** | Cloud | Google integration, multimodal |
-| **Grok** | Cloud | Real-time data, Twitter integration |
-| **Groq** | Cloud | Ultra-fast inference, LPU architecture |
-| **HuggingFace** | Cloud | Open-source models, community-driven |
-| **Ollama** | Local | Privacy, offline use, no API costs |
-| **OpenAI** | Cloud | General purpose, GPT-5, etc |
-| **OpenRouter** | Gateway | Access multiple models through one API |
-| **Perplexity** | Cloud | Research, citations, factual answers |
-| **Voyage** | Cloud | State-of-the-art embeddings, specialized for RAG |
+| **Bedrock**                     | Cloud | AWS enterprise, multi-model (Claude, Titan, Llama, Mistral) |
+| **Claude**                      | Cloud | Long context, detailed analysis |
+| **Cohere**                      | Cloud | Embeddings, multilingual, chat, tool calling |
+| **DeepSeek**                 | Cloud | Code generation, reasoning |
+| **Docker Desktop**       | Local | Docker-managed models, easy local AI |
+| **Gemini**                      | Cloud | Google integration, multimodal |
+| **Grok**                         | Cloud | Real-time data, Twitter integration |
+| **Groq**                         | Cloud | Ultra-fast inference, LPU architecture |
+| **HuggingFace**           | Cloud | Open-source models, community-driven |
+| **Ollama**                      | Local | Privacy, offline use, no API costs |
+| **OpenAI**                      | Cloud | General purpose, GPT-5, etc |
+| **OpenRouter**              | Gateway | Access multiple models through one API |
+| **Perplexity**                  | Cloud | Research, citations, factual answers |
+| **Voyage**                      | Cloud | State-of-the-art embeddings, specialized for RAG |
 
 ### 🗃️ Supported Memory Types
 
@@ -167,8 +167,6 @@ BoxLang AI provides 12 document loaders for importing content from various sourc
 ### 🤖 AI Agents
 
 [Build reusable and autonomous agents, sub-agents, and much more.](main-components/agents.md)
-
-
 
 ***
 
@@ -378,25 +376,9 @@ response = agent.chat( "Research AI trends in 2025" )
 
 BoxLang and BoxLang AI are both Professional Open-Source (POS) projects.  However, we also offer enterprise features, priority support, SLAs, and much more in our [BoxLang +/++ Plans.](https://boxlang.io/plans)
 
-
-
 * 🏢 **Enterprise Modules**: Advanced components and integrations
 * 🛠️ **Advanced Tooling**: Enhanced development and debugging tools
 * ⚡ **Priority Support**: Direct access to our engineering team
 * 🔐 **Enterprise Features**: SSO, audit logs, advanced security
 
-
-
 **Learn more**: [boxlang.io/plans](https://boxlang.io/plans)
-
-***
-
-## 📜 Legal & Credits
-
-**Copyright** © 2023-2025 Ortus Solutions, Corp&#x20;
-
-**License**: [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)&#x20;
-
-**Website**: [ai.boxlang.io](https://ai.boxlang.io/)
-
-Made with ❤️ by the Ortus Solutions team
