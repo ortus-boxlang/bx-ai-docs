@@ -10,22 +10,24 @@ aiChatStream(messages, callback, params, options)
 
 ## Parameters
 
-| Parameter  | Type     | Required | Description                                          |
-| ---------- | -------- | -------- | ---------------------------------------------------- |
-| `messages` | any      | Yes      | The messages to pass to the AI model                 |
-| `callback` | function | Yes      | Function called with each chunk: `function(chunk)`   |
-| `params`   | struct   | No       | Request parameters for the AI provider               |
-| `options`  | struct   | No       | Request options (provider, apiKey, timeout, logging) |
+| Parameter  | Type     | Required | Description                                                                                            |
+| ---------- | -------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `messages` | any      | Yes      | The messages to pass to the AI model                                                                   |
+| `callback` | function | Yes      | Function called with each chunk: `function(chunk)`                                                     |
+| `params`   | struct   | No       | Request parameters for the AI provider                                                                 |
+| `options`  | struct   | No       | Request options (provider, apiKey, timeout, logRequest, logRequestToConsole, logResponse, logResponseToConsole) |
 
 ### Options Structure
 
-| Option        | Type    | Default      | Description                |
-| ------------- | ------- | ------------ | -------------------------- |
-| `provider`    | string  | (config)     | The AI provider to use     |
-| `apiKey`      | string  | (config/env) | API key for the provider   |
-| `timeout`     | numeric | `30`         | Request timeout in seconds |
-| `logResponse` | boolean | `false`      | Log the response           |
-| `logRequest`  | boolean | `false`      | Log the request            |
+| Option                | Type    | Default      | Description                  |
+| --------------------- | ------- | ------------ | ---------------------------- |
+| `provider`            | string  | (config)     | The AI provider to use       |
+| `apiKey`              | string  | (config/env) | API key for the provider     |
+| `timeout`             | numeric | `30`         | Request timeout in seconds   |
+| `logResponse`         | boolean | `false`      | Log the response to ai.log   |
+| `logResponseToConsole`| boolean | `false`      | Log the response to console  |
+| `logRequest`          | boolean | `false`      | Log the request to ai.log    |
+| `logRequestToConsole` | boolean | `false`      | Log the request to console   |
 
 Note: `returnFormat` is not used in streaming - chunks are passed directly to callback.
 

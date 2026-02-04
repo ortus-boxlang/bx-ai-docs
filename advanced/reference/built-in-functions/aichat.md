@@ -18,14 +18,16 @@ aiChat(messages, params, options)
 
 ### Options Structure
 
-| Option         | Type    | Default      | Description                                            |
-| -------------- | ------- | ------------ | ------------------------------------------------------ |
-| `provider`     | string  | (config)     | The AI provider to use (openai, claude, etc.)          |
-| `apiKey`       | string  | (config/env) | API key for the provider                               |
-| `returnFormat` | string  | `"single"`   | Response format: "single", "all", "raw", "json", "xml" |
-| `timeout`      | numeric | `30`         | Request timeout in seconds                             |
-| `logResponse`  | boolean | `false`      | Log the AI response to ai.log                          |
-| `logRequest`   | boolean | `false`      | Log the AI request to ai.log                           |
+| Option                | Type    | Default      | Description                                            |
+| --------------------- | ------- | ------------ | ------------------------------------------------------ |
+| `provider`            | string  | (config)     | The AI provider to use (openai, claude, etc.)          |
+| `apiKey`              | string  | (config/env) | API key for the provider                               |
+| `returnFormat`        | string  | `"single"`   | Response format: "single", "all", "raw", "json", "xml" |
+| `timeout`             | numeric | `30`         | Request timeout in seconds                             |
+| `logResponse`         | boolean | `false`      | Log the AI response to ai.log                          |
+| `logResponseToConsole`| boolean | `false`      | Log the AI response to console                         |
+| `logRequest`          | boolean | `false`      | Log the AI request to ai.log                           |
+| `logRequestToConsole` | boolean | `false`      | Log the AI request to console                          |
 
 ## Returns
 
@@ -143,11 +145,25 @@ println( person.firstName ); // "John"
 ### With Logging
 
 ```javascript
-// Debug request/response
+// Debug request/response to log file
 response = aiChat(
     "What's 2+2?",
     {},
     {
+        logRequest: true,
+        logResponse: true
+    }
+);
+
+// Debug to console (useful during development)
+response = aiChat(
+    "What's 2+2?",
+    {},
+    {
+        logRequestToConsole: true,
+        logResponseToConsole: true
+    }
+);
         logRequest: true,
         logResponse: true
     }

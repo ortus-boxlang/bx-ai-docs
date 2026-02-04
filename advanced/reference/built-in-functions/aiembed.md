@@ -18,12 +18,16 @@ aiEmbed(input, params, options)
 
 ### Options Structure
 
-| Option         | Type    | Default      | Description                                             |
-| -------------- | ------- | ------------ | ------------------------------------------------------- |
-| `provider`     | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama) |
-| `apiKey`       | string  | (config/env) | API key for the provider                                |
-| `returnFormat` | string  | `"raw"`      | Response format: "raw", "embeddings", "first"           |
-| `timeout`      | numeric | `30`         | Request timeout in seconds                              |
+| Option                | Type    | Default      | Description                                             |
+| --------------------- | ------- | ------------ | ------------------------------------------------------- |
+| `provider`            | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama) |
+| `apiKey`              | string  | (config/env) | API key for the provider                                |
+| `returnFormat`        | string  | `"raw"`      | Response format: "raw", "embeddings", "first"           |
+| `timeout`             | numeric | `30`         | Request timeout in seconds                              |
+| `logResponse`         | boolean | `false`      | Log the response to ai.log                              |
+| `logResponseToConsole`| boolean | `false`      | Log the response to console                             |
+| `logRequest`          | boolean | `false`      | Log the request to ai.log                               |
+| `logRequestToConsole` | boolean | `false`      | Log the request to console                              |
 
 ### Return Formats
 
