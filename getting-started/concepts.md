@@ -839,7 +839,15 @@ A configured connection to a specific AI provider.
 
 ```javascript
 // Get service instance
-service = aiService( "openai" )
+// Simple API key (backward compatible)
+service = aiService( "openai", "sk-your-api-key" )
+
+// Or configuration options struct (v2.1.0+)
+service = aiService( "openai", {
+    apiKey: "sk-your-api-key",
+    timeout: 90,
+    logRequest: true
+})
 
 // Configure
 service.configure({

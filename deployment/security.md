@@ -109,9 +109,16 @@ class {
         var openaiKey = getAPIKey( "prod/ai/openai" )
         var claudeKey = getAPIKey( "prod/ai/claude" )
 
-        // Configure providers
-        aiService( "openai" ).configure( openaiKey )
-        aiService( "claude" ).configure( claudeKey )
+        // Configure providers with API keys
+        aiService( "openai" ).configure({ apiKey: openaiKey })
+        aiService( "claude" ).configure({ apiKey: claudeKey })
+
+        // Or configure with additional options
+        aiService( "openai" ).configure({
+            apiKey: openaiKey,
+            timeout: 120,
+            logRequest: false
+        })
     }
 }
 ```

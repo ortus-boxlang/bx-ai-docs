@@ -104,11 +104,22 @@ sequenceDiagram
 ### Basic Service Creation
 
 ```java
-// Default API key from config
+// Default API key from config or environment
 service = aiService( "openai" )
 
-// Custom API key
+// Custom API key (simple string)
 service = aiService( "openai", "sk-your-key-here" )
+
+// Configuration options struct (v2.1.0+)
+service = aiService( "openai", {
+    apiKey: "sk-your-key-here",
+    timeout: 120
+})
+
+// Custom base URL for Ollama or OpenAI-compatible services
+service = aiService( "ollama", {
+    baseURL: "http://localhost:11434"
+})
 
 // Different providers
 openai = aiService( "openai" )
@@ -121,14 +132,31 @@ ollama = aiService( "ollama" )
 ### Service Configuration
 
 ```java
+// Method 1: Configure at creation (v2.1.0+ - Recommended)
+service = aiService( "openai", {
+    apiKey: "sk-your-key",
+    baseURL: "https://api.openai.com/v1",
+    timeout: 60,
+    headers: {
+        "X-Custom-Header": "value"
+    },
+    logRequest: true,
+    logResponse: false
+})
+
+// Set default parameters
+service.defaults( {
+    model: "gpt-4",
+    temperature: 0.7,
+    max_tokens: 1000
+} )
+
+// Method 2: Reconfigure after creation
 service = aiService( "openai" )
-    .setChatURL( "https://api.openai.com/v1/chat/completions" )
-    .setTimeout( 60 )
-    .defaults( {
-        model: "gpt-4",
-        temperature: 0.7,
-        max_tokens: 1000
-    } )
+service.configure({
+    apiKey: "new-key",
+    timeout: 90
+})
 ```
 
 ## Building Chat Requests

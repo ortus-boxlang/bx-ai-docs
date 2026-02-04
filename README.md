@@ -15,49 +15,30 @@ BoxLang AI is a comprehensive library that brings enterprise-grade artificial in
 
 ```mermaid
 graph LR
-    User["👤 User Query<br/>'What did the Q4<br/>report say?'"]
+    User["👤 User"] --> Agent["🤖 Agent"]
 
-    User --> Agent["🤖 AI Agent<br/>(Autonomous)"]
-
-    Agent --> Memory["💭 Memory Check<br/>(Conversation Context)"]
-    Memory --> VectorSearch["🔍 Vector Search<br/>(Semantic Retrieval)"]
-
-    VectorSearch --> VectorDB[("📊 Vector Store<br/>Pinecone • Qdrant<br/>Postgres • OpenSearch")]
-
-    Agent --> Tools["🛠️ Tools<br/>(Real-time Data)"]
-    Tools --> API["🌐 APIs<br/>Weather • DB<br/>Calendar • Stock"]
-
+    Agent --> Memory["💭 Memory"]
+    Agent --> Tools["🛠️ Tools"]
     Agent --> Docs["📄 Documents"]
-    Docs --> Loaders["📥 Document Loaders<br/>PDF • Markdown • CSV<br/>HTTP • SQL • Web"]
-    Loaders --> Chunks["✂️ Chunking<br/>(Smart Splitting)"]
-    Chunks --> Embed["🔢 Embeddings"]
-    Embed --> VectorDB
 
-    VectorDB --> Context["📋 Retrieved Context<br/>(Top-K Results)"]
-    Context --> Augment["➕ Augmented Prompt<br/>(Query + Context)"]
+    Docs --> Loaders["📥 Loaders"]
+    Loaders --> VectorDB[("📊 Vectors")]
 
-    Memory --> Augment
-    API --> Augment
+    Memory --> VectorDB
+    VectorDB --> RAG["🔍 RAG"]
+    Tools --> RAG
 
-    Augment --> Provider["🚀 AI Provider<br/>OpenAI • Claude<br/>Gemini • Ollama<br/>Bedrock • Groq"]
-
-    Provider --> Response["💬 AI Response<br/>(Contextual Answer)"]
+    RAG --> AI["🚀 AI Models"]
+    AI --> Response["💬 Response"]
     Response --> Agent
     Agent --> User
 
-    Response -.->|Save| Memory
-    Response -.->|Update| VectorDB
-
     style User fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
     style Agent fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
-    style Provider fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style AI fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
     style Response fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
     style VectorDB fill:#00BCD4,stroke:#006064,stroke-width:2px,color:#fff
-    style Memory fill:#E91E63,stroke:#880E4F,stroke-width:2px,color:#fff
-    style Tools fill:#FFC107,stroke:#F57F17,stroke-width:2px,color:#000
-    style VectorSearch fill:#009688,stroke:#004D40,stroke-width:2px,color:#fff
-    style Context fill:#8BC34A,stroke:#558B2F,stroke-width:2px,color:#fff
-    style Augment fill:#FF5722,stroke:#BF360C,stroke-width:2px,color:#fff
+    style RAG fill:#FF5722,stroke:#BF360C,stroke-width:2px,color:#fff
 ```
 
 ### ✨ Key Features

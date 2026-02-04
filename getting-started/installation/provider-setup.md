@@ -958,10 +958,21 @@ quickResult = aiChat(
 Create reusable service instances:
 
 ```javascript
-// Create services for each provider
+// Create services with default config
 openaiService = aiService( "openai" )
 claudeService = aiService( "claude" )
 ollamaService = aiService( "ollama" )
+
+// Or with custom configuration options (v2.1.0+)
+openaiService = aiService( "openai", {
+    apiKey: "sk-custom-key",
+    timeout: 120,
+    logResponse: true
+})
+
+ollamaService = aiService( "ollama", {
+    baseURL: "http://my-ollama-server:11434"
+})
 
 // Use them in your application
 generalChat = openaiService.invoke( request )

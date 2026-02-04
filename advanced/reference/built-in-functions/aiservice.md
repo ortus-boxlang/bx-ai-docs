@@ -5,15 +5,15 @@ Get a reference to a registered AI service provider. This is the direct invocati
 ## Syntax
 
 ```javascript
-aiService(provider, apiKey)
+aiService(provider, options)
 ```
 
 ## Parameters
 
-| Parameter  | Type   | Required | Default      | Description                                                                                                 |
-| ---------- | ------ | -------- | ------------ | ----------------------------------------------------------------------------------------------------------- |
-| `provider` | string | No       | (config)     | The provider to use. If not provided, uses default from module configuration                                |
-| `apiKey`   | string | No       | (config/env) | Optional API key override. If not provided, uses configuration or `<PROVIDER>_API_KEY` environment variable |
+| Parameter  | Type          | Required | Default      | Description                                                                                                                                         |
+| ---------- | ------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider` | string        | No       | (config)     | The provider to use. If not provided, uses default from module configuration                                                                        |
+| `options`  | string/struct | No       | (config/env) | Configuration options or simple API key string. If string, treated as API key. If struct, can include: `apiKey`, `baseURL`, `timeout`, `headers`, `logRequest`, `logResponse`, `maxRetries`, etc. If not provided, uses configuration or `<PROVIDER>_API_KEY` environment variable |
 
 ### Supported Providers
 
@@ -37,7 +37,7 @@ Returns an AI service provider instance (e.g., `OpenAIService`, `ClaudeService`)
 
 * `invoke(request)` - Send synchronous request
 * `invokeStream(request, callback)` - Stream response
-* `configure(apiKey)` - Configure the service
+* `configure(options)` - Configure the service with API key or options struct
 * `getName()` - Get provider name
 * `embed(request)` - Generate embeddings (if supported)
 
@@ -70,10 +70,36 @@ ollama = aiService( "ollama" );
 ### With API Key Override
 
 ```javascript
-// Override API key
+// Override API key (simple string - backward compatible)
 service = aiService( "openai", "sk-custom-key-123" );
 
 response = service.invoke( aiChatRequest( "Hello" ) );
+```
+
+### With Configuration Options (v2.1.0+)
+
+```javascript
+// Pass configuration struct with API key
+service = aiService( "openai", {
+    apiKey: "sk-custom-key-123"
+});
+
+// Custom base URL for OpenAI-compatible services
+service = aiService( "ollama", {
+    baseURL: "http://my-ollama-server:11434"
+});
+
+// Advanced configuration options
+service = aiService( "openai", {
+    apiKey: "sk-custom-key-123",
+    timeout: 120,
+    headers: {
+        "X-Custom-Header": "value"
+    },
+    logRequest: true,
+    logResponse: true,
+    maxRetries: 3
+});
 ```
 
 ### Direct Invocation
@@ -149,8 +175,15 @@ service = aiService( "openai" );
 // Check service info
 println( "Provider: #service.getName()#" );
 
-// Reconfigure if needed
+// Reconfigure if needed (simple API key)
 service.configure( "new-api-key" );
+
+// Or reconfigure with options struct
+service.configure({
+    apiKey: "new-api-key",
+    timeout: 90,
+    logResponse: true
+});
 ```
 
 ### Reusable Services
