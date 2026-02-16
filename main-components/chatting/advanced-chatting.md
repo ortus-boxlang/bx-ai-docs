@@ -791,8 +791,10 @@ class UserProfile {
 }
 
 // Get type-safe response
-profile = aiChat( "Create a user profile for a senior developer" )
-    .structuredOutput( new UserProfile() )
+profile = aiChat(
+    messages: "Create a user profile for a senior developer",
+    returnFormat: new UserProfile()
+)
 
 // Access with getters (type-safe)
 println( "Name: #profile.getName()#" )
@@ -815,8 +817,10 @@ template = {
 }
 
 // Get structured response
-product = aiChat( "Generate a product for a laptop" )
-    .structuredOutput( template )
+product = aiChat(
+    messages: "Generate a product for a laptop",
+    returnFormat: template
+)
 
 // All fields guaranteed to exist with correct types
 println( "Product: #product.productName#" )
@@ -840,8 +844,10 @@ conversation = [
 ]
 
 // First analysis
-analysis = aiChat( conversation )
-    .structuredOutput( new Analysis() )
+analysis = aiChat(
+    messages: conversation,
+    returnFormat: new Analysis()
+)
 
 println( "Sentiment: #analysis.getSentiment()#" )
 println( "Score: #analysis.getScore()#" )
@@ -860,8 +866,10 @@ conversation.append({
     content: "Compare with: Affordable but slow performance"
 })
 
-comparison = aiChat( conversation )
-    .structuredOutput( new Analysis() )
+comparison = aiChat(
+    messages: conversation,
+    returnFormat: new Analysis()
+)
 ```
 
 ### Extracting Arrays
@@ -874,8 +882,10 @@ class Task {
 }
 
 // Extract multiple items
-tasks = aiChat( "Extract tasks from: Finish report by Friday (high, 4hrs), Review code tomorrow (medium, 2hrs), Update docs (low, 1hr)" )
-    .structuredOutput( [ new Task() ] )
+tasks = aiChat(
+    messages: "Extract tasks from: Finish report by Friday (high, 4hrs), Review code tomorrow (medium, 2hrs), Update docs (low, 1hr)",
+    returnFormat: [ new Task() ]
+)
 
 // Iterate with full type safety
 tasks.each( task => {
@@ -899,11 +909,13 @@ class Order {
 }
 
 // Extract multiple related entities
-result = aiChat( "Extract info: John Doe (john@example.com, 555-1234) ordered items A, B, C for $150, order #12345" )
-    .structuredOutputs({
+result = aiChat(
+    messages: "Extract info: John Doe (john@example.com, 555-1234) ordered items A, B, C for $150, order #12345",
+    returnFormat: {
         "customer": new Customer(),
         "order": new Order()
-    })
+    }
+)
 
 // Access each typed entity
 println( "Customer: #result.customer.getName()#" )
@@ -936,9 +948,11 @@ weatherTool = aiTool(
 ).addParameter( "location", "string", "City name", true )
 
 // Get typed response with tool data
-weather = aiChat( "What's the weather in San Francisco?" )
-    .tools( [ weatherTool ] )
-    .structuredOutput( new WeatherData() )
+weather = aiChat(
+    messages: "What's the weather in San Francisco?",
+    tools: [ weatherTool ],
+    returnFormat: new WeatherData()
+)
 
 println( "Temperature: #weather.getTemperature()#°F" )
 println( "Condition: #weather.getCondition()#" )

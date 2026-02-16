@@ -352,8 +352,10 @@ class Person {
 }
 
 // Extract data into typed class
-result = aiChat( "Extract: John is 30, works as a developer" )
-    .structuredOutput( new Person() );
+result = aiChat(
+    messages: "Extract: John is 30, works as a developer",
+    returnFormat: new Person()
+);
 
 println( result.getName() ); // "John"
 println( result.getAge() );  // 30

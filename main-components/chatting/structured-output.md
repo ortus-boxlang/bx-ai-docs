@@ -123,8 +123,10 @@ class Person {
 }
 
 // Extract structured data from natural language
-person = aiChat( "Extract: John Doe, 30, john@example.com" )
-    .structuredOutput( new Person() )
+person = aiChat(
+    messages: "Extract: John Doe, 30, john@example.com",
+    returnFormat: new Person()
+)
 
 // Type-safe access with getters
 println( person.getName() )   // "John Doe"
@@ -145,8 +147,10 @@ template = {
     "tags": []
 }
 
-product = aiChat( "Generate a laptop product" )
-    .structuredOutput( template )
+product = aiChat(
+    messages: "Generate a laptop product",
+    returnFormat: template
+)
 
 // All fields guaranteed with correct types
 println( product.productName )  // "MacBook Pro"
@@ -166,8 +170,10 @@ class Task {
 }
 
 // Note: Pass array with ONE instance as the template
-tasks = aiChat( "Extract: Finish report (high, 4hrs), Review code (medium, 2hrs)" )
-    .structuredOutput( [ new Task() ] )
+tasks = aiChat(
+    messages: "Extract: Finish report (high, 4hrs), Review code (medium, 2hrs)",
+    returnFormat: [ new Task() ]
+)
 
 // Iterate with full type safety
 tasks.each( task => {
@@ -190,11 +196,13 @@ class Order {
     property name="total" type="numeric";
 }
 
-result = aiChat( "John Doe (john@example.com) placed order #12345 for $150" )
-    .structuredOutputs({
+result = aiChat(
+    messages: "John Doe (john@example.com) placed order #12345 for $150",
+    returnFormat: {
         "customer": new Customer(),
         "order": new Order()
-    })
+    }
+)
 
 // Access each typed entity
 println( "Customer: #result.customer.getName()#" )
@@ -217,8 +225,10 @@ conversation = [
     { role: "user", content: "Analyze: Great laptop but expensive" }
 ]
 
-analysis = aiChat( conversation )
-    .structuredOutput( new Analysis() )
+analysis = aiChat(
+    messages: conversation,
+    returnFormat: new Analysis()
+)
 
 println( "Sentiment: #analysis.getSentiment()#" )  // "mixed"
 println( "Score: #analysis.getScore()#" )          // 7
@@ -243,9 +253,11 @@ weatherTool = aiTool(
     }
 ).describeLocation( "City name" )
 
-weather = aiChat( "What's the weather in San Francisco?" )
-    .tools( [ weatherTool ] )
-    .structuredOutput( new WeatherData() )
+weather = aiChat(
+    messages: "What's the weather in San Francisco?",
+    tools: [ weatherTool ],
+    returnFormat: new WeatherData()
+)
 
 println( "Temperature: #weather.getTemperature()#°F" )
 ```
@@ -363,7 +375,7 @@ class Contact {
 
 ```java
 // ✅ GOOD: Reuse
-variables.productExtractor = aiModel().structuredOutput( new Product() )
+variables.productExtractor = aiModel( returnFormat: new Product() )
 
 function extractProduct( text ) {
     return variables.productExtractor.run( text )
@@ -371,7 +383,7 @@ function extractProduct( text ) {
 
 // ❌ BAD: Recreate every time
 function extractProduct( text ) {
-    return aiModel().structuredOutput( new Product() ).run( text )
+    return aiModel( returnFormat: new Product() ).run( text )
 }
 ```
 
@@ -379,8 +391,10 @@ function extractProduct( text ) {
 
 ```java
 try {
-    person = aiChat( ambiguousText )
-        .structuredOutput( new Person() )
+    person = aiChat(
+        messages: ambiguousText,
+        returnFormat: new Person()
+    )
 
     // Validate result
     if( person.getName().len() == 0 ) {
@@ -392,8 +406,10 @@ try {
     println( "Extraction failed: #e.message#" )
 
     // Retry with more specific prompt
-    person = aiChat( "Extract person details: #ambiguousText#" )
-        .structuredOutput( new Person() )
+    person = aiChat(
+        messages: "Extract person details: #ambiguousText#",
+        returnFormat: new Person()
+    )
 }
 ```
 

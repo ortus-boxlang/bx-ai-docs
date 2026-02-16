@@ -839,8 +839,10 @@ function getPersonInfo( text ) {
     }
 
     // Make AI call
-    person = aiChat( "Extract person info from: #text#" )
-        .structuredOutput( new Person() )
+    person = aiChat(
+        messages: "Extract person info from: #text#",
+        returnFormat: new Person()
+    )
 
     // Cache the result as JSON
     cachePut(
@@ -960,7 +962,7 @@ try {
 
 ### Comparison: aiPopulate vs Structured Output
 
-| Feature     | `aiPopulate()`                 | `.structuredOutput()`    |
+| Feature     | `aiPopulate()`                 | `returnFormat:` parameter |
 | ----------- | ------------------------------ | ------------------------ |
 | Purpose     | Manual population              | AI extraction            |
 | Input       | JSON/struct data               | Natural language prompt  |
@@ -977,7 +979,7 @@ try {
 * Converting existing JSON/structs to typed objects
 * No AI interpretation needed
 
-**Use `.structuredOutput()` when:**
+**Use `returnFormat:` when:**
 
 * Extracting data from natural language
 * Need AI to understand and parse content

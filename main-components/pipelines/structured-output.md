@@ -19,7 +19,7 @@ graph LR
     A[AI Response<br/>Free Text] --> S[Schema Definition]
     S --> V[Validation]
     V --> O[Typed Object]
-    
+
     style A fill:#4A90E2
     style S fill:#F5A623
     style V fill:#BD10E0
@@ -234,8 +234,7 @@ orders.each( order => {
 Stream progressive responses, get structured final result:
 
 ```java
-pipeline = aiModel()
-    .structuredOutput( new Article() )
+pipeline = aiModel().structuredOutput( new Article() )
 
 // Stream shows progressive text
 article = pipeline.stream(
@@ -314,7 +313,7 @@ function analyzeContent( text ) {
 
 Validate and retry with structured output:
 
-```java
+```java)
 pipeline = aiModel()
     .structuredOutput( new Product() )
     .transform( product => {

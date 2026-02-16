@@ -190,8 +190,10 @@ class Person {
     property name="age" type="numeric";
 }
 
-person = aiChat( "Extract: John is 30" )
-    .structuredOutput( new Person() )
+person = aiChat(
+    messages: "Extract: John is 30",
+    returnFormat: new Person()
+)
 
 println( person.getName() ) // "John"
 ```
@@ -640,8 +642,10 @@ class Contact {
     property name="email" type="string";
 }
 
-contact = aiChat( "Extract: John Doe, john@example.com" )
-    .structuredOutput( new Contact() )
+contact = aiChat(
+    messages: "Extract: John Doe, john@example.com",
+    returnFormat: new Contact()
+)
 ```
 
 ***

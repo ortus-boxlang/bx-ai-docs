@@ -745,8 +745,10 @@ class Person {
 }
 
 // Extract structured data
-person = aiChat( "Extract: John Doe, 30, john@example.com" )
-    .structuredOutput( new Person() )
+person = aiChat(
+    messages: "Extract: John Doe, 30, john@example.com",
+    returnFormat: new Person()
+)
 
 // Type-safe access
 println( person.getName() )   // John Doe
@@ -763,8 +765,10 @@ template = {
     "sentiment": ""
 }
 
-result = aiChat( "Analyze: Great product, highly recommended!" )
-    .structuredOutput( template )
+result = aiChat(
+    messages: "Analyze: Great product, highly recommended!",
+    returnFormat: template
+)
 
 println( result.sentiment )  // positive
 println( result.tags.len() ) // 3
@@ -778,8 +782,10 @@ class Task {
     property name="priority" type="string";
 }
 
-tasks = aiChat( "Extract: Finish report (high), Review code (medium)" )
-    .structuredOutput( [ new Task() ] )
+tasks = aiChat(
+    messages: "Extract: Finish report (high), Review code (medium)",
+    returnFormat: [ new Task() ]
+)
 
 tasks.each( t => println( "#t.getTitle()# [#t.getPriority()#]" ) )
 ```
