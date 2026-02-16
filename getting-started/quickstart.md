@@ -445,16 +445,17 @@ Load documents from various sources:
 
 ```javascript
 // Load PDF documents
-pdfDocs = aiDocuments( "/docs/manual.pdf", "pdf" )
+pdfDocs = aiDocuments( "/docs/manual.pdf", { type: "pdf" } )
 
 // Load entire directory
-docs = aiDocuments( "/docs", "directory", {
+docs = aiDocuments( "/docs", {
+    type: "directory",
     recursive: true,
     extensions: ["md", "txt", "pdf"]
 } )
 
 // Load from web
-webDocs = aiDocuments( "https://example.com/docs", "http" )
+webDocs = aiDocuments( "https://example.com/docs", { type: "http" } )
 
 // Each document has: { id, content, metadata }
 docs.each( doc => {
@@ -466,17 +467,19 @@ docs.each( doc => {
 
 ```javascript
 // Step 1: Create vector memory
-vectorMemory = aiMemory( "chroma", {
-    collection: "knowledge",
-    embeddingProvider: "openai"
-} )
+vectorMemory = aiMemory(
+    memory: "chroma",
+    config: {
+        collection: "knowledge",
+        embeddingProvider: "openai"
+    } )
 
 // Step 2: Ingest documents
-result = aiDocuments( "/docs", { type: "directory" } )
-    .toMemory(
-        memory  = vectorMemory,
-        options = { chunkSize: 1000, overlap: 200 }
-    )
+result = aiDocuments( "/docs", {
+    type: "directory",
+    chunkSize: 1000,
+    overlap: 200
+} ).toMemory( vectorMemory )
 
 println( "✅ Ingested #result.chunksOut# chunks" )
 
@@ -588,9 +591,9 @@ sequenceDiagram
 ```javascript
 // Define a tool for weather lookup
 weatherTool = aiTool(
-    name: "get_weather",
-    description: "Get current weather for a location",
-    action: ( location ) => {
+    "get_weather",
+    "Get current weather for a location",
+    ( location ) => {
         // Your weather API call here
         return getWeatherData( location )
     }
@@ -628,10 +631,10 @@ Keeps only recent messages in RAM - good for managing context limits:
 ```javascript
 agent = aiAgent(
     name: "Chatbot",
-    memories: aiMemory(
-        type: "buffered",
-        key: "session-1",
-        config: { maxMessages: 20 }  // Keep last 20 messages
+    memory: aiMemory(
+        "buffered",
+        "session-1",
+        { maxMessages: 20 }  // Keep last 20 messages
     )
 )
 ```
@@ -643,7 +646,10 @@ Persists across requests in web applications:
 ```javascript
 agent = aiAgent(
     name: "WebAssistant",
-    memories: new bxModules.bxai.models.memory.SessionMemory( "bxai-chat" )
+    memory: aiMemory(
+        "session",
+        "bxai-chat"
+    )
 )
 // Remembers conversation across page requests!
 ```
@@ -655,10 +661,10 @@ Saves to disk - persists across application restarts:
 ```javascript
 agent = aiAgent(
     name: "PersistentBot",
-    memories: aiMemory(
-        type: "file",
-        key: "user-123",
-        config: { filePath: expandPath( "./data/chat-history.json" ) }
+    memory: aiMemory(
+        "file",
+        "user-123",
+        { filePath: expandPath( "./data/chat-history.json" ) }
     )
 )
 ```
@@ -669,7 +675,7 @@ Agents can access knowledge bases automatically:
 
 ```javascript
 // Step 1: Create and populate vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( "chroma", "", "", "", {
     collection: "support_docs",
     embeddingProvider: "openai"
 } )
@@ -682,7 +688,7 @@ agent = aiAgent(
     name: "Support Agent",
     description: "Customer support specialist",
     instructions: "Answer questions using the support documentation. Always cite sources.",
-    memory: vectorMemory
+    memory: vectorMemory  // Note: pass via memory parameter, not memories
 )
 
 // Step 3: Agent automatically retrieves relevant docs
@@ -696,16 +702,16 @@ response = agent.run( "How do I reset my password?" )
 
 ```javascript
 lookupOrder = aiTool(
-    name: "lookup_order",
-    description: "Find order details by order number",
-    action: ( orderNum ) => getOrderDetails( orderNum )
+    "lookup_order",
+    "Find order details by order number",
+    ( orderNum ) => getOrderDetails( orderNum )
 ).describeOrderNum( "Order number" )
 
 supportAgent = aiAgent(
     name: "SupportBot",
     instructions: "Help customers with orders politely and efficiently. Always confirm before canceling orders.",
     tools: [ lookupOrder ],
-    memories: aiMemory( "simple", "support-${session.id}" )
+    memory: aiMemory( "cache", "support-session" )
 )
 
 response = supportAgent.run( "What's the status of order #12345?" )
@@ -715,9 +721,9 @@ response = supportAgent.run( "What's the status of order #12345?" )
 
 ```javascript
 fetchCode = aiTool(
-    name: "fetch_code",
-    description: "Get code content from a file",
-    action: ( filePath ) => fileRead( filePath )
+    "fetch_code",
+    "Get code content from a file",
+    ( filePath ) => fileRead( filePath )
 ).describeFilePath( "Path to code file" )
 
 reviewer = aiAgent(
