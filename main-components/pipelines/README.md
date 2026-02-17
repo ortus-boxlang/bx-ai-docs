@@ -346,7 +346,7 @@ result = pipeline.run({ text: "John Doe is 30" })
 **Key points:**
 
 * `${_input}` always contains the complete previous stage output
-* For struct outputs, individual fields are flattened to `${_input_fieldName}` 
+* For struct outputs, individual fields are flattened to `${_input_fieldName}`
 * You can also access original struct fields directly: `${name}` works the same as `${_input_name}`
 * For string outputs, `${_input}` contains the full text
 * Stages remain encapsulated - only connected through `_input`
