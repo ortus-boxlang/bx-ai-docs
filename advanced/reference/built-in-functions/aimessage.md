@@ -107,6 +107,65 @@ summary1 = pipeline.run({ text: "Long article..." });
 summary2 = pipeline.run({ text: "Another article..." });
 ```
 
+### Pipeline Chaining with `_input`
+
+When chaining AI stages with `.pipe()`, the previous stage's output is automatically available as `${_input}`:
+
+```javascript
+// Code generation → Review pattern
+pipeline = aiMessage( "Write code to ${task}" )
+    .system( "You are an expert BoxLang developer" )
+    .toDefaultModel()
+    .pipe(
+        // ${_input} contains the generated code
+        aiMessage( "Review this code: ${_input}" )
+            .system( "You are a code reviewer" )
+            .toModel( "claude" )
+    );
+
+result = pipeline.run({ task: "sort an array" });
+// Stage 1 generates code → Stage 2 reviews it automatically
+```
+
+**With structured output:**
+
+```javascript
+// Extract data → Generate content
+chain = aiMessage( "Extract person from: ${text}" )
+    .toDefaultModel()
+    .withStructuredOutput({ name: "string", age: "numeric" })
+    .pipe(
+        // For struct outputs, fields are flattened to ${_input_fieldName}
+        aiMessage( "Write a bio for ${_input_name}, age ${_input_age}" )
+            .toModel( "openai" )
+    );
+
+bio = chain.run({ text: "John Doe is 30 years old" });
+// Stage 1: { name: "John Doe", age: 30 }
+// Stage 2: Uses ${_input_name} and ${_input_age} to generate bio
+```
+
+**Multi-stage processing:**
+
+```javascript
+// Simplify → Translate → Formalize
+translator = aiMessage( "Simplify this: ${text}" )
+    .toDefaultModel()
+    .pipe(
+        aiMessage( "Translate to Spanish: ${_input}" )
+            .toModel( "openai" )
+    )
+    .pipe(
+        aiMessage( "Make this more formal: ${_input}" )
+            .toModel( "claude" )
+    );
+
+result = translator.run({ text: "The servers crashed!" });
+// Stage 1: "The servers stopped working"
+// Stage 2: "Los servidores dejaron de funcionar"
+// Stage 3: "Los sistemas experimentaron una interrupción del servicio"
+```
+
 ### Streaming Messages
 
 ```javascript

@@ -286,6 +286,93 @@ result = pipeline.run( 5 )
 3. Input `20` → Step 3: `20 / 2 = 10`
 4. Output: `10`
 
+### The `_input` System Variable
+
+When chaining AI stages (especially `AiMessage` templates), the previous stage's output is automatically available as `${_input}` in your templates. This makes it natural to reference the previous result without manual transformation steps.
+
+**Basic usage:**
+
+```javascript
+// Code generation → Review pipeline
+pipeline = aiMessage( "Write code to ${task}" )
+    .toDefaultModel()
+    .pipe(
+        // Previous stage's output is available as ${_input}
+        aiMessage( "Review this code: ${_input}" )
+            .toModel( "claude" )
+    )
+
+result = pipeline.run({ task: "sort an array" })
+// Stage 1 output: "function sortArray(arr) { ... }"
+// Stage 2 receives that code automatically via ${_input}
+```
+
+**With structured output:**
+
+```javascript
+// Extract data → Generate content
+pipeline = aiMessage( "Extract person from: ${text}" )
+    .toDefaultModel()
+    .withStructuredOutput({ name: "string", age: "numeric" })
+    .pipe(
+        // Access structured fields via ${_input.fieldName}
+        aiMessage( "Write bio for ${_input.name}, age ${_input.age}" )
+            .toModel( "openai" )
+    )
+
+result = pipeline.run({ text: "John Doe is 30" })
+// Stage 1 output: { name: "John Doe", age: 30 }
+// Stage 2 receives the struct and can access individual fields
+```
+
+**With structured output:**
+
+```javascript
+// Extract data → Generate content
+pipeline = aiMessage( "Extract person from: ${text}" )
+    .toDefaultModel()
+    .withStructuredOutput({ name: "string", age: "numeric" })
+    .pipe(
+        // For struct outputs, fields are available as ${_input_fieldName}
+        aiMessage( "Write bio for ${_input_name}, age ${_input_age}" )
+            .toModel( "openai" )
+    )
+
+result = pipeline.run({ text: "John Doe is 30" })
+// Stage 1 output: { name: "John Doe", age: 30 }
+// Stage 2: ${_input_name} = "John Doe", ${_input_age} = 30 are available
+```
+
+**Key points:**
+
+* `${_input}` always contains the complete previous stage output
+* For struct outputs, individual fields are flattened to `${_input_fieldName}` 
+* You can also access original struct fields directly: `${name}` works the same as `${_input_name}`
+* For string outputs, `${_input}` contains the full text
+* Stages remain encapsulated - only connected through `_input`
+* Original context variables (from `.run()`) are still available
+
+**Multi-stage example:**
+
+```javascript
+// Simplify → Translate → Formalize
+pipeline = aiMessage( "Simplify: ${text}" )
+    .toDefaultModel()
+    .pipe(
+        aiMessage( "Translate to Spanish: ${_input}" )
+            .toModel( "openai" )
+    )
+    .pipe(
+        aiMessage( "Make this more formal: ${_input}" )
+            .toModel( "claude" )
+    )
+
+result = pipeline.run({ text: "The servers crashed!" })
+// Stage 1: "The servers stopped working"
+// Stage 2: "Los servidores dejaron de funcionar"
+// Stage 3: "Los sistemas experimentaron una interrupción del servicio"
+```
+
 ### Input Types
 
 Different components accept different input types:
