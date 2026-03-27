@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
   * [Release History](readme/release-history/README.md)
+    * [3.0.0](readme/release-history/3.0.0.md)
     * [2.4.0](readme/release-history/2.4.0.md)
     * [2.3.0](readme/release-history/2.3.0.md)
     * [2.2.0](readme/release-history/2.2.0.md)

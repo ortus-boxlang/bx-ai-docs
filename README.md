@@ -56,6 +56,10 @@ graph LR
 * 🤖 **AI Agents**: Autonomous agents with memory, tools, and reasoning
 * 📄 **Document Loaders**: Load and process various file formats for RAG
 * 🧠 **Vector Memory**: Semantic search with 12 vector database integrations
+* 🎯 **AI Skills**: Composable, reusable knowledge blocks injected into agent system messages at runtime
+* 🔌 **MCP Server Integration**: Seed agents and models directly from MCP servers — tools discovered automatically
+* 🗄️ **Global Tool Registry**: Register tools by name once, reference by string everywhere
+* 🛡️ **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
 
 ### 📡 Supported Providers
 
@@ -188,11 +192,14 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 
 | BIF             | Purpose                   | Return Type | Example Use Case                 |
 | --------------- | ------------------------- | ----------- | -------------------------------- |
-| `aiAgent()`    | Create AI agents          | AiAgent     | Autonomous assistants, multi-turn |
-| `aiMessage()`   | Build message pipelines   | AiMessage   | Reusable prompts, templates      |
-| `aiModel()`     | Create model runnables    | AiModel     | Pipeline integration             |
-| `aiTransform()` | Create data transformers  | Transformer | Pipeline data processing         |
-| `aiTool()`      | Define callable functions | Tool        | Real-time data, function calling |
+| `aiAgent()`         | Create AI agents with tools, memory, skills & MCP servers | AiAgent     | Autonomous assistants, multi-turn |
+| `aiMessage()`       | Build message pipelines                                   | AiMessage   | Reusable prompts, templates      |
+| `aiModel()`         | Create model runnables with skills & MCP servers          | AiModel     | Pipeline integration             |
+| `aiTransform()`     | Create data transformers                                  | Transformer | Pipeline data processing         |
+| `aiTool()`          | Define callable functions                                 | Tool        | Real-time data, function calling |
+| `aiSkill()`         | Create or discover AI skill blocks from SKILL.md files    | AiSkill     | Reusable knowledge injection     |
+| `aiGlobalSkills()`  | Access the global shared skills pool                      | Array       | Cross-agent knowledge sharing    |
+| `aiToolRegistry()`  | Access the global AI tool registry singleton              | AIToolRegistry | Named tool resolution         |
 
 ### 🧠 Memory & Context
 
