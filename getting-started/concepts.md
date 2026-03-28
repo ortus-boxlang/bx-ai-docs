@@ -681,6 +681,98 @@ JSON description of tool parameters that AI uses to call functions correctly.
 
 **Tip**: Clear descriptions help AI use tools correctly.
 
+### Tool Registry
+
+A global, singleton registry that stores AI tools across your entire application. Register tools once and reference them by name anywhere.
+
+```javascript
+// Register globally
+aiToolRegistry().register( name: "search", description: "Search KB", callback: searchFn )
+
+// Resolve by name when building agents
+agent = aiAgent( tools: aiToolRegistry().resolveTools( [ "search", "calculate" ] ) )
+```
+
+**Benefits**: Eliminates duplicate tool definitions, enables cross-module tool sharing, supports `@AITool` annotation scanning.
+
+### Skills
+
+Reusable instruction sets stored in markdown files (following the Agent Skills open standard) that inject specialized context into an agent's system prompt.
+
+```
+.ai/skills/
+  sql-expert/
+    SKILL.md          ← YAML frontmatter + markdown instructions
+```
+
+Two modes:
+* **Always-on** (`skills`) — injected into every system message automatically
+* **Lazy** (`availableSkills`) — AI activates only when relevant
+
+```javascript
+agent = aiAgent(
+    name           : "data-analyst",
+    skills         : [ aiSkill( path: ".ai/skills/sql-expert/SKILL.md" ) ],
+    availableSkills: aiSkill()  // All skills in .ai/skills/
+)
+```
+
+### Middleware
+
+Reusable layers that intercept agent execution at defined lifecycle points. Each middleware can inspect, modify, or halt operations.
+
+**Built-in middleware**: `LoggingMiddleware`, `RetryMiddleware`, `GuardrailMiddleware`, `MaxToolCallsMiddleware`, `HumanInTheLoopMiddleware`, `FlightRecorderMiddleware`.
+
+```javascript
+agent = aiAgent(
+    name      : "assistant",
+    middleware: [
+        new LoggingMiddleware( logToConsole: true ),
+        new RetryMiddleware( maxRetries: 3 ),
+        new GuardrailMiddleware( blockedTools: [ "deleteRecord" ] )
+    ]
+)
+```
+
+**Hooks**: `beforeAgentRun`, `afterAgentRun`, `beforeLLMCall`, `afterLLMCall`, `beforeToolCall`, `afterToolCall`, `onError`.
+
+**Visual flow**:
+
+```
+User Input
+    │
+    ▼
+┌───────────────────────────────────────┐
+│  Middleware Stack (outer → inner)     │
+│                                       │
+│  ┌─────────────────────────────────┐  │
+│  │  LoggingMiddleware              │  │
+│  │  ┌───────────────────────────┐  │  │
+│  │  │  RetryMiddleware          │  │  │
+│  │  │  ┌─────────────────────┐  │  │  │
+│  │  │  │  GuardrailMiddleware│  │  │  │
+│  │  │  │  ┌───────────────┐  │  │  │  │
+│  │  │  │  │  Agent Core   │  │  │  │  │
+│  │  │  │  │  ┌─────────┐  │  │  │  │  │
+│  │  │  │  │  │ LLM Call│  │  │  │  │  │
+│  │  │  │  │  └────┬────┘  │  │  │  │  │
+│  │  │  │  │       │       │  │  │  │  │
+│  │  │  │  │  ┌────▼────┐  │  │  │  │  │
+│  │  │  │  │  │Tool Call│  │  │  │  │  │
+│  │  │  │  │  └─────────┘  │  │  │  │  │
+│  │  │  │  └───────────────┘  │  │  │  │
+│  │  │  └─────────────────────┘  │  │  │
+│  │  └───────────────────────────┘  │  │
+│  └─────────────────────────────────┘  │
+└───────────────────────────────────────┘
+    │
+    ▼
+ Response
+
+Each layer fires hooks around every step:
+  before/afterAgentRun → before/afterLLMCall → before/afterToolCall
+```
+
 ***
 
 ## 📡 Streaming & Async Computations
@@ -963,7 +1055,7 @@ try {
 * ⚡ [Quick Start](quickstart.md) - Your first AI interaction
 * 🧩 [Provider Setup](installation/provider-setup.md) - Configure AI providers
 * 💬 [Basic Chatting](../main-components/chatting/basic-chatting.md) - Simple AI conversations
-* 🤖 [AI Agents](../main-components/agents.md) - Autonomous AI assistants
+* 🤖 [AI Agents](../main-components/agents/) - Autonomous AI assistants
 * 🔮 [Vector Memory](../main-components/vector-memory.md) - Semantic search
 * 📄 [RAG Guide](../rag/rag.md) - Retrieval Augmented Generation
 

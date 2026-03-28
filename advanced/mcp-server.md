@@ -2195,7 +2195,7 @@ scheduled task: "checkMCPPerformance", interval: "5m" {
 
 * [MCP Client](mcp-client.md) - Consuming MCP servers
 * [AI Tools](../main-components/tools.md) - Creating tools
-* [AI Agents](../main-components/agents.md) - Using agents with tools
+* [AI Agents](../main-components/agents/) - Using agents with tools
 
 ## External Resources
 

@@ -268,7 +268,7 @@ agent.run( "What's my name?" ) // "Alice"
 
 ***
 
-### 7️⃣ [Agents](../agents.md)
+### 7️⃣ [Agents](../agents/)
 
 **What:** Autonomous AI entities with memory, tools, and reasoning
 
@@ -295,7 +295,7 @@ response = agent.run( "Find info about quantum computing" )
 * Memory integration
 * Sub-agents
 
-→ [**Read Agents Guide**](../agents.md)
+→ [**Read Agents Guide**](../agents/)
 
 ***
 

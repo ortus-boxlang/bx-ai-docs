@@ -1330,7 +1330,7 @@ println( newMemory.getConversationId() );  // "chat456"
 
 * [Memory Systems Guide](./) - Standard conversation memory
 * [Vector Memory Guide](../vector-memory.md) - Semantic search with isolation
-* [Agents Documentation](../agents.md) - Using memory in agents
+* [Agents Documentation](../agents/) - Using memory in agents
 * [Security Best Practices](../../security/best-practices.md) - Application security
 * [Examples](../../../examples/advanced/) - Complete working examples
 

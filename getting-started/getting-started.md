@@ -137,7 +137,7 @@ We recommend this progression:
 4. **📖** [**Key Concepts**](concepts.md) - Learn AI terminology (reference as needed)
 5. **💬** [**Basic Chatting**](../main-components/chatting/basic-chatting.md) - Simple interactions and parameters (15 min)
 6. **🎯** [**Advanced Chatting**](../main-components/chatting/advanced-chatting.md) - Streaming, tools, multimodal content (20 min)
-7. **🤖** [**AI Agents**](../main-components/agents.md) - Build autonomous agents (30 min)
+7. **🤖** [**AI Agents**](../main-components/agents/) - Build autonomous agents (30 min)
 
 **💡 Pro Tip:** Keep the [FAQ](../readme/faq.md) handy for quick answers to common questions!
 

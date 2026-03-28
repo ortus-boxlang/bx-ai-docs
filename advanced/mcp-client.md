@@ -590,7 +590,7 @@ class extends="testbox.system.BaseSpec" {
 
 * [BoxLang AI Module](../)
 * [AI Tools](../main-components/tools.md)
-* [AI Agents](../main-components/agents.md)
+* [AI Agents](../main-components/agents/)
 
 ## External Resources
 

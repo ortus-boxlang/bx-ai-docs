@@ -1908,7 +1908,7 @@ Solution: Switch to persistent vector database (Chroma, Postgres, etc.)
 * [Memory Systems Guide](memory/) - Standard conversation memory
 * [Custom Vector Memory](../extending-boxlang-ai/custom-vector-memory.md) - Build your own provider
 * [Embeddings Guide](../rag/embeddings.md) - Understanding embeddings
-* [Agents Documentation](agents.md) - Using memory in agents
+* [Agents Documentation](../agents/) - Using memory in agents
 * [Examples](../../examples/vector-memory/) - Complete working examples
 
 ***

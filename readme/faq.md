@@ -1002,7 +1002,7 @@ if ( isNull( response ) || response == "" ) {
 * 📖 [Key Concepts](../getting-started/concepts.md)
 * 🧩 [Provider Setup](../getting-started/installation/provider-setup.md)
 * 💬 [Basic Chatting](../main-components/chatting/basic-chatting.md)
-* 🤖 [AI Agents](../main-components/agents.md)
+* 🤖 [AI Agents](../main-components/agents/)
 * 🔮 [Vector Memory & RAG](../main-components/vector-memory.md)
 
 ***

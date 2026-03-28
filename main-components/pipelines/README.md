@@ -9,7 +9,20 @@ icon: pipe
 
 Pipelines are the foundation of BoxLang AI's composable architecture. They allow you to chain AI operations, create reusable workflows, and build complex data processing flows with simple, readable code.
 
-## 📋 Table of Contents
+## � In This Section
+
+| Page                                         | What's covered                                       |
+| -------------------------------------------- | ---------------------------------------------------- |
+| [Building Pipelines](building.md)            | Three construction methods, data flow, `_input`, params/options |
+| [Transforms](transforms.md)                  | Pre-processing, post-processing, named transformers  |
+| [Multi-Model Workflows](multi-model.md)      | Multi-step patterns, model specialization, reusable templates |
+| [Streaming](streaming.md)                    | Real-time streaming with callbacks and pipeline integration |
+| [Structured Output](structured-output.md)    | Extracting typed structs and objects                 |
+| [Advanced](advanced.md)                      | Events, debugging, performance, error handling       |
+
+---
+
+## �📋 Table of Contents
 
 * [📋 Table of Contents](./#-table-of-contents)
 * [🎯 What are Pipelines?](./#-what-are-pipelines)
@@ -1289,7 +1302,7 @@ safePipeline = inputValidator          // Validate input
 * [**Messages**](../messages/) - Build message templates
 * [**Transformers**](../transformers.md) - Data transformation patterns
 * [**Streaming**](streaming.md) - Real-time response handling
-* [**Agents**](../agents.md) - Autonomous AI workflows
+* [**Agents**](../agents/) - Autonomous AI workflows
 * [**Events**](../../advanced/events.md) - Event interception and monitoring
 
 ***

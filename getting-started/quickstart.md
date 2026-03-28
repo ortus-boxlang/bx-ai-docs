@@ -735,7 +735,7 @@ reviewer = aiAgent(
 review = reviewer.run( "Review the authentication logic in /src/Auth.bx" )
 ```
 
-Learn more in the [Agents Guide](../main-components/agents.md).
+Learn more in the [Agents Guide](../main-components/agents/).
 
 ## 📊 Structured Output
 
@@ -866,10 +866,13 @@ Now that you're comfortable with the basics, explore:
 
 ### 🤖 AI Agents
 
-* [**Agents Guide**](../main-components/agents.md) - Complete agent documentation
+* [**Agents Guide**](../main-components/agents/) - Complete agent documentation
 * [**Agent Examples**](../../examples/agents/) - Working code examples
 * [**Memory Systems**](../main-components/memory/) - Conversation history
 * [**Tools**](../main-components/tools.md) - Function calling patterns
+* [**Skills**](../main-components/skills.md) - Context-injection skill files
+* [**Tool Registry**](../main-components/tool-registry.md) - Global tool registration
+* [**Middleware**](../main-components/middleware.md) - Logging, retries, guardrails
 
 ### 🧬 RAG & Documents
 

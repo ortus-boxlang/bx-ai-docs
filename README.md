@@ -170,7 +170,7 @@ BoxLang AI provides 12 document loaders for importing content from various sourc
 
 ### 🤖 AI Agents
 
-[Build reusable and autonomous agents, sub-agents, and much more.](main-components/agents.md)
+[Build reusable and autonomous agents, sub-agents, and much more.](main-components/agents/)
 
 ***
 
@@ -375,7 +375,7 @@ response = agent.chat( "Research AI trends in 2025" )
 
 1. **🌱 Beginners**: Start with [Quick Start](getting-started/quickstart.md) → [Basic Chatting](main-components/chatting/basic-chatting.md) → [Examples](../examples/)
 2. **🏗️ Builders**: Learn [Pipelines](main-components/main-components/overview.md) → [Memory](main-components/memory/) → [Tools](main-components/tools.md)
-3. **🚀 Advanced**: Explore [Agents](main-components/agents.md) → [RAG](rag/rag.md) → [Custom Components](advanced/advanced.md)
+3. **🚀 Advanced**: Explore [Agents](main-components/agents/) → [RAG](rag/rag.md) → [Custom Components](advanced/advanced.md)
 
 ***
 

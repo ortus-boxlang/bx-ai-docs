@@ -1007,4 +1007,4 @@ println( response )
 
 * [Memory Systems](../main-components/memory/) - Standard and vector memory types
 * [aiChunk() BIF](../chatting/chunking.md) - Text chunking strategies
-* [Agents](../main-components/agents.md) - Using agents with loaded documents
+* [Agents](../main-components/agents/) - Using agents with loaded documents

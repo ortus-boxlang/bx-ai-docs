@@ -1862,6 +1862,59 @@ function onMCPError( event, interceptData ) {
 
 ***
 
+### 24. onAIToolRegistryRegister
+
+Fired when a tool is registered with the `AIToolRegistry`.
+
+**When**: After a tool is added via `aiToolRegistry().register()` or `scan()` **Frequency**: Once per registered tool
+
+#### Event Arguments
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `tool` | `ITool` | The tool instance that was registered |
+| `key` | `string` | The registry key (e.g., `"search"` or `"search@my-module"`) |
+| `module` | `string` | The module name (empty string if none) |
+
+#### Example
+
+```javascript
+function onAIToolRegistryRegister( event, interceptData ) {
+    writeLog(
+        text: "Tool registered: #interceptData.key#",
+        type: "info"
+    );
+}
+```
+
+***
+
+### 25. onAIToolRegistryUnregister
+
+Fired when a tool is removed from the `AIToolRegistry`.
+
+**When**: After a tool is removed via `aiToolRegistry().unregister()` or `unregisterByModule()` **Frequency**: Once per removed tool
+
+#### Event Arguments
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | The registry key of the removed tool |
+| `module` | `string` | The module name extracted from the key |
+
+#### Example
+
+```javascript
+function onAIToolRegistryUnregister( event, interceptData ) {
+    writeLog(
+        text: "Tool unregistered: #interceptData.key#",
+        type: "info"
+    );
+}
+```
+
+***
+
 ## 💡 Common Use Cases
 
 ### 1. Request Logging and Monitoring

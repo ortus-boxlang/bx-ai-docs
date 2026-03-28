@@ -262,7 +262,7 @@ docs = aiDocuments( "/path" )
 ## 📖 Additional Resources
 
 * [**Getting Started Guide**](../../../getting-started/getting-started.md) - Introduction to BoxLang AI
-* [**Agents Documentation**](../../../main-components/agents.md) - Deep dive into agents
+* [**Agents Documentation**](../../../main-components/agents/) - Deep dive into agents
 * [**Memory Systems**](../../../main-components/memory/) - Memory types and usage
 * [**RAG Guide**](../../../rag/rag.md) - Build knowledge-based AI
 * [**Transformers**](../../../main-components/transformers.md) - Data transformation

@@ -1272,7 +1272,7 @@ See the [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) for c
 * [Vector Memory Guide](../vector-memory.md) - Semantic search and retrieval
 * [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) - Build your own memory types
 * [Messages Documentation](../messages/) - Building message objects
-* [Agents Documentation](../agents.md) - Using memory in agents
+* [Agents Documentation](../agents/) - Using memory in agents
 * [Pipeline Overview](../main-components/overview.md) - Memory in pipelines
 * [Memory BIF Reference](../../../#aimemory) - aiMemory() function reference
 

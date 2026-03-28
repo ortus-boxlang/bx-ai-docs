@@ -547,6 +547,33 @@ aiTool( "cancel_order", "Cancel an order", ... )
 aiTool( "manage_order", "Get, update, or cancel orders", ... )
 ```
 
+## 📦 Tool Registry
+
+The **Tool Registry** lets you register tools once and reference them by name across your entire application — no need to re-declare tools on every agent.
+
+```javascript
+// Register globally (e.g., at application startup)
+aiToolRegistry().register(
+    name       : "searchProducts",
+    description: "Search the product catalog",
+    callback   : ( query ) => productService.search( query )
+)
+
+// Resolve by name when building agents
+agent = aiAgent(
+    name : "shop-assistant",
+    tools: aiToolRegistry().resolveTools( [ "searchProducts" ] )
+)
+```
+
+You can also scan classes annotated with `@AITool` to register all their methods at once:
+
+```javascript
+aiToolRegistry().scan( new OrderService(), "orders-module" )
+```
+
+> See [Tool Registry](tool-registry.md) for complete documentation.
+
 ## Provider Support
 
 | Provider | Tool Support      | Notes                             |
@@ -561,6 +588,8 @@ aiTool( "manage_order", "Get, update, or cancel orders", ... )
 ## Next Steps
 
 * [**Advanced Chatting**](chatting/advanced-chatting.md#ai-tools) - Tool examples with `aiChat()`
-* [**AI Agents**](agents.md) - Using tools with autonomous agents
+* [**AI Agents**](agents/) - Using tools with autonomous agents
+* [**Tool Registry**](tool-registry.md) - Register tools globally
+* [**Custom Tools**](../extending-boxlang-ai/custom-tools.md) - Build custom tool classes
 * [**Working with Models**](models.md#binding-tools-to-models) - Binding tools to models
 * [**MCP Client**](../advanced/mcp-client.md) - Connect to external tool servers
