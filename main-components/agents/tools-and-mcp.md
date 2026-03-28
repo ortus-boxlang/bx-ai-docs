@@ -7,6 +7,10 @@ icon: wrench
 
 # Agent Tools & MCP
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Agents use tools to perform real-world actions — querying databases, calling APIs, running calculations, and more. In v3.0, tools can also be sourced from the Global Tool Registry and from remote MCP servers.
 
 ## Basic Tool Usage

@@ -7,6 +7,10 @@ icon: book-open
 
 # Agent Skills
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Skills are named blocks of domain knowledge or instructions that can be injected into an agent's system context. Think of them as modular expertise — a SQL optimization skill, a security review skill, a brand voice skill — that you can mix and match across agents without duplicating instructions.
 
 There are two modes:

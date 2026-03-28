@@ -7,6 +7,10 @@ icon: graduation-cap
 
 # AI Skills
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Skills are reusable markdown instruction files that give agents specialized knowledge and behavior. Each skill is a focused unit of expertise — like "SQL Optimization", "BoxLang Expert", or "Code Reviewer".
 
 ## 🎓 What are Skills?

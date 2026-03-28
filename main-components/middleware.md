@@ -7,6 +7,10 @@ icon: filter
 
 # Middleware
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Middleware provides hooks into every stage of agent execution — before and after LLM calls, tool invocations, and the full agent run. Use it for logging, retrying failures, enforcing guardrails, and more without touching your agent code.
 
 ## How It Works

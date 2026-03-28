@@ -7,6 +7,10 @@ icon: sitemap
 
 # Sub-Agents & Hierarchy
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Sub-agents allow you to create specialized agents that a parent agent can delegate to. When you register a sub-agent, it is automatically wrapped as an internal tool that the parent can invoke by calling `delegate_to_{agent_name}`.
 
 ## Creating Agents with Sub-Agents

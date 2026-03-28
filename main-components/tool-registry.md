@@ -7,6 +7,10 @@ icon: toolbox
 
 # Tool Registry
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 The **Tool Registry** is a singleton that manages AI tools across your entire application. Instead of manually passing tool arrays to every agent, you can register tools once and resolve them by name anywhere.
 
 ## Why Use the Registry?

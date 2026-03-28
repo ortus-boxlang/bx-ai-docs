@@ -7,6 +7,10 @@ icon: filter
 
 # Agent Middleware
 
+{% hint style="info" %}
+**Since BoxLang AI v3.0+**
+{% endhint %}
+
 Middleware lets you intercept and control an agent's execution at key lifecycle points — before/after each agent run, before/after each LLM call, and before/after each tool invocation. This enables logging, retry logic, content guardrails, rate limiting, and human approval workflows without modifying agent logic.
 
 ## Adding Middleware to an Agent
