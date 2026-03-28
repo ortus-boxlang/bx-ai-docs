@@ -65,22 +65,26 @@ graph LR
 
 BoxLang supports a variety of AI providers out of the box. You can also create custom providers by following our [Custom Provider Guide](extending-boxlang-ai/custom-providers.md).
 
-| Provider | Type | Best For |
-| --- | --- | --- |
-| **Bedrock**                     | Cloud | AWS enterprise, multi-model (Claude, Titan, Llama, Mistral) |
-| **Claude**                      | Cloud | Long context, detailed analysis |
-| **Cohere**                      | Cloud | Embeddings, multilingual, chat, tool calling |
-| **DeepSeek**                 | Cloud | Code generation, reasoning |
-| **Docker Desktop**       | Local | Docker-managed models, easy local AI |
-| **Gemini**                      | Cloud | Google integration, multimodal |
-| **Grok**                         | Cloud | Real-time data, Twitter integration |
-| **Groq**                         | Cloud | Ultra-fast inference, LPU architecture |
-| **HuggingFace**           | Cloud | Open-source models, community-driven |
-| **Ollama**                      | Local | Privacy, offline use, no API costs |
-| **OpenAI**                      | Cloud | General purpose, GPT-5, etc |
-| **OpenRouter**              | Gateway | Access multiple models through one API |
-| **Perplexity**                  | Cloud | Research, citations, factual answers |
-| **Voyage**                      | Cloud | State-of-the-art embeddings, specialized for RAG |
+| Provider | Type | Chat | Stream | Tools | Embeddings | Vision | Audio |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **Bedrock** | Cloud | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| **Claude** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| **Cohere** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **DeepSeek** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Docker Desktop** | Local | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Gemini** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Grok** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| **Groq** | Cloud | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **HuggingFace** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **MiniMax** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Mistral** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Ollama** | Local | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **OpenAI** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **OpenRouter** | Gateway | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Perplexity** | Cloud | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Voyage** | Cloud | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+
+> **Legend:** Vision support requires a multimodal model from the provider (e.g., `gpt-4o`, `claude-3`, `gemini-2.0`). Image/Audio (transcription/TTS) support is currently in development. OpenRouter capabilities depend on the selected underlying model.
 
 ### 🗃️ Supported Memory Types
 
