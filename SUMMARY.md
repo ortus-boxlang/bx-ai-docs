@@ -21,6 +21,7 @@
 
 ## Main Components
 
+* [Main Components](main-components/README.md)
 * [Chatting](main-components/chatting/README.md)
   * [Basic Chatting](main-components/chatting/basic-chatting.md)
   * [Advanced Chatting](main-components/chatting/advanced-chatting.md)
@@ -34,12 +35,10 @@
 * [Transformers & Return Formats](main-components/transformers.md)
 * [Memory Systems](main-components/memory/README.md)
   * [Multi-Tenant Memory Guide](main-components/memory/multi-tenant-memory.md)
+  * [Vector Memory Systems](main-components/memory/vector-memory.md)
 * [Pipelines](main-components/pipelines/README.md)
   * [Structured Output in Pipelines](main-components/pipelines/structured-output.md)
   * [Pipeline Streaming](main-components/pipelines/streaming.md)
-* [Vector Memory Systems](main-components/vector-memory.md)
-* [Main Components](main-components/main-components/README.md)
-  * [Main Components](main-components/main-components/overview.md)
 
 ## RAG
 
@@ -53,7 +52,6 @@
 * [MCP Client - Model Context Protocol](advanced/mcp-client.md)
 * [Event System](advanced/events.md)
 * [🛠️ Utility Functions](advanced/utilities.md)
-* [Advanced Topics](advanced/advanced.md)
 * [Reference](advanced/reference/README.md)
   * [Built-In Functions Reference](advanced/reference/built-in-functions/README.md)
     * [MCP](advanced/reference/built-in-functions/mcp.md)
