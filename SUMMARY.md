@@ -21,17 +21,16 @@
 
 ## Main Components
 
-* [Main Components](main-components/README.md)
+* [Overview](main-components/README.md)
 * [Chatting](main-components/chatting/README.md)
   * [Basic Chatting](main-components/chatting/basic-chatting.md)
   * [Advanced Chatting](main-components/chatting/advanced-chatting.md)
   * [Service-Level Chatting](main-components/chatting/service-chatting.md)
   * [Structured Output](main-components/chatting/structured-output.md)
-* [AI Tools (Function Calling)](main-components/tools.md)
+* [AI Tools](main-components/tools.md)
 * [AI Agents](main-components/agents.md)
 * [Message Templates](main-components/messages/README.md)
   * [🔐 Message Context](main-components/messages/message-context.md)
-* [Working with Models](main-components/models.md)
 * [Transformers & Return Formats](main-components/transformers.md)
 * [Memory Systems](main-components/memory/README.md)
   * [Multi-Tenant Memory Guide](main-components/memory/multi-tenant-memory.md)
@@ -48,6 +47,7 @@
 
 ## Advanced
 
+* [Working with Models](main-components/models.md)
 * [MCP Server - Model Context Protocol Server](advanced/mcp-server.md)
 * [MCP Client - Model Context Protocol](advanced/mcp-client.md)
 * [Event System](advanced/events.md)
