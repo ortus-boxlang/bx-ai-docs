@@ -137,6 +137,8 @@ answer1 = chat.ask( "What is a function?" )
 answer2 = chat.ask( "Show me an example" )  // Has context from answer1
 ```
 
+**If you get to this point, we would highly suggest to use Agents instead of building your own conversation manager. Agents are built on top of the chatting capabilities and provide a lot of additional features such as memory management, tool calling, and more. You can learn more about Agents in the [Agents documentation](../agents/README.md).**
+
 ## 🛠️ AI Tools
 
 Enable AI to call functions and access real-time data.
@@ -147,15 +149,15 @@ Enable AI to call functions and access real-time data.
 weatherTool = aiTool(
     "get_weather",
     "Get current weather for a location",
-    ( args ) => {
+    ( required location ) => {
         // Your weather API call here
         return {
-            location: args.location,
+            location: location,
             temp: 72,
             condition: "sunny"
         }
     }
-).addParameter( "location", "string", "City name", true )
+).describeLocation( "City name" )
 ```
 
 ### Using Tools
@@ -175,22 +177,22 @@ answer = aiChat(
 weatherTool = aiTool(
     "get_weather",
     "Get weather for a location",
-    ( args ) => getWeatherData( args.location )
-).addParameter( "location", "string", "City name", true )
+    ( required location ) => getWeatherData( location )
+).describeLocation( "City name" )
 
 // Calculator tool
 calcTool = aiTool(
     "calculate",
     "Perform calculations",
-    ( args ) => evaluate( args.expression )
-).addParameter( "expression", "string", "Math expression", true )
+    ( required expression ) => evaluateMathExpression( expression )
+).describeExpression( "Math expression" )
 
 // Search tool
 searchTool = aiTool(
     "search",
     "Search for information",
-    ( args ) => searchDatabase( args.query )
-).addParameter( "query", "string", "Search query", true )
+    ( required query ) => searchDatabase( query )
+).describeQuery( "Search query" )
 
 // Use all tools
 answer = aiChat(
@@ -207,16 +209,14 @@ answer = aiChat(
 dbTool = aiTool(
     "query_database",
     "Query the customer database",
-    ( args ) => {
+    ( required field, required value ) => {
         query = queryExecute(
-            "SELECT * FROM customers WHERE #args.field# = :value",
-            { value: args.value }
+            "SELECT * FROM customers WHERE #field# = :value",
+            { value: value }
         )
         return query
     }
 )
-    .addParameter( "field", "string", "Field to search", true )
-    .addParameter( "value", "string", "Value to search for", true )
 
 answer = aiChat(
     "Find all customers in California",
@@ -230,14 +230,14 @@ answer = aiChat(
 apiTool = aiTool(
     "fetch_data",
     "Fetch data from external API",
-    ( args ) => {
+    ( required endpoint ) => {
         result = cfhttp(
-            url: "https://api.example.com/" & args.endpoint,
+            url: "https://api.example.com/" & endpoint,
             method: "GET"
         )
         return deserializeJSON( result.fileContent )
     }
-).addParameter( "endpoint", "string", "API endpoint", true )
+).describeEndpoint( "API endpoint to fetch data from" )
 ```
 
 ## Message Builder
