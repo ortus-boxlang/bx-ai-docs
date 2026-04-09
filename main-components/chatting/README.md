@@ -5,11 +5,11 @@ icon: messages
 
 # 💬 Chatting
 
-Simple, powerful AI interactions using Built-in Functions (BIFs). This section covers everything from basic chat to advanced features like streaming, tools, and structured output.
+Simple, powerful AI interactions using Built-in Functions (BIFs). This section covers everything from basic chat to advanced features like streaming, tools, and structured output.  Please note that chatting can only get you so far. For complex workflows, state management, and agentic behavior, check out the [Main Components](../main-components/README.md) section for pipelines and agents.
 
 ## 📖 Overview
 
-The `aiChat()` BIF provides the fastest way to interact with AI providers. Whether you need a quick answer or a sophisticated multi-turn conversation, these patterns cover your use cases without the overhead of pipelines or agents.
+The `aiChat(), aiChatAsync(), and aiChatStream()` BIFs provides the fastest way to interact with AI providers. Whether you need a quick answer or a sophisticated multi-turn conversation, these patterns cover your use cases without the overhead of pipelines or agents.
 
 **Perfect for:**
 
@@ -87,45 +87,51 @@ Extract type-safe, validated data from AI responses.
 
 ---
 
-## Quick Examples
+## ⚡ Quick Examples
 
 ### Simple Chat
 
 ```java
-result = aiChat( "What is BoxLang?" );
+result = aiChat( "What is BoxLang?" )
 ```
 
-### With Specific Provider
+### With Specific Provider + Model
 
 ```java
 result = aiChat(
-    provider: "claude",
-    message: "Explain quantum computing",
-    model: "claude-3-5-sonnet-20241022"
-);
+    messages: "Explain quantum computing",
+    { model: "claude-3-5-sonnet-20241022" }
+    { provider: "claude" }
+)
 ```
 
 ### Streaming Response
 
 ```java
-aiChat(
-    message: "Write a poem about code",
-    stream: true,
-    onChunk: ( chunk ) => print( chunk )
-);
+aiChatStream(
+    messages: "Write a poem about code",
+    callback: ( chunk ) => print( chunk ),
+    params: { model: "gpt-4o" },
+    options: { provider: "openai" }
+)
 ```
 
 ### Function Calling
 
 ```java
-weatherTool = aiTool()
-    .setFunction( getWeather )
-    .setDescription( "Get weather for a location" );
+weatherTool = aiTool(
+    name: "getWeather",
+    description: "Get current weather for a city",
+    callable: ( required location ) => {
+        // Call your weather API here and return results
+        return callWeatherAPI( location )
+    }
+)
 
 result = aiChat(
-    message: "What's the weather in Boston?",
+    messages: "What's the weather in Boston?",
     tools: [ weatherTool ]
-);
+)
 ```
 
 ### Structured Output
@@ -142,7 +148,7 @@ result = aiChat(
         }
     }
 );
-println( result.name ); // "John"
+println( result.name ) // "John"
 ```
 
 ---
