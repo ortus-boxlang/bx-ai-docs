@@ -34,8 +34,8 @@ registry = aiToolRegistry()
 ### From an `ITool` Instance
 
 ```javascript
+// Automatic key generation from tool name
 myTool = aiTool( "search", "Search the database", ( query ) => db.search( query ) )
-aiToolRegistry().register( myTool )
 ```
 
 ### Shorthand Registration
@@ -45,7 +45,7 @@ aiToolRegistry().register( myTool )
 aiToolRegistry().register(
     name       : "calculate",
     description: "Perform math calculations",
-    callback   : ( expression ) => evaluate( expression )
+    callback   : ( expression ) => mathCall( expression )
 )
 ```
 
