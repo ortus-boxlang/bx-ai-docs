@@ -172,6 +172,91 @@ agent = aiAgent( name: "Assistant" )
     .withAvailableSkills( aiSkill( ".ai/skills" ) )
 ```
 
+## 🌐 Discover, Install, and Publish Community Skills
+
+The open Agent Skills ecosystem lets you discover reusable skills at [skills.sh](https://skills.sh/) and install them with the official CLI from [vercel-labs/skills](https://github.com/vercel-labs/skills).
+
+### Discover Skills on skills.sh
+
+Browse by topic, popularity, or repository owner:
+
+- Directory: [https://skills.sh/](https://skills.sh/)
+- Official collection: [https://skills.sh/official](https://skills.sh/official)
+- Source and CLI docs: [https://github.com/vercel-labs/skills](https://github.com/vercel-labs/skills)
+
+Once you find a skill repository (for example `owner/repo`), install it into your project.
+
+### Install Skills with the npx CLI
+
+Use the official `skills` CLI:
+
+```bash
+# Install from a GitHub repo (project-local install)
+npx skills add owner/repo
+
+# List skills in a repo before installing
+npx skills add owner/repo --list
+
+# Install one specific skill from the repo
+npx skills add owner/repo --skill my-skill-name
+
+# Install globally instead of project-local
+npx skills add owner/repo -g
+```
+
+After install, wire the skill into your BoxLang AI agent as always-on or available-on-demand:
+
+```javascript
+agent = aiAgent(
+  name           : "BoxLang Assistant",
+  skills         : [ aiSkill( "/.ai/skills/boxlang-expert/SKILL.md" ) ],
+  availableSkills: aiSkill( "/.ai/skills" )
+)
+```
+
+### Create Your Own Skill
+
+You can scaffold a skill quickly:
+
+```bash
+# Create a new skill folder with a SKILL.md template
+npx skills init boxlang-api-designer
+```
+
+Then ensure frontmatter includes a clear `name` and `description`:
+
+```markdown
+---
+name: boxlang-api-designer
+description: Helps design BoxLang modules and APIs with practical conventions.
+---
+
+# BoxLang API Designer
+
+## When to Use
+
+Use when creating or reviewing BoxLang module APIs, naming, and documentation.
+```
+
+### Publish to GitHub with BoxLang Tags
+
+To make your skill easy to discover, publish it in a public GitHub repository and add relevant repository topics.
+
+Recommended topics:
+
+- `boxlang`
+- `agent-skills`
+- `ai`
+- `boxlang-ai` (if the skill is specific to this module)
+
+Repository layout can be either a single root `SKILL.md` or a `skills/` directory containing one or more skills.
+
+Then users can install directly from your repo:
+
+```bash
+npx skills add your-org/your-skills-repo --skill boxlang-api-designer
+```
+
 ## Related Pages
 
 * [Agent Skills (agents/)](agents/skills.md) — Skills in the context of agent configuration
