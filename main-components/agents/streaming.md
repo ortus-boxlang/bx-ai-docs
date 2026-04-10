@@ -20,7 +20,7 @@ agent = aiAgent(
 response = ""
 
 agent.stream(
-    callback: ( chunk ) => {
+    onChunk: ( chunk ) => {
         content   = chunk.choices?.first()?.delta?.content ?: ""
         response &= content
         print( content )   // Print each chunk immediately
@@ -41,7 +41,7 @@ agent = aiAgent(
 )
 
 agent.stream(
-    callback: ( chunk ) => {
+    onChunk: ( chunk ) => {
         content = chunk.choices?.first()?.delta?.content ?: ""
         writeOutput( content )
     },
@@ -61,8 +61,8 @@ pipeline = aiMessage()
     .to( agent )
 
 pipeline.stream(
-    callback: chunk => print( chunk ),
-    input   : { topic: "Quantum Computing" }
+    onChunk: chunk => print( chunk ),
+    input  : { topic: "Quantum Computing" }
 )
 ```
 
@@ -81,8 +81,8 @@ agent.run( "My name is Luis" )
 
 // Stream the next response
 agent.stream(
-    callback: chunk => print( chunk.choices?.first()?.delta?.content ?: "" ),
-    input   : "What's my name?"
+    onChunk: chunk => print( chunk.choices?.first()?.delta?.content ?: "" ),
+    input  : "What's my name?"
 )
 // → Streams "Your name is Luis"
 ```
@@ -91,9 +91,9 @@ agent.stream(
 
 ```javascript
 agent.stream(
-    callback: chunk => print( chunk.choices?.first()?.delta?.content ?: "" ),
-    input   : "Help me with billing",
-    options : {
+    onChunk: chunk => print( chunk.choices?.first()?.delta?.content ?: "" ),
+    input  : "Help me with billing",
+    options: {
         userId        : "alice",
         conversationId: "conv-001"
     }
@@ -115,7 +115,7 @@ if ( result.isSuspended() ) {
     agent.resumeStream(
         decision: "approved",
         threadId: threadId,
-        callback: chunk => print( chunk.choices?.first()?.delta?.content ?: "" )
+        onChunk : chunk => print( chunk.choices?.first()?.delta?.content ?: "" )
     )
 }
 ```

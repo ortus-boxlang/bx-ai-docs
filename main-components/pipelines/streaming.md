@@ -18,12 +18,12 @@ sequenceDiagram
     participant AI as AI Provider
     participant C as Callback
 
-    U->>P: pipeline.stream(callback)
+    U->>P: pipeline.stream(onChunk)
     P->>AI: Start streaming request
 
     loop For each chunk
         AI->>P: Stream chunk
-        P->>C: Call callback(chunk)
+        P->>C: Call onChunk(chunk)
         C->>U: Display/Process chunk
     end
 

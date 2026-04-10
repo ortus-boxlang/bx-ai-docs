@@ -62,7 +62,7 @@ aiAgent(name, description, instructions, model, memory, tools, subAgents, params
 Returns an `AiAgent` instance with fluent API for:
 
 * Running conversations: `run(input)`
-* Streaming responses: `stream(callback, input)`
+* Streaming responses: `stream(onChunk, input)`
 * Tool management: `addTool()`, `removeTool()`
 * Memory management: `addMemory()`, `getMemory()`
 * Pipeline integration: Agents are IAiRunnable
