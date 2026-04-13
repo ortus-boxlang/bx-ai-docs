@@ -52,7 +52,7 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 25 | [afterAIPipelineRun](events.md#25-afteraipipelinerun)   | After pipeline completes         | `sequence`, `result`, `executionTime`             |
 | 26 | [onAIError](events.md#26-onaierror)                     | Error occurs                     | `error`, `errorMessage`, `provider`, `canRetry`   |
 | 27 | [onAIRateLimitHit](events.md#27-onairatelimithit)       | Rate limit detected (429)        | `provider`, `statusCode`, `retryAfter`            |
-| 28 | [onAITokenCount](events.md#28-onaitokencount)           | Token usage available            | `provider`, `model`, `totalTokens`, `tenantId`, `usageMetadata` |
+| 28 | [onAITokenCount](events.md#28-onaitokencount)           | Token usage available            | `provider`, `operation`, `model`, `promptTokens`, `completionTokens`, `totalTokens`, `aiRequest`, `usage`, `timestamp` |
 | 29 | [onMCPServerCreate](events.md#29-onmcpservercreate)     | MCP server instance created      | `server`, `name`, `description`                   |
 | 30 | [onMCPServerRemove](events.md#30-onmcpserverremove)     | MCP server instance removed      | `name`                                            |
 | 31 | [onMCPRequest](events.md#31-onmcprequest)               | Before processing MCP request    | `server`, `requestData`, `serverName`             |
@@ -1126,20 +1126,17 @@ Fired when token usage information is available from the AI provider response.
 
 #### Event Arguments
 
-| Argument           | Type        | Description                                              |
-| ------------------ | ----------- | -------------------------------------------------------- |
-| `provider`         | `IService`  | The provider used                                        |
-| `operation`        | `String`    | Operation type: "chat", "embeddings"                     |
-| `model`            | `String`    | Model name                                               |
-| `promptTokens`     | `Numeric`   | Input tokens used                                        |
-| `completionTokens` | `Numeric`   | Output tokens used                                       |
-| `totalTokens`      | `Numeric`   | Total tokens (prompt + completion)                       |
-| `tenantId`         | `String`    | Tenant identifier for multi-tenant billing (v2.1.0+)     |
-| `usageMetadata`    | `Struct`    | Custom tracking data (cost center, project, etc.) (v2.1.0+) |
-| `providerOptions`  | `Struct`    | Provider-specific options from request (v2.1.0+)        |
-| `timestamp`        | `DateTime`  | When the event fired (v2.1.0+)                           |
-| `aiRequest`        | `AiChatRequest` | The request object                                       |
-| `usage`            | `Struct`    | Full usage object from provider                          |
+| Argument           | Type            | Description                          |
+| ------------------ | --------------- | ------------------------------------ |
+| `provider`         | `IService`      | The provider instance                |
+| `operation`        | `String`        | Operation type: `"chat"`             |
+| `model`            | `String`        | Model ID used for the request        |
+| `promptTokens`     | `Numeric`       | Input tokens used                    |
+| `completionTokens` | `Numeric`       | Output tokens generated              |
+| `totalTokens`      | `Numeric`       | Total tokens (prompt + completion)   |
+| `aiRequest`        | `AiChatRequest` | The originating chat request object  |
+| `usage`            | `Struct`        | Full raw usage object from provider  |
+| `timestamp`        | `DateTime`      | When the event was fired             |
 
 ````
 
