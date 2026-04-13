@@ -13,7 +13,7 @@ The BoxLang AI Module provides a complete MCP (Model Context Protocol) server im
 * [Quick Start](mcp-server.md#quick-start)
 * [Server Configuration](mcp-server.md#server-configuration)
 * [Tool Registration](mcp-server.md#tool-registration)
-* [Annotation-Based Discovery](mcp-server.md#annotation-based-discovery)
+* [Annotation-Based Discovery](mcp-server.md#annotation-based-discovery) (`scan()` & `scanClass()`)
 * [Resource Registration](mcp-server.md#resource-registration)
 * [Prompt Registration](mcp-server.md#prompt-registration)
 * [Handling MCP Requests](mcp-server.md#handling-mcp-requests)
@@ -1088,23 +1088,63 @@ server.clearTools()
 
 ## Annotation-Based Discovery
 
-The MCP server can automatically discover and register tools, resources, and prompts from annotated methods using the `scan()` method.
+The MCP server can automatically discover and register tools, resources, and prompts from annotated methods using two dedicated methods:
 
-### Scan for Annotations
+| Method | Purpose |
+|---|---|
+| `scan( path, recurse )` | Scan a **package or directory** for all annotated `.bx` files |
+| `scanClass( classPath )` | Scan a **single class** (instance, dot-path, or file path) |
 
-```java
-// Scan a class file
-MCPServer( "myApp" ).scan( "/path/to/MyTools.bx" )
+### `scan()` — Packages & Directories
 
-// Scan a directory (recursively scans all .bx files)
-MCPServer( "myApp" ).scan( "/path/to/tools/" )
+Use `scan()` when you want to auto-discover all annotated classes inside a package or folder. Supports recursive scanning (default: `true`).
+
+```javascript
+// Dot-notation package path (e.g. models/tools/ on the filesystem)
+mcpServer( "myApp" ).scan( "models.tools" )
+
+// Dot-notation with recursion disabled
+mcpServer( "myApp" ).scan( "models.tools", false )
+
+// Absolute directory path
+mcpServer( "myApp" ).scan( "/path/to/tools/" )
+
+// Relative directory path
+mcpServer( "myApp" ).scan( "./tools" )
+```
+
+### `scanClass()` — Single Classes
+
+Use `scanClass()` when you want to target one specific class. Accepts an existing instance, a dot-notation class path, or a file path.
+
+```javascript
+// Already-instantiated object
+mcpServer( "myApp" ).scanClass( new models.tools.MyTools() )
+
+// Dot-notation class path (no-arg constructor required)
+mcpServer( "myApp" ).scanClass( "models.tools.MyTools" )
+
+// Absolute file path
+mcpServer( "myApp" ).scanClass( "/path/to/MyTools.bx" )
+
+// Relative file path
+mcpServer( "myApp" ).scanClass( "./tools/MyTools.bx" )
+```
+
+Both methods are chainable, so you can mix them freely:
+
+```javascript
+mcpServer( "myApp" )
+    .scan( "models.tools" )                        // whole package
+    .scanClass( new models.special.CustomTool() )  // one extra class
+    .scan( "./legacy/tools", false )               // non-recursive folder
 ```
 
 ### @mcpTool Annotation
 
 Register methods as MCP tools:
 
-```java
+```javascript
 class {
 
     /**
@@ -1142,7 +1182,7 @@ Annotation formats:
 
 Register methods as MCP resources:
 
-```java
+```javascript
 class {
 
     /**
@@ -1176,7 +1216,7 @@ Annotation formats:
 
 Register methods as MCP prompts:
 
-```java
+```javascript
 class {
 
     /**
