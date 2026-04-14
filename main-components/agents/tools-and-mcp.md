@@ -105,6 +105,37 @@ agent = aiAgent(
 
 See [Tool Registry](../tool-registry.md) for the full reference.
 
+## Built-in Audio Tools (v3.1+) 🎙️
+
+The `bx-ai` module automatically registers three audio tools at startup. Opt in by including their keys in your agent's `tools` array — no registration code required.
+
+| Tool Key | Description |
+|---|---|
+| `speak@bxai` | Convert text to speech; returns the absolute path to the saved audio file (auto-generates a temp file if no `outputFile` is provided) |
+| `transcribe@bxai` | Transcribe a local audio file path or URL to plain text |
+| `translate@bxai` | Translate any-language audio to English text |
+
+```javascript
+agent = aiAgent(
+    name         : "VoiceAssistant",
+    instructions : "You are a helpful voice assistant. Speak responses aloud and transcribe audio on request.",
+    tools        : [ "now@bxai", "speak@bxai", "transcribe@bxai", "translate@bxai" ]
+)
+
+// Agent calls speak@bxai — returns the path to the generated mp3
+agent.run( "Welcome the user and tell them today's date" )
+
+// Agent calls transcribe@bxai — returns plain transcript text
+agent.run( "Transcribe /recordings/meeting.mp3" )
+
+// Agent calls translate@bxai — returns English translation
+agent.run( "Translate the Spanish audio at /audio/mensaje.mp3" )
+```
+
+> 💡 The `speak@bxai` tool writes to a temporary file automatically when the agent does not supply an `outputFile`. For production use, instruct the agent to provide a specific output path or post-process the returned path.
+
+See [Audio & Speech](../audio/README.md) for full details on providers, voices, and formats.
+
 ## ClosureTool Pattern
 
 `ClosureTool` wraps a lambda directly without going through `aiTool()`:
