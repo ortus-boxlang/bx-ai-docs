@@ -58,6 +58,14 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 31 | [onMCPRequest](events.md#31-onmcprequest)               | Before processing MCP request    | `server`, `requestData`, `serverName`             |
 | 32 | [onMCPResponse](events.md#32-onmcpresponse)             | After processing MCP response    | `server`, `response`, `requestData`               |
 | 33 | [onMCPError](events.md#33-onmcperror)                   | Exception during MCP operations  | `server`, `context`, `exception`, request details |
+| 34 | [beforeAISpeech](events.md#34-beforeaispeech)            | Before TTS request is sent       | `speechRequest`, `service`                        |
+| 35 | [afterAISpeech](events.md#35-afteraispeech)              | After TTS response received      | `speechRequest`, `service`, `result`              |
+| 36 | [beforeAITranscription](events.md#36-beforeaitranscription) | Before STT request is sent    | `transcriptionRequest`, `service`                 |
+| 37 | [afterAITranscription](events.md#37-afteraitranscription)   | After STT response received   | `transcriptionRequest`, `service`, `result`       |
+| 38 | [beforeAITranslation](events.md#38-beforeaitranslation)  | Before audio translation request | `transcriptionRequest`, `service`                 |
+| 39 | [afterAITranslation](events.md#39-afteraitranslation)    | After audio translation response | `transcriptionRequest`, `service`, `result`       |
+| 40 | [onHybridMemoryAdd](events.md#40-onhybridmemoryadd)      | Message added to HybridMemory    | `memory`, `message`                               |
+| 41 | [onVectorSearch](events.md#41-onvectorsearch)            | Vector semantic search runs      | `memory`, `query`, `limit`, `results`             |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -144,11 +152,27 @@ graph TB
         E21[onMCPError]
     end
 
+    subgraph "Audio Events"
+        E22[beforeAISpeech]
+        E23[afterAISpeech]
+        E24[beforeAITranscription]
+        E25[afterAITranscription]
+        E26[beforeAITranslation]
+        E27[afterAITranslation]
+    end
+
+    subgraph "Memory Events"
+        E28[onHybridMemoryAdd]
+        E29[onVectorSearch]
+    end
+
     style E1 fill:#4A90E2
     style E8 fill:#7ED321
     style E14 fill:#F5A623
     style E16 fill:#D0021B
     style E18 fill:#BD10E0
+    style E22 fill:#E67E22
+    style E28 fill:#16A085
 ```
 
 ***
@@ -2531,6 +2555,202 @@ class {
         return text;
     }
 }
+```
+
+***
+
+---
+
+## 🔊 Audio Events (34–39)
+
+### 34. beforeAISpeech
+
+Fired before a text-to-speech request is sent to the provider.
+
+**When**: Before `aiSpeak()` dispatches the HTTP request
+
+#### Event Arguments
+
+| Argument         | Type    | Description                              |
+| ---------------- | ------- | ---------------------------------------- |
+| `speechRequest`  | `Struct`| The full TTS request object              |
+| `service`        | `any`   | The AI service provider instance         |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "beforeAISpeech", function( event ) {
+    println( "TTS request: provider=#event.service.getName()# chars=#event.speechRequest.text.len()#" )
+})
+```
+
+---
+
+### 35. afterAISpeech
+
+Fired after a text-to-speech response has been received from the provider.
+
+**When**: After `aiSpeak()` receives and wraps the audio binary in `AiSpeechResponse`
+
+#### Event Arguments
+
+| Argument         | Type                | Description                              |
+| ---------------- | ------------------- | ---------------------------------------- |
+| `speechRequest`  | `Struct`            | The original TTS request object          |
+| `service`        | `any`               | The AI service provider instance         |
+| `result`         | `AiSpeechResponse`  | The response object with audio data      |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "afterAISpeech", function( event ) {
+    var sizeKB = event.result.getSize() / 1024
+    println( "TTS complete: #event.service.getName()# — #numberFormat( sizeKB, '0.0' )# KB" )
+})
+```
+
+---
+
+### 36. beforeAITranscription
+
+Fired before a speech-to-text request is sent to the provider.
+
+**When**: Before `aiTranscribe()` dispatches the HTTP request
+
+#### Event Arguments
+
+| Argument               | Type    | Description                              |
+| ---------------------- | ------- | ---------------------------------------- |
+| `transcriptionRequest` | `Struct`| The full STT request object              |
+| `service`              | `any`   | The AI service provider instance         |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "beforeAITranscription", function( event ) {
+    println( "STT request: provider=#event.service.getName()#" )
+})
+```
+
+---
+
+### 37. afterAITranscription
+
+Fired after a speech-to-text response has been received from the provider.
+
+**When**: After `aiTranscribe()` receives the transcription response
+
+#### Event Arguments
+
+| Argument               | Type                       | Description                              |
+| ---------------------- | -------------------------- | ---------------------------------------- |
+| `transcriptionRequest` | `Struct`                   | The original STT request object          |
+| `service`              | `any`                      | The AI service provider instance         |
+| `result`               | `AiTranscriptionResponse`  | The transcription response object        |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "afterAITranscription", function( event ) {
+    println( "Transcribed: #event.result.getWordCount()# words via #event.service.getName()#" )
+})
+```
+
+---
+
+### 38. beforeAITranslation
+
+Fired before an audio translation request is sent to the provider.
+
+**When**: Before `aiTranslate()` dispatches the HTTP request
+
+#### Event Arguments
+
+| Argument               | Type    | Description                                      |
+| ---------------------- | ------- | ------------------------------------------------ |
+| `transcriptionRequest` | `Struct`| The full translation request object              |
+| `service`              | `any`   | The AI service provider instance                 |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "beforeAITranslation", function( event ) {
+    println( "Audio translation request: #event.service.getName()#" )
+})
+```
+
+---
+
+### 39. afterAITranslation
+
+Fired after an audio translation response has been received from the provider.
+
+**When**: After `aiTranslate()` receives the English text response
+
+#### Event Arguments
+
+| Argument               | Type                       | Description                              |
+| ---------------------- | -------------------------- | ---------------------------------------- |
+| `transcriptionRequest` | `Struct`                   | The original translation request object  |
+| `service`              | `any`                      | The AI service provider instance         |
+| `result`               | `AiTranscriptionResponse`  | The response with English text           |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "afterAITranslation", function( event ) {
+    println( "Translated: #event.result.getWordCount()# English words" )
+})
+```
+
+---
+
+## 🧠 Memory Events (40–41)
+
+### 40. onHybridMemoryAdd
+
+Fired when a message is added to a `HybridMemory` instance. Use this to audit, transform, or track messages as they enter hybrid memory.
+
+**When**: Inside `HybridMemory.add()` after the message has been processed
+
+#### Event Arguments
+
+| Argument  | Type        | Description                              |
+| --------- | ----------- | ---------------------------------------- |
+| `memory`  | `HybridMemory` | The memory instance receiving the message |
+| `message` | `AiMessage` | The message being added                  |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onHybridMemoryAdd", function( event ) {
+    println( "Hybrid memory received: role=#event.message.getRole()# chars=#event.message.getContent().len()#" )
+})
+```
+
+---
+
+### 41. onVectorSearch
+
+Fired whenever a semantic search runs against a vector memory store. Use this for observability, caching query results, or logging retrieval quality.
+
+**When**: After `IVectorMemory.getRelevant()` or `findSimilar()` returns results
+
+#### Event Arguments
+
+| Argument  | Type          | Description                                  |
+| --------- | ------------- | -------------------------------------------- |
+| `memory`  | `IVectorMemory` | The vector memory instance that was searched |
+| `query`   | `String`      | The search query string                      |
+| `limit`   | `Numeric`     | Maximum number of results requested          |
+| `results` | `Array`       | Array of retrieved documents/messages        |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onVectorSearch", function( event ) {
+    println( "Vector search: query='#event.query#' found=#event.results.len()# limit=#event.limit#" )
+})
 ```
 
 ***

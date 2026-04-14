@@ -263,6 +263,102 @@ safePipeline = inputValidator
 
 ---
 
+## ⚡ Async Pipeline Execution
+
+Every `IAiRunnable` — including full pipeline sequences — exposes `runAsync()`, which dispatches execution to the `io-tasks` virtual thread pool and returns a **`BoxFuture`**. This lets you kick off expensive AI calls without blocking the current thread.
+
+```javascript
+pipeline = aiModel( "openai" )
+    .transform( text => text.trim() )
+    .transform( text => "Summary: #text#" )
+
+// Non-blocking — returns immediately with a future
+future = pipeline.runAsync( "Explain quantum computing in one paragraph" )
+
+// Do other work here...
+
+// Block when you actually need the result
+result = future.get()
+println( result )
+```
+
+You can also use `.then()` for a callback pattern:
+
+```javascript
+pipeline.runAsync( "What is BoxLang?" ).then( function( result ) {
+    println( "Completed: #result#" )
+})
+```
+
+### Running Multiple Pipelines Concurrently
+
+The real power of `runAsync()` is running multiple independent pipelines at the same time:
+
+```javascript
+pipelines = [
+    aiModel( "openai" ).runAsync( "Summarize topic A" ),
+    aiModel( "openai" ).runAsync( "Summarize topic B" ),
+    aiModel( "openai" ).runAsync( "Summarize topic C" )
+]
+
+// All three run concurrently; collect when needed
+summaries = pipelines.map( f => f.get() )
+summaries.each( s => println( s ) )
+```
+
+---
+
+## 🔀 Parallel Pipelines with `aiParallel()`
+
+`aiParallel()` is purpose-built for fan-out scenarios: send the same input to multiple named runnables **concurrently** and receive all results in a single named struct.
+
+```javascript
+parallel = aiParallel({
+    openai:   aiModel( "openai",  { params: { model: "gpt-4o-mini" } } ),
+    claude:   aiModel( "claude",  { params: { model: "claude-3-haiku-20240307" } } ),
+    mistral:  aiModel( "mistral", { params: { model: "mistral-small-latest" } } )
+})
+
+results = parallel.run( "What is the capital of France?" )
+
+println( results.openai  )  // "Paris"
+println( results.claude  )  // "Paris"
+println( results.mistral )  // "The capital of France is Paris."
+```
+
+Because `AiRunnableParallel` implements `IAiRunnable`, it composes naturally into larger pipelines with `.transform()` or `.to()`:
+
+```javascript
+pipeline = aiParallel({
+    fast:  aiModel( "groq" ),
+    smart: aiModel( "openai" )
+}).transform( function( results ) {
+    return "Fast:  #results.fast##chr(10)#Smart: #results.smart#"
+})
+
+combined = pipeline.run( "Explain quantum entanglement in one sentence" )
+println( combined )
+```
+
+### Model Evaluation / A/B Testing
+
+`aiParallel()` makes comparing outputs across providers or prompt variants trivial:
+
+```javascript
+evaluations = aiParallel({
+    control:   aiModel( "openai",  { params: { temperature: 0.5 } } ),
+    variant_a: aiModel( "openai",  { params: { temperature: 1.0 } } ),
+    variant_b: aiModel( "claude" )
+}).run( "Write a tagline for a cloud-native BoxLang platform" )
+
+evaluations.each( function( variant, text ) {
+    println( "=== #variant# ===" )
+    println( text )
+})
+```
+
+---
+
 ## Related Pages
 
 * [Building Pipelines](building.md) — Methods and data flow
@@ -270,3 +366,4 @@ safePipeline = inputValidator
 * [Multi-Model Workflows](multi-model.md) — Complex multi-stage patterns
 * [Streaming](streaming.md) — Real-time response handling
 * [Events Reference](../../advanced/events.md) — Full event catalog
+* [aiParallel BIF Reference](../../advanced/reference/built-in-functions/aiparallel.md)

@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
   * [Release History](readme/release-history/README.md)
+    * [3.1.0](readme/release-history/3.1.0.md)
     * [3.0.0](readme/release-history/3.0.0.md)
     * [2.4.0](readme/release-history/2.4.0.md)
     * [2.3.0](readme/release-history/2.3.0.md)
@@ -48,6 +49,10 @@
 * [Memory Systems](main-components/memory/README.md)
   * [Multi-Tenant Memory Guide](main-components/memory/multi-tenant-memory.md)
   * [Vector Memory Systems](main-components/memory/vector-memory.md)
+* [Audio — Speech & Transcription](main-components/audio/README.md)
+  * [Text-to-Speech](main-components/audio/text-to-speech.md)
+  * [Speech-to-Text](main-components/audio/speech-to-text.md)
+  * [Audio Translation](main-components/audio/audio-translation.md)
 * [Pipelines](main-components/pipelines/README.md)
   * [Building Pipelines](main-components/pipelines/building.md)
   * [Transform Pipelines](main-components/pipelines/transforms.md)
@@ -84,14 +89,18 @@
     * [aiMemory](advanced/reference/built-in-functions/aimemory.md)
     * [aiMessage](advanced/reference/built-in-functions/aimessage.md)
     * [aiModel](advanced/reference/built-in-functions/aimodel.md)
+    * [aiParallel](advanced/reference/built-in-functions/aiparallel.md)
     * [aiPopulate](advanced/reference/built-in-functions/aipopulate.md)
     * [aiService](advanced/reference/built-in-functions/aiservice.md)
     * [aiTokens](advanced/reference/built-in-functions/aitokens.md)
     * [aiSkill](advanced/reference/built-in-functions/aiskill.md)
     * [aiGlobalSkills](advanced/reference/built-in-functions/aiglobalskills.md)
+    * [aiSpeak](advanced/reference/built-in-functions/aispeak.md)
     * [aiToolRegistry](advanced/reference/built-in-functions/aitoolregistry.md)
     * [aiTool](advanced/reference/built-in-functions/aitool.md)
+    * [aiTranscribe](advanced/reference/built-in-functions/aitranscribe.md)
     * [aiTransform](advanced/reference/built-in-functions/aitransform.md)
+    * [aiTranslate](advanced/reference/built-in-functions/aitranslate.md)
 
 ## Deployment
 
