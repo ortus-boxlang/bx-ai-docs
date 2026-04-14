@@ -136,6 +136,80 @@ agent.run( "Translate the Spanish audio at /audio/mensaje.mp3" )
 
 See [Audio & Speech](../audio/README.md) for full details on providers, voices, and formats.
 
+## Built-in FileSystem Tools (v3.1+) 📂
+
+`FileSystemTools` gives agents the ability to read, write, move, delete, and list files and directories on the local filesystem. It is **not auto-registered** — you must opt in explicitly, which lets you apply path guards that restrict the AI to specific directories.
+
+### Tool Keys
+
+| Tool Key | Description |
+|---|---|
+| `readFile@bxai` | Read a file and return its text content |
+| `writeFile@bxai` | Write (overwrite) text to a file; creates parent dirs as needed |
+| `appendFile@bxai` | Append text to a file; creates the file if it does not exist |
+| `fileMetadata@bxai` | Return file metadata (name, size, MIME type, modified date) as JSON |
+| `pathExists@bxai` | Check whether a file or directory exists (`"true"` / `"false"`) |
+| `deleteFile@bxai` | Delete a file ⚠️ irreversible |
+| `moveFile@bxai` | Move or rename a file |
+| `copyFile@bxai` | Copy a file to a new location |
+| `listDirectory@bxai` | List directory contents as a JSON array; supports glob filters and recursion |
+| `createDirectory@bxai` | Create a directory including any missing parent directories |
+| `deleteDirectory@bxai` | Recursively delete a directory and all its contents ⚠️ irreversible |
+
+### Registration with Path Guards
+
+```javascript
+import bxModules.bxai.models.tools.filesystem.FileSystemTools;
+
+// Restrict to specific directories (strongly recommended)
+aiToolRegistry().scanClass(
+    new FileSystemTools( allowedPaths: [ "/workspace/data", "/tmp/ai-output" ] ),
+    "bxai"
+)
+
+// Allow any path — use only in fully-trusted environments
+aiToolRegistry().scanClass( new FileSystemTools(), "bxai" )
+```
+
+Every path argument is resolved to its canonical form before the guard check runs. This blocks directory-traversal tricks like `../../etc/passwd` even if the AI constructs them.
+
+### Example: Coding Agent
+
+```javascript
+agent = aiAgent(
+    name         : "CodingAssistant",
+    instructions : "You are a coding assistant. You can read, write, and organize project files.",
+    tools        : [
+        "readFile@bxai",
+        "writeFile@bxai",
+        "listDirectory@bxai",
+        "createDirectory@bxai",
+        "fileMetadata@bxai",
+        "pathExists@bxai"
+    ]
+)
+
+// Agent reads a file and rewrites it with improvements
+agent.run( "Read src/App.bx and add a descriptive header comment at the top" )
+
+// Agent scans the project for all BoxLang files
+agent.run( "List all .bx files under src/ recursively and summarize what each one does" )
+
+// Agent creates an output structure
+agent.run( "Create a reports/ directory and write an audit.md file with a summary of findings" )
+```
+
+### Example: File listing with glob filter
+
+```javascript
+// listDirectory supports glob patterns and recursive search
+agent.run(
+    "List all JSON and YAML config files under /project/config — use the pattern *.json|*.yaml"
+)
+```
+
+> 🔐 `deleteFile@bxai` and `deleteDirectory@bxai` are irreversible. Consider omitting them from agents that only need read or write access.
+
 ## ClosureTool Pattern
 
 `ClosureTool` wraps a lambda directly without going through `aiTool()`:
