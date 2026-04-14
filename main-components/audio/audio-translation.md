@@ -18,7 +18,7 @@ icon: language
 flowchart LR
     A["🎤 Audio\n(any language)"] --> B["aiTranslate()"]
     B --> C["📝 English Text"]
-    
+
     style A fill:#4a90d9,color:#fff
     style B fill:#7b68ee,color:#fff
     style C fill:#27ae60,color:#fff
