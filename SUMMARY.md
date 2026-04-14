@@ -49,7 +49,7 @@
 * [Memory Systems](main-components/memory/README.md)
   * [Multi-Tenant Memory Guide](main-components/memory/multi-tenant-memory.md)
   * [Vector Memory Systems](main-components/memory/vector-memory.md)
-* [Audio — Speech & Transcription](main-components/audio/README.md)
+* [Audio/Speech & Transcription](main-components/audio/README.md)
   * [Text-to-Speech](main-components/audio/text-to-speech.md)
   * [Speech-to-Text](main-components/audio/speech-to-text.md)
   * [Audio Translation](main-components/audio/audio-translation.md)
