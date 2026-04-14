@@ -140,7 +140,7 @@ result = aiTranscribe(
     }
 )
 
-result.getWords().each( function( word ) {
+result.getWords().each( word => {
     println( "[#word.start#s–#word.end#s] #word.word#" )
 })
 ```
@@ -206,7 +206,7 @@ fileWrite( "/video/presentation.srt", srt )
 
 ```javascript
 // Track all transcription requests for cost monitoring
-BoxRegisterInterceptor( "afterAITranscription", function( event ) {
+BoxRegisterInterceptor( "afterAITranscription", event => {
     println( "Transcribed #event.result.getWordCount()# words via #event.service.getName()#" )
 })
 ```

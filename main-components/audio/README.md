@@ -132,7 +132,7 @@ The module fires interception points around every audio operation, giving you fu
 Register interceptors in your application or script using `BoxRegisterInterceptor()`:
 
 ```javascript
-BoxRegisterInterceptor( "afterAISpeech", function( event ) {
+BoxRegisterInterceptor( "afterAISpeech", event => {
     println( "TTS complete — provider: #event.service.getName()#, size: #event.result.getSize()# bytes" )
 })
 ```

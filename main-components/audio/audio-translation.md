@@ -152,7 +152,7 @@ println( english )
 | `afterAITranslation` | `transcriptionRequest`, `service`, `result` |
 
 ```javascript
-BoxRegisterInterceptor( "afterAITranslation", function( event ) {
+BoxRegisterInterceptor( "afterAITranslation", event => {
     println( "Translated #event.result.getWordCount()# English words via #event.service.getName()#" )
 })
 ```

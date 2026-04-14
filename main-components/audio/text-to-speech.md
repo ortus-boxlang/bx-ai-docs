@@ -130,7 +130,7 @@ println( "Format: #audio.getAudioFormat()#, Size: #audio.getSize()# bytes" )
 voices = [ "alloy", "echo", "fable", "onyx", "nova", "shimmer" ]
 sampleText = "BoxLang AI — where imagination meets voice."
 
-voices.each( function( voice ) {
+voices.each( voice => {
     aiSpeak(
         sampleText,
         { voice: voice },
@@ -163,7 +163,7 @@ voices.each( function( voice ) {
 
 ```javascript
 // Log all TTS calls with their output size
-BoxRegisterInterceptor( "afterAISpeech", function( event ) {
+BoxRegisterInterceptor( "afterAISpeech", event => {
     var sizeKB = event.result.getSize() / 1024
     println( "TTS: provider=#event.service.getName()# size=#numberFormat( sizeKB, '0.0' )#KB" )
 })
