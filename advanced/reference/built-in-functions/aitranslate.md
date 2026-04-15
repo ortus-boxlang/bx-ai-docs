@@ -26,6 +26,13 @@ aiTranslate( audio, params={}, options={} )
 | URL | String starting with `http://` or `https://` |
 | Binary data | BoxLang binary / Java `byte[]` value |
 
+## Params
+
+| Param | Type | Default | Description |
+|---|---|---|---|
+| `model` | string | (config default) | Translation model to use (e.g. `whisper-1`, `whisper-large-v3`) |
+| `inputFormat` | string | (auto) | Audio format of binary input: `mp3`, `wav`, `flac`, `webm`, `ogg`, `m4a`, etc. Only required when passing raw `byte[]` data — file paths are auto-detected from their extension. Auto-seeded from `audio.defaultOutputFormat` in your module config when not specified |
+
 ## Options
 
 | Option | Type | Default | Description |
