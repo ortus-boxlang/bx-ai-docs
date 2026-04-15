@@ -22,7 +22,7 @@ aiSpeak( text, params={}, options={} )
 |---|---|---|---|
 | `provider` | string | (config default) | AI provider name: `openai`, `mistral`, `gemini`, `grok`, `elevenlabs` |
 | `apiKey` | string | (env var) | Provider API key. Falls back to `<PROVIDER>_API_KEY` environment variable |
-| `voice` | string | (config default) | Voice name or ID. Provider-specific; see voice reference table below |
+| `voice` | string | (config default) | Voice name or ID. Pass a provider-specific voice name (e.g. `nova`) **or** a gender keyword `"male"` / `"female"` which is resolved to the correct voice for the active provider using `audio.voiceGenderMap` from your module config. See voice reference table below |
 | `outputFormat` | string | `mp3` | Audio format: `mp3`, `wav`, `flac`, `opus`, `pcm` |
 | `speed` | numeric | `1.0` | Playback speed multiplier. Range: 0.25 – 4.0 |
 | `outputFile` | string | `""` | When set, saves audio to this path and returns the file path string instead of `AiSpeechResponse` |
@@ -94,6 +94,44 @@ audio = aiSpeak(
 audio.saveToFile( expandPath( "/audio/onyx.wav" ) )
 ```
 
+### Gender keyword voices
+
+Instead of hard-coding a provider-specific voice name, pass `"male"` or `"female"`. The module resolves the keyword to the configured voice for the active provider using `audio.voiceGenderMap` in your module settings:
+
+```javascript
+// Uses the "male" voice for the default provider (e.g. "ash" on OpenAI)
+audio = aiSpeak( "Hello from a male voice.", {}, { voice: "male" } )
+audio.saveToFile( expandPath( "/audio/male.mp3" ) )
+
+// Explicit provider — resolved to that provider's mapped female voice
+audio = aiSpeak(
+    "Hello from a female voice.",
+    {},
+    { provider: "openai", voice: "female" }
+)
+audio.saveToFile( expandPath( "/audio/female.mp3" ) )
+```
+
+The default gender-to-voice mapping (overridable in `config/boxlang.json`):
+
+| Provider | `"male"` | `"female"` |
+|---|---|---|
+| **OpenAI** | `ash` | `nova` |
+| **Grok / xAI** | `onyx` | `nova` |
+| **Gemini** | `Fenrir` | `Aoede` |
+| **Mistral** | _(provider default)_ | `Charlotte` |
+| **ElevenLabs** | _(provider default)_ | `21m00Tcm4TlvDq8ikWAM` |
+
+To override any mapping, set `audio.voiceGenderMap` in your `config/boxlang.json`:
+
+```json
+"audio": {
+    "voiceGenderMap": {
+        "openai": { "male": "echo", "female": "shimmer" }
+    }
+}
+```
+
 ### Base64 / data URI for web responses
 
 ```javascript
@@ -128,13 +166,15 @@ BoxRegisterInterceptor( "afterAISpeech", function( event ) {
 
 ## Voice Reference
 
-| Provider | Available Voices | Notes |
-|---|---|---|
-| **OpenAI** | `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | Default: `alloy` |
-| **Mistral** | `Charlotte` | Only one voice |
-| **Gemini** | `Kore` (and others) | See Gemini API docs for full list |
-| **Grok / xAI** | `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`, `eve` | OpenAI-compatible names |
-| **ElevenLabs** | Voice IDs from your voice library | Pass as `voice_id` in params |
+| Provider | Available Voices | `"male"` keyword | `"female"` keyword |
+|---|---|---|---|
+| **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
+| **Mistral** | `Charlotte` | _(provider default)_ | `Charlotte` |
+| **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others) | `Fenrir` | `Aoede` |
+| **Grok / xAI** | `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`, `eve` | `onyx` | `nova` |
+| **ElevenLabs** | Voice IDs from your voice library | _(provider default)_ | `21m00Tcm4TlvDq8ikWAM` |
+
+> For ElevenLabs, pass a `voice_id` in `params` for specific voices. The `"male"`/`"female"` keywords resolve to the IDs in `audio.voiceGenderMap`.
 
 ## See Also
 
