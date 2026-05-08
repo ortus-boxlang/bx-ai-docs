@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "gitbook-docs-expert": {
+      "source": "ortus-solutions/skills",
+      "sourceType": "github",
+      "skillPath": "gitbook-docs-expert/SKILL.md",
+      "computedHash": "437ded98559bb04d1f6656b53866dcfb2f0673135565455b01f1ca45f9c2a38f"
+    }
+  }
+}
