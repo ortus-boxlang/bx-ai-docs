@@ -66,6 +66,22 @@
   * [Streaming](main-components/pipelines/streaming.md)
   * [Advanced Patterns](main-components/pipelines/advanced.md)
 
+## Model Context Protocol (MCP)
+
+* [MCP Servers](mcp/server/README.md)
+  * [Getting Started](mcp/server/getting-started.md)
+  * [Transports (HTTP & STDIO)](mcp/server/transports.md)
+  * [Server Configuration](mcp/server/server-configuration.md)
+  * [Registering Tools, Resources & Prompts](mcp/server/registration.md)
+  * [Annotation-Based Discovery](mcp/server/annotation-discovery.md)
+  * [Class-Based Servers](mcp/server/class-based-servers.md)
+  * [HTTP Endpoint & Routing](mcp/server/http-endpoint.md)
+  * [Observability & Monitoring](mcp/server/observability.md)
+  * [Pause & Resume](mcp/server/pause-resume.md)
+  * [Best Practices](mcp/server/best-practices.md)
+  * [Examples & Use Cases](mcp/server/_examples.md)
+* [MCP Clients](mcp/client/README.md)
+
 ## RAG
 
 * [Embeddings](rag/embeddings.md)
@@ -75,8 +91,6 @@
 ## Advanced
 
 * [Working with Models](main-components/models.md)
-* [MCP Server - Model Context Protocol Server](advanced/mcp-server.md)
-* [MCP Client - Model Context Protocol](advanced/mcp-client.md)
 * [Event System](advanced/events.md)
 * [🛠️ Utility Functions](advanced/utilities.md)
 * [Reference](advanced/reference/README.md)
