@@ -163,6 +163,12 @@ agent = aiAgent(
 response = agent.run( "Help me with this task" )
 ```
 
+## Class-Based Agents
+
+If you want reusable, encapsulated agents for larger applications, see:
+
+* [Class-Based Agents](class-based-agents.md)
+
 ## ⚙️ Constructor Parameters
 
 | Parameter | Type | Description |

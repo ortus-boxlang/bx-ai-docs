@@ -35,6 +35,7 @@
 * [Middleware](main-components/middleware.md)
 * [AI Agents](main-components/agents/README.md)
   * [Getting Started](main-components/agents/getting-started.md)
+  * [Class-Based Agents](main-components/agents/class-based-agents.md)
   * [Memory Management](main-components/agents/memory.md)
   * [Tools & MCP](main-components/agents/tools-and-mcp.md)
   * [Skills](main-components/agents/skills.md)

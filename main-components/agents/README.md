@@ -109,6 +109,7 @@ sequenceDiagram
 | Page | Description |
 |---|---|
 | [Getting Started](getting-started.md) | Creating agents, configuration, model selection, return formats |
+| [Class-Based Agents](class-based-agents.md) | Build encapsulated reusable agents by extending `AiAgent` |
 | [Memory Management](memory.md) | Memory types, per-call identity routing, resume/suspend, multi-tenant |
 | [Tools & MCP](tools-and-mcp.md) | Tool Registry, ClosureTool, MCP server seeding |
 | [Skills](skills.md) | Always-on and lazy-loaded skills for domain knowledge injection |
