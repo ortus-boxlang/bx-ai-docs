@@ -98,6 +98,77 @@ audio = aiSpeak(
 audio.saveToFile( "custom.wav" )
 ```
 
+## 🧱 Fluent Builder API (v3.2.0+)
+
+Calling `aiSpeak()` with **no arguments** returns an `AiSpeechRequest` builder object for method chaining. This provides a more readable, self-documenting way to configure speech synthesis.
+
+### Basic Builder Usage
+
+```javascript
+audio = aiSpeak()
+    .of( "Welcome to BoxLang AI!" )
+    .voice( "nova" )
+    .provider( "openai" )
+    .asMP3()
+    .speak()
+```
+
+### Builder Methods
+
+| Method | Description |
+|---|---|
+| `of( text )` | Set the text to synthesize (static factory) |
+| `.text( text )` | Alias for `of()` |
+| `.model( name )` | Set the TTS model |
+| `.provider( name )` | Set the provider |
+| `.apiKey( key )` | Set the API key |
+| `.voice( name )` | Set the voice name |
+| `.male()` | Use male voice (resolved per provider) |
+| `.female()` | Use female voice (resolved per provider) |
+| `.speed( n )` | Set playback speed (0.25–4.0) |
+| `.instructions( text )` | Set voice instructions |
+| `.outputFile( path )` | Set output file path |
+| `.asMP3()` | Set output format to MP3 |
+| `.asWav()` | Set output format to WAV |
+| `.asFlac()` | Set output format to FLAC |
+| `.asOpus()` | Set output format to Opus |
+| `.asPCM()` | Set output format to PCM |
+| `.withParams( struct )` | Set provider params |
+| `.withOptions( struct )` | Set module options |
+| `.withLogging()` | Enable request/response logging |
+| `.speak()` | **Terminator** — execute and return `AiSpeechResponse` |
+
+### Fluent Examples
+
+```javascript
+// Gender shortcuts
+audio = aiSpeak()
+    .of( "This uses a male voice." )
+    .male()
+    .speed( 1.2 )
+    .speak()
+
+// Save directly to file
+path = aiSpeak()
+    .of( "Notification alert!" )
+    .asWav()
+    .outputFile( "/audio/alert.wav" )
+    .speak()
+
+// Full configuration
+audio = aiSpeak()
+    .of( "Hello from BoxLang!" )
+    .model( "tts-1-hd" )
+    .provider( "openai" )
+    .voice( "nova" )
+    .speed( 1.0 )
+    .asMP3()
+    .withLogging()
+    .speak()
+```
+
+> 💡 **Backward Compatible:** The traditional `aiSpeak( text, params, options )` syntax continues to work unchanged. The fluent builder is an **additional** option — no migration required.
+
 ### Gender keyword voices
 
 Use `"male"` or `"female"` for provider-agnostic voice selection. The module resolves the keyword to the concrete voice configured in `audio.voiceGenderMap` for the active provider — no need to remember provider-specific names:

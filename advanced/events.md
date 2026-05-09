@@ -66,6 +66,17 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 39 | [afterAITranslation](events.md#39-afteraitranslation)    | After audio translation response | `transcriptionRequest`, `service`, `result`       |
 | 40 | [onHybridMemoryAdd](events.md#40-onhybridmemoryadd)      | Message added to HybridMemory    | `memory`, `message`                               |
 | 41 | [onVectorSearch](events.md#41-onvectorsearch)            | Vector semantic search runs      | `memory`, `query`, `limit`, `results`             |
+| 42 | [beforeAIImageGeneration](events.md#42-beforeaiimagegeneration) | Before image generation request | `imageRequest`, `service`                        |
+| 43 | [afterAIImageGeneration](events.md#43-afteraiimagegeneration)   | After image generation response  | `imageRequest`, `service`, `result`              |
+| 44 | [onAIImageRequest](events.md#44-onaiimagerequest)        | Image request object created     | `imageRequest`                                   |
+| 45 | [onAIImageResponse](events.md#45-onaiimageresponse)      | Image response received          | `response`, `rawResponse`, `provider`            |
+| 46 | [onAIAgentRegistryRegister](events.md#46-onaiagentregistryregister) | Agent registered          | `agent`, `key`, `module`                         |
+| 47 | [onAIAgentRegistryUnregister](events.md#47-onaiagentregistryunregister) | Agent unregistered        | `key`, `module`                                  |
+| 48 | [onMCPServerPause](events.md#48-onmcpserverpause)        | MCP server paused                | `server`, `name`                                 |
+| 49 | [onMCPServerResume](events.md#49-onmcpserverresume)      | MCP server resumed               | `server`, `name`                                 |
+| 50 | [onMCPClientRequest](events.md#50-onmcpclientrequest)    | MCP client HTTP request          | `client`, `baseURL`, `operation`, `name`         |
+| 51 | [onMCPClientResponse](events.md#51-onmcpclientresponse)  | MCP client HTTP response         | `client`, `baseURL`, `operation`, `response`     |
+| 52 | [onMCPClientError](events.md#52-onmcpclienterror)        | MCP client HTTP error            | `client`, `baseURL`, `operation`, `error`        |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -2750,6 +2761,279 @@ Fired whenever a semantic search runs against a vector memory store. Use this fo
 ```javascript
 BoxRegisterInterceptor( "onVectorSearch", function( event ) {
     println( "Vector search: query='#event.query#' found=#event.results.len()# limit=#event.limit#" )
+})
+```
+
+***
+
+### 42. beforeAIImageGeneration
+
+Fired before an image generation request is sent to the provider.
+
+**When**: Before `aiImage()` sends the HTTP request
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `imageRequest` | `AiImageRequest` | The image generation request object |
+| `service` | `IAiImageService` | The image service instance |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "beforeAIImageGeneration", function( event ) {
+    println( "Generating image: prompt='#event.imageRequest.prompt#'" )
+})
+```
+
+***
+
+### 43. afterAIImageGeneration
+
+Fired after an image generation response is received from the provider.
+
+**When**: After `aiImage()` receives the response
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `imageRequest` | `AiImageRequest` | The image generation request object |
+| `service` | `IAiImageService` | The image service instance |
+| `result` | `AiImageResponse` | The generated image response |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "afterAIImageGeneration", function( event ) {
+    println( "Generated #event.result.getCount()# image(s) via #event.service.getName()#" )
+})
+```
+
+***
+
+### 44. onAIImageRequest
+
+Fired when an image request object is created.
+
+**When**: During `aiImage()` request construction
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `imageRequest` | `AiImageRequest` | The image request object |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onAIImageRequest", function( event ) {
+    // Modify request parameters
+    event.imageRequest.setSize( "1792x1024" )
+})
+```
+
+***
+
+### 45. onAIImageResponse
+
+Fired after an image response is received from the provider.
+
+**When**: After the provider returns generated images
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `response` | `AiImageResponse` | The image response |
+| `rawResponse` | struct | Raw provider response |
+| `provider` | string | Provider name |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onAIImageResponse", function( event ) {
+    logMetric( "ai.image.generated", {
+        provider: event.provider,
+        count: event.result.getCount()
+    })
+})
+```
+
+***
+
+### 46. onAIAgentRegistryRegister
+
+Fired when an agent is registered in the global agent registry.
+
+**When**: On `aiAgentRegistry().register()` or `aiAgent( register: true )`
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `agent` | `AiAgent` | The registered agent |
+| `key` | string | Registry key (e.g., `agentName@module`) |
+| `module` | string | Module namespace |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onAIAgentRegistryRegister", function( event ) {
+    println( "Agent registered: #event.key#" )
+})
+```
+
+***
+
+### 47. onAIAgentRegistryUnregister
+
+Fired when an agent is removed from the global agent registry.
+
+**When**: On `aiAgentRegistry().unregister()` or `unregisterByModule()`
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `key` | string | Registry key |
+| `module` | string | Module namespace |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onAIAgentRegistryUnregister", function( event ) {
+    println( "Agent unregistered: #event.key#" )
+})
+```
+
+***
+
+### 48. onMCPServerPause
+
+Fired when an MCP server is paused.
+
+**When**: On `MCPServer.pause()`
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `server` | `MCPServer` | The MCP server instance |
+| `name` | string | Server name |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onMCPServerPause", function( event ) {
+    println( "MCP server paused: #event.name#" )
+})
+```
+
+***
+
+### 49. onMCPServerResume
+
+Fired when an MCP server is resumed.
+
+**When**: On `MCPServer.resume()`
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `server` | `MCPServer` | The MCP server instance |
+| `name` | string | Server name |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onMCPServerResume", function( event ) {
+    println( "MCP server resumed: #event.name#" )
+})
+```
+
+***
+
+### 50. onMCPClientRequest
+
+Fired before an MCP client sends an HTTP request.
+
+**When**: Before every MCP client HTTP call
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `client` | `MCPClient` | The MCP client instance |
+| `baseURL` | string | Server base URL |
+| `operation` | string | Operation type (`tool`, `resource`, `prompt`, `discovery`) |
+| `name` | string | Tool/resource/prompt name |
+| `requestBody` | struct | Request payload |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onMCPClientRequest", function( event ) {
+    println( "MCP client #event.operation#: #event.name#" )
+})
+```
+
+***
+
+### 51. onMCPClientResponse
+
+Fired after an MCP client receives a successful HTTP response.
+
+**When**: On successful MCP client HTTP response
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `client` | `MCPClient` | The MCP client instance |
+| `baseURL` | string | Server base URL |
+| `operation` | string | Operation type |
+| `name` | string | Tool/resource/prompt name |
+| `response` | `MCPResponse` | The response object |
+| `executionTime` | numeric | Request duration in ms |
+| `statusCode` | numeric | HTTP status code |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onMCPClientResponse", function( event ) {
+    println( "MCP response: #event.operation#/#event.name# in #event.executionTime#ms" )
+})
+```
+
+***
+
+### 52. onMCPClientError
+
+Fired when an MCP client encounters an HTTP error or network exception.
+
+**When**: On HTTP errors (bad status / JSON-RPC error) or network exceptions
+
+#### Event Arguments
+
+| Argument | Type | Description |
+|---|---|---|
+| `client` | `MCPClient` | The MCP client instance |
+| `baseURL` | string | Server base URL |
+| `operation` | string | Operation type |
+| `name` | string | Tool/resource/prompt name |
+| `error` | string | Error message |
+| `statusCode` | numeric | HTTP status code (if available) |
+| `executionTime` | numeric | Request duration in ms |
+| `exception` | any | Exception object (if from catch block) |
+
+#### Example
+
+```javascript
+BoxRegisterInterceptor( "onMCPClientError", function( event ) {
+    logError( "MCP client error: #event.operation#/#event.name# — #event.error#" )
 })
 ```
 

@@ -197,6 +197,84 @@ srt = aiTranscribe(
 fileWrite( "/video/presentation.srt", srt )
 ```
 
+## 🧱 Fluent Builder API (v3.2.0+)
+
+Calling `aiTranscribe()` with **no arguments** returns an `AiTranscriptionRequest` builder object for method chaining. This provides a more readable, self-documenting way to configure transcription.
+
+### Basic Builder Usage
+
+```javascript
+text = aiTranscribe()
+    .file( "/recordings/meeting.mp3" )
+    .transcribe()
+```
+
+### Builder Methods
+
+| Method | Description |
+|---|---|
+| `of( audio )` | Static factory — set audio input |
+| `.file( path )` | Set audio file path |
+| `.url( url )` | Set audio URL |
+| `.data( binary )` | Set raw binary audio data |
+| `.model( name )` | Set the STT model |
+| `.provider( name )` | Set the provider |
+| `.apiKey( key )` | Set the API key |
+| `.language( code )` | Set input audio language (BCP-47) |
+| `.inputFormat( fmt )` | Set input audio format |
+| `.withWordTimestamps()` | Enable word-level timestamps |
+| `.withSegmentTimestamps()` | Enable segment-level timestamps |
+| `.withTimestamps()` | Enable all timestamps |
+| `.diarize( bool )` | Enable speaker diarization (Groq only) |
+| `.asJSON()` | Output as JSON |
+| `.asText()` | Output as plain text |
+| `.asVerboseJSON()` | Output as verbose JSON with segments/words |
+| `.asSRT()` | Output as SubRip subtitles |
+| `.asVTT()` | Output as WebVTT subtitles |
+| `.withParams( struct )` | Set provider params |
+| `.withOptions( struct )` | Set module options |
+| `.withLogging()` | Enable request/response logging |
+| `.transcribe()` | **Terminator** — execute transcription |
+| `.translate()` | **Terminator** — execute translation (audio → English) |
+
+### Fluent Examples
+
+```javascript
+// From URL with language hint
+text = aiTranscribe()
+    .url( "https://example.com/audio/spanish-lecture.mp3" )
+    .language( "es" )
+    .transcribe()
+
+// With word-level timestamps
+result = aiTranscribe()
+    .file( "/recordings/interview.wav" )
+    .withWordTimestamps()
+    .asVerboseJSON()
+    .withOptions( { returnFormat: "response" } )
+    .transcribe()
+
+// Speaker diarization (Groq)
+text = aiTranscribe()
+    .file( "/recordings/panel-discussion.mp3" )
+    .provider( "groq" )
+    .diarize( true )
+    .transcribe()
+
+// Generate SRT captions
+srt = aiTranscribe()
+    .file( "/video/presentation.mp4" )
+    .asSRT()
+    .transcribe()
+
+// Translate audio to English (dual terminator)
+english = aiTranscribe()
+    .file( "/recordings/french-meeting.mp3" )
+    .translate()
+```
+
+> 💡 **Backward Compatible:** The traditional `aiTranscribe( audio, params, options )` syntax continues to work unchanged. The fluent builder is an **additional** option — no migration required.
+
 ## 📡 Events
 
 | Event | Data Available |

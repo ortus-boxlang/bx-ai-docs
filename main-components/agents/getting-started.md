@@ -105,6 +105,47 @@ response = agent.run( "Find recent news about BoxLang" )
 
 See [Tools & MCP](tools-and-mcp.md) for the full MCP integration guide.
 
+## Agent with the Agent Registry (v3.2.0+)
+
+The **Agent Registry** provides centralized agent management for discoverability, observability, and analytics. Register agents once and resolve them anywhere.
+
+```javascript
+// Register at creation time
+agent = aiAgent(
+    name: "support-agent",
+    description: "Customer support agent",
+    instructions: "Help customers with their questions",
+    register: true,       // Auto-register in the global registry
+    module: "my-app"      // Optional module namespace
+)
+
+// Or register manually
+aiAgentRegistry().register( agent, "my-app" )
+
+// List all registered agents
+agents = aiAgentRegistry().listAgents()
+
+// Resolve agents by name
+resolved = aiAgentRegistry().resolveAgents( [
+    "support-agent@my-app",
+    anotherAgentInstance
+] )
+
+// Get agent info
+info = aiAgentRegistry().getAgentInfo( "support-agent@my-app" )
+// Returns: { name: "support-agent", description: "...", module: "my-app" }
+
+// Unregister when done
+aiAgentRegistry().unregister( "support-agent@my-app" )
+
+// Get an agent
+agent = aiAgentRegistry().get( "support-agent@my-app" )
+```
+
+> 💡 **Default:** `register: false` — agents are NOT auto-registered by default to prevent memory leaks from sub-agents and throwaway agents.
+
+See [Agent Registry](../tool-registry.md#agent-registry) for the full registry API.
+
 ## Fluent Configuration
 
 For runtime changes, use setter methods:
@@ -139,6 +180,8 @@ response = agent.run( "Help me with this task" )
 | `availableSkills` | array | Lazy-loaded skills (v3.0+) |
 | `middleware` | array | Middleware instances or structs (v3.0+) |
 | `mcpServers` | array | MCP server configs `{ url, toolNames }` (v3.0+) |
+| `register` | boolean | Auto-register in the Agent Registry (v3.2.0+, default: `false`) |
+| `module` | string | Module namespace for the registry (v3.2.0+) |
 | `checkpointer` | IAiMemory | Memory backend for suspend/resume (v3.0+) |
 
 ## 📤 Return Formats

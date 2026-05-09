@@ -460,6 +460,84 @@ The MCP client expects servers to implement these endpoints:
 | `/prompts/{name}`      | POST   | Get a prompt             | `{ "params": {...} }` |
 | `/capabilities`        | GET    | Get server capabilities  | None                  |
 
+## Stats & Observability 📊
+
+{% hint style="info" %}
+**Since BoxLang AI v3.2.0+**
+{% endhint %}
+
+`MCPClient` now tracks internal usage and performance metrics via a `MCPClientStats` instance using atomic variables for thread safety.
+
+### Getting Stats
+
+```javascript
+client = MCP( "http://localhost:3000" )
+
+// Make some calls
+tools = client.listTools()
+result = client.callTool( "search", { query: "BoxLang" } )
+resource = client.getResource( "config://app" )
+
+// Get full stats
+stats = client.getStats()
+println( "Total calls: #stats.totalCalls#" )
+println( "Success rate: #stats.successRate#%" )
+println( "Avg response time: #stats.avgResponseTime#ms" )
+
+// Per-tool breakdown
+println( "Tool invocations: #serializeJSON( stats.byType.tool )#" )
+
+// Lightweight summary
+summary = client.getSummary()
+println( "Summary: #serializeJSON( summary )#" )
+```
+
+### Stats API
+
+| Method | Description |
+|---|---|
+| `getStats()` | Full stats struct with per-operation, per-tool, per-URI, per-prompt breakdowns |
+| `getSummary()` | Lightweight summary with `totalCalls`, `successRate`, `avgResponseTime`, per-type totals, `totalErrors`, `lastCallAt` |
+| `resetStats()` | Reset all counters to zero (fluent) |
+
+### Stats Breakdown
+
+**Tracked operation types:**
+- `tool` — covers `listTools` + `callTool`
+- `resource` — covers `listResources` + `getResource`
+- `prompt` — covers `listPrompts` + `getPrompt`
+- `discovery` — covers `getCapabilities`
+
+**Per-tool stats:** `count`, `totalTime`, `avgTime`
+
+**Per-URI stats:** resource read counts
+
+**Per-prompt stats:** prompt generation counts
+
+### Events
+
+Three new interception points fire from every HTTP call:
+
+| Event | When Fired |
+|---|---|
+| `onMCPClientRequest` | Before the HTTP request |
+| `onMCPClientResponse` | On successful response |
+| `onMCPClientError` | On HTTP errors or network exceptions |
+
+```javascript
+BoxRegisterInterceptor( "onMCPClientRequest", function( event ) {
+    println( "MCP client #event.operation#: #event.name#" )
+})
+
+BoxRegisterInterceptor( "onMCPClientResponse", function( event ) {
+    println( "Response in #event.executionTime#ms — status: #event.statusCode#" )
+})
+
+BoxRegisterInterceptor( "onMCPClientError", function( event ) {
+    logError( "MCP client error: #event.operation#/#event.name# — #event.error#" )
+})
+```
+
 ## Best Practices
 
 ### 1. Use Configuration Objects

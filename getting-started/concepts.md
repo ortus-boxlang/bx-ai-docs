@@ -18,6 +18,8 @@ Understanding these core concepts will help you make the most of BoxLang AI. Thi
 * [Memory Systems](concepts.md#memory-systems)
 * [RAG (Retrieval Augmented Generation)](concepts.md#rag-retrieval-augmented-generation)
 * [Tools & Function Calling](concepts.md#tools--function-calling)
+* [Audio & Speech](concepts.md#audio--speech)
+* [Image Generation](concepts.md#image-generation)
 * [Streaming & Async](concepts.md#streaming--async)
 * [Pipelines & Composition](concepts.md#pipelines--composition)
 * [Providers & Services](concepts.md#providers--services)
@@ -695,6 +697,21 @@ agent = aiAgent( tools: aiToolRegistry().resolveTools( [ "search", "calculate" ]
 
 **Benefits**: Eliminates duplicate tool definitions, enables cross-module tool sharing, supports `@AITool` annotation scanning.
 
+### Agent Registry (v3.2.0+)
+
+A companion singleton to the Tool Registry that manages `AiAgent` instances for centralized discoverability, observability, and analytics.
+
+```javascript
+// Register at creation
+agent = aiAgent( name: "support", register: true, module: "my-app" )
+
+// Or manually
+aiAgentRegistry().register( agent, "my-app" )
+
+// List all agents
+agents = aiAgentRegistry().listAgents()
+```
+
 ### Skills
 
 Reusable instruction sets stored in markdown files (following the Agent Skills open standard) that inject specialized context into an agent's system prompt.
@@ -771,6 +788,106 @@ User Input
 
 Each layer fires hooks around every step:
   before/afterAgentRun → before/afterLLMCall → before/afterToolCall
+```
+
+***
+
+## 🎤 Audio & Speech
+
+{% hint style="info" %}
+**Since BoxLang AI v3.1.0+** — Fluent builder API added in v3.2.0+
+{% endhint %}
+
+BoxLang AI supports three audio operations through a unified interface:
+
+### Text-to-Speech (TTS)
+
+Convert text to natural-sounding audio using `aiSpeak()`.
+
+```javascript
+// Traditional
+audio = aiSpeak( "Hello, world!" )
+audio.saveToFile( "greeting.mp3" )
+
+// Fluent builder (v3.2.0+)
+audio = aiSpeak()
+    .of( "Hello, world!" )
+    .voice( "nova" )
+    .asMP3()
+    .speak()
+```
+
+**Supported providers:** OpenAI, Mistral, Gemini, Grok, ElevenLabs
+
+### Speech-to-Text (STT)
+
+Transcribe audio files, URLs, or binary data to text using `aiTranscribe()`.
+
+```javascript
+// Traditional
+text = aiTranscribe( "meeting.mp3" )
+
+// Fluent builder (v3.2.0+)
+text = aiTranscribe()
+    .file( "meeting.mp3" )
+    .withWordTimestamps()
+    .transcribe()
+```
+
+**Supported providers:** OpenAI, Groq, Mistral, Gemini, ElevenLabs
+
+### Audio Translation
+
+Translate spoken audio in any language to English text using `aiTranslate()`.
+
+```javascript
+english = aiTranslate( "french-meeting.mp3" )
+```
+
+> 🚨 `aiTranslate()` always outputs **English** — it is speech-to-English transcription, not general text translation.
+
+***
+
+## 🖼️ Image Generation
+
+{% hint style="info" %}
+**Since BoxLang AI v3.2.0+**
+{% endhint %}
+
+Generate images from text prompts using `aiImage()`. The BIF works across all providers that implement `IAiImageService`.
+
+```javascript
+// Generate and save
+response = aiImage( "A futuristic cityscape at sunset" )
+response.saveToFile( "/images/cityscape.png" )
+
+// Multiple images
+response = aiImage(
+    "A watercolor painting of a mountain lake",
+    { n: 2, size: "1024x1024", quality: "hd" },
+    { provider: "openai" }
+)
+
+// Embed in HTML
+dataURI = response.toDataURI()
+```
+
+**Supported providers:**
+
+| Provider | Model |
+|---|---|
+| **OpenAI** | `gpt-image-1`, DALL-E models |
+| **Gemini** | `imagen-3.0-generate-008` |
+| **Grok / xAI** | `grok-2-image` |
+| **OpenRouter** | FLUX Schnell (default), many others |
+
+### Image Agent Tool
+
+The `generateImage@bxai` tool is auto-registered in the global tool registry. Agents can generate images during conversations:
+
+```javascript
+agent = aiAgent( tools: [ "generateImage@bxai" ] )
+result = agent.run( "Create an image of a sunset" )
 ```
 
 ***

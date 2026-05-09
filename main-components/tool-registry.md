@@ -149,6 +149,117 @@ aiToolRegistry().unregister( "search" )
 aiToolRegistry().unregisterByModule( "my-module" )
 ```
 
+## Built-in Tools (v3.0+)
+
+The module ships with several built-in tool classes that are auto-registered in the global tool registry at startup. You can opt-in to these tools by name when creating agents.
+
+### Audio Tools
+
+| Tool Key | Description |
+|---|---|
+| `speak@bxai` | Convert text to speech, save to file, return the file path |
+| `transcribe@bxai` | Transcribe a local file or URL to plain text |
+| `translate@bxai` | Translate any-language audio to English text |
+
+```javascript
+agent = aiAgent( tools: [ "speak@bxai", "transcribe@bxai", "translate@bxai" ] )
+```
+
+### Image Tools (v3.2.0+)
+
+| Tool Key | Description |
+|---|---|
+| `generateImage@bxai` | Generate an image from a text prompt, save to file, return the file path |
+
+```javascript
+agent = aiAgent( tools: [ "generateImage@bxai" ] )
+```
+
+### Filesystem Tools
+
+| Tool Key | Description |
+|---|---|
+| `readFile@bxai` | Read file contents |
+| `readMultipleFiles@bxai` | Read multiple files at once |
+| `writeFile@bxai` | Write content to a file |
+| `appendFile@bxai` | Append content to a file |
+| `editFile@bxai` | Edit a file with search/replace |
+| `fileMetadata@bxai` | Get file metadata |
+| `pathExists@bxai` | Check if a path exists |
+| `deleteFile@bxai` | Delete a file |
+| `moveFile@bxai` | Move a file |
+| `copyFile@bxai` | Copy a file |
+| `searchFiles@bxai` | Search for files by pattern |
+| `listAllowedDirectories@bxai` | List allowed directories |
+| `listDirectory@bxai` | List directory contents |
+| `directoryTree@bxai` | Get directory tree structure |
+| `createDirectory@bxai` | Create a directory |
+| `deleteDirectory@bxai` | Delete a directory |
+| `zipFiles@bxai` | Create a zip archive |
+| `unzipFile@bxai` | Extract a zip archive |
+| `checkZipFile@bxai` | Validate a zip file |
+
+> 🚨 **Filesystem tools are NOT auto-registered.** They must be explicitly enabled via `aiToolRegistry().scanClass()` so agents never get filesystem access unless explicitly granted. Supports a path-guard constructor (`allowedPaths: [...]`) that blocks directory-traversal attacks.
+
+```javascript
+// Opt-in to filesystem tools
+aiToolRegistry().scanClass( "bxModules.bxai.models.tools.filesystem.FileSystemTools", "my-app" )
+
+// Use in agent
+agent = aiAgent( tools: aiToolRegistry().resolveTools( [ "readFile@bxai", "writeFile@bxai" ] ) )
+```
+
+## Agent Registry (v3.2.0+)
+
+In addition to the Tool Registry, BoxLang AI 3.2.0 introduces the **Agent Registry** — a singleton for centralized agent management.
+
+```javascript
+// Register an agent
+agent = aiAgent(
+    name: "support-agent",
+    description: "Customer support agent",
+    register: true,
+    module: "my-app"
+)
+
+// Or register manually
+aiAgentRegistry().register( agent, "my-app" )
+
+// List all registered agents
+agents = aiAgentRegistry().listAgents()
+
+// Resolve agents from mixed array
+resolved = aiAgentRegistry().resolveAgents( [
+    "support-agent@my-app",
+    anotherAgentInstance
+] )
+
+// Get agent info
+info = aiAgentRegistry().getAgentInfo( "support-agent@my-app" )
+
+// Unregister
+aiAgentRegistry().unregister( "support-agent@my-app" )
+aiAgentRegistry().unregisterByModule( "my-app" )
+```
+
+### Agent Registry API
+
+| Method | Description |
+|---|---|
+| `register( agent, module )` | Register an agent with optional module namespace |
+| `unregister( key )` | Remove agent by key |
+| `unregisterByModule( module )` | Remove all agents from a module |
+| `resolveAgents( array )` | Resolve mixed array of string keys and `AiAgent` instances |
+| `listAgents()` | Return struct of all registered agents |
+| `getAgentInfo( key )` | Return `{ name, description, module }` for a key |
+
+### Agent Registry Events
+
+| Event | When Fired |
+|---|---|
+| `onAIAgentRegistryRegister` | Agent registered |
+| `onAIAgentRegistryUnregister` | Agent unregistered |
+
 ## Related Pages
 
 * [Tools & MCP (Agents)](agents/tools-and-mcp.md) — Using the registry with agents

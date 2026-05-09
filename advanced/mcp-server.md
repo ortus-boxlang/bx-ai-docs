@@ -22,6 +22,7 @@ The BoxLang AI Module provides a complete MCP (Model Context Protocol) server im
 * [Complete Example](mcp-server.md#complete-example)
 * [Events & Interception 🎯](mcp-server.md#events--interception-)
 * [Statistics & Monitoring 📊](mcp-server.md#statistics--monitoring-)
+* [Pause & Resume ⏸️](mcp-server.md#pause--resume-)
 * [Best Practices](mcp-server.md#best-practices)
 * [Related Documentation](mcp-server.md#related-documentation)
 * [External Resources](mcp-server.md#external-resources)
@@ -1878,10 +1879,16 @@ Summary includes:
 * `totalRequests` - Total requests processed
 * `successRate` - Success rate as percentage
 * `avgResponseTime` - Average response time in milliseconds
+* `requestsPerMinute` - Request rate (v3.2.0+)
+* `activeRequests` - Currently processing requests (v3.2.0+)
+* `paused` - Whether server is paused (v3.2.0+)
 * `totalToolInvocations` - Total tool calls
 * `totalResourceReads` - Total resource reads
 * `totalPromptGenerations` - Total prompt generations
 * `totalErrors` - Total errors encountered
+* `security.authFailures` - Basic auth rejections (v3.2.0+)
+* `security.apiKeyFailures` - API key rejections (v3.2.0+)
+* `security.bodySizeViolations` - Body size violations (v3.2.0+)
 * `lastRequestAt` - Timestamp of last request (empty if no requests)
 
 #### Get Detailed Statistics
@@ -1916,11 +1923,12 @@ if ( !stats.errors.lastError.isEmpty() ) {
 
 Detailed stats include:
 
-* **Requests**: total, successful, failed, byMethod (map), response times (array), avg/min/max times, lastRequestAt
-* **Tools**: totalInvocations, byTool (map with count/totalTime/avgTime per tool), execution times (array), avg/min/max times
+* **Requests**: total, successful, failed, byMethod (map), response times (array), avg/min/max times, lastRequestAt, activeRequests (v3.2.0+)
+* **Tools**: totalInvocations, byTool (map with count/totalTime/avgTime/**errors** per tool), execution times (array), avg/min/max times
 * **Resources**: totalReads, byUri (map of read counts)
 * **Prompts**: totalGenerations, byName (map of generation counts)
-* **Errors**: total, byCode (map of error counts), lastError (code/message/timestamp)
+* **Errors**: total, byCode (map of error counts), byTool (v3.2.0+), lastError (code/message/timestamp)
+* **Security**: authFailures, apiKeyFailures, bodySizeViolations (v3.2.0+)
 
 ### Managing Statistics
 
@@ -2130,6 +2138,89 @@ class {
     }
 
 }
+```
+
+## Pause & Resume ⏸️
+
+{% hint style="info" %}
+**Since BoxLang AI v3.2.0+**
+{% endhint %}
+
+The MCP server supports **pausing and resuming** without destroying its configuration, tools, resources, or prompts. While paused, the server remains registered in the global registry but rejects all incoming JSON-RPC requests (except `ping`) with a `SERVER_PAUSED` error (code `-32005`).
+
+This is useful for:
+- Temporarily halting a server during maintenance
+- Admin interfaces that need to disable a server without losing configuration
+- Rate limiting or circuit breaker patterns
+
+### Basic Usage
+
+```javascript
+server = MCPServer( "my-tools", "Provides custom business tools" )
+    .registerTool( searchTool )
+    .registerTool( createTicketTool )
+
+// Pause the server — rejects all requests except ping
+server.pause()
+
+// Check if paused
+if ( server.isPaused() ) {
+    println( "Server is currently paused" )
+}
+
+// Resume — normal request handling restored instantly
+server.resume()
+```
+
+### Fluent Chaining
+
+```javascript
+server = MCPServer( "admin-tools" )
+    .registerTool( adminTool )
+    .pause()  // Start paused
+    .resume() // Resume when ready
+```
+
+### Events
+
+Pausing and resuming fire interception points for observability:
+
+| Event | When Fired |
+|---|---|
+| `onMCPServerPause` | When `pause()` is called |
+| `onMCPServerResume` | When `resume()` is called |
+
+```javascript
+BoxRegisterInterceptor( "onMCPServerPause", function( event ) {
+    println( "MCP server paused: #event.name#" )
+    // Notify admin, log, etc.
+})
+
+BoxRegisterInterceptor( "onMCPServerResume", function( event ) {
+    println( "MCP server resumed: #event.name#" )
+})
+```
+
+### Error Response When Paused
+
+When a paused server receives a request (except `ping`), it returns:
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+        "code": -32005,
+        "message": "Server is paused"
+    }
+}
+```
+
+### Summary Includes Paused State
+
+```javascript
+summary = server.getSummary()
+println( "Paused: #summary.paused#" )  // true or false
 ```
 
 ## Best Practices

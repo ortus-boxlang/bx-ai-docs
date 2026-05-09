@@ -144,6 +144,52 @@ english = aiTranslate( binaryAudio )
 println( english )
 ```
 
+## 🧱 Fluent Builder API (v3.2.0+)
+
+Calling `aiTranslate()` with **no arguments** returns an `AiTranscriptionRequest` builder object for method chaining. The builder shares the same methods as `aiTranscribe()` — the only difference is the `.translate()` terminator.
+
+### Basic Builder Usage
+
+```javascript
+english = aiTranslate()
+    .file( "/recordings/french-meeting.mp3" )
+    .translate()
+```
+
+### Fluent Examples
+
+```javascript
+// From URL
+english = aiTranslate()
+    .url( "https://cdn.example.com/audio/german-speech.mp3" )
+    .translate()
+
+// From binary data
+english = aiTranslate()
+    .data( fileReadBinary( "/tmp/upload.m4a" ) )
+    .asText()
+    .translate()
+
+// With Groq for speed
+english = aiTranslate()
+    .file( "/recordings/japanese-interview.mp3" )
+    .provider( "groq" )
+    .model( "whisper-large-v3" )
+    .translate()
+
+// Get full response object
+result = aiTranslate()
+    .file( "/recordings/german-presentation.mp3" )
+    .asVerboseJSON()
+    .withOptions( { returnFormat: "response" } )
+    .translate()
+
+println( "English text: #result.getText()#" )
+println( "Duration: #result.getFormattedDuration()#" )
+```
+
+> 💡 **Backward Compatible:** The traditional `aiTranslate( audio, params, options )` syntax continues to work unchanged. The fluent builder is an **additional** option — no migration required.
+
 ## 📡 Events
 
 | Event | Data Available |
