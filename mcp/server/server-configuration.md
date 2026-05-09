@@ -125,6 +125,60 @@ if ( server.isCorsAllowed( "https://example.com" ) ) {
 - ✅ Combine with authentication
 - ✅ Review periodically
 
+## IP Allow Lists 🌍
+
+Restrict access to specific client IPs and CIDR ranges.
+
+```javascript
+// Allow only localhost + private subnet
+server = MCPServer( "myApp" )
+    .withAllowedIPs( [ "127.0.0.1", "192.168.1.0/24" ] )
+    .registerTool( myTool )
+
+// Add entries incrementally
+server.addAllowedIP( "10.0.0.25" )
+server.addAllowedIP( "10.0.1.0/24" )
+
+// Remove all restrictions (allow all IPs)
+server.clearAllowedIPs()
+```
+
+**How it works:**
+- If no allow list is configured, all IPs are allowed
+- Exact IP matches are supported (for example `203.0.113.10`)
+- CIDR ranges are supported (for example `203.0.113.0/24`)
+- Non-matching requests are rejected with `403 Forbidden`
+
+**Request extraction order for client IP:**
+1. `x-forwarded-for`
+2. `cf-connecting-ip`
+3. `true-client-ip`
+4. `x-real-ip`
+5. Fallback to connection remote address
+
+```javascript
+// Check if filtering is active
+if ( server.hasAllowedIPs() ) {
+    writeOutput( "IP filtering is enabled" )
+}
+```
+
+**Proxy deployment tip:**
+- Ensure your proxy/load balancer forwards the expected client IP headers
+- Keep trusted proxy infrastructure under your control to avoid spoofed headers
+
+**Built-in BoxLang MCP server configuration:**
+
+```javascript
+// Module settings example
+boxlangMCP: {
+    enabled: true,
+    authToken: "your-secret-token",
+    allowedIPs: [ "127.0.0.1", "192.168.1.0/24" ],
+    corsAllowedOrigins: [ "https://example.com" ]
+}
+```
+
 ## Request Body Size Limits 📏
 
 Protect against large payloads:
@@ -280,6 +334,8 @@ Use multiple layers together:
 
 ```javascript
 server = MCPServer( "enterprise" )
+    // IP allow list - network-level filtering
+    .withAllowedIPs( [ "10.10.0.0/16", "203.0.113.25" ] )
     // CORS - restrict origins
     .withCors( [ "https://app.example.com", "*.example.com" ] )
     // Body limits - prevent abuse
@@ -298,16 +354,18 @@ server = MCPServer( "enterprise" )
 When a request arrives, checks execute in this order:
 
 1. **Body Size Check** — Reject oversized payloads first
-2. **CORS Validation** — Check origin header
-3. **Basic Authentication** — Verify credentials
-4. **API Key Validation** — Call custom provider
-5. **Request Processing** — Only after all checks pass
+2. **IP Allow List Check** — Reject disallowed client addresses
+3. **CORS Validation** — Check origin header
+4. **Basic Authentication** — Verify credentials
+5. **API Key Validation** — Call custom provider
+6. **Request Processing** — Only after all checks pass
 
 **Short-Circuit Behavior:**
 - Each layer can immediately reject the request
 - Failed checks return error responses
 - Security headers always included in responses
 - Events fired for all security failures
+- IP allow list failures return `403 Forbidden`
 
 ## Security Headers 🛡️
 

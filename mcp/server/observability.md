@@ -50,6 +50,10 @@ writeOutput( "Uptime: #summary.uptime / 1000#s" )
 - `totalResourceReads` — Total resource reads
 - `totalPromptGenerations` — Total prompt generations
 - `totalErrors` — Total errors encountered
+- `security.authFailures` — Failed HTTP basic auth attempts
+- `security.apiKeyFailures` — Failed API key checks
+- `security.bodySizeViolations` — Rejected oversized payloads
+- `security.ipFilterFailures` — Rejected client IP addresses
 
 ### Get Detailed Statistics
 
@@ -72,6 +76,12 @@ writeOutput( "Errors by code: #serializeJSON( stats.errors.byCode )#" )
 if ( !stats.errors.lastError.isEmpty() ) {
     writeOutput( "Last Error: #stats.errors.lastError.message#" )
 }
+
+// Security breakdown
+writeOutput( "Auth failures: #stats.security.authFailures#" )
+writeOutput( "API key failures: #stats.security.apiKeyFailures#" )
+writeOutput( "Body size violations: #stats.security.bodySizeViolations#" )
+writeOutput( "IP filter failures: #stats.security.ipFilterFailures#" )
 ```
 
 ### Managing Statistics

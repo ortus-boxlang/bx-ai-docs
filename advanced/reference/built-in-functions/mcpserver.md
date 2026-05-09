@@ -30,6 +30,15 @@ Returns an `MCPServer` instance with fluent API for:
 * Configuration: `setDescription()`, `setVersion()`, `setCORS()`, `enableStats()`
 * Statistics: `getStats()`, `getToolCount()`, `getResourceCount()`, `getPromptCount()`
 
+### IP Allow List Methods
+
+MCP servers support IP filtering using exact IPs and CIDR ranges:
+
+* `withAllowedIPs( [ ... ] )` — Replace the allow list
+* `addAllowedIP( "..." )` — Add one IP/CIDR entry
+* `clearAllowedIPs()` — Clear all entries (allow all)
+* `hasAllowedIPs()` — Check if filtering is enabled
+
 ## Examples
 
 ### Basic MCP Server
@@ -168,6 +177,28 @@ publicServer = MCPServer(
 server = MCPServer( "myApp" );
 // Handle CORS in your endpoint wrapper
 ```
+
+### IP Allow Lists
+
+```javascript
+// Restrict access to known networks and hosts
+server = MCPServer( "secure-api" )
+    .withAllowedIPs( [
+        "127.0.0.1",
+        "10.0.0.0/8",
+        "192.168.1.0/24",
+        "203.0.113.45"
+    ] )
+    .registerTool( secureTool )
+
+// Add entries incrementally
+server.addAllowedIP( "203.0.113.0/24" )
+
+// Disable IP filtering (allow all)
+server.clearAllowedIPs()
+```
+
+When an IP allow list is configured, requests from non-matching client IPs are rejected before tool execution.
 
 ### Statistics Tracking
 

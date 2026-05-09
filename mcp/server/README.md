@@ -72,7 +72,7 @@ graph TB
 |---|---|
 | 🚀 [Getting Started](getting-started.md) | Build your first server in 5 minutes |
 | 🌐 [Transports](transports.md) | HTTP vs STDIO — choose what fits your deployment |
-| 🔧 [Server Configuration](server-configuration.md) | Authentication, CORS, body limits, API keys |
+| 🔧 [Server Configuration](server-configuration.md) | Authentication, CORS, IP allow lists, body limits, API keys |
 | 🧩 [Registering Tools, Resources & Prompts](registration.md) | Manual registration with inline MCPServer calls |
 | ✨ [Annotation-Based Discovery](annotation-discovery.md) | Auto-register with @mcpTool, @mcpResource, @mcpPrompt |
 | 🏗️ [Class-Based Servers](class-based-servers.md) | Extend MCPServer for better organization |

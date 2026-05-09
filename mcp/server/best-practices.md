@@ -18,6 +18,7 @@ Guidelines for production MCP servers.
 **Network & Transport**
 - ✅ Always use HTTPS in production
 - ✅ Configure CORS with specific origins (avoid `*`)
+- ✅ Use `.withAllowedIPs()` to restrict source networks for sensitive servers
 - ✅ Set appropriate request body size limits
 - ✅ Monitor for authentication failures
 
@@ -43,11 +44,13 @@ function onApplicationStart() {
 
     // Internal API - authenticated, full access
     MCPServer( "internal" )
+        .withAllowedIPs( [ "10.0.0.0/8", "192.168.0.0/16" ] )
         .withBasicAuth( getEnv( "INTERNAL_USER" ), getEnv( "INTERNAL_PASS" ) )
         .registerTool( allTools )
 
     // Admin API - encrypted, restricted
     MCPServer( "admin" )
+        .withAllowedIPs( [ "10.0.1.0/24", "203.0.113.50" ] )
         .withBasicAuth( getEnv( "ADMIN_USER" ), getEnv( "ADMIN_PASS" ) )
         .withBodyLimit( 10 * 1024 * 1024 )
         .registerTool( systemTool )
@@ -68,6 +71,7 @@ MCPServer( "staging" )
 
 // Tier 3: Full security
 MCPServer( "production" )
+    .withAllowedIPs( [ "203.0.113.0/24" ] )
     .withBasicAuth( getEnv( "API_USER" ), getEnv( "API_PASS" ) )
     .withCors( "https://app.example.com" )
     .withBodyLimit( 1048576 )
