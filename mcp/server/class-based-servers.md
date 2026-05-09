@@ -146,7 +146,7 @@ Combine class structure with automatic discovery:
 class extends="MCPServer" {
 
     function init() {
-        super.init( 
+        super.init(
             name: "discovery-server",
             description: "Server with auto-discovered tools",
             version: "1.0.0"
@@ -154,7 +154,7 @@ class extends="MCPServer" {
 
         // Auto-discover all annotated methods in a package
         this.scan( "models.tools" )
-        
+
         // Or scan a specific class
         this.scanClass( new models.special.SpecialTools() )
 
@@ -181,7 +181,7 @@ class extends="MCPServer" abstract {
 
         // Common configuration
         this.withCors( getEnv( "CORS_ORIGINS", "*" ) )
-        
+
         // Let subclasses register specific tools
         registerTools()
 
@@ -286,7 +286,7 @@ class extends="org.testbox.system.BaseSpec" {
 
     function run( testResults, testBox ) {
         describe( "MyAppServer", () => {
-            
+
             it( "should initialize with correct name", () => {
                 var server = new mcp.MyAppServer()
                 expect( server.getServerName() ).toBe( "my-app" )
@@ -308,7 +308,7 @@ class extends="org.testbox.system.BaseSpec" {
                         arguments: { query: "test" }
                     }
                 } )
-                
+
                 expect( result.jsonrpc ).toBe( "2.0" )
                 expect( result.keyExists( "result" ) ).toBeTrue()
             } )

@@ -182,7 +182,7 @@ function onMCPError( event, interceptData ) {
 
 ```javascript
 // Good - descriptive
-aiTool( 
+aiTool(
     "searchProducts",
     "Search the product catalog by name, category, or price range",
     handler
@@ -213,7 +213,7 @@ class extends="org.testbox.system.BaseSpec" {
 
     function run( testResults, testBox ) {
         describe( "MCP Server", () => {
-            
+
             it( "should list tools", () => {
                 var server = MCPServer( "test" )
                 server.registerTool( testTool )
@@ -224,14 +224,14 @@ class extends="org.testbox.system.BaseSpec" {
             it( "should handle tool calls", () => {
                 var server = MCPServer( "test" )
                 server.registerTool( testTool )
-                
+
                 var response = server.handleRequest( {
                     jsonrpc: "2.0",
                     method: "tools/call",
                     id: "1",
                     params: { name: "testTool", arguments: {} }
                 } )
-                
+
                 expect( response.keyExists( "result" ) ).toBeTrue()
             } )
 
@@ -274,14 +274,14 @@ MCPServer( "heavy" )
 function searchProductsWithCache( query ) {
     var cacheKey = "search_" & query
     var cached = cacheGet( cacheKey )
-    
+
     if ( !isNull( cached ) ) {
         return cached
     }
-    
+
     var result = expensiveSearch( query )
     cachePut( cacheKey, result, 3600 )  // 1 hour
-    
+
     return result
 }
 ```
@@ -294,7 +294,7 @@ function safeToolCall( tool, args, timeoutMs = 5000 ) {
     var future = asyncRun( () => {
         return tool.invoke( args )
     }, "io-tasks" )
-    
+
     try {
         return future.get( timeoutMs, java.util.concurrent.TimeUnit.MILLISECONDS )
     } catch ( java.util.concurrent.TimeoutException e ) {

@@ -110,4 +110,3 @@ Access at: `POST http://localhost/~bxai/mcp.bxm?server=myApp`
 
 * [Model Context Protocol Specification](https://modelcontextprotocol.io)
 * [MCP Implementation Examples](https://github.com/modelcontextprotocol)
-

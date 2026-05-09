@@ -34,13 +34,13 @@ MCPRequestProcessor::startHttp()
 
 ### Features
 
-✅ CORS support with wildcard patterns  
-✅ Body size limits  
-✅ API key authentication  
-✅ HTTP Basic Auth  
-✅ Security headers  
-✅ Server-Sent Events (SSE) streaming  
-✅ Discovery endpoint (GET)  
+✅ CORS support with wildcard patterns
+✅ Body size limits
+✅ API key authentication
+✅ HTTP Basic Auth
+✅ Security headers
+✅ Server-Sent Events (SSE) streaming
+✅ Discovery endpoint (GET)
 
 ### Making Requests
 
@@ -99,12 +99,12 @@ MCP_SERVER_NAME=myApp boxlang mcp-stdio.bxs
 
 ### Features
 
-✅ JSON-RPC over STDIN/STDOUT  
-✅ Line-based protocol  
-✅ Graceful shutdown signal  
-✅ Process lifecycle management  
-❌ No HTTP headers/CORS (not needed)  
-❌ No status codes (JSON-RPC error codes used)  
+✅ JSON-RPC over STDIN/STDOUT
+✅ Line-based protocol
+✅ Graceful shutdown signal
+✅ Process lifecycle management
+❌ No HTTP headers/CORS (not needed)
+❌ No status codes (JSON-RPC error codes used)
 
 ### STDIO Communication
 

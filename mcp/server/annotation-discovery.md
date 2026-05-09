@@ -250,11 +250,11 @@ After `scan()`, all methods annotated with `@mcpTool`, `@mcpResource`, or `@mcpP
 
 ## Benefits of Annotation-Based Discovery
 
-✅ **Cleaner Code** — Keep tool definitions next to implementations  
-✅ **Less Boilerplate** — No repetitive `.registerTool()` calls  
-✅ **Scalability** — Add new tools without updating registration code  
-✅ **Organization** — Group related tools in classes  
-✅ **Documentation** — Hints and documentation preserved in code  
+✅ **Cleaner Code** — Keep tool definitions next to implementations
+✅ **Less Boilerplate** — No repetitive `.registerTool()` calls
+✅ **Scalability** — Add new tools without updating registration code
+✅ **Organization** — Group related tools in classes
+✅ **Documentation** — Hints and documentation preserved in code
 
 ## Next Steps
 

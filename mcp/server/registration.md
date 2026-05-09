@@ -207,11 +207,11 @@ All registration methods return `this` for chaining:
 server = MCPServer( "myApp" )
     .setDescription( "Complete server" )
     .setVersion( "1.0.0" )
-    
+
     // Register tools
     .registerTool( searchTool )
     .registerTool( calculateTool )
-    
+
     // Register resources
     .registerResource(
         uri: "docs://readme",
@@ -220,7 +220,7 @@ server = MCPServer( "myApp" )
         mimeType: "text/markdown",
         handler: () => fileRead( "./readme.md" )
     )
-    
+
     // Register prompts
     .registerPrompt(
         name: "reviewer",
@@ -231,7 +231,7 @@ server = MCPServer( "myApp" )
             { role: "user", content: args.code }
         ]
     )
-    
+
     // Configure security
     .withBasicAuth( "admin", "secret" )
     .withCors( "https://example.com" )

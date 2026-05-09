@@ -23,14 +23,14 @@ class {
         MCPServer( "myApp" )
             .setDescription( "My Application MCP Server" )
             .setVersion( "1.0.0" )
-            
+
             // Register first tool
             .registerTool(
                 aiTool( "search", "Search for documents", ( query ) => {
                     return searchService.search( query )
                 } )
             )
-            
+
             // Register second tool
             .registerTool(
                 aiTool( "calculate", "Perform calculations", ( expression ) => {
