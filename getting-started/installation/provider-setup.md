@@ -45,6 +45,7 @@ This guide covers detailed setup instructions for all supported AI providers, he
   * [In boxlang.json](provider-setup.md#in-boxlangjson)
   * [Set Environment Variables](provider-setup.md#set-environment-variables)
   * [Auto-Detection](provider-setup.md#auto-detection)
+  * [Web Search Provider Notes](provider-setup.md#web-search-provider-notes)
 * [🔄 Multiple Providers](provider-setup.md#-multiple-providers)
   * [Provider Services](provider-setup.md#provider-services)
 * [🔧 Troubleshooting](provider-setup.md#-troubleshooting)
@@ -882,6 +883,10 @@ Use environment variables to keep API keys out of config files:
 export OPENAI_API_KEY="sk-..."
 export CLAUDE_API_KEY="sk-ant-..."
 export GEMINI_API_KEY="AIza..."
+export BRAVE_API_KEY="..."
+export GOOGLE_SEARCH_ENGINE_ID="..."
+export TAVILY_API_KEY="..."
+export EXA_API_KEY="..."
 ```
 
 **Windows**:
@@ -916,6 +921,20 @@ For example:
 * `PERPLEXITY_API_KEY`
 * `COHERE_API_KEY`
 * `VOYAGE_API_KEY`
+* `BRAVE_API_KEY` (Web Search provider)
+* `TAVILY_API_KEY` (Web Search provider)
+* `EXA_API_KEY` (Web Search provider)
+
+### Web Search Provider Notes
+
+Web search providers use the same API key resolution pattern (module config, then environment variables):
+
+- `brave` uses `BRAVE_API_KEY`
+- `google` uses `GOOGLE_API_KEY` and `GOOGLE_SEARCH_ENGINE_ID`
+- `tavily` uses `TAVILY_API_KEY`
+- `exa` uses `EXA_API_KEY`
+
+See [Web Search Providers](../../main-components/web-search/providers.md) for full configuration and options.
 
 ***
 

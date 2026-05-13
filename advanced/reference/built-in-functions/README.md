@@ -8,7 +8,7 @@ Complete reference documentation for all BoxLang AI built-in functions (BIFs). T
 
 ## 📚 Overview
 
-The BoxLang AI module provides 18 built-in functions organized into functional categories:
+The BoxLang AI module provides 29 built-in functions organized into functional categories:
 
 ### 🗨️ Chat & Conversation
 
@@ -18,14 +18,23 @@ Core functions for AI chat interactions.
 * [**`aiChatAsync()`**](aichatasync.md) - Asynchronous chat returning Future
 * [**`aiChatStream()`**](aichatstream.md) - Streaming chat with real-time callbacks
 * [**`aiChatRequest()`**](aichatrequest.md) - Create reusable request objects
+* [**`webSearch()`**](websearch.md) - Provider-agnostic web search with normalized results
+* [**`webSearchAsync()`**](websearchasync.md) - Asynchronous web search returning Future
 
 ### 🤖 Agents & Models
 
 Create autonomous agents and model runnables.
 
 * [**`aiAgent()`**](aiagent.md) - Create AI agents with tools, memory, and reasoning
+* [**`aiAgentRegistry()`**](aiagentregistry.md) - Access the global agent registry singleton
 * [**`aiModel()`**](aimodel.md) - Create AI model runnables for pipelines
 * [**`aiService()`**](aiservice.md) - Get AI service provider instances
+
+### 🖼️ Image Generation
+
+Generate images from text prompts.
+
+* [**`aiImage()`**](aiimage.md) - Generate images with direct or fluent builder APIs
 
 ### 💾 Memory & Context
 
@@ -248,14 +257,18 @@ docs = aiDocuments( "/path" )
 | [`aiChunk()`](aichunk.md)             | Documents | Chunk text into segments    |
 | [`aiDocuments()`](aidocuments.md)     | Documents | Load documents for RAG      |
 | [`aiEmbed()`](aiembed.md)             | Documents | Generate embeddings         |
+| [`aiImage()`](aiimage.md)             | Image     | Generate images             |
 | [`aiMemory()`](aimemory.md)           | Memory    | Create memory instances     |
 | [`aiMessage()`](aimessage.md)         | Messages  | Build message structures    |
 | [`aiModel()`](aimodel.md)             | Models    | Create model runnables      |
+| [`aiAgentRegistry()`](aiagentregistry.md) | Agents | Global agent registry    |
 | [`aiPopulate()`](aipopulate.md)       | Utilities | Populate classes from JSON  |
 | [`aiService()`](aiservice.md)         | Services  | Get service providers       |
 | [`aiTokens()`](aitokens.md)           | Utilities | Estimate token counts       |
 | [`aiTool()`](aitool.md)               | Tools     | Create callable tools       |
 | [`aiTransform()`](aitransform.md)     | Transform | Create transformers         |
+| [`webSearch()`](websearch.md)         | Search    | Search web content          |
+| [`webSearchAsync()`](websearchasync.md) | Search  | Async web search            |
 | [`MCP()`](mcp.md)                     | MCP       | Create MCP client           |
 | [`MCPServer()`](mcpserver.md)         | MCP       | Create MCP server           |
 

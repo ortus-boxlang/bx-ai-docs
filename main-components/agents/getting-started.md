@@ -66,6 +66,22 @@ agent = aiAgent(
 response = agent.run( "What's the weather in Boston and what's 15% of 250?" )
 ```
 
+## Agent with Web Search (v3.2+)
+
+Use the auto-registered `webSearch@bxai` tool when the agent needs current internet data.
+
+```javascript
+agent = aiAgent(
+    name: "ResearchAssistant",
+    instructions: "Use web search for current information and cite your sources.",
+    tools: [ "webSearch@bxai" ]
+)
+
+response = agent.run( "Find the latest BoxLang AI release notes and summarize the key points." )
+```
+
+See [Web Search Tools](../web-search/README.md) for provider setup and options.
+
 ## Agent with Skills (v3.0+)
 
 Skills inject domain knowledge into the agent's system context:

@@ -136,6 +136,28 @@ agent.run( "Translate the Spanish audio at /audio/mensaje.mp3" )
 
 See [Audio & Speech](../audio/README.md) for full details on providers, voices, and formats.
 
+## Built-in Web Search Tool (v3.2+) 🔍
+
+The `bx-ai` module auto-registers `webSearch@bxai` at startup. Agents can opt in by adding the key in their `tools` array.
+
+| Tool Key | Description |
+|---|---|
+| `webSearch@bxai` | Search the web through configured providers (`http`, `brave`, `google`, `tavily`, `exa`) and return normalized results |
+
+```javascript
+agent = aiAgent(
+    name         : "ResearchAgent",
+    instructions : "Use web search for current information and cite source URLs.",
+    tools        : [ "webSearch@bxai" ]
+)
+
+response = agent.run( "Find the most recent BoxLang AI 3.2 highlights" )
+```
+
+`webSearch@bxai` is ideal for fact-checking, current events, and retrieval tasks that require fresh data.
+
+See [Web Search Tools](../web-search/README.md) for provider configuration and examples.
+
 ## Built-in FileSystem Tools (v3.1+) 📂
 
 `FileSystemTools` gives agents the ability to read, write, move, delete, and list files and directories on the local filesystem. It is **not auto-registered** — you must opt in explicitly, which lets you apply path guards that restrict the AI to specific directories.

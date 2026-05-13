@@ -264,6 +264,22 @@ fileTool = aiTool(
 ).describePath( "Path to the file" )
 ```
 
+### Built-In Web Search Tool (v3.2+)
+
+The module auto-registers `webSearch@bxai`, which lets agents fetch current web information without custom tool wiring.
+
+```java
+researchAgent = aiAgent(
+    name: "ResearchAssistant",
+    instructions: "Use web search for current, verifiable information.",
+    tools: [ "webSearch@bxai" ]
+)
+
+answer = researchAgent.run( "Find the latest BoxLang AI release updates and cite sources." )
+```
+
+Use this for fact-checking, current events, and research workflows where model pretraining alone is not enough.
+
 ## 🔗 Multiple Tools
 
 Provide multiple tools for complex tasks:

@@ -14,16 +14,19 @@ Comprehensive security guide for BoxLang AI applications. Learn about API key ma
 * [Security Overview](security.md#security-overview)
 * [API Key Management](security.md#api-key-management)
 * [Input Validation](security.md#input-validation)
-* [Prompt Injection Prevention](security.md#prompt-injection-prevention)
-* [Output Validation](security.md#output-validation)
-* [Data Privacy](security.md#data-privacy)
-* [Multi-Tenant Security](security.md#multi-tenant-security)
+* [Prompt Injection Prevention](security.md-prompt-injection-prevention)
+* [Tool & Function Calling Security](security.md#tool--function-calling-security)
+* [External Data Source Validation](security.md#-external-data-source-validation)
+* [Web Search Specific Security](security.md#-web-search-specific-security)
+* [Output Validation](security.md#-output-validation)
+* [Data Privacy](security.md#-data-privacy)
+* [Multi-Tenant Security](security.md#-multi-tenant-security)
 * [PII Handling](security.md#pii-handling)
-* [Audit Logging](security.md#audit-logging)
-* [Compliance](security.md#compliance)
-* [Secure Configuration](security.md#secure-configuration)
-* [Network Security](security.md#network-security)
-* [Incident Response](security.md#incident-response)
+* [Audit Logging](security.md#-audit-logging)
+* [Compliance](security.md#-compliance)
+* [Secure Configuration](security.md#-secure-configuration)
+* [Network Security](security.md#-network-security)
+* [Incident Response](security.md#-incident-response)
 
 ***
 
@@ -603,6 +606,53 @@ messages = [
 ]
 ```
 
+#### 6. Indirect Injection via Tool Results
+
+**⚠️ New Attack Vector**: AI tools (web search, database queries, API calls) can be exploited to inject malicious content into the AI context.
+
+```javascript
+class {
+    function dangerousToolChain() {
+        // ❌ WRONG - Web search results directly used as context
+        var searchResults = webSearch( userQuery )  // Results from untrusted web
+        var context = "Here are the search results: #jsonSerialize( searchResults )#"
+        
+        // Attacker controls web content → injection via search results
+        var response = aiChat( context )
+    }
+
+    function safeToolChain( required string userQuery ) {
+        // ✅ RIGHT - Validate tool results before using as context
+        var searchResults = webSearch( arguments.userQuery )
+        
+        // Sanitize EACH result before including
+        for ( result in searchResults ) {
+            result.snippet = stripInjectionPatterns( result.snippet )
+            result.title = stripInjectionPatterns( result.title )
+        }
+        
+        var context = "Here are the search results: #jsonSerialize( searchResults )#"
+        return aiChat( context )
+    }
+
+    function stripInjectionPatterns( required string text ) {
+        var injectionPatterns = [
+            "ignore previous",
+            "system prompt",
+            "you are now",
+            "new instructions"
+        ]
+        
+        var cleaned = arguments.text
+        for ( pattern in injectionPatterns ) {
+            cleaned = reReplaceNoCase( cleaned, pattern, "[REDACTED]", "all" )
+        }
+        
+        return cleaned
+    }
+}
+```
+
 ### Testing for Injection Vulnerabilities
 
 ```javascript
@@ -637,6 +687,542 @@ class {
         }
 
         return true
+    }
+}
+```
+
+***
+
+## 🔧 Tool & Function Calling Security
+
+### The Tool Calling Risk
+
+**AI agents can autonomously invoke tools based on user requests**. If inputs aren't validated, attackers can:
+
+- **Trigger unintended tool calls**: `"Search my entire database"` → database lookup tool
+- **Pass malicious parameters**: `"Look up user with id: 1; DROP TABLE users; --"`
+- **Exploit tool side effects**: Delete files, transfer funds, send emails
+- **Combine tools maliciously**: Web search → database lookup → email tool chain
+
+### Parameter Validation Before Tool Execution
+
+```javascript
+class {
+    function safeWebSearchTool( required string query ) {
+        // ✅ Validate before passing to web search
+        if ( !validateSearchQuery( arguments.query ) ) {
+            throw "Invalid search query"
+        }
+
+        // Limit result count
+        var maxResults = 10
+
+        var results = webSearch(
+            arguments.query,
+            { maxResults: maxResults }
+        )
+
+        // Validate results before returning to AI
+        return validateSearchResults( results )
+    }
+
+    function validateSearchQuery( required string query ) {
+        // Check length
+        if ( len( arguments.query ) > 1000 ) {
+            return false
+        }
+
+        // Check for SQL injection patterns
+        if ( arguments.query.findNoCase( "DROP" ) > 0 ||
+             arguments.query.findNoCase( "DELETE" ) > 0 ) {
+            return false
+        }
+
+        // Check for command injection
+        if ( arguments.query.find( "&&" ) > 0 ||
+             arguments.query.find( "|" ) > 0 ) {
+            return false
+        }
+
+        return true
+    }
+
+    function validateSearchResults( required array results ) {
+        // Filter out suspicious domains
+        var blockedDomains = [ "malware-site.com", "phishing.net" ]
+
+        return results.filter( r => {
+            var domain = extractDomain( r.url )
+            return !blockedDomains.contains( domain )
+        } )
+    }
+}
+```
+
+### Tool Invocation Sandboxing
+
+```javascript
+class {
+    function createSandboxedTool( required function toolFn, required struct schema ) {
+        return aiTool(
+            schema.name,
+            schema.description,
+            ( args ) => {
+                // Validate input against schema
+                validateToolInput( args, schema )
+
+                // Execute in isolation with error handling
+                try {
+                    var result = toolFn( args )
+                    
+                    // Validate output
+                    if ( len( result ) > 10000 ) {
+                        return "[Result truncated - output too large]"
+                    }
+                    
+                    return result
+                    
+                } catch ( any e ) {
+                    // Don't leak error details to AI
+                    logError( e, args )
+                    return "[Tool execution failed]"
+                }
+            }
+        )
+    }
+
+    function validateToolInput( required struct args, required struct schema ) {
+        for ( param in schema.parameters ?: [] ) {
+            if ( param.required && !structKeyExists( arguments.args, param.name ) ) {
+                throw "Missing required parameter: #param.name#"
+            }
+
+            if ( structKeyExists( arguments.args, param.name ) ) {
+                var value = arguments.args[ param.name ]
+                var type = param.type ?: "string"
+
+                // Type validation
+                if ( type == "string" && !isSimpleValue( value ) ) {
+                    throw "Parameter #param.name# must be a string"
+                }
+
+                if ( type == "number" && !isNumeric( value ) ) {
+                    throw "Parameter #param.name# must be numeric"
+                }
+
+                // Length limits
+                if ( type == "string" && len( value ) > (param.maxLength ?: 1000) ) {
+                    throw "Parameter #param.name# exceeds maximum length"
+                }
+            }
+        }
+    }
+}
+```
+
+### Tool Audit & Rate Limiting
+
+```javascript
+class {
+    function logToolExecution(
+        required string toolName,
+        required string userId,
+        required struct parameters,
+        any result,
+        numeric durationMs = 0
+    ) {
+        queryExecute(
+            "INSERT INTO tool_audit_log (tool_name, user_id, parameters, result, duration_ms, created_at)
+             VALUES (:toolName, :userId, :parameters, :result, :durationMs, :createdAt)",
+            {
+                toolName: arguments.toolName,
+                userId: arguments.userId,
+                parameters: jsonSerialize( arguments.parameters ),
+                result: jsonSerialize( arguments.result ?: {} ),
+                durationMs: arguments.durationMs,
+                createdAt: now()
+            }
+        )
+
+        // Alert on suspicious patterns
+        if ( arguments.toolName == "webSearch" && arguments.durationMs > 5000 ) {
+            writeLog( "Slow web search detected: #arguments.durationMs#ms", "warning" )
+        }
+    }
+
+    function checkToolRateLimit( required string userId, required string toolName ) {
+        var query = queryExecute(
+            "SELECT COUNT(*) as cnt FROM tool_audit_log
+             WHERE user_id = :userId
+             AND tool_name = :toolName
+             AND created_at > DATE_SUB(NOW(), INTERVAL 1 MINUTE)",
+            {
+                userId: arguments.userId,
+                toolName: arguments.toolName
+            }
+        )
+
+        var callsPerMinute = query.cnt
+        var limit = 10  // 10 calls per minute per tool
+
+        if ( callsPerMinute >= limit ) {
+            throw "Rate limit exceeded for tool: #arguments.toolName#"
+        }
+    }
+}
+```
+
+***
+
+## 🌐 External Data Source Validation
+
+### Web Search Result Validation
+
+**Web search results come from untrusted sources**. Always validate before using:
+
+```javascript
+class {
+    function safeWebSearch( required string query ) {
+        // 1. Validate user query
+        var sanitizedQuery = sanitizeSearchQuery( arguments.query )
+
+        // 2. Execute search
+        var rawResults = webSearch( sanitizedQuery )
+
+        // 3. Validate each result
+        var validatedResults = rawResults.map( result => {
+            return {
+                title: stripHTML( result.title ),
+                url: validateURL( result.url ),
+                snippet: redactPII( stripInjectionPatterns( result.snippet ) ),
+                domain: extractDomain( result.url ),
+                score: result.score,
+                thumbnail: isURL( result.thumbnail ) ? result.thumbnail : "",
+                publishedDate: parseDate( result.publishedDate )
+            }
+        } )
+
+        // 4. Filter suspicious results
+        return filterSuspiciousResults( validatedResults )
+    }
+
+    function validateURL( required string url ) {
+        // Block known malicious domains
+        var blockedDomains = [ "bit.ly", "tinyurl.com" ]  // Short URLs hide true destination
+        var domain = extractDomain( arguments.url )
+
+        if ( blockedDomains.contains( domain ) ) {
+            throw "Blocked URL domain: #domain#"
+        }
+
+        // Validate URL format
+        if ( !isValid( "url", arguments.url ) ) {
+            throw "Invalid URL format: #arguments.url#"
+        }
+
+        return arguments.url
+    }
+
+    function stripHTML( required string text ) {
+        // Remove script tags and event handlers
+        var cleaned = arguments.text
+        cleaned = reReplace( cleaned, "<script[^>]*>.*?</script>", "", "all" )
+        cleaned = reReplace( cleaned, " on\w+\s*=", " ", "all" )  // Remove event handlers
+        cleaned = htmlEditFormat( cleaned )  // HTML escape
+
+        return cleaned
+    }
+
+    function stripInjectionPatterns( required string text ) {
+        var patterns = [
+            "ignore previous",
+            "disregard all",
+            "system:\s*",
+            "new instructions:",
+            "you are now"
+        ]
+
+        var cleaned = arguments.text
+        for ( pattern in patterns ) {
+            cleaned = reReplaceNoCase( cleaned, pattern, "[REDACTED]", "all" )
+        }
+
+        return cleaned
+    }
+
+    function filterSuspiciousResults( required array results ) {
+        return results.filter( r => {
+            // Filter out results with suspicious snippet content
+            var suspiciousKeywords = [ "viagra", "casino", "loan", "click here" ]
+            var snippet = r.snippet.toLowerCase()
+
+            for ( keyword in suspiciousKeywords ) {
+                if ( snippet.find( keyword ) > 0 ) {
+                    return false
+                }
+            }
+
+            return true
+        } )
+    }
+}
+```
+
+### Document Loader Input Validation
+
+**Loading documents from untrusted sources can introduce malicious content**:
+
+```javascript
+class {
+    function safeLoadDocuments( required string filePath ) {
+        // 1. Validate file path (prevent directory traversal)
+        validateFilePath( arguments.filePath )
+
+        // 2. Check file size (prevent memory exhaustion)
+        var fileSize = getFileSize( arguments.filePath )
+        if ( fileSize > 50_000_000 ) {  // 50 MB limit
+            throw "File too large: #fileSize# bytes"
+        }
+
+        // 3. Check file type (whitelist allowed extensions)
+        var allowedExtensions = [ "pdf", "txt", "md", "csv" ]
+        var fileExt = listLast( arguments.filePath, "." ).toLowerCase()
+
+        if ( !allowedExtensions.contains( fileExt ) ) {
+            throw "File type not allowed: .#fileExt#"
+        }
+
+        // 4. Load documents with safety checks
+        var loader = aiDocuments( fileExt, arguments.filePath )
+        var documents = loader.load()
+
+        // 5. Scan content for malicious patterns
+        return documents.map( doc => {
+            return {
+                id: doc.id,
+                content: sanitizeDocumentContent( doc.content ),
+                metadata: doc.metadata
+            }
+        } )
+    }
+
+    function validateFilePath( required string filePath ) {
+        // Prevent directory traversal attacks
+        if ( arguments.filePath.find( ".." ) > 0 ) {
+            throw "Invalid file path: directory traversal detected"
+        }
+
+        // Ensure absolute path is within allowed directory
+        var allowedDir = expandPath( "/documents" )
+        var absolutePath = expandPath( arguments.filePath )
+
+        if ( !absolutePath.startsWith( allowedDir ) ) {
+            throw "File path outside allowed directory: #arguments.filePath#"
+        }
+    }
+
+    function sanitizeDocumentContent( required string content ) {
+        // Remove embedded scripts
+        var cleaned = content
+        cleaned = reReplace( cleaned, "<script[^>]*>.*?</script>", "", "all" )
+
+        // Limit content length
+        if ( len( cleaned ) > 100_000 ) {
+            cleaned = left( cleaned, 100_000 )
+        }
+
+        return cleaned
+    }
+}
+```
+
+### Vector Memory Poisoning Prevention
+
+**Adversaries can pollute vector databases with malicious embeddings**:
+
+```javascript
+class {
+    function safeVectorMemoryAdd(
+        required string text,
+        required struct metadata,
+        required string userId
+    ) {
+        // 1. Validate text content
+        var sanitized = sanitizeEmbeddingText( arguments.text )
+
+        // 2. Validate metadata doesn't contain injection
+        var safeMetadata = validateMetadata( arguments.metadata )
+
+        // 3. Check for semantic anomalies (if embeddings are suspiciously similar to system prompts)
+        var embedding = generateEmbedding( sanitized )
+        if ( detectAnomalousEmbedding( embedding ) ) {
+            writeLog( "Anomalous embedding detected for user #arguments.userId#", "warning" )
+            return false
+        }
+
+        // 4. Add to vector memory with user isolation
+        var vectorMemory = aiMemory( "vector", {
+            userId: arguments.userId
+        } )
+
+        vectorMemory.add( sanitized, safeMetadata )
+
+        return true
+    }
+
+    function detectAnomalousEmbedding( required array embedding ) {
+        // Compare against known attack embeddings or system prompt embeddings
+        var systemPromptEmbedding = generateEmbedding( "You are a helpful assistant" )
+
+        // Calculate cosine similarity
+        var similarity = cosineSimilarity( arguments.embedding, systemPromptEmbedding )
+
+        // Flag if too similar to system prompt (indicates injection attempt)
+        if ( similarity > 0.9 ) {
+            return true
+        }
+
+        return false
+    }
+}
+```
+
+***
+
+## 🔍 Web Search Specific Security
+
+### API Key & Rate Limiting
+
+```javascript
+class {
+    function configureWebSearchSafely() {
+        // ✅ Load API keys from secure storage, NOT hardcoded
+        var braveKey = getSystemSetting( "BRAVE_API_KEY" )
+        var googleKey = getSystemSetting( "GOOGLE_API_KEY" )
+
+        if ( !len( braveKey ) && !len( googleKey ) ) {
+            throw "No web search API keys configured"
+        }
+
+        return {
+            providers: [
+                { name: "brave", apiKey: braveKey },
+                { name: "google", apiKey: googleKey }
+            ]
+        }
+    }
+
+    function enforceWebSearchRateLimit( required string userId ) {
+        var query = queryExecute(
+            "SELECT COUNT(*) as cnt FROM web_search_audit
+             WHERE user_id = :userId
+             AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)",
+            { userId: arguments.userId }
+        )
+
+        var searchesPerHour = query.cnt
+        var limit = 50  // 50 searches per hour per user
+
+        if ( searchesPerHour >= limit ) {
+            throw "Web search rate limit exceeded for user #arguments.userId#"
+        }
+    }
+}
+```
+
+### Search Query Sanitization
+
+```javascript
+class {
+    function sanitizeWebSearchQuery( required string query ) {
+        // 1. Limit length
+        var sanitized = left( arguments.query, 500 )
+
+        // 2. Remove special characters that could cause API issues
+        sanitized = reReplace( sanitized, "[^\\w\\s\\-'\"()]", " ", "all" )
+
+        // 3. Trim whitespace
+        sanitized = trim( sanitized )
+        sanitized = reReplace( sanitized, "\\s{2,}", " ", "all" )
+
+        // 4. Block known malicious search operators
+        if ( sanitized.findNoCase( "inurl:" ) > 0 ||
+             sanitized.findNoCase( "filetype:" ) > 0 ) {
+            throw "Search operators not allowed"
+        }
+
+        return sanitized
+    }
+
+    function safeWebSearch( required string userQuery ) {
+        // Sanitize
+        var query = sanitizeWebSearchQuery( arguments.userQuery )
+
+        // Rate limit
+        enforceWebSearchRateLimit( session.user.id )
+
+        // Execute with safe defaults
+        var results = webSearch( query, {
+            provider: "brave",
+            maxResults: 10,
+            timeout: 10
+        } )
+
+        // Audit log
+        queryExecute(
+            "INSERT INTO web_search_audit (user_id, query, result_count, created_at)
+             VALUES (:userId, :query, :resultCount, :createdAt)",
+            {
+                userId: session.user.id,
+                query: query,
+                resultCount: results.len(),
+                createdAt: now()
+            }
+        )
+
+        return results
+    }
+}
+```
+
+### Domain Filtering
+
+```javascript
+class {
+    function filterWebSearchResults( required array results ) {
+        // Block known malicious/spam domains
+        var blockedDomains = [
+            "spam-site.com",
+            "malware-distribution.net",
+            "phishing-domain.biz",
+            "clickbait-farm.site"
+        ]
+
+        var blockedPatterns = [
+            "(.*)\\.tk$",      // Cheap TLDs often used for spam
+            "(.*)\\.ml$",
+            "(.*)\\.ga$",
+            "bit\\.ly.*",      // URL shorteners hide destination
+            "tinyurl.*"
+        ]
+
+        return results.filter( r => {
+            var domain = extractDomain( r.url )
+
+            // Check against blocked list
+            if ( blockedDomains.contains( domain ) ) {
+                return false
+            }
+
+            // Check against patterns
+            for ( pattern in blockedPatterns ) {
+                if ( reFind( pattern, domain ) > 0 ) {
+                    return false
+                }
+            }
+
+            return true
+        } )
     }
 }
 ```

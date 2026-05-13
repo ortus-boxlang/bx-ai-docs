@@ -59,6 +59,10 @@
   * [Generating Images](main-components/image-generation/generating.md)
   * [Image Response & Formats](main-components/image-generation/response-formats.md)
   * [Image Agent Tools](main-components/image-generation/agent-tools.md)
+* [Web Search](main-components/web-search/README.md)
+  * [Getting Started](main-components/web-search/getting-started.md)
+  * [Providers](main-components/web-search/providers.md)
+  * [Agent Tools](main-components/web-search/agent-tools.md)
 * [Pipelines](main-components/pipelines/README.md)
   * [Building Pipelines](main-components/pipelines/building.md)
   * [Transform Pipelines](main-components/pipelines/transforms.md)
@@ -119,12 +123,12 @@
     * [aiImage](advanced/reference/built-in-functions/aiimage.md)
     * [aiTranscribe](advanced/reference/built-in-functions/aitranscribe.md)
     * [aiTranslate](advanced/reference/built-in-functions/aitranslate.md)
+    * [webSearch](advanced/reference/built-in-functions/websearch.md)
+    * [webSearchAsync](advanced/reference/built-in-functions/websearchasync.md)
     * [aiAgentRegistry](advanced/reference/built-in-functions/aiagentregistry.md)
     * [aiToolRegistry](advanced/reference/built-in-functions/aitoolregistry.md)
     * [aiTool](advanced/reference/built-in-functions/aitool.md)
-    * [aiTranscribe](advanced/reference/built-in-functions/aitranscribe.md)
     * [aiTransform](advanced/reference/built-in-functions/aitransform.md)
-    * [aiTranslate](advanced/reference/built-in-functions/aitranslate.md)
 
 ## Deployment
 
@@ -139,3 +143,4 @@
 * [Building Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
 * [Building Custom Document Loaders](extending-boxlang-ai/custom-loader.md)
 * [Building Custom Tools](extending-boxlang-ai/custom-tools.md)
+* [Building Custom Web Search Providers](extending-boxlang-ai/custom-web-search-providers.md)

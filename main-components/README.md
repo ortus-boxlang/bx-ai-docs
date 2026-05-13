@@ -88,6 +88,7 @@ START HERE
 **Quick Paths:**
 
 * 🚀 **Building a chatbot?** → Start with Models → Messages → Memory → Agents
+* 🔎 **Building research agents?** → Start with Tools → Web Search → Memory → Agents
 * 📊 **Extracting data?** → Start with Models → Structured Output → Transformers → Pipelines
 * 🔍 **Building RAG?** → Start with Document Loaders → Vector Memory → RAG → Agents
 * 🛠️ **Creating workflows?** → Start with Models → Transformers → Pipelines → Agents
@@ -234,6 +235,7 @@ response = agent.run( "What's the weather in Boston?" )
 * Function calling
 * Parameter schemas
 * Tool registration
+* Auto-registered built-ins (e.g., `webSearch@bxai`, `speak@bxai`)
 * Autonomous invocation
 
 → [**Read Tools Guide**](../tools.md)
