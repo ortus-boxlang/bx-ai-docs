@@ -1,5 +1,5 @@
 ---
-description: Web search integration for AI agents - 6 providers, real-time internet access, RAG enhancement
+description: Web search integration for AI agents - 5 providers, real-time internet access, RAG enhancement
 icon: magnifying-glass
 ---
 

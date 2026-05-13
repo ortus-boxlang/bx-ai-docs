@@ -257,16 +257,23 @@ docs = aiDocuments( "/path" )
 | [`aiChunk()`](aichunk.md)             | Documents | Chunk text into segments    |
 | [`aiDocuments()`](aidocuments.md)     | Documents | Load documents for RAG      |
 | [`aiEmbed()`](aiembed.md)             | Documents | Generate embeddings         |
+| [`aiGlobalSkills()`](aiglobalskills.md) | Skills  | List globally loaded skills |
 | [`aiImage()`](aiimage.md)             | Image     | Generate images             |
 | [`aiMemory()`](aimemory.md)           | Memory    | Create memory instances     |
 | [`aiMessage()`](aimessage.md)         | Messages  | Build message structures    |
 | [`aiModel()`](aimodel.md)             | Models    | Create model runnables      |
+| [`aiParallel()`](aiparallel.md)       | Pipelines | Run branches in parallel    |
 | [`aiAgentRegistry()`](aiagentregistry.md) | Agents | Global agent registry    |
 | [`aiPopulate()`](aipopulate.md)       | Utilities | Populate classes from JSON  |
 | [`aiService()`](aiservice.md)         | Services  | Get service providers       |
+| [`aiSkill()`](aiskill.md)             | Skills    | Create a skill definition   |
+| [`aiSpeak()`](aispeak.md)             | Audio     | Text-to-speech generation   |
 | [`aiTokens()`](aitokens.md)           | Utilities | Estimate token counts       |
 | [`aiTool()`](aitool.md)               | Tools     | Create callable tools       |
+| [`aiToolRegistry()`](aitoolregistry.md) | Tools   | Access the global tool registry |
+| [`aiTranscribe()`](aitranscribe.md)   | Audio     | Speech-to-text transcription |
 | [`aiTransform()`](aitransform.md)     | Transform | Create transformers         |
+| [`aiTranslate()`](aitranslate.md)     | Audio     | Audio-to-English translation |
 | [`webSearch()`](websearch.md)         | Search    | Search web content          |
 | [`webSearchAsync()`](websearchasync.md) | Search  | Async web search            |
 | [`MCP()`](mcp.md)                     | MCP       | Create MCP client           |
