@@ -21,7 +21,7 @@ A `BoxFuture` that resolves to the same normalized results array returned by `we
 
 ## Execution Model
 
-`webSearchAsync()` executes on the `io-tasks` executor pool, allowing non-blocking search workflows.
+`webSearchAsync()` returns a `BoxFuture` so searches can run without blocking the current request thread.
 
 ## Examples
 

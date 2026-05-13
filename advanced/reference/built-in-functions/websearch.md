@@ -79,6 +79,9 @@ Array of structs with normalized fields:
 ]
 ```
 
+API keys follow the standard resolution order used in BoxLang AI integrations:
+constructor/config options, then module settings, then environment variables.
+
 ## Events Fired
 
 | Event | When |
