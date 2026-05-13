@@ -136,6 +136,6 @@
 * [Building Custom AI Providers](extending-boxlang-ai/custom-providers.md)
 * [Building Custom Transformers](extending-boxlang-ai/custom-transformer.md)
 * [Building Custom Memory](extending-boxlang-ai/custom-memory.md)
+* [Building Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
 * [Building Custom Document Loaders](extending-boxlang-ai/custom-loader.md)
-* [Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
 * [Building Custom Tools](extending-boxlang-ai/custom-tools.md)
