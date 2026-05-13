@@ -201,7 +201,7 @@ function researchTopic( required string topic ) {
     // Search multiple providers for comparison
     var braveResults = webSearch( topic, { provider: "brave", maxResults: 5 } )
     var tavilyResults = webSearch( topic, { provider: "tavily", maxResults: 5 } )
-    
+
     return {
         brave: braveResults,
         tavily: tavilyResults
@@ -245,11 +245,11 @@ var agent = aiAgent(
 ```javascript
 function checkRateLimit( required string userId ) {
     var searchCount = queryExecute(
-        "SELECT COUNT(*) as cnt FROM web_searches 
+        "SELECT COUNT(*) as cnt FROM web_searches
          WHERE user_id = :userId AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)",
         { userId: arguments.userId }
     )
-    
+
     if ( searchCount.cnt >= 50 ) {
         throw "Search rate limit exceeded"
     }

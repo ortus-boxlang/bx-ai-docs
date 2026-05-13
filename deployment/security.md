@@ -616,7 +616,7 @@ class {
         // ❌ WRONG - Web search results directly used as context
         var searchResults = webSearch( userQuery )  // Results from untrusted web
         var context = "Here are the search results: #jsonSerialize( searchResults )#"
-        
+
         // Attacker controls web content → injection via search results
         var response = aiChat( context )
     }
@@ -624,13 +624,13 @@ class {
     function safeToolChain( required string userQuery ) {
         // ✅ RIGHT - Validate tool results before using as context
         var searchResults = webSearch( arguments.userQuery )
-        
+
         // Sanitize EACH result before including
         for ( result in searchResults ) {
             result.snippet = stripInjectionPatterns( result.snippet )
             result.title = stripInjectionPatterns( result.title )
         }
-        
+
         var context = "Here are the search results: #jsonSerialize( searchResults )#"
         return aiChat( context )
     }
@@ -642,12 +642,12 @@ class {
             "you are now",
             "new instructions"
         ]
-        
+
         var cleaned = arguments.text
         for ( pattern in injectionPatterns ) {
             cleaned = reReplaceNoCase( cleaned, pattern, "[REDACTED]", "all" )
         }
-        
+
         return cleaned
     }
 }
@@ -774,14 +774,14 @@ class {
                 // Execute in isolation with error handling
                 try {
                     var result = toolFn( args )
-                    
+
                     // Validate output
                     if ( len( result ) > 10000 ) {
                         return "[Result truncated - output too large]"
                     }
-                    
+
                     return result
-                    
+
                 } catch ( any e ) {
                     // Don't leak error details to AI
                     logError( e, args )

@@ -200,7 +200,7 @@ var response = agent.run(
 var researchAgent = aiAgent(
     name: "Researcher",
     description: "Research assistant for fact-checking and information gathering",
-    instructions: 
+    instructions:
         "Your job is to research topics thoroughly. " &
         "Use web search to find reliable sources. " &
         "Always cite your sources from the search results.",
@@ -292,7 +292,7 @@ function safeWebSearch( required string query ) {
         } )
     } catch ( any error ) {
         writeLog( "Web search failed: #error.message#", "error" )
-        
+
         // Fallback to HTTP provider
         return webSearch( arguments.query, { provider: "http" } )
     }
@@ -310,18 +310,18 @@ function limitedWebSearch(
 ) {
     // Check if user has exceeded rate limit
     var searchCount = queryExecute(
-        "SELECT COUNT(*) as cnt FROM web_searches 
+        "SELECT COUNT(*) as cnt FROM web_searches
          WHERE user_id = :userId AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)",
         { userId: arguments.userId }
     )
-    
+
     if ( searchCount.cnt >= 50 ) {
         throw "You have exceeded your search limit (50 per hour)"
     }
-    
+
     // Execute search and log
     var results = webSearch( arguments.query )
-    
+
     queryExecute(
         "INSERT INTO web_searches (user_id, query, result_count, created_at)
          VALUES (:userId, :query, :resultCount, :createdAt)",
@@ -332,7 +332,7 @@ function limitedWebSearch(
             createdAt: now()
         }
     )
-    
+
     return results
 }
 ```
@@ -346,7 +346,7 @@ var cache = createObject( "java", "java.util.concurrent.ConcurrentHashMap" )
 
 function cachedWebSearch( required string query, required string provider = "brave" ) {
     var cacheKey = provider & ":" & query
-    
+
     // Check cache
     if ( cache.containsKey( cacheKey ) ) {
         var cached = cache.get( cacheKey )
@@ -355,16 +355,16 @@ function cachedWebSearch( required string query, required string provider = "bra
             return cached.results
         }
     }
-    
+
     // Execute search
     var results = webSearch( arguments.query, { provider: arguments.provider } )
-    
+
     // Cache result
     cache.put( cacheKey, {
         results: results,
         timestamp: now()
     } )
-    
+
     return results
 }
 ```
@@ -376,11 +376,11 @@ function cachedWebSearch( required string query, required string provider = "bra
 function parallelWebSearch( required string query ) {
     var future1 = webSearchAsync( query, { provider: "brave" } )
     var future2 = webSearchAsync( query, { provider: "tavily" } )
-    
+
     // Results fetch in parallel
     var braveResults = future1.get()
     var tavilyResults = future2.get()
-    
+
     return {
         brave: braveResults,
         tavily: tavilyResults
