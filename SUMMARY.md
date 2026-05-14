@@ -137,10 +137,10 @@
 
 ## Extending BoxLang AI
 
-* [Building Custom AI Providers](extending-boxlang-ai/custom-providers.md)
-* [Building Custom Transformers](extending-boxlang-ai/custom-transformer.md)
-* [Building Custom Memory](extending-boxlang-ai/custom-memory.md)
-* [Building Custom Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
-* [Building Custom Document Loaders](extending-boxlang-ai/custom-loader.md)
-* [Building Custom Tools](extending-boxlang-ai/custom-tools.md)
-* [Building Custom Web Search Providers](extending-boxlang-ai/custom-web-search-providers.md)
+* [Building AI Providers](extending-boxlang-ai/custom-providers.md)
+* [Building Transformers](extending-boxlang-ai/custom-transformer.md)
+* [Building Memory](extending-boxlang-ai/custom-memory.md)
+* [Building Vector Memory](extending-boxlang-ai/custom-vector-memory.md)
+* [Building Document Loaders](extending-boxlang-ai/custom-loader.md)
+* [Building Tools](extending-boxlang-ai/custom-tools.md)
+* [Building Web Search Providers](extending-boxlang-ai/custom-web-search-providers.md)
