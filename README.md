@@ -58,6 +58,10 @@ graph LR
 * 🧠 **Vector Memory**: Semantic search with 12 vector database integrations
 * 🎯 **AI Skills**: Composable, reusable knowledge blocks injected into agent system messages at runtime
 * 🔌 **MCP Server Integration**: Seed agents and models directly from MCP servers — tools discovered automatically
+* 🔌 **Middleware Pipeline**: Intercept and transform AI requests/responses with a powerful middleware system
+* 🎵 **Audio & Speech**: Text-to-speech, speech-to-text, and audio translation across multiple providers
+* 🖼️ **Image Generation**: Generate images from text prompts with provider-agnostic API
+* 🌐 **Web Search**: Real-time web search integration with agent tools and structured results
 * 🗄️ **Global Tool Registry**: Register tools by name once, reference by string everywhere
 * 🛡️ **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
 
@@ -110,7 +114,7 @@ BoxLang AI provides 20+ memory types for conversation history and semantic searc
 | **Milvus** | ✅ | Enterprise, massive scale | Milvus | ✅ |
 | **Hybrid** | ✅ | Recent + semantic combined | Vector + Standard | ✅ |
 
-**📖 Learn More**: [Standard Memory Guide](main-components/memory/) · [Vector Memory Guide](main-components/vector-memory.md)
+**📖 Learn More**: [Standard Memory Guide](main-components/memory/) · [Vector Memory Guide](main-components/memory/vector-memory.md)
 
 ### 📋 Supported Document Loaders
 
@@ -162,19 +166,19 @@ BoxLang AI provides 12 document loaders for importing content from various sourc
 
 ### 🎓 Getting Started
 
-[Perfect for beginners - get up and running quickly](getting-started/getting-started.md)
+[Perfect for beginners - get up and running quickly](getting-started/quickstart.md)
 
 ### 💬 Simple AI Interactions
 
-[Learn basic chat, streaming, and structured output](main-components/chatting/)
+[Learn basic chat, streaming, and structured output](main-components/chatting/basic-chatting.md)
 
 ### 🔗 AI Pipelines
 
-[Build complex workflows with agents, memory, and tools](main-components/pipelines/)
+[Build complex workflows with agents, memory, and tools](main-components/pipelines/building.md)
 
 ### 🤖 AI Agents
 
-[Build reusable and autonomous agents, sub-agents, and much more.](main-components/agents/)
+[Build reusable and autonomous agents, sub-agents, and much more.](main-components/agents/getting-started.md)
 
 ***
 
@@ -204,6 +208,8 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | `aiSkill()`         | Create or discover AI skill blocks from SKILL.md files    | AiSkill     | Reusable knowledge injection     |
 | `aiGlobalSkills()`  | Access the global shared skills pool                      | Array       | Cross-agent knowledge sharing    |
 | `aiToolRegistry()`  | Access the global AI tool registry singleton              | AIToolRegistry | Named tool resolution         |
+| `aiAgentRegistry()` | Access the global AI agent registry singleton             | AIAgentRegistry | Named agent resolution      |
+| `aiParallel()`      | Execute runnables (models, pipelines) in parallel         | Array          | Parallel model execution      |
 
 ### 🧠 Memory & Context
 
@@ -232,6 +238,27 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | ------------- | ------------------------ | ----------- | ------------------------- |
 | `MCP()`       | Connect to MCP servers   | MCPClient   | External tools, resources |
 | `MCPServer()` | Create MCP server instances | MCPServer   | Expose tools to agents    |
+
+### 🎵 Audio & Speech
+
+| BIF               | Purpose                        | Return Type | Example Use Case                  |
+| ----------------- | ------------------------------ | ----------- | --------------------------------- |
+| `aiSpeak()`       | Convert text to spoken audio   | Binary      | Voice responses, accessibility    |
+| `aiTranscribe()`  | Transcribe audio to text       | String      | Meeting notes, voice commands     |
+| `aiTranslate()`   | Translate audio between languages | String   | Multi-language audio translation  |
+
+### 🖼️ Image Generation
+
+| BIF         | Purpose                  | Return Type | Example Use Case              |
+| ----------- | ------------------------ | ----------- | ----------------------------- |
+| `aiImage()` | Generate images from text prompts | Binary/Struct | Marketing visuals, content creation |
+
+### 🌐 Web Search
+
+| BIF                 | Purpose                     | Return Type | Example Use Case                   |
+| ------------------- | --------------------------- | ----------- | ---------------------------------- |
+| `aiWebSearch()`     | Search the web in real-time | String      | Live data retrieval, research      |
+| `aiWebSearchAsync()`| Non-blocking web search     | Future      | Background web research            |
 
 ***
 
@@ -364,9 +391,9 @@ response = agent.chat( "Research AI trends in 2025" )
 ### 📚 Resources
 
 * **📖 Full Documentation**: Explore all sections above for comprehensive guides
-* **💡 Examples**: Check the [`/examples`](../examples/) folder for runnable code samples
+* **💡 Examples**: Check the `bx-ai/examples/` folder for 60+ runnable code samples
 * **🔍 BIF Reference**: See [`reference/built-in-functions/`](advanced/reference/built-in-functions/) for detailed function docs
-* **📦 Module Components**: Explore [`main-components/`](main-components/main-components/) for in-depth component guides
+* **📦 Module Components**: Explore [`main-components/`](main-components/) for in-depth component guides
 
 ### 🤝 Community & Support
 
@@ -378,8 +405,8 @@ response = agent.chat( "Research AI trends in 2025" )
 ### 🎓 Learning Paths
 
 1. **🌱 Beginners**: Start with [Quick Start](getting-started/quickstart.md) → [Basic Chatting](main-components/chatting/basic-chatting.md) → [Examples](../examples/)
-2. **🏗️ Builders**: Learn [Pipelines](main-components/main-components/overview.md) → [Memory](main-components/memory/) → [Tools](main-components/tools.md)
-3. **🚀 Advanced**: Explore [Agents](main-components/agents/) → [RAG](rag/rag.md) → [Custom Components](advanced/advanced.md)
+2. **🏗️ Builders**: Learn [Pipelines](main-components/pipelines/building.md) → [Memory](main-components/memory/) → [Tools](main-components/tools.md)
+3. **🚀 Advanced**: Explore [Agents](main-components/agents/) → [MCP](mcp/server/) → [Custom Providers](extending-boxlang-ai/custom-providers.md)
 
 ***
 

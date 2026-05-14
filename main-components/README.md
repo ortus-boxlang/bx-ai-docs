@@ -33,7 +33,7 @@ Each component:
 
 We recommend learning the components in this order for the best experience:
 
-```
+```bash
 START HERE
    ↓
 ┌──────────────────────────────────────────────────────────────┐
