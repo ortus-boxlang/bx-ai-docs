@@ -1,11 +1,15 @@
-# webSearch
+---
+description: BoxLang AI aiWebSearch() built-in function reference
+---
+
+# aiWebSearch
 
 Search the web using the configured or selected provider and return normalized results.
 
 ## Syntax
 
 ```javascript
-webSearch( query, options = {} )
+aiWebSearch( query, options = {} )
 ```
 
 ## Parameters
@@ -97,13 +101,13 @@ constructor/config options, then module settings, then environment variables.
 ### Default provider
 
 ```javascript
-results = webSearch( "BoxLang AI" )
+results = aiWebSearch( "BoxLang AI" )
 ```
 
 ### Brave search with filters
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "latest BoxLang news",
     {
         provider: "brave",
@@ -118,7 +122,7 @@ results = webSearch(
 ### Exa neural search
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "agent memory retrieval patterns",
     {
         provider: "exa",

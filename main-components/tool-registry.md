@@ -31,14 +31,25 @@ registry = aiToolRegistry()
 
 ## Registering Tools
 
-### From an `ITool` Instance
+### Using our `aiTool()` BIF
+
+All tools that you create with `aiTool()` are automatically registered in the global registry.  If you don't want them to be automatically registered, you can set `register: false` in the options and register manually with `aiToolRegistry().register()`.
 
 ```javascript
-// Automatic key generation from tool name
-myTool = aiTool( "search", "Search the database", ( query ) => db.search( query ) )
+// Positional args
+myTool = aiTool( "search", "Search the database", ( required query ) => db.search( query ) )
+
+// Named args
+myTool = aiTool(
+    name       : "search",
+    description: "Search the database",
+    callback   : ( required query ) => db.search( query )
+)
 ```
 
-### Shorthand Registration
+### Tool Registry Registration
+
+You can also register any closure or `ITool` instance directly with the registry, no `aiTool()` wrapper needed:
 
 ```javascript
 // Register a closure directly — no aiTool() wrapper needed
@@ -89,6 +100,22 @@ aiToolRegistry().scan( new CustomerService(), "customer-module" )
 ```javascript
 // Scan all .bx files in a package for @AITool annotations
 aiToolRegistry().scan( "com.myapp.tools", "my-module" )
+```
+
+### @AITool Options
+
+The `@AITool` annotation supports the following formats for defining the tool name and description:
+
+* Single `@AITool` : The `name` is derived from the method name, and the `description` is taken from the method hint
+* `@AITool( "Description string" )` : The method name is used as the tool name, and the provided string is used as the description
+* `@AITool( { name: "x", description: "y" } )` : Explicitly specify both the tool name and description
+
+Example:
+
+```js
+@AITool
+@AITool( "Description string" )
+@AITool( { name: "x", description: "y" } )
 ```
 
 ## Using Registered Tools
@@ -153,6 +180,21 @@ aiToolRegistry().unregisterByModule( "my-module" )
 
 The module ships with several built-in tool classes that are auto-registered in the global tool registry at startup. You can opt-in to these tools by name when creating agents.
 
+### Core Tools
+
+| Tool Key | Description |
+|---|---|
+| `httpGet@bxai` | Fetch the contents of a URL via HTTP GET |
+| `log@bxai` | Write a message to the `ai.log` file (`info`, `warning`, `error`, etc.) |
+| `now@bxai` | Return the current date/time in ISO 8601 format |
+| `print@bxai` | Print a message to the console (debug/output visibility) |
+| `sendEmail@bxai` | Send an email using the server's configured mail service |
+
+```javascript
+// Use auto-registered core tools directly
+agent = aiAgent( tools: [ "print@bxai", "log@bxai", "now@bxai", "httpGet@bxai" ] )
+```
+
 ### Audio Tools
 
 | Tool Key | Description |
@@ -208,6 +250,21 @@ aiToolRegistry().scanClass( "bxModules.bxai.models.tools.filesystem.FileSystemTo
 // Use in agent
 agent = aiAgent( tools: aiToolRegistry().resolveTools( [ "readFile@bxai", "writeFile@bxai" ] ) )
 ```
+
+## Web Search Tools (v3.2.0+)
+
+| Tool Key | Description |
+|---|---|
+| `webSearch@bxai` | Searches the web for information and returns an array of results (title, URL, snippet, ...) |
+
+```javascript
+// Auto-registered at module startup
+agent = aiAgent( tools: [ "webSearch@bxai" ] )
+```
+
+> 💡 `provider = ""` means "use the configured default provider" (HTTP by default). `maxResults = 0` means "use provider/module defaults".
+
+
 
 ## Agent Registry (v3.2.0+)
 

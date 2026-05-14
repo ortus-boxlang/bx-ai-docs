@@ -15,7 +15,7 @@ The simplest way to search:
 
 ```javascript
 // Search with default HTTP provider
-var results = webSearch( "BoxLang programming language" )
+var results = aiWebSearch( "BoxLang programming language" )
 
 // Results is an array of search result structs
 results.each( result => {
@@ -30,28 +30,28 @@ results.each( result => {
 
 ```javascript
 // Use HTTP (default) - no API key needed
-var results = webSearch( "AI news", { provider: "http" } )
+var results = aiWebSearch( "AI news", { provider: "http" } )
 
 // Use Brave Search
-var results = webSearch(
+var results = aiWebSearch(
     "AI news",
     { provider: "brave", maxResults: 10 }
 )
 
 // Use Google Custom Search
-var results = webSearch(
+var results = aiWebSearch(
     "BoxLang",
     { provider: "google", maxResults: 5 }
 )
 
 // Use Tavily (AI-optimized)
-var results = webSearch(
+var results = aiWebSearch(
     "latest AI models",
     { provider: "tavily", maxResults: 15 }
 )
 
 // Use Exa (neural/semantic)
-var results = webSearch(
+var results = aiWebSearch(
     "semantic search techniques",
     { provider: "exa", maxResults: 5 }
 )
@@ -61,7 +61,7 @@ var results = webSearch(
 
 ```javascript
 // Get just top 3 results
-var topResults = webSearch(
+var topResults = aiWebSearch(
     "BoxLang",
     { maxResults: 3 }
 )
@@ -78,7 +78,7 @@ For better performance when not blocking on results:
 
 ```javascript
 // Start async search
-var future = webSearchAsync( "BoxLang updates" )
+var future = aiWebSearchAsync( "BoxLang updates" )
 
 // Do other work while searching...
 var config = loadConfiguration()
@@ -88,7 +88,7 @@ var cache = initCache()
 var results = future.get()  // Blocks until ready
 
 // Or use callback pattern
-webSearchAsync( "latest news" )
+aiWebSearchAsync( "latest news" )
     .then( results => {
         println( "Got #results.len()# results" )
         return results
@@ -107,7 +107,7 @@ function filterByDomain( required array results, required string domain ) {
     return results.filter( r => r.domain.contains( domain ) )
 }
 
-var results = webSearch( "BoxLang" )
+var results = aiWebSearch( "BoxLang" )
 var officialResults = filterByDomain( results, "ortus" )
 ```
 
@@ -251,7 +251,7 @@ var vectorMemory = aiMemory( "chroma", {
 } )
 
 // Search and store results
-var results = webSearch( "BoxLang framework" )
+var results = aiWebSearch( "BoxLang framework" )
 
 // Add results to vector memory
 for ( result in results ) {
@@ -286,7 +286,7 @@ var response = agent.run(
 ```javascript
 function safeWebSearch( required string query ) {
     try {
-        return webSearch( arguments.query, {
+        return aiWebSearch( arguments.query, {
             provider: "brave",
             timeout: 10
         } )
@@ -294,7 +294,7 @@ function safeWebSearch( required string query ) {
         writeLog( "Web search failed: #error.message#", "error" )
 
         // Fallback to HTTP provider
-        return webSearch( arguments.query, { provider: "http" } )
+        return aiWebSearch( arguments.query, { provider: "http" } )
     }
 }
 
@@ -320,7 +320,7 @@ function limitedWebSearch(
     }
 
     // Execute search and log
-    var results = webSearch( arguments.query )
+    var results = aiWebSearch( arguments.query )
 
     queryExecute(
         "INSERT INTO web_searches (user_id, query, result_count, created_at)
@@ -357,7 +357,7 @@ function cachedWebSearch( required string query, required string provider = "bra
     }
 
     // Execute search
-    var results = webSearch( arguments.query, { provider: arguments.provider } )
+    var results = aiWebSearch( arguments.query, { provider: arguments.provider } )
 
     // Cache result
     cache.put( cacheKey, {
@@ -374,8 +374,8 @@ function cachedWebSearch( required string query, required string provider = "bra
 ```javascript
 // Search multiple providers in parallel for comparison
 function parallelWebSearch( required string query ) {
-    var future1 = webSearchAsync( query, { provider: "brave" } )
-    var future2 = webSearchAsync( query, { provider: "tavily" } )
+    var future1 = aiWebSearchAsync( query, { provider: "brave" } )
+    var future2 = aiWebSearchAsync( query, { provider: "tavily" } )
 
     // Results fetch in parallel
     var braveResults = future1.get()
@@ -394,5 +394,5 @@ var results = parallelWebSearch( "latest AI news" )
 
 - 📖 **[Providers Reference](providers.md)** - Detailed documentation for each provider
 - 🤖 **[Agent Integration](agent-tools.md)** - Advanced agent patterns
-- 🔍 **[API Reference](../../advanced/reference/built-in-functions/websearch.md)** - Complete BIF documentation
+- 🔍 **[API Reference](../../advanced/reference/built-in-functions/aiwebsearch.md)** - Complete BIF documentation
 - 🛡️ **[Security](../../deployment/security.md#-web-search-specific-security)** - Security best practices

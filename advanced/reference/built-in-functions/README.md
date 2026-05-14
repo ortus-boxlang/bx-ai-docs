@@ -18,8 +18,8 @@ Core functions for AI chat interactions.
 * [**`aiChatAsync()`**](aichatasync.md) - Asynchronous chat returning Future
 * [**`aiChatStream()`**](aichatstream.md) - Streaming chat with real-time callbacks
 * [**`aiChatRequest()`**](aichatrequest.md) - Create reusable request objects
-* [**`webSearch()`**](websearch.md) - Provider-agnostic web search with normalized results
-* [**`webSearchAsync()`**](websearchasync.md) - Asynchronous web search returning Future
+* [**`aiWebSearch()`**](aiwebsearch.md) - Provider-agnostic web search with normalized results
+* [**`aiWebSearchAsync()`**](aiwebsearchasync.md) - Asynchronous web search returning Future
 
 ### 🤖 Agents & Models
 
@@ -274,8 +274,8 @@ docs = aiDocuments( "/path" )
 | [`aiTranscribe()`](aitranscribe.md)   | Audio     | Speech-to-text transcription |
 | [`aiTransform()`](aitransform.md)     | Transform | Create transformers         |
 | [`aiTranslate()`](aitranslate.md)     | Audio     | Audio-to-English translation |
-| [`webSearch()`](websearch.md)         | Search    | Search web content          |
-| [`webSearchAsync()`](websearchasync.md) | Search  | Async web search            |
+| [`aiWebSearch()`](aiwebsearch.md)       | Search    | Search web content          |
+| [`aiWebSearchAsync()`](aiwebsearchasync.md) | Search  | Async web search            |
 | [`MCP()`](mcp.md)                     | MCP       | Create MCP client           |
 | [`MCPServer()`](mcpserver.md)         | MCP       | Create MCP server           |
 

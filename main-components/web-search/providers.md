@@ -39,7 +39,7 @@ Every provider returns this structure:
 Use the HTTP provider when you want to fetch and parse a specific URL without external search APIs.
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "https://boxlang.io",
     {
         provider: "http",
@@ -60,7 +60,7 @@ results = webSearch(
 ## Brave Provider (`brave`)
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "latest BoxLang release",
     {
         provider: "brave",
@@ -91,7 +91,7 @@ export BRAVE_API_KEY="your-key"
 ## Google Provider (`google`)
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "BoxLang AI module",
     {
         provider: "google",
@@ -123,7 +123,7 @@ export GOOGLE_SEARCH_ENGINE_ID="your-search-engine-id"
 ## Tavily Provider (`tavily`)
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "what changed in BoxLang AI 3.2.0",
     {
         provider: "tavily",
@@ -156,7 +156,7 @@ export TAVILY_API_KEY="your-tavily-key"
 ## Exa Provider (`exa`)
 
 ```javascript
-results = webSearch(
+results = aiWebSearch(
     "vector memory techniques",
     {
         provider: "exa",

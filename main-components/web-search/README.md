@@ -39,7 +39,7 @@ graph TB
     end
 
     subgraph "BoxLang AI"
-        BIF["webSearch() BIF"]
+        BIF["aiWebSearch() BIF"]
         TOOL["webSearch@bxai Tool"]
         BASE["BaseSearch"]
     end
@@ -83,7 +83,7 @@ graph TB
 
 ```javascript
 // Basic search using default HTTP provider
-var results = webSearch( "BoxLang programming language" )
+var results = aiWebSearch( "BoxLang programming language" )
 
 // Loop through results
 for ( result in results ) {
@@ -97,7 +97,7 @@ for ( result in results ) {
 
 ```javascript
 // Non-blocking async search
-var future = webSearchAsync( "latest BoxLang releases" )
+var future = aiWebSearchAsync( "latest BoxLang releases" )
 
 // Continue doing other work...
 
@@ -160,7 +160,7 @@ export EXA_API_KEY="your-exa-key"
 
 ```javascript
 // With provider selection
-var results = webSearch(
+var results = aiWebSearch(
     "your search query",
     { provider: "brave", maxResults: 10 }
 )
@@ -171,6 +171,23 @@ var agent = aiAgent(
 )
 agent.run( "Search for current AI news" )
 ```
+
+## 🧰 Agent Tool Contract
+
+When used as an agent tool, the auto-registered key is `webSearch@bxai` and maps to this method:
+
+```javascript
+@AITool( "Searches the web for information. Returns an array of results with title, URL, and snippet. Use this to find current information, verify facts, or research topics. Default provider is HTTP (simple URL fetcher, no API key needed). For better results use: brave, google, tavily, exa." )
+function webSearch(
+    required string query,
+    string provider = "",
+    numeric maxResults = 0
+)
+```
+
+- `query`: Search text the agent should run
+- `provider`: Optional provider override (`""` uses configured default provider, HTTP by default)
+- `maxResults`: Optional cap (`0` uses provider/module defaults)
 
 ## 📖 Next Steps
 
@@ -199,8 +216,8 @@ var response = agent.run(
 ```javascript
 function researchTopic( required string topic ) {
     // Search multiple providers for comparison
-    var braveResults = webSearch( topic, { provider: "brave", maxResults: 5 } )
-    var tavilyResults = webSearch( topic, { provider: "tavily", maxResults: 5 } )
+    var braveResults = aiWebSearch( topic, { provider: "brave", maxResults: 5 } )
+    var tavilyResults = aiWebSearch( topic, { provider: "tavily", maxResults: 5 } )
 
     return {
         brave: braveResults,
@@ -216,7 +233,7 @@ function researchTopic( required string topic ) {
 var vectorMemory = aiMemory( "chroma", { collection: "knowledge" } )
 
 // Search web for current info
-var webResults = webSearch( "latest BoxLang features" )
+var webResults = aiWebSearch( "latest BoxLang features" )
 
 // Add to memory for context
 for ( result in webResults ) {
@@ -260,8 +277,8 @@ function checkRateLimit( required string userId ) {
 
 ## 🔗 References
 
-- [Web Search API BIF Reference](../../advanced/reference/built-in-functions/websearch.md)
-- [Async BIF Reference](../../advanced/reference/built-in-functions/websearchasync.md)
+- [Web Search API BIF Reference](../../advanced/reference/built-in-functions/aiwebsearch.md)
+- [Async BIF Reference](../../advanced/reference/built-in-functions/aiwebsearchasync.md)
 - [Agents Documentation](../agents/README.md)
 - [Tools Documentation](../tools.md)
 - [Security Guide](../../deployment/security.md)

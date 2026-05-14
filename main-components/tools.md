@@ -284,15 +284,15 @@ Use this for fact-checking, current events, and research workflows where model p
 
 The module auto-registers three utility tools for debugging, logging, and notifications:
 
-#### `print_to_console@bxai`
+#### `print@bxai`
 
 Prints a message to the console. Useful for debugging or outputting information you want the user to see.
 
 ```java
 debugAgent = aiAgent(
     name: "DebugAssistant",
-    instructions: "Use print_to_console to show debug information.",
-    tools: [ "print_to_console@bxai" ]
+    instructions: "Use print to show debug information.",
+    tools: [ "print@bxai" ]
 )
 
 answer = debugAgent.run( "Debug the current state of the application" )

@@ -614,7 +614,7 @@ messages = [
 class {
     function dangerousToolChain() {
         // ❌ WRONG - Web search results directly used as context
-        var searchResults = webSearch( userQuery )  // Results from untrusted web
+        var searchResults = aiWebSearch( userQuery )  // Results from untrusted web
         var context = "Here are the search results: #jsonSerialize( searchResults )#"
 
         // Attacker controls web content → injection via search results
@@ -623,7 +623,7 @@ class {
 
     function safeToolChain( required string userQuery ) {
         // ✅ RIGHT - Validate tool results before using as context
-        var searchResults = webSearch( arguments.userQuery )
+        var searchResults = aiWebSearch( arguments.userQuery )
 
         // Sanitize EACH result before including
         for ( result in searchResults ) {
@@ -717,7 +717,7 @@ class {
         // Limit result count
         var maxResults = 10
 
-        var results = webSearch(
+        var results = aiWebSearch(
             arguments.query,
             { maxResults: maxResults }
         )
@@ -845,7 +845,7 @@ class {
         )
 
         // Alert on suspicious patterns
-        if ( arguments.toolName == "webSearch" && arguments.durationMs > 5000 ) {
+        if ( arguments.toolName == "aiWebSearch" && arguments.durationMs > 5000 ) {
             writeLog( "Slow web search detected: #arguments.durationMs#ms", "warning" )
         }
     }
@@ -887,7 +887,7 @@ class {
         var sanitizedQuery = sanitizeSearchQuery( arguments.query )
 
         // 2. Execute search
-        var rawResults = webSearch( sanitizedQuery )
+        var rawResults = aiWebSearch( sanitizedQuery )
 
         // 3. Validate each result
         var validatedResults = rawResults.map( result => {
@@ -1162,7 +1162,7 @@ class {
         enforceWebSearchRateLimit( session.user.id )
 
         // Execute with safe defaults
-        var results = webSearch( query, {
+        var results = aiWebSearch( query, {
             provider: "brave",
             maxResults: 10,
             timeout: 10

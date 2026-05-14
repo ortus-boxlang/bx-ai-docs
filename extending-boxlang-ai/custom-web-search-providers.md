@@ -13,7 +13,7 @@ Custom providers implement `IWebSearch` by extending `BaseSearch`.
 
 ```mermaid
 graph LR
-    A[webSearch BIF] --> B[WebSearchTools]
+    A[aiWebSearch BIF] --> B[WebSearchTools]
     B --> C[Custom Provider]
     C --> D[BaseSearch]
     D --> E[executeRequest]
@@ -132,7 +132,7 @@ static {
 3. Assert normalized output fields, not raw provider fields.
 
 ```javascript
-results = webSearch( "BoxLang", { provider: "newsapi", maxResults: 3 } )
+results = aiWebSearch( "BoxLang", { provider: "newsapi", maxResults: 3 } )
 expect( results ).toBeArray()
 expect( results.len() ).toBeGTE( 1 )
 expect( results[ 1 ] ).toHaveKey( "title" )
