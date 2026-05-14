@@ -280,6 +280,70 @@ answer = researchAgent.run( "Find the latest BoxLang AI release updates and cite
 
 Use this for fact-checking, current events, and research workflows where model pretraining alone is not enough.
 
+### Built-In Console & Logging Tools (v4.0+)
+
+The module auto-registers three utility tools for debugging, logging, and notifications:
+
+#### `print_to_console@bxai`
+
+Prints a message to the console. Useful for debugging or outputting information you want the user to see.
+
+```java
+debugAgent = aiAgent(
+    name: "DebugAssistant",
+    instructions: "Use print_to_console to show debug information.",
+    tools: [ "print_to_console@bxai" ]
+)
+
+answer = debugAgent.run( "Debug the current state of the application" )
+```
+
+#### `log@bxai`
+
+Sends a message to the AI log file. Useful for keeping a record of interactions or debugging. Log files can be found in the `logs` directory of your BoxLang installation, typically named `ai.log`.
+
+**Parameters:**
+
+| Parameter | Type   | Default  | Description                              |
+|-----------|--------|----------|------------------------------------------|
+| `message` | string | required | The message to log                       |
+| `type`    | string | `"info"` | Log level: `"info"`, `"warning"`, `"error"` |
+
+```java
+loggingAgent = aiAgent(
+    name: "LoggingAssistant",
+    instructions: "Use log@bxai to record important events.",
+    tools: [ "log@bxai" ]
+)
+
+answer = loggingAgent.run( "Log a warning about low disk space" )
+```
+
+#### `sendEmail@bxai`
+
+Sends an email using the server's mail configuration. Useful for notifications or alerts. This tool relies on the server's mail configuration being properly set up.
+
+**Parameters:**
+
+| Parameter | Type     | Default  | Description              |
+|-----------|----------|----------|--------------------------|
+| `to`      | string   | required | Recipient email address  |
+| `subject` | string   | required | The subject of the email |
+| `body`    | string   | required | The body content         |
+| `from`    | string   | required | The sender's email address |
+
+```java
+notifierAgent = aiAgent(
+    name: "Notifier",
+    instructions: "Use sendEmail@bxai to send notifications.",
+    tools: [ "sendEmail@bxai" ]
+)
+
+answer = notifierAgent.run( "Send an alert email to admin@example.com about server load" )
+```
+
+> **Note:** `httpGet@bxai` is also available but **not** auto-registered for security reasons (it can reach internal networks). Register it manually if needed via `aiToolRegistry().register( "httpGet", ... )`.
+
 ## 🔗 Multiple Tools
 
 Provide multiple tools for complex tasks:
