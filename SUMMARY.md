@@ -129,9 +129,6 @@
     * [aiToolRegistry](advanced/reference/built-in-functions/aitoolregistry.md)
     * [aiTool](advanced/reference/built-in-functions/aitool.md)
     * [aiTransform](advanced/reference/built-in-functions/aitransform.md)
-
-## Deployment
-
 * [Production Deployment](deployment/production.md)
 * [Security Guide](deployment/security.md)
 
