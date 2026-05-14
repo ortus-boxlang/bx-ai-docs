@@ -45,43 +45,71 @@ START HERE
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 3️⃣ Streaming - Real-time responses for better UX             │
+│ 3️⃣ Chatting - High-level conversational AI APIs              │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 4️⃣ Structured Output - Extract typed data from responses     │
+│ 4️⃣ Streaming - Real-time responses for better UX             │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 5️⃣ Tools - Enable AI to call your functions                  │
+│ 5️⃣ Structured Output - Extract typed data from responses     │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 6️⃣ Memory - Maintain conversation context                    │
+│ 6️⃣ Tools - Enable AI to call your functions                  │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 7️⃣ Agents - Autonomous AI with memory & tools                │
+│ 7️⃣ Skills - Reusable AI capabilities                         │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 8️⃣ Pipelines - Build composable AI workflows                 │
+│ 8️⃣ Tool Registry - Central tool management                   │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 9️⃣ Transformers - Data processing in pipelines               │
+│ 9️⃣ Memory - Maintain conversation context                    │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 🔟 Vector Memory - Semantic search for RAG apps              │
+│ 🔟 Agents - Autonomous AI with memory & tools                │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 1️⃣1️⃣ Document Loaders - Import content from any source       │
+│ 1️⃣1️⃣ Pipelines - Build composable AI workflows                │
 └──────────────────────────────────────────────────────────────┘
    ↓
 ┌──────────────────────────────────────────────────────────────┐
-│ 1️⃣2️⃣ RAG - Complete retrieval-augmented generation workflow  │
+│ 1️⃣2️⃣ Transformers - Data processing in pipelines              │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣3️⃣ Middleware - Intercept & modify pipeline execution       │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣4️⃣ Vector Memory - Semantic search for RAG apps             │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣5️⃣ Document Loaders - Import content from any source        │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣6️⃣ RAG - Complete retrieval-augmented generation workflow   │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣7️⃣ Audio/Speech - Voice synthesis & recognition             │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣8️⃣ Image Generation - AI-powered visual content             │
+└──────────────────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────────────────┐
+│ 1️⃣9️⃣ Web Search - Real-time web data retrieval                │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -92,12 +120,15 @@ START HERE
 * 📊 **Extracting data?** → Start with Models → Structured Output → Transformers → Pipelines
 * 🔍 **Building RAG?** → Start with Document Loaders → Vector Memory → RAG → Agents
 * 🛠️ **Creating workflows?** → Start with Models → Transformers → Pipelines → Agents
+* 🎤 **Adding voice?** → Start with Audio/Speech → Agents
+* 🖼️ **Generating images?** → Start with Image Generation → Agents
+* 🔌 **Extending AI?** → Start with Skills → Tool Registry → Middleware
 
 ***
 
 ## 🧱 Core Components
 
-### 1️⃣ [AI Models](../models.md)
+### 1️⃣ [AI Models](models.md)
 
 **What:** Direct AI provider integrations (OpenAI, Claude, Gemini, Ollama, etc.)
 
@@ -117,11 +148,11 @@ response = model.run( "Explain quantum computing" )
 * Return formats (text, JSON, XML, raw)
 * Pipeline composition
 
-→ [**Read Models Guide**](../models.md)
+→ [**Read Models Guide**](models.md)
 
 ***
 
-### 2️⃣ [Messages](../messages/)
+### 2️⃣ [Messages](messages/)
 
 **What:** Reusable message templates with dynamic placeholders and multi-modal content
 
@@ -147,11 +178,37 @@ response = template
 * Multimodal content (images, audio, documents)
 * Message reusability
 
-→ [**Read Messages Guide**](../messages/)
+→ [**Read Messages Guide**](messages/)
 
 ***
 
-### 3️⃣ [Streaming](../pipelines/streaming.md)
+### 3️⃣ [Chatting](chatting/)
+
+**What:** High-level conversational AI interface with session management and structured output
+
+**When to use:** Building chatbots, interactive assistants, multi-turn conversations
+
+**Quick example:**
+
+```javascript
+result = aiChat(
+    messages: "What is BoxLang?",
+    params: { temperature: 0.7 }
+)
+```
+
+**Key concepts:**
+
+* Session-based chat
+* Service-level abstraction
+* Structured output via returnFormat
+* Async and streaming variants
+
+→ [**Read Chatting Guide**](chatting/)
+
+***
+
+### 4️⃣ [Streaming](pipelines/streaming.md)
 
 **What:** Real-time token-by-token response delivery
 
@@ -173,11 +230,11 @@ aiModel( "openai" ).stream(
 * Streaming with agents
 * Performance optimization
 
-→ [**Read Streaming Guide**](../pipelines/streaming.md)
+→ [**Read Streaming Guide**](pipelines/streaming.md)
 
 ***
 
-### 4️⃣ [Structured Output](../pipelines/structured-output.md)
+### 5️⃣ [Structured Output](pipelines/structured-output.md)
 
 **What:** Extract typed data from AI responses into classes/structs
 
@@ -206,11 +263,11 @@ println( person.getName() ) // "John"
 * Array extraction
 * Validation
 
-→ [**Read Structured Output Guide**](../pipelines/structured-output.md)
+→ [**Read Structured Output Guide**](pipelines/structured-output.md)
 
 ***
 
-### 5️⃣ [Tools](../tools.md)
+### 6️⃣ [Tools](tools.md)
 
 **What:** Functions that AI can call to access data or perform actions
 
@@ -238,11 +295,62 @@ response = agent.run( "What's the weather in Boston?" )
 * Auto-registered built-ins (e.g., `webSearch@bxai`, `speak@bxai`)
 * Autonomous invocation
 
-→ [**Read Tools Guide**](../tools.md)
+→ [**Read Tools Guide**](tools.md)
 
 ***
 
-### 6️⃣ [Memory](../memory/)
+### 7️⃣ [Skills](skills.md)
+
+**What:** Reusable, shareable capabilities that encapsulate prompts, tools, and logic
+
+**When to use:** Encapsulating expertise, modular agent design, sharing capabilities
+
+**Quick example:**
+
+```javascript
+skill = aiSkill( "data-analysis" )
+    .withInstructions( "You are a data analyst" )
+    .withTools( [ sqlTool, chartTool ] )
+
+agent = aiAgent( skills: [ skill ] )
+```
+
+**Key concepts:**
+
+* Skill definition and registration
+* Tool integration
+* Reusable expertise
+* Agent skill composition
+
+→ [**Read Skills Guide**](skills.md)
+
+***
+
+### 8️⃣ [Tool Registry](tool-registry.md)
+
+**What:** Central registry for managing, discovering, and registering AI-callable tools
+
+**When to use:** Dynamic tool registration, lifecycle management, tool discovery
+
+**Quick example:**
+
+```javascript
+registry = aiToolRegistry()
+registry.register( weatherTool )
+tools = registry.listTools()
+```
+
+**Key concepts:**
+
+* Tool registration and discovery
+* Lifecycle management
+* Global vs scoped registries
+
+→ [**Read Tool Registry Guide**](tool-registry.md)
+
+***
+
+### 9️⃣ [Memory](memory/)
 
 **What:** Conversation context management strategies
 
@@ -266,11 +374,11 @@ agent.run( "What's my name?" ) // "Alice"
 * Memory persistence
 * Multiple memory strategies
 
-→ [**Read Memory Guide**](../memory/)
+→ [**Read Memory Guide**](memory/)
 
 ***
 
-### 7️⃣ [Agents](../agents/)
+### 🔟 [Agents](agents/)
 
 **What:** Autonomous AI entities with memory, tools, and reasoning
 
@@ -297,11 +405,11 @@ response = agent.run( "Find info about quantum computing" )
 * Memory integration
 * Sub-agents
 
-→ [**Read Agents Guide**](../agents/)
+→ [**Read Agents Guide**](agents/)
 
 ***
 
-### 8️⃣ [Pipelines](../pipelines/)
+### 1️⃣1️⃣ [Pipelines](pipelines/)
 
 **What:** Composable AI workflows - chain models, messages, and transformers
 
@@ -328,11 +436,11 @@ french = translator.run({ text: "Hello", lang: "French" })
 * Multi-step workflows
 * Data flow and transformations
 
-→ [**Read Pipelines Guide**](../pipelines/)
+→ [**Read Pipelines Guide**](pipelines/)
 
 ***
 
-### 9️⃣ [Transformers](../transformers.md)
+### 1️⃣2️⃣ [Transformers](transformers.md)
 
 **What:** Data processing steps in pipelines
 
@@ -355,11 +463,35 @@ result = pipeline.run( "hello" ) // "HELLO!"
 * Format conversion
 * Custom processors
 
-→ [**Read Transformers Guide**](../transformers.md)
+→ [**Read Transformers Guide**](transformers.md)
 
 ***
 
-### 🔟 [Vector Memory](../vector-memory.md)
+### 1️⃣3️⃣ [Middleware](middleware.md)
+
+**What:** Intercept and modify pipeline execution at any stage
+
+**When to use:** Logging, monitoring, rate limiting, security, input/output augmentation
+
+**Quick example:**
+
+```javascript
+pipeline = aiModel( "openai" )
+    .use( myMiddleware )
+```
+
+**Key concepts:**
+
+* Pipeline interception
+* Context modification
+* Pre/post processing
+* Middleware chaining
+
+→ [**Read Middleware Guide**](middleware.md)
+
+***
+
+### 1️⃣4️⃣ [Vector Memory](memory/vector-memory.md)
 
 **What:** Semantic search through conversation history
 
@@ -386,11 +518,11 @@ results = memory.getRelevant( "French capital", 1 )
 * Vector stores (Chroma, Pinecone, OpenSearch, etc.)
 * RAG workflows
 
-→ [**Read Vector Memory Guide**](../vector-memory.md)
+→ [**Read Vector Memory Guide**](memory/vector-memory.md)
 
 ***
 
-### 1️⃣1️⃣ [Document Loaders](../../rag/document-loaders.md)
+### 1️⃣5️⃣ [Document Loaders](../rag/document-loaders.md)
 
 **What:** Import content from files, directories, URLs, databases, and APIs
 
@@ -419,11 +551,11 @@ aiDocuments( "/docs" )
 * Directory traversal
 * Direct vector memory integration
 
-→ [**Read Document Loaders Guide**](../../rag/document-loaders.md)
+→ [**Read Document Loaders Guide**](../rag/document-loaders.md)
 
 ***
 
-### 1️⃣2️⃣ [RAG (Retrieval-Augmented Generation)](../../rag/rag.md)
+### 1️⃣6️⃣ [RAG (Retrieval-Augmented Generation)](../rag/rag.md)
 
 **What:** Complete workflow for answering questions using your documents
 
@@ -454,7 +586,83 @@ response = agent.run( "How do I install BoxLang?" )
 * Source attribution
 * Hybrid search (keyword + semantic)
 
-→ [**Read RAG Guide**](../../rag/rag.md)
+→ [**Read RAG Guide**](../rag/rag.md)
+
+***
+
+### 1️⃣7️⃣ [Audio/Speech](audio/)
+
+**What:** Text-to-speech, speech-to-text, and audio translation capabilities
+
+**When to use:** Voice interfaces, accessibility, audio content generation
+
+**Quick example:**
+
+```javascript
+// Text-to-Speech
+audio = aiSpeak( "Hello, world!", { voice: "alloy" } )
+
+// Speech-to-Text
+text = aiTranscribe( audioFile )
+```
+
+**Key concepts:**
+
+* Multi-provider TTS
+* Speech recognition
+* Audio translation
+* Voice configuration
+
+→ [**Read Audio Guide**](audio/)
+
+***
+
+### 1️⃣8️⃣ [Image Generation](image-generation/)
+
+**What:** AI-powered image generation and manipulation
+
+**When to use:** Creating visuals, design assets, image analysis
+
+**Quick example:**
+
+```javascript
+image = aiImage(
+    prompt: "A serene mountain landscape",
+    params: { size: "1024x1024" }
+)
+```
+
+**Key concepts:**
+
+* Prompt-based generation
+* Image response formats
+* Agent tool integration
+* Multi-provider support
+
+→ [**Read Image Generation Guide**](image-generation/)
+
+***
+
+### 1️⃣9️⃣ [Web Search](web-search/)
+
+**What:** Web search capabilities for AI agents and pipelines
+
+**When to use:** Real-time information retrieval, research agents, fact-checking
+
+**Quick example:**
+
+```javascript
+results = aiWebSearch( "latest BoxLang updates" )
+```
+
+**Key concepts:**
+
+* Multi-provider search
+* Agent tool integration
+* Async search support
+* Result parsing
+
+→ [**Read Web Search Guide**](web-search/)
 
 ***
 
@@ -660,4 +868,4 @@ contact = aiChat(
 4. **Monitor costs** - Use appropriate models for each task
 5. **Read the guides** - Each component page has detailed examples
 
-**Ready to build?** Start with [**AI Models →**](../models.md)
+**Ready to build?** Start with [**AI Models →**](models.md)
