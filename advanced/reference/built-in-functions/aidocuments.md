@@ -46,6 +46,25 @@ Returns an `IDocumentLoader` instance with fluent API for chaining configuration
 | `sql`       | Starts with `SELECT`, `WITH`  | Database queries   |
 | `crawler`   | Explicit type needed          | Website crawling   |
 
+## Spreadsheet Files via bx-spreadsheet
+
+For spreadsheet ingestion (`.xls`/`.xlsx`), use `SpreadsheetLoader` from the `bx-spreadsheet` module directly:
+
+* New `SpreadsheetLoader` in `src/main/bx/loaders/SpreadsheetLoader.bx` for BoxLang AI document loading workflows
+* Loads spreadsheet content as AI `Document` objects
+* Supports one document per sheet (default) or one document per row (`rowsAsDocuments`)
+* Supports header-aware row formatting (`hasHeaders`) and sheet filtering (`sheets`)
+* Inherits the `IDocumentLoader` contract via `BaseDocumentLoader`
+
+```javascript
+import bxModules.bxSpreadsheet.loaders.SpreadsheetLoader;
+
+docs = new SpreadsheetLoader( source: "./data/report.xlsx" )
+    .rowsAsDocuments()
+    .sheets( [ "Orders" ] )
+    .load();
+```
+
 ## Fluent API Methods
 
 ### Configuration Methods

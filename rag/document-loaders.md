@@ -76,6 +76,7 @@ graph TB
 ## 📖 Table of Contents
 
 * [Overview](document-loaders.md#overview)
+* [Spreadsheet Loader Integration (bx-spreadsheet)](document-loaders.md#spreadsheet-loader-integration-bx-spreadsheet)
 * [BIF Reference](document-loaders.md#bif-reference)
 * [Document Structure](document-loaders.md#document-structure)
 * [Available Loaders](document-loaders.md#available-loaders)
@@ -108,6 +109,33 @@ The document loading system provides:
 * **Multi-Memory Fan-out**: Ingest to multiple memory systems simultaneously
 * **Async Support**: Load documents asynchronously with `loadAsync()`
 * **Filter/Transform**: Apply filters and transforms during loading
+
+## Spreadsheet Loader Integration (bx-spreadsheet)
+
+When the `bx-spreadsheet` module is installed, you can use its `SpreadsheetLoader` for BoxLang AI document loading workflows:
+
+* New `SpreadsheetLoader` in `src/main/bx/loaders/SpreadsheetLoader.bx` for BoxLang AI document loading workflows
+* Loads spreadsheet content as AI `Document` objects
+* Supports one document per sheet (default) or one document per row (`rowsAsDocuments`)
+* Supports header-aware row formatting (`hasHeaders`) and sheet filtering (`sheets`)
+* Inherits the `IDocumentLoader` contract via `BaseDocumentLoader`
+
+```javascript
+import bxModules.bxSpreadsheet.loaders.SpreadsheetLoader;
+
+// One document per sheet (default)
+docs = new SpreadsheetLoader( source: "./data/customers.xlsx" ).load();
+
+// One document per row from a specific sheet
+rowDocs = new SpreadsheetLoader( source: "./data/customers.xlsx" )
+    .rowsAsDocuments()
+    .sheets( [ "Customers" ] )
+    .load();
+```
+
+{% hint style="info" %}
+`aiDocuments()` does not auto-detect spreadsheet files from `bx-spreadsheet`. Use `SpreadsheetLoader` directly as shown above.
+{% endhint %}
 
 ## BIF Reference
 
