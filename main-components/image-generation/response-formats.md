@@ -12,11 +12,12 @@ When `aiImage()` completes successfully, it returns an `AiImageResponse` object 
 ## 📦 `AiImageResponse` Methods
 
 | Method | Returns | Description |
-|---|---|---|
+|---|---|---|---|
 | `hasImages()` | boolean | `true` if images are present and non-empty |
 | `getCount()` | numeric | Number of generated images |
+| `getFirstImage()` | struct | First image struct `{url, data, mimeType, revisedPrompt}` (or empty struct) |
 | `getFirstURL()` | string | URL of the first image (if provider returns URLs) |
-| `getFirstBase64()` | string | Base64-encoded data of the first image |
+| `getFirstBase64()` | string | Base64-encoded data of the first image (fetches URL if needed) |
 | `getRevisedPrompt()` | string | Provider's revised prompt (if any) |
 | `saveToFile( path )` | string | Save first image to file; returns absolute path |
 | `saveAllToDirectory( dir )` | array | Save all images to directory; returns array of paths |
@@ -88,6 +89,11 @@ if ( response.hasImages() ) {
     println( "Generated #response.getCount()# image(s)" )
     println( "MIME type: #response.getMimeType()#" )
     println( "Revised prompt: #response.getRevisedPrompt()#" )
+
+    // Inspect the first image struct
+    firstImage = response.getFirstImage()
+    println( "First image URL: #firstImage.url ?: '(none)'#" )
+    println( "First image revised prompt: #firstImage.revisedPrompt ?: '(none)'#" )
 }
 
 // Get metadata struct (safe for logging — no binary data)
@@ -98,15 +104,42 @@ metadata = response.toStruct()
 
 The request object carries all generation parameters:
 
-| Property | Type | Description |
-|---|---|---|
-| `prompt` | string | Text description of the image |
-| `n` | numeric | Number of images to generate |
-| `size` | string | Image dimensions or aspect ratio |
-| `quality` | string | Quality level (`standard`, `hd`) |
-| `style` | string | Visual style (`vivid`, `natural`) |
-| `instructions` | string | Additional generation instructions |
-| `outputFormat` | string | Output format preference |
-| `outputFile` | string | File path for direct saving |
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `prompt` | string | `""` | Text description of the image |
+| `n` | numeric | `1` | Number of images to generate |
+| `size` | string | `auto` | Image dimensions (e.g. `"1024x1024"`, `"1792x1024"`) |
+| `quality` | string | `auto` | Quality level (`low`, `medium`, `high`, `auto`) |
+| `style` | string | `""` | Visual style (`vivid`, `natural`) |
+| `instructions` | string | `""` | Additional style / tone / mood instructions appended to the prompt |
+| `format` | string | `png` | Output image format: `png`, `jpeg`, `webp` |
+| `outputFormat` | string | `url` | How the provider returns data (`url` or `b64_json`) |
+| `outputFile` | string | `""` | File path for direct saving |
 
 All properties are accessible via BoxLang property conventions (auto-generated getters/setters).
+
+### Fluent Builder Properties
+
+When using the fluent builder API, `AiImageRequest` also exposes convenience size and quality aliases:
+
+```javascript
+// Size aliases
+.square()          // 1024x1024
+.landscape()       // 1536x1024
+.portrait()        // 1024x1536
+.twoKSquare()      // 2048x2048
+.twoKLandscape()   // 2048x1152
+.fourKLandscape()  // 3840x2160
+.fourKPortrait()   // 2160x3840
+
+// Quality helpers
+.low()
+.medium()
+.high()
+.auto()
+
+// Format helpers
+.asPng()
+.asJpeg()
+.asWebp()
+```

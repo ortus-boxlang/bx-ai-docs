@@ -40,12 +40,12 @@ graph LR
 
 ## 📊 Provider Support Matrix
 
-| Provider | Model | Size Control | Quality | Style | Env Var |
-|---|---|---|---|---|---|
-| **OpenAI** | `gpt-image-1` (default), DALL-E | ✅ | ✅ | ✅ | `OPENAI_API_KEY` |
-| **Gemini** | `imagen-3.0-generate-008` | ✅ (aspect ratio) | ❌ | ❌ | `GEMINI_API_KEY` |
-| **Grok / xAI** | `grok-2-image` | ✅ | ❌ | ❌ | `GROK_API_KEY` |
-| **OpenRouter** | FLUX Schnell (default), many | ✅ | ❌ | ❌ | `OPENROUTER_API_KEY` |
+| Provider | Model | Size Control | Quality | Style | Format | Env Var |
+|---|---|---|---|---|---|---|
+| **OpenAI** | `gpt-image-1` (default), DALL-E 3 | ✅ | ✅ | ✅ | ✅ (png/jpeg/webp) | `OPENAI_API_KEY` |
+| **Gemini** | `imagen-3.0-generate-008` | ✅ (aspect ratio) | ❌ | ❌ | ❌ | `GEMINI_API_KEY` |
+| **Grok / xAI** | `grok-2-image` | ✅ | ❌ | ❌ | ❌ | `GROK_API_KEY` |
+| **OpenRouter** | FLUX Schnell (default), many | ✅ | ❌ | ❌ | ❌ | `OPENROUTER_API_KEY` |
 
 ## ⚡ Quick Start
 
@@ -71,6 +71,35 @@ response = aiImage(
 
 // Save all images to a directory
 paths = response.saveAllToDirectory( "/images/watercolors/" )
+```
+
+### Fluent Builder API
+
+```javascript
+// Chain expressive methods and terminate with .generate()
+response = aiImage()
+    .prompt( "a breathtaking mountain sunrise" )
+    .provider( "openai" )
+    .landscape()
+    .high()
+    .style( "vivid" )
+    .generate()
+
+// Or use the static factory
+response = AiImageRequest
+    .of( "a red fox in an autumn forest" )
+    .provider( "gemini" )
+    .landscape()
+    .generate()
+
+// With format conversion and compression
+path = aiImage()
+    .prompt( "a minimalist logo" )
+    .asWebp()
+    .outputCompression( 80 )
+    .outputFile( "/images/logo.webp" )
+    .generate()
+// Returns the file path string
 ```
 
 ### Embed in HTML with Data URI

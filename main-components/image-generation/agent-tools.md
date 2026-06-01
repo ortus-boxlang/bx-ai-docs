@@ -49,10 +49,13 @@ result = agent.run( "Create an image of a futuristic city" )
 
 ### Tool Parameters
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-| `prompt` | string | ✅ Yes | Text description of the image to generate |
-| `outputFile` | string | No | File path to save the image (auto-generates temp file if omitted) |
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `prompt` | string | ✅ Yes | — | Text description of the image to generate |
+| `size` | string | No | `1024x1024` | Image dimensions |
+| `quality` | string | No | `standard` | Quality level (`standard`, `hd`) |
+| `style` | string | No | `""` | Visual style (`vivid`, `natural`) |
+| `outputFile` | string | No | (temp file) | File path to save the image (auto-generates temp file if omitted) |
 
 ### Return Value
 
@@ -65,6 +68,15 @@ When no `outputFile` is supplied, the tool auto-generates a temporary file in th
 ```javascript
 // Without outputFile — temp file auto-generated
 // Returns: "/var/folders/xx/ai_image_abc123.png"
+```
+
+### Full Parameter Example
+
+When an agent calls the tool with optional parameters, the generated image uses those settings:
+
+```javascript
+// Agent might invoke: generateImage@bxai(prompt: "a futuristic city", size: "1792x1024", quality: "hd")
+// The tool creates an HD landscape image at the specified size
 ```
 
 ## 📋 Using with Multiple Agents
