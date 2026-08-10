@@ -59,7 +59,7 @@ agent = aiAgent(
     name   : "SmartAgent",
     memory : [
         aiMemory( "window" ),          // Recent conversation history
-        aiMemory( "pinecone", {        // Semantic long-term memory
+        aiMemory( memory: "pinecone", config: {        // Semantic long-term memory
             collection        : "projects",
             embeddingProvider : "openai"
         } )
@@ -107,30 +107,38 @@ The underlying memory operations (`add`, `getAll`, `clear`, `trim`, `seed`) all 
 Agents can be suspended mid-run (e.g., by `HumanInTheLoopMiddleware`) and resumed later. A `checkpointer` memory backend stores the agent's state:
 
 ```javascript
+import bxModules.bxai.models.middleware.core.HumanInTheLoopMiddleware;
+
 agent = aiAgent(
     name        : "ApprovalAgent",
+    tools       : [ deployTool ],
     checkpointer: aiMemory( "cache" ),  // Stores suspend state
-    middleware  : [ new HumanInTheLoopMiddleware() ]
+    middleware  : [ new HumanInTheLoopMiddleware(
+        mode                  : "web",
+        toolsRequiringApproval: [ "deploy" ]
+    ) ]
 )
 
-// Run returns a suspension result when human approval is needed
-result = agent.run( "Deploy to production" )
+// YOU supply the threadId — it is how you find this run again later
+threadId = "deploy-#createUUID()#"
+
+result = agent.run( "Deploy to production", {}, { threadId: threadId } )
 
 if ( result.isSuspended() ) {
-    // Store threadId for later resumption
-    threadId = result.getThreadId()
-    println( "Waiting for approval. Thread: #threadId#" )
+    // Every tool call awaiting a decision
+    pending = result.getData().pendingActions
+    println( "Waiting for approval on #pending.len()# tool call(s). Thread: #threadId#" )
 }
 
 // Later — resume with a human decision
-finalResponse = agent.resume(
-    decision   : "approved",
-    threadId   : threadId,
-    editedData : { reason: "Approved by admin" }
-)
+finalResponse = agent.resume( "approve", threadId )
 ```
 
-For streaming agents, use `resumeStream()` with the same parameters.
+{% hint style="info" %}
+The suspension result does **not** carry a thread id — you pass `threadId` into `run()` and reuse it in `resume()`. Valid decisions are `approve`, `approve_always`, `approve_session`, `reject`, `edit`, and `cancel`.
+{% endhint %}
+
+For streaming agents use `resumeStream( onChunk, decision, threadId )`. See [Middleware](../middleware.md) for approval policies, durable grants, and batched approvals.
 
 ## 🏢 Multi-Tenant Usage Tracking
 

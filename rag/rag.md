@@ -86,7 +86,7 @@ Here's a complete RAG system in just a few lines:
 
 ```javascript
 // Step 1: Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "knowledge_base",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small"
@@ -204,7 +204,7 @@ Convert chunks to vectors and store in vector database:
 
 ```javascript
 // Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "rag_knowledge",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -315,17 +315,17 @@ Combine multiple knowledge bases:
 
 ```javascript
 // Create separate vector memories for different sources
-docsMemory = aiMemory( "chroma", {
+docsMemory = aiMemory( memory: "chroma", config: {
     collection: "documentation",
     embeddingProvider: "openai"
 } );
 
-codeMemory = aiMemory( "chroma", {
+codeMemory = aiMemory( memory: "chroma", config: {
     collection: "code_examples",
     embeddingProvider: "openai"
 } );
 
-apiMemory = aiMemory( "chroma", {
+apiMemory = aiMemory( memory: "chroma", config: {
     collection: "api_reference",
     embeddingProvider: "openai"
 } );
@@ -402,8 +402,8 @@ Maintain conversation history with RAG:
 
 ```javascript
 // Create hybrid memory: conversation + vector
-conversationMemory = aiMemory( "windowed", { maxMessages: 10 } );
-vectorMemory = aiMemory( "chroma", { collection: "kb" } );
+conversationMemory = aiMemory( memory: "window", config: { maxMessages: 10 } );
+vectorMemory = aiMemory( memory: "chroma", config: { collection: "kb" } );
 
 function conversationalRAG( userMessage ) {
     // Get recent conversation context
@@ -487,7 +487,7 @@ BoxLang AI supports multiple vector databases:
 ### ChromaDB (Local/Cloud)
 
 ```javascript
-memory = aiMemory( "chroma", {
+memory = aiMemory( memory: "chroma", config: {
     collection: "docs",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -499,7 +499,7 @@ memory = aiMemory( "chroma", {
 ### PostgreSQL with pgvector
 
 ```javascript
-memory = aiMemory( "pgvector", {
+memory = aiMemory( memory: "pgvector", config: {
     collection: "documents",
     datasource: "myPgDS",  // Must have pgvector extension
     embeddingProvider: "openai",
@@ -511,7 +511,7 @@ memory = aiMemory( "pgvector", {
 ### MySQL with Vector Support
 
 ```javascript
-memory = aiMemory( "mysql", {
+memory = aiMemory( memory: "mysql", config: {
     collection: "knowledge",
     datasource: "myMysqlDS",  // MySQL 9.0+ with vector support
     embeddingProvider: "openai",
@@ -523,7 +523,7 @@ memory = aiMemory( "mysql", {
 ### TypeSense
 
 ```javascript
-memory = aiMemory( "typesense", {
+memory = aiMemory( memory: "typesense", config: {
     collection: "search",
     host: "localhost",
     port: 8108,
@@ -536,7 +536,7 @@ memory = aiMemory( "typesense", {
 ### Weaviate
 
 ```javascript
-memory = aiMemory( "weaviate", {
+memory = aiMemory( memory: "weaviate", config: {
     collection: "Documents",
     host: "localhost",
     port: 8080,

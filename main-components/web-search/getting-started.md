@@ -221,7 +221,7 @@ println( research )
 
 ```javascript
 // Create memory for conversation history
-var memory = aiMemory( "window", {
+var memory = aiMemory( memory: "window", config: {
     maxMessages: 20
 } )
 
@@ -245,7 +245,7 @@ var response2 = agent.run( "What was mentioned about cloud deployment?" )
 
 ```javascript
 // Create vector memory for storing web search results
-var vectorMemory = aiMemory( "chroma", {
+var vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "research",
     embeddingProvider: "openai"
 } )

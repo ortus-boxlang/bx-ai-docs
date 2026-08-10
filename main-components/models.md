@@ -929,7 +929,7 @@ graph TB
 
 ```javascript
 // Step 1: Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "knowledge_base",
     embeddingProvider: "openai"
 } );
@@ -992,7 +992,7 @@ webDocs = aiDocuments( "https://example.com/api-docs", "http" );
 allDocs = pdfDocs.append( markdownDocs ).append( webDocs );
 
 // Ingest into vector memory
-vectorMemory = aiMemory( "chroma", { collection: "multi_source" } );
+vectorMemory = aiMemory( memory: "chroma", config: { collection: "multi_source" } );
 // Seed memory directly with pre-loaded documents
 vectorMemory.seed( allDocs );
 
@@ -1049,7 +1049,7 @@ Combine keyword search with semantic search:
 ```javascript
 function hybridRAG( required string query ) {
     // Semantic search via vector memory
-    vectorMemory = aiMemory( "chroma", { collection: "docs" } );
+    vectorMemory = aiMemory( memory: "chroma", config: { collection: "docs" } );
     semanticDocs = vectorMemory.getRelevant( query, limit = 3 );
 
     // Keyword search

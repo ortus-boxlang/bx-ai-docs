@@ -496,9 +496,9 @@ User Question: "What's our refund policy for the Premium plan?"
 ```
 
 ```javascript
-memory = aiMemory( "hybrid", {
-    conversationMemory: aiMemory( "window", { maxMessages: 10 } ),
-    vectorMemory: aiMemory( "chroma", { collection: "docs" } )
+memory = aiMemory( memory: "hybrid", config: {
+    conversationMemory: aiMemory( memory: "window", config: { maxMessages: 10 } ),
+    vectorMemory: aiMemory( memory: "chroma", config: { collection: "docs" } )
 } )
 ```
 
@@ -509,7 +509,7 @@ memory = aiMemory( "hybrid", {
 BoxLang AI also supports multi-tenant memory for applications with multiple users by isolating memory per user or conversation.
 
 ```javascript
-aiMemory( "window", {
+aiMemory( memory: "window", config: {
     userId: "user123",          // Separate memory per user
     conversationId: "chat456"   // Separate per conversation
 } )

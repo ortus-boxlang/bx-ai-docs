@@ -272,7 +272,7 @@ println( record.getPhone() )         // "555-1234"
 Store and retrieve structured output:
 
 ```java
-memory = aiMemory( "file", { filepath: "conversations.json" } )
+memory = aiMemory( memory: "file", config: { filepath: "conversations.json" } )
 
 pipeline = aiMessage()
     .history( memory.getMessages() )

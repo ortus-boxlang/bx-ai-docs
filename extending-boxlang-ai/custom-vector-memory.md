@@ -914,7 +914,7 @@ class extends="BaseVectorMemory" implements="IVectorMemory" {
 
 ```js
 // Wrap any vector memory with caching
-baseMemory = aiMemory( "pinecone", {
+baseMemory = aiMemory( memory: "pinecone", config: {
     apiKey: getSystemSetting( "PINECONE_API_KEY" ),
     collection: "support_kb",
     embeddingProvider: "openai",
@@ -966,7 +966,7 @@ class extends="BaseVectorMemory" implements="IVectorMemory" {
 
         // Initialize each collection memory
         arguments.config.collections.each( collectionConfig => {
-            var memory = aiMemory( "boxvector", collectionConfig );
+            var memory = aiMemory( memory: "boxvector", config: collectionConfig );
             variables.collections.append({
                 name: collectionConfig.collection,
                 memory: memory,

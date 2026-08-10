@@ -833,11 +833,11 @@ import bxModules.bxai.models.loaders.DirectoryLoader;
 
 // Load documents into windowed memory
 loader = new DirectoryLoader( source: "/docs" )
-memory = aiMemory( "windowed" )
+memory = aiMemory( "window" )
 docs = loader.loadTo( memory )
 
 // Load with chunking for vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "knowledge_base",
     embeddingProvider: "openai"
 } )
@@ -989,7 +989,7 @@ Here's a complete example of building a RAG pipeline with document loaders:
 
 ```javascript
 // Step 1: Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "docs",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small"

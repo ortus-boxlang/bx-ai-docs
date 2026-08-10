@@ -129,7 +129,7 @@ response = agent.run( "What's the weather in San Francisco?" );
 
 ```javascript
 // Create vector memory for RAG
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "product_docs",
     embeddingProvider: "openai"
 } );
@@ -154,10 +154,10 @@ response = agent.run( "How does the API authentication work?" );
 
 ```javascript
 // Short-term conversation memory
-chatMemory = aiMemory( "window", { maxMessages: 10 } );
+chatMemory = aiMemory( memory: "window", config: { maxMessages: 10 } );
 
 // Long-term knowledge base
-knowledgeMemory = aiMemory( "chroma", { collection: "kb" } );
+knowledgeMemory = aiMemory( memory: "chroma", config: { collection: "kb" } );
 
 // Agent with both memories
 agent = aiAgent(

@@ -89,7 +89,7 @@ Without multi-tenant isolation, all users share the same conversation history:
 
 ```java
 // ❌ WRONG: All users see same conversation
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 agent = aiAgent( name: "Assistant", memory: memory )
 
 // User Alice
@@ -103,12 +103,12 @@ With multi-tenant isolation, each user gets isolated memory:
 
 ```java
 // ✅ CORRECT: Isolated per user
-aliceMemory = aiMemory( "windowed",
+aliceMemory = aiMemory( memory: "window",
     userId: "alice",
     config: { maxMessages: 10 }
 )
 
-bobMemory = aiMemory( "windowed",
+bobMemory = aiMemory( memory: "window",
     userId: "bob",
     config: { maxMessages: 10 }
 )
@@ -144,7 +144,7 @@ graph LR
 The `userId` parameter isolates conversations at the **user level**:
 
 ```java
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",  // User identifier
     config: { maxMessages: 10 }
@@ -182,14 +182,14 @@ graph TB
 ```
 
 ```java
-supportChat = aiMemory( "windowed",
+supportChat = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "support-ticket-456",  // Conversation identifier
     config: { maxMessages: 10 }
 )
 
-salesChat = aiMemory( "windowed",
+salesChat = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "sales-inquiry-789",  // Different conversation
@@ -209,7 +209,7 @@ salesChat = aiMemory( "windowed",
 Use **both** userId and conversationId for complete isolation:
 
 ```java
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",           // Who owns this conversation
     conversationId: "chat456",   // Which conversation within user
@@ -237,7 +237,7 @@ class {
 
     function getUserMemory( required string userId ) {
         if ( !variables.userMemories.keyExists( arguments.userId ) ) {
-            variables.userMemories[ arguments.userId ] = aiMemory( "session",
+            variables.userMemories[ arguments.userId ] = aiMemory( memory: "session",
                 key: "chatbot",
                 userId: arguments.userId,
                 config: { maxMessages: 20 }
@@ -264,7 +264,7 @@ class {
         required string userId,
         required string conversationId
     ) {
-        return aiMemory( "cache",
+        return aiMemory( memory: "cache",
             key: "chat",
             userId: arguments.userId,
             conversationId: arguments.conversationId,
@@ -321,7 +321,7 @@ class {
         // Use organization ID as prefix for complete isolation
         var compositeUserId = "#arguments.organizationId#:#arguments.userId#";
 
-        return aiMemory( "jdbc",
+        return aiMemory( memory: "jdbc",
             key: createUUID(),
             userId: compositeUserId,
             conversationId: arguments.conversationId,
@@ -341,7 +341,7 @@ Different memory types based on user roles:
 
 ```java
 function getRoleBasedMemory( required struct user ) {
-    var memoryType = "windowed";  // Default
+    var memoryType = "window";  // Default
     var maxMessages = 10;
 
     // Premium users get better memory
@@ -380,7 +380,7 @@ All standard memory types support multi-tenant isolation:
 
 ```java
 // Shared infrastructure, isolated per user
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: session.userId,
     conversationId: url.chatId,
@@ -394,7 +394,7 @@ memory = aiMemory( "windowed",
 
 ```java
 // Long conversations with summarization
-memory = aiMemory( "summary",
+memory = aiMemory( memory: "summary",
     key: createUUID(),
     userId: session.userId,
     conversationId: "support",
@@ -412,7 +412,7 @@ memory = aiMemory( "summary",
 
 ```java
 // Automatic session-based isolation
-memory = aiMemory( "session",
+memory = aiMemory( memory: "session",
     key: "chatbot",
     userId: session.userId,
     conversationId: request.conversationId,
@@ -426,7 +426,7 @@ memory = aiMemory( "session",
 
 ```java
 // File-based isolation with automatic naming
-memory = aiMemory( "file",
+memory = aiMemory( memory: "file",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -444,7 +444,7 @@ memory = aiMemory( "file",
 
 ```java
 // Distributed cache with isolation
-memory = aiMemory( "cache",
+memory = aiMemory( memory: "cache",
     key: "chat",
     userId: session.userId,
     conversationId: url.conversationId,
@@ -462,7 +462,7 @@ memory = aiMemory( "cache",
 
 ```java
 // Database with userId/conversationId columns
-memory = aiMemory( "jdbc",
+memory = aiMemory( memory: "jdbc",
     key: createUUID(),
     userId: session.userId,
     conversationId: request.ticketId,
@@ -503,7 +503,7 @@ All 12 vector memory providers support multi-tenant isolation:
 ### BoxVector (In-Memory)
 
 ```java
-memory = aiMemory( "boxvector",
+memory = aiMemory( memory: "boxvector",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -519,7 +519,7 @@ memory = aiMemory( "boxvector",
 ### Chroma
 
 ```java
-memory = aiMemory( "chroma",
+memory = aiMemory( memory: "chroma",
     key: createUUID(),
     userId: "user123",
     conversationId: "support",
@@ -537,7 +537,7 @@ memory = aiMemory( "chroma",
 ### PostgreSQL (pgvector)
 
 ```java
-memory = aiMemory( "postgres",
+memory = aiMemory( memory: "postgres",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -555,7 +555,7 @@ memory = aiMemory( "postgres",
 ### MySQL (9+ Native Vectors)
 
 ```java
-memory = aiMemory( "mysql",
+memory = aiMemory( memory: "mysql",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -573,7 +573,7 @@ memory = aiMemory( "mysql",
 ### TypeSense
 
 ```java
-memory = aiMemory( "typesense",
+memory = aiMemory( memory: "typesense",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -592,7 +592,7 @@ memory = aiMemory( "typesense",
 ### Pinecone
 
 ```java
-memory = aiMemory( "pinecone",
+memory = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: "user123",
     conversationId: "prod",
@@ -610,7 +610,7 @@ memory = aiMemory( "pinecone",
 ### Qdrant
 
 ```java
-memory = aiMemory( "qdrant",
+memory = aiMemory( memory: "qdrant",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -628,7 +628,7 @@ memory = aiMemory( "qdrant",
 ### Weaviate
 
 ```java
-memory = aiMemory( "weaviate",
+memory = aiMemory( memory: "weaviate",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -646,7 +646,7 @@ memory = aiMemory( "weaviate",
 ### Milvus
 
 ```java
-memory = aiMemory( "milvus",
+memory = aiMemory( memory: "milvus",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -664,7 +664,7 @@ memory = aiMemory( "milvus",
 ### Hybrid Memory
 
 ```java
-memory = aiMemory( "hybrid",
+memory = aiMemory( memory: "hybrid",
     key: createUUID(),
     userId: "user123",
     conversationId: "support",
@@ -692,7 +692,7 @@ Never trust client-provided userId/conversationId without server-side validation
 
 ```java
 // ❌ WRONG: Direct use of untrusted input
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     userId: url.userId,  // Client could manipulate this!
     config: { maxMessages: 10 }
 )
@@ -704,7 +704,7 @@ function getUserMemory( required string requestedUserId ) {
         throw( type="SecurityViolation", message="Unauthorized access" );
     }
 
-    return aiMemory( "windowed",
+    return aiMemory( memory: "window",
         userId: session.user.id,  // Use authenticated session
         config: { maxMessages: 10 }
     );
@@ -722,7 +722,7 @@ function getAuthenticatedMemory( required string conversationId ) {
         throw( type="Unauthorized", message="Login required" );
     }
 
-    return aiMemory( "session",
+    return aiMemory( memory: "session",
         key: "chat",
         userId: session.user.id,  // From authenticated session
         conversationId: arguments.conversationId,
@@ -759,7 +759,7 @@ function getConversationMemory(
         throw( type="NotFound", message="Conversation not found" );
     }
 
-    return aiMemory( "jdbc",
+    return aiMemory( memory: "jdbc",
         key: createUUID(),
         userId: arguments.userId,
         conversationId: arguments.conversationId,
@@ -782,7 +782,7 @@ function sanitizeIdentifier( required string input ) {
 }
 
 function getSafeMemory( required string userId, required string conversationId ) {
-    return aiMemory( "file",
+    return aiMemory( memory: "file",
         key: createUUID(),
         userId: sanitizeIdentifier( arguments.userId ),
         conversationId: sanitizeIdentifier( arguments.conversationId ),
@@ -810,7 +810,7 @@ function getAuditedMemory(
         text: "User #arguments.userId# accessed conversation #arguments.conversationId# from IP #cgi.remote_addr#"
     );
 
-    return aiMemory( "jdbc",
+    return aiMemory( memory: "jdbc",
         key: createUUID(),
         userId: arguments.userId,
         conversationId: arguments.conversationId,
@@ -854,7 +854,7 @@ class {
 
         userAccess.count++;
 
-        return aiMemory( "session",
+        return aiMemory( memory: "session",
             userId: arguments.userId,
             config: { maxMessages: 20 }
         );
@@ -872,13 +872,13 @@ Choose memory types based on scale:
 
 ```java
 // Small scale (< 100 users)
-memory = aiMemory( "session",
+memory = aiMemory( memory: "session",
     userId: session.user.id,
     config: { maxMessages: 20 }
 )
 
 // Medium scale (100-10,000 users)
-memory = aiMemory( "cache",
+memory = aiMemory( memory: "cache",
     userId: session.user.id,
     config: {
         cacheName: "redis",
@@ -887,7 +887,7 @@ memory = aiMemory( "cache",
 )
 
 // Large scale (> 10,000 users)
-memory = aiMemory( "jdbc",
+memory = aiMemory( memory: "jdbc",
     userId: session.user.id,
     config: {
         datasource: "mainDB",
@@ -925,7 +925,7 @@ class {
         var cacheKey = "#arguments.userId#:#arguments.conversationId#";
 
         if ( !variables.memoryCache.keyExists( cacheKey ) ) {
-            variables.memoryCache[ cacheKey ] = aiMemory( "jdbc",
+            variables.memoryCache[ cacheKey ] = aiMemory( memory: "jdbc",
                 key: createUUID(),
                 userId: arguments.userId,
                 conversationId: arguments.conversationId,
@@ -1010,7 +1010,7 @@ class {
         // Use composite userId for complete isolation
         var isolatedUserId = "#arguments.organizationId#:#arguments.userId#";
 
-        return aiMemory( "postgres",
+        return aiMemory( memory: "postgres",
             key: createUUID(),
             userId: isolatedUserId,
             conversationId: arguments.conversationId,
@@ -1055,7 +1055,7 @@ class {
             throw( type="Unauthorized", message="Access denied" );
         }
 
-        return aiMemory( "hybrid",
+        return aiMemory( memory: "hybrid",
             key: createUUID(),
             userId: ticket.customerId,
             conversationId: arguments.ticketId,
@@ -1104,7 +1104,7 @@ function getDepartmentMemory(
         throw( type="Unauthorized", message="Not authorized for this department" );
     }
 
-    return aiMemory( "chroma",
+    return aiMemory( memory: "chroma",
         key: createUUID(),
         userId: "#arguments.department#:#arguments.userId#",
         conversationId: "dept-chat",
@@ -1128,7 +1128,7 @@ If you have existing non-multi-tenant memory implementations:
 
 ```java
 // Old (single-tenant)
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 agent = aiAgent( name: "Assistant", memory: memory )
 ```
 
@@ -1136,7 +1136,7 @@ agent = aiAgent( name: "Assistant", memory: memory )
 
 ```java
 // New (multi-tenant)
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: session.user.id,  // Add user identifier
     config: { maxMessages: 10 }
@@ -1169,14 +1169,14 @@ CREATE INDEX idx_conversation_id ON ai_conversations(conversation_id);
 ```java
 // Before
 function chat( message ) {
-    var memory = aiMemory( "windowed", { maxMessages: 10 } );
+    var memory = aiMemory( memory: "window", config: { maxMessages: 10 } );
     var agent = aiAgent( name: "Bot", memory: memory );
     return agent.run( message );
 }
 
 // After
 function chat( userId, conversationId, message ) {
-    var memory = aiMemory( "windowed",
+    var memory = aiMemory( memory: "window",
         key: createUUID(),
         userId: arguments.userId,
         conversationId: arguments.conversationId,
@@ -1202,7 +1202,7 @@ function chat( userId, conversationId, message ) {
 
 ```java
 // Ensure you're passing userId correctly
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: session.user.id,  // ✅ Use authenticated session
     config: { maxMessages: 10 }
@@ -1223,7 +1223,7 @@ memory = aiMemory( "windowed",
 
 ```java
 // Add conversationId for isolation
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: session.user.id,
     conversationId: request.chatId,  // ✅ Add conversation identifier
@@ -1249,7 +1249,7 @@ CREATE INDEX idx_composite ON ai_conversations(user_id, conversation_id);
 2. **Use cache-based memory:**
 
 ```java
-memory = aiMemory( "cache",
+memory = aiMemory( memory: "cache",
     userId: session.user.id,
     config: {
         cacheName: "redis",
@@ -1263,7 +1263,7 @@ memory = aiMemory( "cache",
 ```java
 // Cache memory instances
 if ( !application.memoryPool.keyExists( userId ) ) {
-    application.memoryPool[ userId ] = aiMemory( "windowed",
+    application.memoryPool[ userId ] = aiMemory( memory: "window",
         userId: userId,
         config: { maxMessages: 10 }
     );
@@ -1287,7 +1287,7 @@ function getUserMemory( userId ) {
     // return variables.sharedMemory;
 
     // ✅ CORRECT: New instance per user
-    return aiMemory( "session",
+    return aiMemory( memory: "session",
         key: createUUID(),  // Unique key per instance
         userId: arguments.userId,
         config: { maxMessages: 20 }
@@ -1314,7 +1314,7 @@ exported = memory.export();
 // }
 
 // Import restores identifiers
-newMemory = aiMemory( "windowed", {
+newMemory = aiMemory( memory: "window", config: {
     maxMessages: 10
 });
 newMemory.import( exported );  // Preserves userId/conversationId

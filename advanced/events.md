@@ -27,7 +27,6 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | -- | ------------------------------------------------------- | -------------------------------- | ------------------------------------------------- |
 | 1  | [onAIMessageCreate](events.md#1-onaimessagecreate)      | Message template created         | `message`                                         |
 | 2  | [onAIChatRequestCreate](events.md#2-onaichatrequestcreate) | Chat request object instantiated | `aiRequest`                                       |
-| 3  | [onAIProviderRequest](events.md#3-onaiproviderrequest)  | Before provider creation         | `provider`, `apiKey`                              |
 | 4  | [onAIProviderCreate](events.md#4-onaiprovidercreate)    | Provider instance created        | `provider`                                        |
 | 5  | [onMissingAiProvider](events.md#5-onmissingaiprovider)  | Provider not found               | `provider`, `options`                             |
 | 6  | [onAIModelCreate](events.md#6-onaimodelcreate)          | Model runnable created           | `model`, `service`                                |
@@ -100,9 +99,9 @@ sequenceDiagram
     Note over U,T: Request/Response Phase
     P->>AI: Execute
     AI-->>U: beforeAIModelInvoke
-    AI-->>U: onAIRequest
+    AI-->>U: onAIChatRequest
     AI->>AI: Call Provider API
-    AI-->>U: onAIResponse
+    AI-->>U: onAIChatResponse
     AI-->>U: afterAIModelInvoke
 
     Note over U,T: Tool Execution (if needed)
@@ -129,18 +128,18 @@ sequenceDiagram
 graph TB
     subgraph "Object Creation Events"
         E1[onAIMessageCreate]
-        E2[onAIRequestCreate]
-        E3[onAIProviderRequest]
+        E2[onAIChatRequestCreate]
+        E3[onAIProviderCreate]
         E4[onAIProviderCreate]
         E5[onAIModelCreate]
-        E6[onAITransformCreate]
+        E6[onAITransformerCreate]
         E7[onAIToolCreate]
     end
 
     subgraph "Execution Events"
         E8[beforeAIModelInvoke]
-        E9[onAIRequest]
-        E10[onAIResponse]
+        E9[onAIChatRequest]
+        E10[onAIChatResponse]
         E11[afterAIModelInvoke]
         E12[beforeAIToolExecute]
         E13[afterAIToolExecute]
@@ -241,11 +240,11 @@ class {
         // Interceptor configuration
     }
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         // Your event handling logic
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         // Your event handling logic
     }
 }
@@ -349,41 +348,6 @@ function onAIChatRequestCreate( event, interceptData ) {
 
 ***
 
-### 3. onAIProviderRequest
-
-Fired when a provider is requested from the factory.
-
-**When**: Before provider/service is created or retrieved **Frequency**: Once per provider request
-
-#### Event Arguments
-
-| Argument   | Type     | Description                              |
-| ---------- | -------- | ---------------------------------------- |
-| `provider` | `String` | Provider name (e.g., "openai", "claude") |
-| `apiKey`   | `String` | API key (if provided)                    |
-| `params`   | `Struct` | Request parameters                       |
-| `options`  | `Struct` | Request options                          |
-
-````
-
-#### Example
-
-```java
-function onAIProviderRequest( event, interceptData ) {
-    var provider = interceptData.provider;
-
-    // Override API keys from secure vault
-    interceptData.apiKey = getSecretFromVault( "ai.#provider#.apiKey" );
-
-    // Track provider usage
-    trackProviderUsage( provider, getAuthenticatedUser() );
-
-    // Apply rate limiting
-    if ( hasExceededRateLimit( provider ) ) {
-        throw( "Rate limit exceeded for provider: #provider#" );
-    }
-}
-````
 
 ***
 
@@ -463,7 +427,7 @@ function onAIModelCreate( event, interceptData ) {
 
 ***
 
-### 6. onAITransformCreate
+### 6. onAITransformerCreate
 
 Fired when a transform runnable is created via `aiTransform()`.
 
@@ -480,7 +444,7 @@ Fired when a transform runnable is created via `aiTransform()`.
 #### Example
 
 ```java
-function onAITransformCreate( event, interceptData ) {
+function onAITransformerCreate( event, interceptData ) {
     var transform = interceptData.transform;
 
     // Wrap transform with error handling
@@ -1349,7 +1313,7 @@ result = aiChat(
 // Set tenant context in AI agents
 agent = aiAgent(
     name: "Assistant",
-    memory: aiMemory( "simple" )
+    memory: aiMemory( "window" )
 )
 
 result = agent.run(
@@ -1625,14 +1589,14 @@ aiChat(
 Events fire in this order during a typical AI chat with tools:
 
 1. `onAIMessageCreate` - Message template created
-2. `onAIRequestCreate` - Request object created
+2. `onAIChatRequestCreate` - Request object created
 3. `onAIModelCreate` - Model wrapper created
 4. `onAIToolCreate` - Tool(s) created (if using tools)
 5. `beforeAIPipelineRun` - Pipeline about to start (if using pipelines)
 6. `beforeAIModelInvoke` - Model about to be invoked
-7. `onAIRequest` - HTTP request about to be sent
+7. `onAIChatRequest` - HTTP request about to be sent
 8. `onAIRateLimitHit` - If rate limit encountered
-9. `onAIResponse` - HTTP response received
+9. `onAIChatResponse` - HTTP response received
 10. `onAITokenCount` - Token usage tracked
 11. `beforeAIToolExecute` - Tool about to execute (if AI requested tool call)
 12. `afterAIToolExecute` - Tool execution complete
@@ -1952,7 +1916,7 @@ function onAIToolRegistryUnregister( event, interceptData ) {
 ### 1. Request Logging and Monitoring
 
 ```java
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     var logData = {
         timestamp: now(),
         provider: interceptData.provider.getProviderName(),
@@ -1974,7 +1938,7 @@ function onAIRequest( event, interceptData ) {
 ```java
 class {
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         if ( !interceptData.response.keyExists( "usage" ) ) return;
 
         var usage = interceptData.response.usage;
@@ -2028,7 +1992,7 @@ class {
 ```java
 class {
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         var request = interceptData.aiRequest;
         var cacheKey = generateCacheKey( request );
 
@@ -2046,7 +2010,7 @@ class {
         }
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         // Don't cache if we used cached response
         if ( interceptData.keyExists( "useCached" ) ) return;
 
@@ -2075,7 +2039,7 @@ class {
 ### 4. Content Filtering and Moderation
 
 ```java
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     var request = interceptData.aiRequest;
     var messages = request.getMessages();
 
@@ -2090,7 +2054,7 @@ function onAIRequest( event, interceptData ) {
     }
 }
 
-function onAIResponse( event, interceptData ) {
+function onAIChatResponse( event, interceptData ) {
     var response = interceptData.response;
 
     // Filter response content
@@ -2135,7 +2099,7 @@ class {
 
     property name="failedProviders" default={};
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         var provider = interceptData.provider.getProviderName();
 
         // Check if provider is in cooldown
@@ -2160,7 +2124,7 @@ class {
         }
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         var response = interceptData.response;
         var provider = interceptData.provider.getProviderName();
 
@@ -2194,7 +2158,7 @@ class {
 ```java
 class {
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         var request = interceptData.aiRequest;
         var user = getAuthenticatedUser();
 
@@ -2216,7 +2180,7 @@ class {
         });
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         var request = interceptData.aiRequest;
         var response = interceptData.response;
         var metadata = request.getMetadata();
@@ -2303,14 +2267,14 @@ Event handlers are called frequently. Keep processing minimal:
 
 ```java
 // ❌ Bad: Heavy processing
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     // This runs complex queries and blocks
     var history = getAllUserAIHistory( getUser() );
     analyzeHistoryForPatterns( history );
 }
 
 // ✅ Good: Lightweight, async if needed
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     // Quick validation only
     validateRequest( interceptData.aiRequest );
 
@@ -2326,7 +2290,7 @@ function onAIRequest( event, interceptData ) {
 Don't let interceptor errors break AI operations:
 
 ```java
-function onAIResponse( event, interceptData ) {
+function onAIChatResponse( event, interceptData ) {
     try {
         // Your processing
         processResponse( interceptData.response );
@@ -2358,7 +2322,7 @@ Make it clear what your interceptors modify:
  * - Message content
  * - Model selection
  */
-function onAIRequest( event, interceptData ) {
+function onAIChatRequest( event, interceptData ) {
     // Implementation
 }
 ```
@@ -2403,7 +2367,7 @@ class extends="testbox.system.BaseSpec" {
                     provider: mockProvider()
                 };
 
-                monitor.onAIRequest( {}, interceptData );
+                monitor.onAIChatRequest( {}, interceptData );
 
                 // Verify logging occurred
                 expect( getLogEntries() ).toHaveLength( 1 );
@@ -2428,7 +2392,7 @@ class {
         variables.logLevel = getSetting( "monitoring.logLevel" );
     }
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         if ( !variables.enabled ) return;
 
         // Use configuration
@@ -2472,7 +2436,7 @@ class {
         });
     }
 
-    function onAIRequest( event, interceptData ) {
+    function onAIChatRequest( event, interceptData ) {
         var request = interceptData.aiRequest;
         var metadata = request.getMetadata();
 
@@ -2483,7 +2447,7 @@ class {
         });
     }
 
-    function onAIResponse( event, interceptData ) {
+    function onAIChatResponse( event, interceptData ) {
         var request = interceptData.aiRequest;
         var response = interceptData.response;
 
@@ -3039,6 +3003,160 @@ BoxRegisterInterceptor( "onMCPClientError", function( event ) {
 
 ***
 
+## 🌐 Web Search Events (53–57)
+
+### 53. beforeAIWebSearch
+
+Fired before a web search provider executes a query.
+
+**When**: At the start of `BaseSearch.search()`, before the provider runs
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `provider` | `ISearchProvider` | The search provider instance |
+| `query` | `String` | The search query |
+| `options` | `Struct` | Search options (maxResults, etc.) |
+
+### 54. afterAIWebSearch
+
+Fired after a web search returns results successfully.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `provider` | `ISearchProvider` | The search provider instance |
+| `query` | `String` | The search query |
+| `options` | `Struct` | Search options |
+| `results` | `Array` | Normalized result array |
+| `cached` | `Boolean` | Whether the results came from cache |
+
+```javascript
+BoxRegisterInterceptor( "afterAIWebSearch", function( event ) {
+    println( "Search '#event.query#' returned #event.results.len()# results" )
+})
+```
+
+### 55. onAIWebSearchRequest
+
+Fired immediately before the provider's outbound HTTP request.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `provider` | `ISearchProvider` | The search provider instance |
+| `url` | `String` | The request URL |
+| `method` | `String` | HTTP method |
+| `headers` | `Struct` | Request headers |
+
+### 56. onAIWebSearchResponse
+
+Fired after the provider's HTTP response is received.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `provider` | `ISearchProvider` | The search provider instance |
+| `url` | `String` | The request URL |
+| `statusCode` | `Numeric` | HTTP status code |
+| `response` | `Struct` | The raw HTTP response |
+
+### 57. onAIWebSearchError
+
+Fired when a web search throws.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `provider` | `ISearchProvider` | The search provider instance |
+| `query` | `String` | The search query |
+| `options` | `Struct` | Search options |
+| `error` | `Exception` | The thrown exception |
+
+***
+
+## 🧠 Memory Summarization Event (58)
+
+### 58. onAIMemorySummarize
+
+Fired after a memory instance successfully compresses its history into an AI-generated summary. Available on **every** conversation memory type, not just `SummaryMemory`.
+
+**When**: Inside `BaseMemory.summarize()`, after the summary is stored
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `memory` | `IAiMemory` | The memory instance that was summarized |
+| `key` | `String` | The memory key |
+| `type` | `String` | The memory type name |
+| `userId` | `String` | Tenant user id, if set |
+| `conversationId` | `String` | Conversation id, if set |
+| `messageCount` | `Numeric` | Messages remaining after compression |
+| `summaryLength` | `Numeric` | Character length of the generated summary |
+| `keepRecent` | `Numeric` | How many recent messages were kept verbatim |
+| `summarizedCount` | `Numeric` | How many messages were folded into the summary |
+
+```javascript
+BoxRegisterInterceptor( "onAIMemorySummarize", function( event ) {
+    println( "Compressed #event.summarizedCount# messages for #event.userId# into #event.summaryLength# chars" )
+})
+```
+
+***
+
+## 🔌 Gateway Events (59–61)
+
+Gateways present human-in-the-loop interactions on a platform (CLI, HTTP, or an external module). See the [Security Guide](../deployment/security.md) and [Middleware](../main-components/middleware.md).
+
+### 59. onGatewayCreate
+
+Fired whenever `aiGateway()` resolves or instantiates a gateway — for core gateways, registry-provided gateways, and direct class paths alike.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The configured gateway instance |
+
+```javascript
+BoxRegisterInterceptor( "onGatewayCreate", function( event ) {
+    println( "Gateway ready: #event.gateway.getName()#" )
+})
+```
+
+### 60. onGatewayRegistryRegister
+
+Fired when a gateway is registered into `gatewayRegistry()` — typically by an external gateway module at load time.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The gateway being registered |
+| `key` | `String` | Registry key (`name` or `name@module`) |
+| `module` | `String` | Owning module name, if any |
+
+### 61. onGatewayRegistryUnregister
+
+Fired when a gateway is removed from the registry.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `key` | `String` | Registry key removed |
+| `module` | `String` | Module extracted from the key |
+
+***
+
+## 🔐 Decision Store Event (62)
+
+### 62. onAiDecisionStoreCreate
+
+Fired when `aiDecisionStore()` creates a store for durable human-approval grants (`approve_always` / `approve_session`).
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `storeType` | `String` | Requested type (`cache`, `jdbc`, `file`, or a class path) |
+| `storeClass` | `String` | Resolved class path |
+| `storeConfig` | `Struct` | Configuration passed to the store |
+
+```javascript
+BoxRegisterInterceptor( "onAiDecisionStoreCreate", function( event ) {
+    println( "Decision store: #event.storeType# -> #event.storeClass#" )
+})
+```
+
+***
+
 ## Next Steps
 
 Now that you understand the event system, you can:
@@ -3050,7 +3168,7 @@ Now that you understand the event system, you can:
 
 ### Related Documentation
 
-* [**Pipeline Overview**](../main-components/main-components/overview.md) - Understanding AI pipelines
+* [**Pipeline Overview**](../main-components/README.md) - Understanding AI pipelines
 * [**Service-Level Chatting**](../main-components/chatting/service-chatting.md) - Direct service control
 
 ### Additional Resources
