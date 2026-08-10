@@ -1349,7 +1349,7 @@ result = aiChat(
 // Set tenant context in AI agents
 agent = aiAgent(
     name: "Assistant",
-    memory: aiMemory( "simple" )
+    memory: aiMemory( "window" )
 )
 
 result = agent.run(

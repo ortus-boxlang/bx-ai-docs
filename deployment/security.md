@@ -1061,7 +1061,7 @@ class {
         }
 
         // 4. Add to vector memory with user isolation
-        var vectorMemory = aiMemory( "vector", {
+        var vectorMemory = aiMemory( memory: "boxvector", config: {
             userId: arguments.userId
         } )
 
@@ -1522,7 +1522,7 @@ class {
         }
 
         // Return memory scoped to user
-        return aiMemory( "cache", {
+        return aiMemory( memory: "cache", config: {
             namespace: "user_#authenticatedUserId#"
         } )
     }
@@ -1550,7 +1550,7 @@ class {
     function getTenantMemory( required string tenantId ) {
         var namespace = getTenantNamespace( arguments.tenantId )
 
-        return aiMemory( "jdbc", {
+        return aiMemory( memory: "jdbc", config: {
             namespace: namespace,
             tableName: "ai_memory_#namespace#"
         } )

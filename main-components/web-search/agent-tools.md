@@ -45,7 +45,7 @@ agent = aiAgent(
 ## Research + Memory Pattern
 
 ```javascript
-memory = aiMemory( "hybrid", {
+memory = aiMemory( memory: "hybrid", config: {
     recentLimit: 12,
     semanticLimit: 6
 } )

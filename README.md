@@ -353,35 +353,30 @@ println( "Generated #embeddings.len()# embeddings" )
 ### 📄 Load Documents
 
 ```javascript
-// Load documents for RAG
-documents = aiDocuments( source: "docs/guide.md" )
+// Vector memory for semantic retrieval
+memory = aiMemory( memory: "boxvector", config: { embeddingProvider: "openai" } )
 
-// Use with memory
-memory = aiMemory( type: "vector" )
-memory.addDocuments( documents )
+// Load documents straight into it
+aiDocuments( source: "docs/guide.md" ).toMemory( memory )
 
-// Query with context
-response = aiChat(
-    "What is covered in the guide?",
-    { memory: memory }
-)
+// Ask an agent that can retrieve from it
+agent = aiAgent( name: "DocsBot", memory: memory )
+response = agent.run( "What is covered in the guide?" )
 ```
 
 ### 🤖 Create an Agent
 
 ```javascript
 // Build an autonomous agent
-agent = aiAgent()
-    .name( "Research Assistant" )
-    .instructions( "You help research and summarize topics" )
-    .memory( aiMemory( type: "windowed", size: 10 ) )
-    .tools([
-        searchTool,
-        summarizeTool
-    ])
+agent = aiAgent(
+    name        : "Research Assistant",
+    instructions: "You help research and summarize topics",
+    memory      : aiMemory( memory: "window", config: { maxMessages: 10 } ),
+    tools       : [ searchTool, summarizeTool ]
+)
 
 // Agent handles multi-turn conversations
-response = agent.chat( "Research AI trends in 2025" )
+response = agent.run( "Research AI trends in 2025" )
 ```
 
 ***

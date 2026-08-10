@@ -57,9 +57,10 @@ agent = aiAgent(
     name      : "ResilientAgent",
     middleware: [
         new RetryMiddleware(
-            maxRetries  : 3,
-            delayMs     : 1000,
-            backoffFactor: 2.0   // 1s, 2s, 4s
+            maxRetries       : 3,
+            initialDelay     : 1000,   // ms
+            backoffMultiplier: 2,      // 1s, 2s, 4s
+            maxDelay         : 30000
         )
     ]
 )
@@ -67,20 +68,23 @@ agent = aiAgent(
 
 ### GuardrailMiddleware
 
-Block, filter, or rewrite requests and responses based on content rules:
+Block tool calls by name, or by matching their arguments against regex patterns:
 
 ```javascript
 agent = aiAgent(
     name      : "SafeAgent",
     middleware: [
         new GuardrailMiddleware(
-            blockedPhrases: [ "competitor_name", "confidential" ],
-            maxInputLength : 5000,
-            onBlock        : ( context ) => "I can't help with that topic."
+            blockedTools: [ "deleteAllRecords" ],
+            argPatterns : { transferFunds: [ { amount: "^[0-9]{6,}$" } ] }
         )
     ]
 )
 ```
+
+{% hint style="info" %}
+`GuardrailMiddleware` guards **tool calls**. To filter prompt or response *content*, use the security middleware — see the [Security Guide](../../deployment/security.md).
+{% endhint %}
 
 ### MaxToolCallsMiddleware
 
@@ -102,47 +106,49 @@ Suspend the agent mid-run for human approval before continuing:
 ```javascript
 agent = aiAgent(
     name        : "ApprovalAgent",
+    tools       : [ deployTool ],
     checkpointer: aiMemory( "cache" ),
     middleware  : [
         new HumanInTheLoopMiddleware(
-            triggerPhrase: "deploy to production"
+            mode                  : "web",
+            toolsRequiringApproval: [ "deploy" ]
         )
     ]
 )
 
-result = agent.run( "Deploy the new version to production" )
+threadId = "deploy-42"
+result   = agent.run( "Deploy the new version to production", {}, { threadId: threadId } )
 
 if ( result.isSuspended() ) {
-    threadId = result.getThreadId()
-    // ... notify human, store threadId ...
+    pending = result.getData().pendingActions
+    // ... notify a human, persist threadId ...
 
     // Later, after approval:
-    finalResponse = agent.resume(
-        decision: "approved",
-        threadId: threadId
-    )
+    finalResponse = agent.resume( "approve", threadId )
 }
 ```
+
+Approval is triggered by **which tool** is being called (or by an `IApprovalPolicy`), not by matching text in the prompt. See [Middleware](../middleware.md) for approval policies, durable grants, and batched approvals.
 
 ### FlightRecorderMiddleware
 
 Record the full execution trace for debugging and auditing:
 
 ```javascript
+recorder = new FlightRecorderMiddleware( mode: "record" )
+
 agent = aiAgent(
     name      : "AuditedAgent",
-    middleware: [
-        new FlightRecorderMiddleware()
-    ]
+    middleware: [ recorder ]
 )
 
-result      = agent.run( "Process this order" )
-flightRecord = agent.getMiddleware( "FlightRecorder" ).getRecord()
+result = agent.run( "Process this order" )
 
-flightRecord.each( event => {
-    println( "#event.phase# at #event.timestamp#: #event.summary#" )
-} )
+// Read the recorded tape back off the middleware instance
+tape = recorder.getTape()
 ```
+
+`FlightRecorderMiddleware` runs in one of three modes — `passthrough` (default), `record` (write fixtures to `fixtureDir`), and `replay` (serve responses from `fixturePath`). You can also fetch an attached instance by name with `agent.getMiddlewareByName( "Flight Recorder Middleware" )`.
 
 ## Struct-Based Middleware (Inline)
 
@@ -155,11 +161,11 @@ agent = aiAgent(
         {
             beforeAgentRun: ( context ) => {
                 writeLog( "Agent starting: #context.input#" )
-                return AiMiddlewareResult::proceed()
+                return AiMiddlewareResult.continue()
             },
             afterAgentRun: ( context ) => {
                 writeLog( "Agent done: #context.response#" )
-                return AiMiddlewareResult::proceed()
+                return AiMiddlewareResult.continue()
             }
         }
     ]
@@ -180,11 +186,15 @@ Each hook returns an `AiMiddlewareResult` that controls execution flow:
 
 | Result | Effect |
 |---|---|
-| `AiMiddlewareResult::proceed()` | Continue to the next middleware/hook |
-| `AiMiddlewareResult::cancel( message )` | Abort execution, return message |
-| `AiMiddlewareResult::suspend( state )` | Pause execution, save state for resume |
-| `AiMiddlewareResult::approve()` | Approve a tool call (used in `beforeToolCall`) |
-| `AiMiddlewareResult::reject( reason )` | Reject a tool call |
+| `AiMiddlewareResult.continue()` | Continue to the next middleware/hook |
+| `AiMiddlewareResult.cancel( reason )` | Abort execution |
+| `AiMiddlewareResult.suspend( pending )` | Pause execution, checkpoint for resume |
+| `AiMiddlewareResult.approve()` | Approve a tool call (used in `beforeToolCall`) |
+| `AiMiddlewareResult.reject( reason )` | Skip this tool call; the reason is fed back as its result |
+| `AiMiddlewareResult.edit( args )` | Replace the tool call's arguments and run it |
+| `AiMiddlewareResult.defer( pending )` | Mark the call as needing a decision, then keep scanning the batch |
+
+See the [full middleware reference](../middleware.md) for every hook, the wrap-style hooks, and the complete result vocabulary.
 
 ## Lifecycle Hooks
 
@@ -218,7 +228,7 @@ class CostTrackerMiddleware extends="BaseAiMiddleware" {
                 tokens : usage.total_tokens
             )
         }
-        return AiMiddlewareResult::proceed()
+        return AiMiddlewareResult.continue()
     }
 }
 

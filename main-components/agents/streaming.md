@@ -105,20 +105,27 @@ agent.stream(
 After a suspension, resume and stream the continuation:
 
 ```javascript
+// You supply the threadId on the original run
+threadId = "deploy-42"
+
 // Agent was suspended by HumanInTheLoopMiddleware
-result = agent.run( "Deploy to production" )
+result = agent.run( "Deploy to production", {}, { threadId: threadId } )
 
 if ( result.isSuspended() ) {
-    threadId = result.getThreadId()
-
     // Later, resume as a stream:
     agent.resumeStream(
-        decision: "approved",
-        threadId: threadId,
-        onChunk : chunk => print( chunk.choices?.first()?.delta?.content ?: "" )
+        onChunk : chunk => print( chunk.choices?.first()?.delta?.content ?: "" ),
+        decision: "approve",
+        threadId: threadId
     )
 }
 ```
+
+{% hint style="info" %}
+`resumeStream( onChunk, decision, threadId, editedData, decidedBy, reason )` — `onChunk` comes first. Valid decisions are `approve`, `approve_always`, `approve_session`, `reject`, `edit`, and `cancel`.
+
+When a turn requested several tool calls needing approval, they suspend together as one checkpoint; pass an array of per-call decision structs to resolve them individually. Streaming batch approvals are supported on OpenAI and Claude — the two providers with streaming tool-call support today.
+{% endhint %}
 
 ## Related Pages
 

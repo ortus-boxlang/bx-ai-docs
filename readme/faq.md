@@ -267,7 +267,7 @@ Document analysis (5000 words) ≈ 7000 tokens
 5.  **Use summarization** for long conversations
 
     ```javascript
-    memory = aiMemory( "summary", {
+    memory = aiMemory( memory: "summary", config: {
         maxMessages: 10,
         summaryThreshold: 8  // Summarize when > 8 messages
     } )
@@ -461,7 +461,7 @@ response = agent.run( "What's the weather in Paris?" )
 ```javascript
 // Create agent with memory
 agent = aiAgent(
-    memory: aiMemory( "window", { maxMessages: 10 } )
+    memory: aiMemory( memory: "window", config: { maxMessages: 10 } )
 )
 
 // Conversation with context
@@ -491,7 +491,7 @@ agent.run( "What's my name and favorite food?" )
 
 ```javascript
 // 1. Load documents into vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "my_docs"
 } )
 
@@ -593,12 +593,12 @@ agent = aiAgent(
 
 // Knowledge base - use vector memory
 agent = aiAgent(
-    memory: aiMemory( "chroma", { collection: "docs" } )
+    memory: aiMemory( memory: "chroma", config: { collection: "docs" } )
 )
 
 // Both! - use hybrid memory
 agent = aiAgent(
-    memory: aiMemory( "hybrid", {
+    memory: aiMemory( memory: "hybrid", config: {
         conversationMemory: aiMemory( "window" ),
         vectorMemory: aiMemory( "chroma" )
     } )
@@ -613,16 +613,16 @@ Use **multi-tenant memory** with `userId` and `conversationId`:
 
 ```javascript
 // Separate memory per user
-userMemory = aiMemory( "cache", {
+userMemory = aiMemory( memory: "cache", config: {
     userId: session.userId,
     conversationId: createUUID()
 } )
 
 // User 1's agent
-user1Agent = aiAgent( memory: aiMemory( "window", { userId: "user1" } ) )
+user1Agent = aiAgent( memory: aiMemory( memory: "window", config: { userId: "user1" } ) )
 
 // User 2's agent (completely isolated)
-user2Agent = aiAgent( memory: aiMemory( "window", { userId: "user2" } ) )
+user2Agent = aiAgent( memory: aiMemory( memory: "window", config: { userId: "user2" } ) )
 ```
 
 **Isolation guaranteed**: Users NEVER see each other's data.
@@ -820,7 +820,7 @@ aiChat( "Hello", {}, {
 2.  **Truncate conversation history**:
 
     ```javascript
-    memory = aiMemory( "window", { maxMessages: 10 } )  // Keep last 10
+    memory = aiMemory( memory: "window", config: { maxMessages: 10 } )  // Keep last 10
     ```
 3.  **Summarize long conversations**:
 
@@ -917,10 +917,10 @@ response = agent.run( "Search for latest news and calculate the total" )
 
 ```javascript
 // Good balance for most cases
-memory = aiMemory( "window", { maxMessages: 20 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 20 } )
 
 // Long conversations
-memory = aiMemory( "summary", {
+memory = aiMemory( memory: "summary", config: {
     maxMessages: 10,
     summaryThreshold: 8  // Summarize when > 8
 } )

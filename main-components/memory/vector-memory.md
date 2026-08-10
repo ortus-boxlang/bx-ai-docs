@@ -39,13 +39,13 @@ Vector memories automatically filter searches and retrievals by userId/conversat
 
 ```java
 // Single-tenant (shared collection)
-memory = aiMemory( "chroma", {
+memory = aiMemory( memory: "chroma", config: {
     collection: "shared_vectors",
     embeddingProvider: "openai"
 })
 
 // Multi-tenant (isolated by userId)
-alice = aiMemory( "chroma",
+alice = aiMemory( memory: "chroma",
     key: createUUID(),
     userId: "alice",
     config: {
@@ -54,7 +54,7 @@ alice = aiMemory( "chroma",
     }
 )
 
-bob = aiMemory( "chroma",
+bob = aiMemory( memory: "chroma",
     key: createUUID(),
     userId: "bob",
     config: {
@@ -78,14 +78,14 @@ Isolate multiple conversations for the same user:
 
 ```java
 // User Alice has multiple conversations
-supportChat = aiMemory( "pinecone",
+supportChat = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: "alice",
     conversationId: "support-ticket-123",
     config: { collection: "customer_interactions" }
 )
 
-salesChat = aiMemory( "pinecone",
+salesChat = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: "alice",
     conversationId: "sales-inquiry-456",
@@ -214,7 +214,7 @@ sequenceDiagram
 When you add a message, it's converted to a vector embedding:
 
 ```java
-memory = aiMemory( "chroma", {
+memory = aiMemory( memory: "chroma", config: {
     collection: "support_chat",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small"
@@ -313,7 +313,7 @@ In-memory vector storage perfect for development and testing.
 **Configuration:**
 
 ```java
-memory = aiMemory( "boxvector", {
+memory = aiMemory( memory: "boxvector", config: {
     collection: "dev_chat",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -326,7 +326,7 @@ memory = aiMemory( "boxvector", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "boxvector",
+memory = aiMemory( memory: "boxvector",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -337,7 +337,7 @@ memory = aiMemory( "boxvector",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "boxvector",
+memory = aiMemory( memory: "boxvector",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -397,7 +397,7 @@ chroma run --host 0.0.0.0 --port 8000
 **Configuration:**
 
 ```java
-memory = aiMemory( "chroma", {
+memory = aiMemory( memory: "chroma", config: {
     collection: "customer_support",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -414,7 +414,7 @@ memory = aiMemory( "chroma", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "chroma",
+memory = aiMemory( memory: "chroma",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -427,7 +427,7 @@ memory = aiMemory( "chroma",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "chroma",
+memory = aiMemory( memory: "chroma",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -478,7 +478,7 @@ CREATE EXTENSION vector;
 **Configuration:**
 
 ```java
-memory = aiMemory( "postgres", {
+memory = aiMemory( memory: "postgres", config: {
     collection: "ai_memory",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -494,7 +494,7 @@ memory = aiMemory( "postgres", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "postgres",
+memory = aiMemory( memory: "postgres",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -507,7 +507,7 @@ memory = aiMemory( "postgres",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "postgres",
+memory = aiMemory( memory: "postgres",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -576,7 +576,7 @@ CREATE TABLE bx_ai_vectors (
 **Configuration:**
 
 ```java
-memory = aiMemory( "mysql", {
+memory = aiMemory( memory: "mysql", config: {
     collection: "ai_memory",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -616,7 +616,7 @@ memory = aiMemory( "mysql", {
 
 ```java
 // Create MySQL vector memory
-memory = aiMemory( "mysql", {
+memory = aiMemory( memory: "mysql", config: {
     collection: "customer_support",
     datasource: "myMysqlDS",
     embeddingProvider: "openai",
@@ -642,7 +642,7 @@ agent.run( "Tell me about invoices" )  // Finds billing-related history
 
 ```java
 // Per-user isolation
-memory = aiMemory( "mysql",
+memory = aiMemory( memory: "mysql",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -655,7 +655,7 @@ memory = aiMemory( "mysql",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "mysql",
+memory = aiMemory( memory: "mysql",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -745,7 +745,7 @@ services:
 
 ```javascript
 // Basic OpenSearch configuration
-memory = aiMemory( "opensearch", {
+memory = aiMemory( memory: "opensearch", config: {
     collection: "ai_conversations",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -765,7 +765,7 @@ memory = aiMemory( "opensearch", {
 
 ```javascript
 // AWS OpenSearch Service
-memory = aiMemory( "opensearch", {
+memory = aiMemory( memory: "opensearch", config: {
     collection: "production_memory",
     embeddingProvider: "bedrock",
     embeddingModel: "amazon.titan-embed-text-v1",
@@ -785,7 +785,7 @@ memory = aiMemory( "opensearch", {
 
 ```javascript
 // Using AWS IAM credentials (no username/password)
-memory = aiMemory( "opensearch", {
+memory = aiMemory( memory: "opensearch", config: {
     collection: "enterprise_memory",
     embeddingProvider: "bedrock",
     embeddingModel: "amazon.titan-embed-text-v1",
@@ -804,7 +804,7 @@ memory = aiMemory( "opensearch", {
 
 ```javascript
 // Create OpenSearch vector memory
-memory = aiMemory( "opensearch", {
+memory = aiMemory( memory: "opensearch", config: {
     collection: "customer_support",
     host: "localhost",
     port: 9200,
@@ -830,7 +830,7 @@ agent.run( "What are the payment options?" )
 
 ```javascript
 // Per-user isolation
-memory = aiMemory( "opensearch",
+memory = aiMemory( memory: "opensearch",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -845,7 +845,7 @@ memory = aiMemory( "opensearch",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "opensearch",
+memory = aiMemory( memory: "opensearch",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -962,7 +962,7 @@ services:
 **Configuration:**
 
 ```java
-memory = aiMemory( "typesense", {
+memory = aiMemory( memory: "typesense", config: {
     collection: "ai_conversations",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -979,7 +979,7 @@ memory = aiMemory( "typesense", {
 
 ```java
 // For TypeSense Cloud (managed service)
-memory = aiMemory( "typesense", {
+memory = aiMemory( memory: "typesense", config: {
     collection: "production_memory",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -995,7 +995,7 @@ memory = aiMemory( "typesense", {
 
 ```java
 // Create TypeSense vector memory
-memory = aiMemory( "typesense", {
+memory = aiMemory( memory: "typesense", config: {
     collection: "customer_support",
     host: "localhost",
     port: 8108,
@@ -1020,7 +1020,7 @@ agent.run( "What are the paiment options?" )  // Finds "payment" results
 
 ```java
 // Per-user isolation
-memory = aiMemory( "typesense",
+memory = aiMemory( memory: "typesense",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -1035,7 +1035,7 @@ memory = aiMemory( "typesense",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "typesense",
+memory = aiMemory( memory: "typesense",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -1121,7 +1121,7 @@ exported = memory.export()
 **Configuration:**
 
 ```java
-memory = aiMemory( "pinecone", {
+memory = aiMemory( memory: "pinecone", config: {
     collection: "prod_conversations",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1137,7 +1137,7 @@ memory = aiMemory( "pinecone", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "pinecone",
+memory = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -1150,7 +1150,7 @@ memory = aiMemory( "pinecone",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "pinecone",
+memory = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -1209,7 +1209,7 @@ docker run -p 6333:6333 qdrant/qdrant
 **Configuration:**
 
 ```java
-memory = aiMemory( "qdrant", {
+memory = aiMemory( memory: "qdrant", config: {
     collection: "chat_history",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1226,7 +1226,7 @@ memory = aiMemory( "qdrant", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "qdrant",
+memory = aiMemory( memory: "qdrant",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -1239,7 +1239,7 @@ memory = aiMemory( "qdrant",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "qdrant",
+memory = aiMemory( memory: "qdrant",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -1298,7 +1298,7 @@ docker run -p 8080:8080 semitechnologies/weaviate:latest
 **Configuration:**
 
 ```java
-memory = aiMemory( "weaviate", {
+memory = aiMemory( memory: "weaviate", config: {
     collection: "Conversations",    // Note: PascalCase for Weaviate classes
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1314,7 +1314,7 @@ memory = aiMemory( "weaviate", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "weaviate",
+memory = aiMemory( memory: "weaviate",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -1328,7 +1328,7 @@ memory = aiMemory( "weaviate",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "weaviate",
+memory = aiMemory( memory: "weaviate",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -1384,7 +1384,7 @@ docker-compose up -d
 **Configuration:**
 
 ```java
-memory = aiMemory( "milvus", {
+memory = aiMemory( memory: "milvus", config: {
     collection: "enterprise_conversations",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1402,7 +1402,7 @@ memory = aiMemory( "milvus", {
 
 ```java
 // Per-user isolation
-memory = aiMemory( "milvus",
+memory = aiMemory( memory: "milvus",
     key: createUUID(),
     userId: "user123",
     config: {
@@ -1416,7 +1416,7 @@ memory = aiMemory( "milvus",
 )
 
 // Per-conversation isolation
-memory = aiMemory( "milvus",
+memory = aiMemory( memory: "milvus",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -1462,7 +1462,7 @@ exported = memory.export()
 ### Configuration
 
 ```java
-memory = aiMemory( "hybrid", {
+memory = aiMemory( memory: "hybrid", config: {
     recentLimit: 5,                 // Number of recent messages
     semanticLimit: 5,               // Number of semantic matches
     totalLimit: 10,                 // Max combined messages
@@ -1480,7 +1480,7 @@ memory = aiMemory( "hybrid", {
 
 ```java
 // Per-user/conversation isolation in hybrid memory
-memory = aiMemory( "hybrid",
+memory = aiMemory( memory: "hybrid",
     key: createUUID(),
     userId: "alice",
     conversationId: "support-chat",
@@ -1509,7 +1509,7 @@ memory = aiMemory( "hybrid",
 // Customer support with history
 agent = aiAgent(
     name: "Support Agent",
-    memory: aiMemory( "hybrid", {
+    memory: aiMemory( memory: "hybrid", config: {
         recentLimit: 3,             // Last 3 messages
         semanticLimit: 5,           // 5 relevant past cases
         vectorProvider: "pinecone",
@@ -1532,14 +1532,14 @@ agent.run( "I'm having the same billing issue as before" )
 
 ```java
 // Quick start with BoxVector
-memory = aiMemory( "boxvector", {
+memory = aiMemory( memory: "boxvector", config: {
     collection: "dev",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small"
 } )
 
 // Multi-tenant development testing
-memory = aiMemory( "boxvector",
+memory = aiMemory( memory: "boxvector",
     key: createUUID(),
     userId: "dev-user-123",
     conversationId: "test-chat",
@@ -1551,7 +1551,7 @@ memory = aiMemory( "boxvector",
 )
 
 // Or use Hybrid for realistic testing
-memory = aiMemory( "hybrid", {
+memory = aiMemory( memory: "hybrid", config: {
     recentLimit: 3,
     semanticLimit: 3,
     vectorProvider: "boxvector"
@@ -1562,7 +1562,7 @@ memory = aiMemory( "hybrid", {
 
 ```java
 // Pinecone (managed) with multi-tenant isolation
-memory = aiMemory( "pinecone",
+memory = aiMemory( memory: "pinecone",
     key: createUUID(),
     userId: session.userId,
     conversationId: request.chatId,
@@ -1577,7 +1577,7 @@ memory = aiMemory( "pinecone",
 )
 
 // Qdrant Cloud with multi-tenant isolation
-memory = aiMemory( "qdrant",
+memory = aiMemory( memory: "qdrant",
     key: createUUID(),
     userId: session.userId,
     conversationId: request.chatId,
@@ -1597,7 +1597,7 @@ memory = aiMemory( "qdrant",
 
 ```java
 // PostgreSQL with pgvector and multi-tenant isolation
-memory = aiMemory( "postgres",
+memory = aiMemory( memory: "postgres",
     key: createUUID(),
     userId: session.userId,
     conversationId: request.chatId,
@@ -1612,7 +1612,7 @@ memory = aiMemory( "postgres",
 )
 
 // Qdrant (Docker) with multi-tenant isolation
-memory = aiMemory( "qdrant",
+memory = aiMemory( memory: "qdrant",
     key: createUUID(),
     userId: session.userId,
     conversationId: request.chatId,
@@ -1651,7 +1651,7 @@ memory = aiMemory( "qdrant",
 ### With Caching
 
 ```java
-memory = aiMemory( "chroma", {
+memory = aiMemory( memory: "chroma", config: {
     collection: "cached_chat",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1717,7 +1717,7 @@ function cleanupOldVectors( memory, daysOld = 90 ) {
 
 ```java
 // Enable logging for debugging
-memory = aiMemory( "pinecone", {
+memory = aiMemory( memory: "pinecone", config: {
     collection: "prod",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
@@ -1731,7 +1731,7 @@ memory = aiMemory( "pinecone", {
 
 ```java
 // Combines recent conversation with relevant history
-memory = aiMemory( "hybrid", {
+memory = aiMemory( memory: "hybrid", config: {
     recentLimit: 5,              // Always include last 5 messages
     semanticLimit: 3,            // Add 3 relevant past messages
     totalLimit: 8,               // Max 8 total
@@ -1745,7 +1745,7 @@ Ensure embedding dimensions match across your application:
 
 ```java
 // OpenAI text-embedding-3-small = 1536 dimensions
-memory = aiMemory( "pinecone", {
+memory = aiMemory( memory: "pinecone", config: {
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small",
     dimensions: 1536                // Must match model output
@@ -1759,7 +1759,7 @@ Securely isolate user and conversation data in shared collections:
 ```java
 // Enterprise multi-user application
 function getUserMemory( userId, conversationId = "" ) {
-    return aiMemory( "postgres",
+    return aiMemory( memory: "postgres",
         key: createUUID(),
         userId: arguments.userId,
         conversationId: arguments.conversationId,
@@ -1799,12 +1799,12 @@ relevant = memory.getRelevant(
 
 ```java
 // Separate collections for different contexts
-supportMemory = aiMemory( "pinecone", {
+supportMemory = aiMemory( memory: "pinecone", config: {
     collection: "customer_support",
     embeddingProvider: "openai"
 } )
 
-salesMemory = aiMemory( "pinecone", {
+salesMemory = aiMemory( memory: "pinecone", config: {
     collection: "sales_conversations",
     embeddingProvider: "openai"
 } )
@@ -1818,7 +1818,7 @@ memory = userType == "support" ? supportMemory : salesMemory
 ```java
 // Per-user persistent memory with multi-tenant isolation
 function getUserMemory( userId ) {
-    return aiMemory( "postgres",
+    return aiMemory( memory: "postgres",
         key: createUUID(),
         userId: arguments.userId,
         config: {

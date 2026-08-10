@@ -110,7 +110,7 @@ Returns an `IAiMemory` instance with methods:
 
 ```javascript
 // Simple conversation memory
-memory = aiMemory( "window", {
+memory = aiMemory( memory: "window", config: {
     maxMessages: 10
 } );
 
@@ -128,7 +128,7 @@ agent.run( "What did I just say?" ); // Remembers "Hello"
 
 ```javascript
 // Create Chroma vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "knowledge_base",
     embeddingProvider: "openai",
     embeddingModel: "text-embedding-3-small"
@@ -151,21 +151,21 @@ response = agent.run( "What is BoxLang?" );
 
 ```javascript
 // Separate memory per user
-userMemory = aiMemory( "cache", {
+userMemory = aiMemory( memory: "cache", config: {
     userId: "user123",
     conversationId: "chat456"
 } );
 
 // Different users get different memories
-user1Memory = aiMemory( "cache", { userId: "user1" } );
-user2Memory = aiMemory( "cache", { userId: "user2" } );
+user1Memory = aiMemory( memory: "cache", config: { userId: "user1" } );
+user2Memory = aiMemory( memory: "cache", config: { userId: "user2" } );
 ```
 
 ### Cache Memory
 
 ```javascript
 // Distributed memory with CacheBox
-cacheMemory = aiMemory( "cache", {
+cacheMemory = aiMemory( memory: "cache", config: {
     cacheName: "default",
     maxMessages: 20,
     ttl: 3600 // 1 hour
@@ -176,7 +176,7 @@ cacheMemory = aiMemory( "cache", {
 
 ```javascript
 // Persist to file
-fileMemory = aiMemory( "file", {
+fileMemory = aiMemory( memory: "file", config: {
     filePath: "/data/conversations/#userId#.json"
 } );
 ```
@@ -185,7 +185,7 @@ fileMemory = aiMemory( "file", {
 
 ```javascript
 // Database-backed memory
-dbMemory = aiMemory( "jdbc", {
+dbMemory = aiMemory( memory: "jdbc", config: {
     datasource: "mydb",
     tableName: "conversations"
 } );
@@ -195,7 +195,7 @@ dbMemory = aiMemory( "jdbc", {
 
 ```javascript
 // Auto-summarize long conversations
-summaryMemory = aiMemory( "summary", {
+summaryMemory = aiMemory( memory: "summary", config: {
     maxMessages: 10,
     summaryThreshold: 8 // Summarize when > 8 messages
 } );
@@ -209,7 +209,7 @@ agent = aiAgent(
     name: "SmartBot",
     memory: [
         aiMemory( "window" ),        // Recent conversation
-        aiMemory( "chroma", {        // Knowledge base
+        aiMemory( memory: "chroma", config: {        // Knowledge base
             collection: "kb"
         } )
     ]
@@ -235,7 +235,7 @@ memory.clear();
 ### Vector Memory Search
 
 ```javascript
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "docs"
 } );
 
@@ -310,10 +310,10 @@ context = vectorMemory.getRelevant( "BoxLang syntax", limit: 3 );
 
 ```javascript
 // ✅ Use window memory for conversations
-chatMemory = aiMemory( "window", { maxMessages: 10 } );
+chatMemory = aiMemory( memory: "window", config: { maxMessages: 10 } );
 
 // ✅ Use vector memory for knowledge bases
-kbMemory = aiMemory( "chroma", { collection: "kb" } );
+kbMemory = aiMemory( memory: "chroma", config: { collection: "kb" } );
 
 // ✅ Combine for best results
 agent = aiAgent(
@@ -321,7 +321,7 @@ agent = aiAgent(
 );
 
 // ✅ Use multi-tenancy
-userMemory = aiMemory( "cache", {
+userMemory = aiMemory( memory: "cache", config: {
     userId: getUserId(),
     conversationId: getConversationId()
 } );

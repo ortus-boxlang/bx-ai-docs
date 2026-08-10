@@ -30,7 +30,7 @@ graph TB
 
 ```javascript
 // Step 1: Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection       : "product_docs",
     embeddingProvider: "openai",
     embeddingModel   : "text-embedding-3-small"
@@ -65,9 +65,9 @@ response = agent.run( "How do I configure SSL certificates?" )
 Combine multiple knowledge bases by passing an array of memories:
 
 ```javascript
-productDocs = aiMemory( "chroma", { collection: "product_docs" } )
-apiDocs     = aiMemory( "chroma", { collection: "api_docs" } )
-faqMemory   = aiMemory( "chroma", { collection: "faq" } )
+productDocs = aiMemory( memory: "chroma", config: { collection: "product_docs" } )
+apiDocs     = aiMemory( memory: "chroma", config: { collection: "api_docs" } )
+faqMemory   = aiMemory( memory: "chroma", config: { collection: "faq" } )
 
 // Ingest each source
 aiDocuments( "/docs/products", { type: "directory" } ).toMemory( productDocs )
@@ -88,7 +88,7 @@ response = agent.run( "Explain the authentication API" )
 Combine document retrieval with live data access:
 
 ```javascript
-docMemory = aiMemory( "chroma", { collection: "documentation" } )
+docMemory = aiMemory( memory: "chroma", config: { collection: "documentation" } )
 aiDocuments( "/docs", { type: "directory" } ).toMemory( docMemory )
 
 statusTool = aiTool(

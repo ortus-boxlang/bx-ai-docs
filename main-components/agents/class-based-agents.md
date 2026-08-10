@@ -59,7 +59,7 @@ class extends="bxModules.bxai.models.runnables.AiAgent" {
             description : "Order support specialist",
             instructions: "Help users with order and shipping issues",
             model       : aiModel( provider: "openai", params: { model: "gpt-4o-mini" } ),
-            memory      : aiMemory( "cache", { key: "order-support" } ),
+            memory      : aiMemory( memory: "cache", config: { key: "order-support" } ),
             params      : { temperature: 0.2 }
         )
 
@@ -137,7 +137,7 @@ class extends="bxModules.bxai.models.runnables.AiAgent" {
             instructions: arguments.instructions,
             model       : aiModel( provider: "openai", params: { model: "gpt-4o-mini" } ),
             params      : { temperature: 0.2 },
-            memory      : aiMemory( "window", { maxMessages: 20 } )
+            memory      : aiMemory( memory: "window", config: { maxMessages: 20 } )
         )
 
         this.withOptions( { returnFormat: "single" } )

@@ -148,7 +148,7 @@ docs = aiDocuments( "/large-dataset" )
 
 ```javascript
 // Create vector memory
-vectorMemory = aiMemory( "chroma", {
+vectorMemory = aiMemory( memory: "chroma", config: {
     collection: "knowledge_base"
 } );
 

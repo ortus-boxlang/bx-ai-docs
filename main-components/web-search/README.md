@@ -230,7 +230,7 @@ function researchTopic( required string topic ) {
 
 ```javascript
 // Combine web search with vector memory
-var vectorMemory = aiMemory( "chroma", { collection: "knowledge" } )
+var vectorMemory = aiMemory( memory: "chroma", config: { collection: "knowledge" } )
 
 // Search web for current info
 var webResults = aiWebSearch( "latest BoxLang features" )

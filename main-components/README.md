@@ -360,7 +360,7 @@ tools = registry.listTools()
 
 ```javascript
 // Keep last 20 messages
-memory = aiMemory( "windowed", { maxMessages: 20 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 20 } )
 
 agent = aiAgent( memory: memory )
 agent.run( "My name is Alice" )
@@ -391,7 +391,7 @@ agent = aiAgent(
     name: "Assistant",
     instructions: "Help users with research",
     tools: [ searchTool, calculatorTool ],
-    memory: aiMemory( "windowed" )
+    memory: aiMemory( "window" )
 )
 
 response = agent.run( "Find info about quantum computing" )
@@ -500,7 +500,7 @@ pipeline = aiModel( "openai" )
 **Quick example:**
 
 ```javascript
-memory = aiMemory( "chromavector" )
+memory = aiMemory( "chroma" )
 
 // Add documents
 memory.add( "Paris is the capital of France" )
@@ -763,7 +763,7 @@ template.run( { persona: "a chef", question: "How to make pasta" } )
 // Autonomous agent with function calling
 agent = aiAgent(
     tools: [ weatherTool, databaseTool, apiTool ],
-    memory: aiMemory( "windowed" )
+    memory: aiMemory( "window" )
 )
 
 agent.run( "What's the weather and show me last 5 users" )
@@ -774,7 +774,7 @@ agent.run( "What's the weather and show me last 5 users" )
 
 ```javascript
 // Semantic search + AI generation
-memory = aiMemory( "chromavector" )
+memory = aiMemory( "chroma" )
 
 // Load knowledge base
 aiDocuments( "./docs" ).toMemory( memory )
@@ -821,7 +821,7 @@ response = aiMessage()
 
 ```javascript
 agent = aiAgent(
-    memory: aiMemory( "windowed", { maxMessages: 10 } )
+    memory: aiMemory( memory: "window", config: { maxMessages: 10 } )
 )
 
 agent.run( "My favorite color is blue" )

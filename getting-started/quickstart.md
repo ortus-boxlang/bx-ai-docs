@@ -631,7 +631,7 @@ Keeps only recent messages in RAM - good for managing context limits:
 ```javascript
 agent = aiAgent(
     name: "Chatbot",
-    memory: aiMemory(
+    memory: aiMemory( memory:
         "buffered",
         "session-1",
         { maxMessages: 20 }  // Keep last 20 messages
@@ -661,7 +661,7 @@ Saves to disk - persists across application restarts:
 ```javascript
 agent = aiAgent(
     name: "PersistentBot",
-    memory: aiMemory(
+    memory: aiMemory( memory:
         "file",
         "user-123",
         { filePath: expandPath( "./data/chat-history.json" ) }
@@ -675,7 +675,7 @@ Agents can access knowledge bases automatically:
 
 ```javascript
 // Step 1: Create and populate vector memory
-vectorMemory = aiMemory( "chroma", "", "", "", {
+vectorMemory = aiMemory( memory: "chroma", "", "", "", {
     collection: "support_docs",
     embeddingProvider: "openai"
 } )

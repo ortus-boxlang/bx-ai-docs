@@ -89,21 +89,21 @@ Multi-tenant support is built into ALL memory types including:
 
 ```java
 // Per-user isolation
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     config: { maxMessages: 10 }
 )
 
 // Per-conversation isolation (same user, different chats)
-chat1 = aiMemory( "windowed",
+chat1 = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "support-ticket-456",
     config: { maxMessages: 10 }
 )
 
-chat2 = aiMemory( "windowed",
+chat2 = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "sales-inquiry-789",
@@ -114,7 +114,7 @@ chat2 = aiMemory( "windowed",
 ### Accessing Tenant Identifiers
 
 ```java
-memory = aiMemory( "session",
+memory = aiMemory( memory: "session",
     userId: "alice",
     conversationId: "chat1",
     config: { key: "support" }
@@ -205,12 +205,12 @@ Maintains the most recent N messages, automatically discarding older messages wh
 
 ```java
 // Basic usage (single-tenant)
-memory = aiMemory( "windowed", {
+memory = aiMemory( memory: "window", config: {
     maxMessages: 10  // Keep last 10 messages
 } )
 
 // Multi-tenant usage
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -237,7 +237,7 @@ Automatically summarizes older messages when the limit is reached, keeping summa
 
 ```java
 // Basic usage (single-tenant)
-memory = aiMemory( "summary", {
+memory = aiMemory( memory: "summary", config: {
     maxMessages: 20,           // Total messages before summarization
     summaryThreshold: 10,      // Keep last 10 messages unsummarized
     summaryModel: "gpt-4o-mini",  // Model for generating summaries
@@ -245,7 +245,7 @@ memory = aiMemory( "summary", {
 } )
 
 // Multi-tenant usage
-memory = aiMemory( "summary",
+memory = aiMemory( memory: "summary",
     key: createUUID(),
     userId: "user123",
     conversationId: "support-chat",
@@ -289,13 +289,13 @@ Persists conversation history in the web session scope, surviving page refreshes
 
 ```java
 // Basic usage (single-tenant)
-memory = aiMemory( "session", {
+memory = aiMemory( memory: "session", config: {
     key: "chatbot",  // Session key for storage
     maxMessages: 20
 } )
 
 // Multi-tenant usage - automatic isolation
-memory = aiMemory( "session",
+memory = aiMemory( memory: "session",
     userId: "user123",
     conversationId: "support",
     config: {
@@ -306,9 +306,9 @@ memory = aiMemory( "session",
 // Internally stored as: session["chat_user123_support"]
 
 // Each user+conversation combination is isolated
-aliceSupport = aiMemory( "session", userId: "alice", conversationId: "support", config: { key: "chat" } )
-aliceSales = aiMemory( "session", userId: "alice", conversationId: "sales", config: { key: "chat" } )
-bobSupport = aiMemory( "session", userId: "bob", conversationId: "support", config: { key: "chat" } )
+aliceSupport = aiMemory( memory: "session", userId: "alice", conversationId: "support", config: { key: "chat" } )
+aliceSales = aiMemory( memory: "session", userId: "alice", conversationId: "sales", config: { key: "chat" } )
+bobSupport = aiMemory( memory: "session", userId: "bob", conversationId: "support", config: { key: "chat" } )
 // All three are completely isolated in session scope
 ```
 
@@ -325,7 +325,7 @@ bobSupport = aiMemory( "session", userId: "bob", conversationId: "support", conf
 Stores conversation history in files for long-term persistence.
 
 ```java
-memory = aiMemory( "file", {
+memory = aiMemory( memory: "file", config: {
     filePath: "/path/to/memory.json",
     maxMessages: 50
 } )
@@ -344,7 +344,7 @@ Stores conversation history in CacheBox for distributed applications. Cache memo
 
 ```java
 // Basic usage (single-tenant)
-memory = aiMemory( "cache", {
+memory = aiMemory( memory: "cache", config: {
     cacheName: "default",           // CacheBox cache name
     cacheKey: "chat",               // Base key for this conversation type
     maxMessages: 30,
@@ -353,7 +353,7 @@ memory = aiMemory( "cache", {
 } )
 
 // Multi-tenant usage - automatic cache key isolation
-memory = aiMemory( "cache",
+memory = aiMemory( memory: "cache",
     userId: "user123",
     conversationId: "support",
     config: {
@@ -366,11 +366,11 @@ memory = aiMemory( "cache",
 // Internally uses cache key: "chat_user123_support"
 
 // Each user+conversation gets its own cache entry
-aliceSupport = aiMemory( "cache", userId: "alice", conversationId: "support",
+aliceSupport = aiMemory( memory: "cache", userId: "alice", conversationId: "support",
     config: { cacheKey: "chat" } )
 // Cache key: "chat_alice_support"
 
-aliceSales = aiMemory( "cache", userId: "alice", conversationId: "sales",
+aliceSales = aiMemory( memory: "cache", userId: "alice", conversationId: "sales",
     config: { cacheKey: "chat" } )
 // Cache key: "chat_alice_sales"
 ```
@@ -396,7 +396,7 @@ Stores conversation history in a database using JDBC for enterprise persistence.
 
 ```java
 // Basic usage (single-tenant)
-memory = aiMemory( "jdbc", {
+memory = aiMemory( memory: "jdbc", config: {
     datasource: "myDS",             // JDBC datasource name
     tableName: "ai_conversations",   // Table to store messages
     conversationId: "chat123",       // Unique conversation identifier
@@ -405,7 +405,7 @@ memory = aiMemory( "jdbc", {
 } )
 
 // Multi-tenant usage - automatic database isolation
-memory = aiMemory( "jdbc",
+memory = aiMemory( memory: "jdbc",
     userId: "user123",
     conversationId: "support-ticket-456",
     config: {
@@ -477,10 +477,10 @@ GROUP BY user_id
 
 ```java
 // Create windowed memory (single-tenant)
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 
 // Create multi-tenant memory
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     key: createUUID(),
     userId: "user123",
     conversationId: "chat456",
@@ -504,7 +504,7 @@ conversationId = memory.getConversationId()  // "chat456"
 ### Memory with Configuration
 
 ```java
-memory = aiMemory( "windowed", {
+memory = aiMemory( memory: "window", config: {
     maxMessages: 10,
     trimToMaxMessages: true,  // Auto-trim when limit reached
     includeSystemMessage: true  // Keep system message when trimming
@@ -521,7 +521,7 @@ initialMessages = [
     aiMessage().assistant( "A variable is a named storage location..." )
 ]
 
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 initialMessages.each( msg => memory.add( msg ) )
 ```
 
@@ -533,7 +533,7 @@ initialMessages.each( msg => memory.add( msg ) )
 
 ```java
 // Single-tenant chat
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 memory.add( aiMessage().system( "You are a friendly assistant" ) )
 
 function chat( userInput ) {
@@ -549,7 +549,7 @@ println( chat( "What's my name?" ) )  // AI remembers: "Your name is John"
 // Multi-tenant chat with user/conversation isolation
 function chatMultiTenant( userId, conversationId, userInput ) {
     // Each user+conversation gets its own isolated memory
-    memory = aiMemory( "session",
+    memory = aiMemory( memory: "session",
         userId: arguments.userId,
         conversationId: arguments.conversationId,
         config: { key: "chat", maxMessages: 10 }
@@ -569,49 +569,47 @@ println( chatMultiTenant( "alice", "chat1", "What's my name?" ) )  // "Alice"
 println( chatMultiTenant( "bob", "chat1", "What's my name?" ) )    // "Bob"
 ```
 
-### Memory in Model Pipelines
+### Memory Belongs to Agents, Not Models
 
-```java
-// Single-tenant pipeline
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+{% hint style="warning" %}
+`aiModel()` is **stateless** — it has no memory. Conversation memory is an **agent** capability. If you need a pipeline that remembers, build it around an agent.
+{% endhint %}
 
-pipeline = aiModel( "openai" )
-    .withMemory( memory )
-    .withSystemPrompt( "You are a helpful assistant" )
+Pass memory in the `aiAgent()` constructor, or attach it afterwards with `addMemory()` / `setMemory()`:
 
-response = pipeline.run( "Hello!" )
-response = pipeline.run( "What did I just say?" )  // Context preserved
+```javascript
+// Single-tenant conversational agent
+agent = aiAgent(
+    name        : "Assistant",
+    instructions: "You are a helpful assistant",
+    memory      : aiMemory( memory: "window", config: { maxMessages: 10 } )
+)
 
-// Multi-tenant pipeline with isolation
-function createUserPipeline( userId, conversationId ) {
-    memory = aiMemory( "session",
-        userId: arguments.userId,
-        conversationId: arguments.conversationId,
-        config: { key: "pipeline", maxMessages: 10 }
-    )
+agent.run( "Hello!" )
+agent.run( "What did I just say?" )   // Context preserved
 
-    return aiModel( "openai" )
-        .withMemory( memory )
-        .withSystemPrompt( "You are a helpful assistant" )
-}
+// Multi-tenant: ONE agent, isolated per user/conversation
+agent = aiAgent(
+    name        : "SupportAgent",
+    instructions: "You are a helpful assistant",
+    memory      : aiMemory( "session" )
+)
 
-// Each user gets isolated pipeline
-alicePipeline = createUserPipeline( "alice", "support" )
-bobPipeline = createUserPipeline( "bob", "support" )
+agent.run( "My order is 12345", {}, { userId: "alice", conversationId: "support" } )
+agent.run( "My order is 67890", {}, { userId: "bob",   conversationId: "support" } )
 
-alicePipeline.run( "My order is #12345" )
-bobPipeline.run( "My order is #67890" )
-
-alicePipeline.run( "What's my order number?" )  // "#12345"
-bobPipeline.run( "What's my order number?" )    // "#67890"
+agent.run( "What's my order number?", {}, { userId: "alice", conversationId: "support" } )  // 12345
+agent.run( "What's my order number?", {}, { userId: "bob",   conversationId: "support" } )  // 67890
 ```
+
+Per-call `userId` / `conversationId` is the supported isolation mechanism — you do **not** need one agent instance per user. See [Multi-Tenant Memory Guide](multi-tenant-memory.md).
 
 ### Summary Memory in Long Conversations
 
 ```java
 // Multi-tenant summary memory for customer support
 function createSupportAgent( userId, ticketId ) {
-    memory = aiMemory( "summary",
+    memory = aiMemory( memory: "summary",
         userId: arguments.userId,
         conversationId: arguments.ticketId,
         config: {
@@ -649,7 +647,7 @@ bobAgent.run( "My order #67890 hasn't shipped" )
 ### Streaming with Memory
 
 ```java
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 memory.add( aiMessage().system( "You are a concise assistant" ) )
 
 function streamChat( userInput ) {
@@ -683,8 +681,8 @@ class {
     property name="memory";
     property name="systemPrompt";
 
-    function init( type = "windowed", config = {} ) {
-        variables.memory = aiMemory( arguments.type, arguments.config )
+    function init( type = "window", config = {} ) {
+        variables.memory = aiMemory( arguments.type, config: arguments.config )
         return this
     }
 
@@ -722,7 +720,7 @@ class {
 }
 
 // Usage
-chatManager = new ConversationManager( "windowed", { maxMessages: 10 } )
+chatManager = new ConversationManager( "window", { maxMessages: 10 } )
     .setSystemPrompt( "You are a helpful coding tutor" )
 
 println( chatManager.chat( "What is a loop?" ) )
@@ -736,7 +734,7 @@ Modern approach using built-in `userId` and `conversationId` parameters:
 ```java
 // Modern multi-tenant approach
 function getUserMemory( userId, conversationId = "" ) {
-    return aiMemory( "session",
+    return aiMemory( memory: "session",
         key: "chat",
         userId: arguments.userId,
         conversationId: arguments.conversationId,
@@ -768,7 +766,7 @@ class {
 
     function getUserMemory( userId ) {
         if ( !variables.userMemories.keyExists( arguments.userId ) ) {
-            variables.userMemories[ arguments.userId ] = aiMemory( "windowed", {
+            variables.userMemories[ arguments.userId ] = aiMemory( memory: "window", config: {
                 maxMessages: 20
             } )
         }
@@ -790,7 +788,7 @@ class {
         variables.currentContext = arguments.context
 
         if ( !variables.memories.keyExists( arguments.context ) ) {
-            variables.memories[ arguments.context ] = aiMemory( "windowed", {
+            variables.memories[ arguments.context ] = aiMemory( memory: "window", config: {
                 maxMessages: 10
             } )
         }
@@ -824,7 +822,7 @@ Track additional context with metadata:
 
 ```java
 // Create multi-tenant memory
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     userId: "user123",
     conversationId: "support-456",
     config: { maxMessages: 10 }
@@ -850,7 +848,7 @@ export = memory.export()
 // Contains: { userId: "user123", conversationId: "support-456", messages: [...], metadata: {...} }
 
 // Import preserves tenant identifiers
-newMemory = aiMemory( "windowed", { maxMessages: 10 } )
+newMemory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 newMemory.import( export )
 println( newMemory.getUserId() )  // "user123"
 println( newMemory.getConversationId() )  // "support-456"
@@ -876,7 +874,7 @@ function summarizeConversation( memory ) {
 }
 
 // Usage
-memory = aiMemory( "windowed", { maxMessages: 20 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 20 } )
 
 // ... have a long conversation ...
 
@@ -893,27 +891,27 @@ println( "Conversation summary:\n#summary#" )
 
 ```java
 // Short, cost-sensitive chats (single-tenant)
-memory = aiMemory( "windowed", { maxMessages: 5 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 5 } )
 
 // Short chats with multi-tenant isolation
-memory = aiMemory( "windowed",
+memory = aiMemory( memory: "window",
     userId: "user123",
     conversationId: "chat456",
     config: { maxMessages: 5 }
 )
 
 // Long, context-heavy conversations
-memory = aiMemory( "summary", { maxMessages: 30 } )
+memory = aiMemory( memory: "summary", config: { maxMessages: 30 } )
 
 // Web applications with multi-user support
-memory = aiMemory( "session",
+memory = aiMemory( memory: "session",
     userId: "user123",
     conversationId: "support",
     config: { key: "chat", maxMessages: 20 }
 )
 
 // Audit trails / compliance with user tracking
-memory = aiMemory( "file",
+memory = aiMemory( memory: "file",
     userId: "user123",
     conversationId: "ticket-789",
     config: { filePath: "chats/memory.json" }
@@ -925,7 +923,7 @@ memory = aiMemory( "file",
 
 ```java
 // Balance context vs. cost
-memory = aiMemory( "windowed", {
+memory = aiMemory( memory: "window", config: {
     maxMessages: 10,  // Enough context without excessive tokens
     trimToMaxMessages: true
 } )
@@ -934,7 +932,7 @@ memory = aiMemory( "windowed", {
 ### 3. Always Include System Messages
 
 ```java
-memory = aiMemory( "windowed", { maxMessages: 10 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 
 // Set behavior upfront
 memory.add( aiMessage().system(
@@ -1011,7 +1009,7 @@ function saveMemoryState( memory, filename ) {
 // Restore memory state (including tenant identifiers)
 function loadMemoryState( filename, userId = "", conversationId = "" ) {
     if ( !fileExists( filename ) ) {
-        return aiMemory( "windowed",
+        return aiMemory( memory: "window",
             userId: arguments.userId,
             conversationId: arguments.conversationId,
             config: { maxMessages: 10 }
@@ -1021,7 +1019,7 @@ function loadMemoryState( filename, userId = "", conversationId = "" ) {
     state = deserializeJSON( fileRead( filename ) )
 
     // Restore memory with tenant identifiers from saved state
-    memory = aiMemory( "windowed",
+    memory = aiMemory( memory: "window",
         userId: state.userId ?: arguments.userId,
         conversationId: state.conversationId ?: arguments.conversationId,
         config: { maxMessages: 10 }
@@ -1035,7 +1033,7 @@ function loadMemoryState( filename, userId = "", conversationId = "" ) {
 
 // Usage examples
 // Save
-memory = aiMemory( "windowed", userId: "alice", conversationId: "support", config: { maxMessages: 10 } )
+memory = aiMemory( memory: "window", userId: "alice", conversationId: "support", config: { maxMessages: 10 } )
 saveMemoryState( memory, "alice_support.json" )
 
 // Restore
@@ -1073,7 +1071,7 @@ function createUserMemory( userId, conversationId ) {
         throw( type="SecurityException", message="User ID mismatch" )
     }
 
-    return aiMemory( "session",
+    return aiMemory( memory: "session",
         userId: arguments.userId,
         conversationId: arguments.conversationId,
         config: { key: "chat", maxMessages: 20 }
@@ -1087,7 +1085,7 @@ function loadUserConversation( userId, conversationId ) {
         throw( type="SecurityException", message="Access denied" )
     }
 
-    return aiMemory( "jdbc",
+    return aiMemory( memory: "jdbc",
         userId: arguments.userId,
         conversationId: arguments.conversationId,
         config: { datasource: "myDS", tableName: "conversations" }
@@ -1122,7 +1120,7 @@ Combine retrieval-augmented generation with conversation memory:
 // Multi-tenant RAG system
 function chatWithKnowledge( userId, conversationId, userQuery ) {
     // Create user-specific memory
-    memory = aiMemory( "session",
+    memory = aiMemory( memory: "session",
         userId: arguments.userId,
         conversationId: arguments.conversationId,
         config: { key: "rag", maxMessages: 10 }
@@ -1157,13 +1155,13 @@ response3 = chatWithKnowledge( "bob", "research-1", "What is quantum computing?"
 
 ```java
 // Stage 1: Collect information
-infoMemory = aiMemory( "windowed", { maxMessages: 5 } )
+infoMemory = aiMemory( memory: "window", config: { maxMessages: 5 } )
 infoMemory.add( aiMessage().system( "Collect user requirements" ) )
 
 // ... gather requirements ...
 
 // Stage 2: Generate solution using collected info
-solutionMemory = aiMemory( "windowed", { maxMessages: 10 } )
+solutionMemory = aiMemory( memory: "window", config: { maxMessages: 10 } )
 solutionMemory.add( aiMessage().system( "Generate solution based on requirements" ) )
 
 // Transfer relevant context
@@ -1184,7 +1182,7 @@ class {
     property name="baseLimit" default="10";
 
     function init() {
-        variables.memory = aiMemory( "windowed", { maxMessages: variables.baseLimit } )
+        variables.memory = aiMemory( memory: "window", config: { maxMessages: variables.baseLimit } )
         return this
     }
 
@@ -1212,7 +1210,7 @@ class {
     function expandMemory( newLimit ) {
         // Create new memory with larger limit
         oldMessages = variables.memory.getAll()
-        variables.memory = aiMemory( "windowed", { maxMessages: newLimit } )
+        variables.memory = aiMemory( memory: "window", config: { maxMessages: newLimit } )
         oldMessages.each( msg => variables.memory.add( msg ) )
     }
 }
