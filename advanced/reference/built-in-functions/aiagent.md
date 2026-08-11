@@ -1,3 +1,8 @@
+---
+description: Create an autonomous AI Agent that can reason, use tools, maintain memory, and execute multi-step tasks.
+icon: robot
+---
+
 # aiAgent
 
 Create an autonomous AI Agent that can reason, use tools, maintain memory, and execute multi-step tasks.

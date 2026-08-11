@@ -1,4 +1,5 @@
 ---
+description: Complete working examples for common MCP server scenarios.
 icon: code
 ---
 

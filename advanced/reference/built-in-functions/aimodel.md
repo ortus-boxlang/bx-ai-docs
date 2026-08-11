@@ -1,3 +1,8 @@
+---
+description: Create an AI Model runnable that wraps a service provider for use in pipelines — the pipeline-friendly version of aiService().
+icon: brain
+---
+
 # aiModel
 
 Create an AI Model runnable that wraps a service provider for use in pipelines. This is the pipeline-friendly version of `aiService()`, designed for composable AI operations.

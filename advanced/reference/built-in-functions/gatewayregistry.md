@@ -1,3 +1,8 @@
+---
+description: Returns the singleton GatewayRegistry — the extension point external gateway modules use to make their gateway resolvable by aiGateway().
+icon: plug
+---
+
 # gatewayRegistry
 
 Returns the singleton `GatewayRegistry` — the extension point external gateway modules use to make their gateway resolvable by `aiGateway()`.

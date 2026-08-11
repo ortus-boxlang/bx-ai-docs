@@ -549,6 +549,6 @@ function abTest( required string question, modelA, modelB ) {
 
 ## Next Steps
 
-* [**Pipeline Overview**](../main-components/overview.md) - Learn about AI pipelines
+* [**Pipeline Overview**](../pipelines/README.md) - Learn about AI pipelines
 * [**Working with Models**](../models.md) - Services in pipelines
 * [**Basic Chatting**](basic-chatting.md) - Back to basics

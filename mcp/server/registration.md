@@ -1,4 +1,5 @@
 ---
+description: Register the tools, resources, and prompts your MCP server exposes to clients.
 icon: list-check
 ---
 
@@ -241,4 +242,4 @@ server = MCPServer( "myApp" )
 
 - 📋 [Annotation-Based Discovery](annotation-discovery.md) — Auto-register with @mcpTool
 - 🏗️ [Class-Based Servers](class-based-servers.md) — Organize in a class
-- 💡 [Examples](/_examples.md) — Complete working examples
+- 💡 [Examples](_examples.md) — Complete working examples

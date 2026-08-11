@@ -1,4 +1,5 @@
 ---
+description: Intercept, monitor, and customize AI operations at every stage with the module's 63 interception points.
 icon: bullhorn
 ---
 

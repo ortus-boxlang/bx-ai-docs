@@ -1,3 +1,8 @@
+---
+description: Resolves an IGateway instance by name — a gateway bx-ai ships in core, or one registered by an external gateway module.
+icon: plug
+---
+
 # aiGateway
 
 Resolves an `IGateway` instance by name — a gateway bx-ai ships in core, or one registered by an external gateway module.

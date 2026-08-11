@@ -9,7 +9,7 @@ icon: brain-circuit
 
 Vector memory enables **semantic search and retrieval** using embeddings to find contextually relevant information based on meaning rather than just recency. This guide covers all vector memory implementations and how to choose the right one for your needs.
 
-> **📖 Looking for Standard Memory?** For conversation history management, see the [Memory Systems Guide](memory/).
+> **📖 Looking for Standard Memory?** For conversation history management, see the [Memory Systems Guide](./).
 
 ## 📋 Table of Contents
 
@@ -119,7 +119,7 @@ salesResults = salesChat.getRelevant( "plan", 5 )       // Only sales messages
 
 All providers support `getAllDocuments()`, `getRelevant()`, and `findSimilar()` with automatic tenant filtering.
 
-For enterprise patterns, security considerations, and advanced multi-tenancy, see the [Multi-Tenant Memory Guide](memory/multi-tenant-memory.md).
+For enterprise patterns, security considerations, and advanced multi-tenancy, see the [Multi-Tenant Memory Guide](multi-tenant-memory.md).
 
 ***
 
@@ -1905,12 +1905,11 @@ Solution: Switch to persistent vector database (Chroma, Postgres, etc.)
 
 ## See Also
 
-* [Memory Systems Guide](memory/) - Standard conversation memory
-* [Custom Vector Memory](../extending-boxlang-ai/custom-vector-memory.md) - Build your own provider
-* [Embeddings Guide](../rag/embeddings.md) - Understanding embeddings
+* [Memory Systems Guide](./) - Standard conversation memory
+* [Custom Vector Memory](../../extending-boxlang-ai/custom-vector-memory.md) - Build your own provider
+* [Embeddings Guide](../../rag/embeddings.md) - Understanding embeddings
 * [Agents Documentation](../agents/) - Using memory in agents
-* [Examples](../../examples/vector-memory/) - Complete working examples
 
 ***
 
-**Next Steps:** Try the [Vector Memory Examples](../../examples/vector-memory/) or learn about [building custom vector memory](../extending-boxlang-ai/custom-vector-memory.md) providers.
+**Next Steps:** Learn about [building custom vector memory](../../extending-boxlang-ai/custom-vector-memory.md) providers.

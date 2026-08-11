@@ -1,3 +1,8 @@
+---
+description: Initiate an AI chat conversation against the default or custom AI Provider with a simple, synchronous interface.
+icon: message
+---
+
 # aiChat
 
 Initiate an AI chat conversation against the default or custom AI Provider with a simple, synchronous interface.

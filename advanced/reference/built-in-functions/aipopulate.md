@@ -1,3 +1,8 @@
+---
+description: Populate a class instance, struct, or array from JSON data or a struct — useful for structured AI output and deserialization.
+icon: table-cells
+---
+
 # aiPopulate
 
 Populate a class instance, struct, or array from JSON data or struct. This is useful for working with structured AI output, testing, custom workflows, or deserializing cached AI responses.

@@ -1,3 +1,8 @@
+---
+description: Main entry point for document loading in AI workflows — a fluent document loader for flexible configuration and execution.
+icon: file-lines
+---
+
 # aiDocuments
 
 Main entry point for document loading in AI workflows. Returns a fluent document loader for flexible configuration and execution.

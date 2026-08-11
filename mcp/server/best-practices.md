@@ -1,4 +1,5 @@
 ---
+description: Guidelines for production MCP servers — security, monitoring, performance, and deployment.
 icon: star
 ---
 
@@ -346,4 +347,4 @@ curl -f http://localhost:8080/~bxai/mcp.bxm?server=default \
 ## Next Steps
 
 - 📊 [Observability](observability.md) — Monitor in production
-- 💡 [Examples](/_examples.md) — Complete working setups
+- 💡 [Examples](_examples.md) — Complete working setups

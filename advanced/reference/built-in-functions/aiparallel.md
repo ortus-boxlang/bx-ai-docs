@@ -1,3 +1,8 @@
+---
+description: Create a parallel runnable that fans-out a single input to multiple named runnables concurrently and collects results into a named struct.
+icon: bolt
+---
+
 # aiParallel
 
 Create a parallel runnable that fans-out a single input to multiple named runnables concurrently and collects results into a named struct.

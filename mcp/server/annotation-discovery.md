@@ -1,4 +1,5 @@
 ---
+description: Automatically discover and register tools, resources, and prompts from annotated methods.
 icon: wand-magic-sparkles
 ---
 
@@ -260,4 +261,4 @@ After `scan()`, all methods annotated with `@mcpTool`, `@mcpResource`, or `@mcpP
 
 - 🏗️ [Class-Based Servers](class-based-servers.md) — Extend MCPServer class
 - 🧩 [Tool Registration](registration.md) — Manual registration (inline approach)
-- 💡 [Examples](/_examples.md) — Complete working projects
+- 💡 [Examples](_examples.md) — Complete working projects

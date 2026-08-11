@@ -1,4 +1,5 @@
 ---
+description: Expose your application's tools, resources, and prompts to AI clients through a complete MCP server implementation.
 icon: server
 ---
 
@@ -80,7 +81,7 @@ graph TB
 | 📊 [Observability & Monitoring](observability.md) | Statistics, events, and real-time monitoring |
 | ⏸️ [Pause & Resume](pause-resume.md) | Temporarily halt servers for maintenance |
 | ⭐ [Best Practices](best-practices.md) | Security, design patterns, production setup |
-| 💡 [Examples & Use Cases](/_examples.md) | Complete working code examples |
+| 💡 [Examples & Use Cases](_examples.md) | Complete working code examples |
 
 ## Quick Start
 

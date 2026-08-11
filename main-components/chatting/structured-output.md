@@ -418,4 +418,4 @@ try {
 * [**Advanced Chatting**](advanced-chatting.md#structured-output) - More examples with tools, streaming, and conversations
 * [**Pipeline Structured Output**](../pipelines/structured-output.md) - Use in composable workflows
 * [**Utility Functions**](../../advanced/utilities.md#object-population) - Learn about `aiPopulate()`
-* [**Examples**](../../../examples/structured/) - Complete working examples
+* [**Examples**](https://github.com/ortus-boxlang/bx-ai/tree/development/examples/structured) - Complete working examples

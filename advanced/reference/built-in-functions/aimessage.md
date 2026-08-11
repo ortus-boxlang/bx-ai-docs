@@ -1,3 +1,8 @@
+---
+description: Build AI message structures fluently using a chainable API, with template interpolation and pipeline integration.
+icon: message
+---
+
 # aiMessage
 
 Build AI message structures fluently using a chainable API. Supports multiple roles (system, user, assistant, tool), template interpolation, and seamless integration with chat requests and pipelines.

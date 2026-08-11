@@ -1,4 +1,5 @@
 ---
+description: Import content from files, directories, URLs, and databases into a standardized Document format for AI workflows and RAG.
 icon: books
 ---
 
@@ -1034,5 +1035,5 @@ println( response )
 ## See Also
 
 * [Memory Systems](../main-components/memory/) - Standard and vector memory types
-* [aiChunk() BIF](../chatting/chunking.md) - Text chunking strategies
+* [aiChunk() BIF](../advanced/reference/built-in-functions/aichunk.md) - Text chunking strategies
 * [Agents](../main-components/agents/) - Using agents with loaded documents

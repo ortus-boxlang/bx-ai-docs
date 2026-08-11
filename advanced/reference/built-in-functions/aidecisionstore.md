@@ -1,3 +1,8 @@
+---
+description: Creates an IDecisionStore — the backing store for durable human-approval grants used by Human-in-the-Loop.
+icon: database
+---
+
 # aiDecisionStore
 
 Creates an `IDecisionStore` — the backing store for durable human-approval grants (`approve_always` and `approve_session`) used by [Human-in-the-Loop](../../../main-components/human-in-the-loop.md).

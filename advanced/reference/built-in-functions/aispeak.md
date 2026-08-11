@@ -1,3 +1,8 @@
+---
+description: Convert text to natural-sounding speech audio using an AI provider.
+icon: volume-high
+---
+
 # aiSpeak
 
 Convert text to natural-sounding speech audio using an AI provider.

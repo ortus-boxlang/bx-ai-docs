@@ -1,4 +1,5 @@
 ---
+description: Temporarily halt an MCP server without destroying its configuration.
 icon: pause-circle
 ---
 
@@ -125,4 +126,4 @@ class {
 
 - ✅ [Best Practices](best-practices.md) — Production patterns
 - 📊 [Observability](observability.md) — Monitor operations
-- 💡 [Examples](/_examples.md) — Complete examples
+- 💡 [Examples](_examples.md) — Complete examples

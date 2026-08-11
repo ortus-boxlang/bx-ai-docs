@@ -1,5 +1,6 @@
 ---
 description: Reference documentation for built-in functions in BoxLang AI module
+icon: book
 ---
 
 # Built-In Functions Reference
@@ -304,7 +305,7 @@ docs = aiDocuments( "/path" )
 * [**Memory Systems**](../../../main-components/memory/) - Memory types and usage
 * [**RAG Guide**](../../../rag/rag.md) - Build knowledge-based AI
 * [**Transformers**](../../../main-components/transformers.md) - Data transformation
-* [**Examples**](../../../../examples/) - Working code examples
+* [**Examples**](https://github.com/ortus-boxlang/bx-ai/tree/development/examples) - Working code examples
 
 ## 💡 Tips
 

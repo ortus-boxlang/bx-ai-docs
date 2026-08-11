@@ -1,3 +1,8 @@
+---
+description: Stream AI responses in real-time with a callback function, ideal for UI updates and long responses.
+icon: tower-broadcast
+---
+
 # aiChatStream
 
 Stream AI responses in real-time with a callback function, ideal for UI updates and long responses.

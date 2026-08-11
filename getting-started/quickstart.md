@@ -435,7 +435,7 @@ greeter.run({ name: "Bob", style: "casual" })
 greeter.run({ name: "Charlie", style: "funny" })
 ```
 
-Learn more about pipelines in the [Pipeline Overview](../main-components/main-components/overview.md) section.
+Learn more about pipelines in the [Pipeline Overview](../main-components/pipelines/README.md) section.
 
 ## 📚 Document Loading & RAG
 
@@ -867,7 +867,7 @@ Now that you're comfortable with the basics, explore:
 ### 🤖 AI Agents
 
 * [**Agents Guide**](../main-components/agents/) - Complete agent documentation
-* [**Agent Examples**](../../examples/agents/) - Working code examples
+* [**Agent Examples**](https://github.com/ortus-boxlang/bx-ai/tree/development/examples/agents) - Working code examples
 * [**Memory Systems**](../main-components/memory/) - Conversation history
 * [**Tools**](../main-components/tools.md) - Function calling patterns
 * [**Skills**](../main-components/skills.md) - Context-injection skill files
@@ -878,11 +878,11 @@ Now that you're comfortable with the basics, explore:
 
 * [**RAG Guide**](../rag/rag.md) - Complete RAG workflow
 * [**Document Loaders**](../rag/document-loaders.md) - Load data from various sources
-* [**Vector Memory**](../main-components/vector-memory.md) - Semantic search
+* [**Vector Memory**](../main-components/memory/vector-memory.md) - Semantic search
 
 ### ⛓️ AI Pipelines
 
-* [**Pipeline Overview**](../main-components/main-components/overview.md) - Learn about composable workflows
+* [**Pipeline Overview**](../main-components/pipelines/README.md) - Learn about composable workflows
 * [**Working with Models**](../main-components/models.md) - Pipeline-compatible AI models
 * [**Message Templates**](../main-components/messages/) - Reusable prompts
 * [**Transformers**](../main-components/transformers.md) - Data processing
