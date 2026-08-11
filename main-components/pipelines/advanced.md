@@ -365,5 +365,5 @@ evaluations.each( function( variant, text ) {
 * [Transforms](transforms.md) — Pre- and post-processing
 * [Multi-Model Workflows](multi-model.md) — Complex multi-stage patterns
 * [Streaming](streaming.md) — Real-time response handling
-* [Events Reference](../../advanced/events.md) — Full event catalog
+* [Events Reference](../../advanced/events/README.md) — Full event catalog
 * [aiParallel BIF Reference](../../advanced/reference/built-in-functions/aiparallel.md)

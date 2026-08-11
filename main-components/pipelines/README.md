@@ -1303,7 +1303,7 @@ safePipeline = inputValidator          // Validate input
 * [**Transformers**](../transformers.md) - Data transformation patterns
 * [**Streaming**](streaming.md) - Real-time response handling
 * [**Agents**](../agents/) - Autonomous AI workflows
-* [**Events**](../../advanced/events.md) - Event interception and monitoring
+* [**Events**](../../advanced/events/README.md) - Event interception and monitoring
 
 ***
 

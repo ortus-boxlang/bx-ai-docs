@@ -147,7 +147,7 @@ BoxRegisterInterceptor( interceptor )
 agent.run( "What is the weather in Paris?" )
 ```
 
-See [Events Reference](../../advanced/events.md) for the full list of agent events.
+See [Events Reference](../../advanced/events/README.md) for the full list of agent events.
 
 ## 5 Best Practices
 
@@ -224,4 +224,4 @@ try {
 * [Hierarchy & Sub-Agents](hierarchy.md) — Delegating between agents
 * [Streaming](streaming.md) — Streaming with agents
 * [Transformers](transformers.md) — Processing inputs and outputs
-* [Events Reference](../../advanced/events.md) — Full event catalog
+* [Events Reference](../../advanced/events/README.md) — Full event catalog
