@@ -828,7 +828,7 @@ A layered defense against prompt injection and data leakage, built as ordinary m
 agent = aiAgent( middleware: [ new InputSanitizerMiddleware(), new OutputGuardMiddleware() ] )
 ```
 
-📖 See the [Security Guide](../deployment/security.md).
+📖 See the [Security Guide](../deployment/security/README.md).
 
 ***
 

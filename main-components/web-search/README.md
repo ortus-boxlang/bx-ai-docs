@@ -194,7 +194,7 @@ function webSearch(
 - 👉 **[Getting Started](getting-started.md)** - Detailed usage patterns
 - 🔧 **[Providers Reference](providers.md)** - Complete provider documentation
 - 🤖 **[Agent Integration](agent-tools.md)** - Using web search with agents
-- 🛡️ **[Security](../../deployment/security.md#-web-search-specific-security)** - Security best practices for web search
+- 🛡️ **[Security](../../deployment/security/data-validation.md#web-search-specific-security)** - Security best practices for web search
 
 ## 💡 Common Patterns
 
@@ -281,4 +281,4 @@ function checkRateLimit( required string userId ) {
 - [Async BIF Reference](../../advanced/reference/built-in-functions/aiwebsearchasync.md)
 - [Agents Documentation](../agents/README.md)
 - [Tools Documentation](../tools.md)
-- [Security Guide](../../deployment/security.md)
+- [Security Guide](../../deployment/security/README.md)

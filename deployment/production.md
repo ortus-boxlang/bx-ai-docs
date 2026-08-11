@@ -1157,7 +1157,7 @@ function validateAIRequest( required struct request ) {
 }
 ```
 
-**More security details**: [Security Guide](security.md)
+**More security details**: [Security Guide](security/README.md)
 
 ***
 
@@ -1233,7 +1233,7 @@ Configure alerts for:
 
 ## 📚 Additional Resources
 
-* 🔐 [Security Guide](security.md)
+* 🔐 [Security Guide](security/README.md)
 * 📖 [Main Documentation](../)
 * 🎯 [Best Practices](../main-components/chatting/advanced-chatting.md)
 * 💭 [Memory Systems](../main-components/memory/)

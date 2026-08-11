@@ -395,4 +395,4 @@ var results = parallelWebSearch( "latest AI news" )
 - 📖 **[Providers Reference](providers.md)** - Detailed documentation for each provider
 - 🤖 **[Agent Integration](agent-tools.md)** - Advanced agent patterns
 - 🔍 **[API Reference](../../advanced/reference/built-in-functions/aiwebsearch.md)** - Complete BIF documentation
-- 🛡️ **[Security](../../deployment/security.md#-web-search-specific-security)** - Security best practices
+- 🛡️ **[Security](../../deployment/security/data-validation.md#web-search-specific-security)** - Security best practices

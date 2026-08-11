@@ -283,7 +283,7 @@ println( response );
 ```
 
 {% hint style="info" %}
-Retrieved documents are untrusted content. `setContext()` above is fenced automatically by default (`security.fencing.enabled`), so the model treats retrieved text as data rather than instructions. See the [Security Guide](../deployment/security.md#-prompt-injection-prevention).
+Retrieved documents are untrusted content. `setContext()` above is fenced automatically by default (`security.fencing.enabled`), so the model treats retrieved text as data rather than instructions. See the [Security Guide](../deployment/security/input-validation-and-prompt-injection.md#prompt-injection-prevention).
 {% endhint %}
 
 ### Step 6: Use with Agent (Automatic Retrieval)

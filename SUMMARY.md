@@ -150,7 +150,18 @@
     * [aiTool](advanced/reference/built-in-functions/aitool.md)
     * [aiTransform](advanced/reference/built-in-functions/aitransform.md)
 * [Production Deployment](deployment/production.md)
-* [Security Guide](deployment/security.md)
+* [Security Guide](deployment/security/README.md)
+  * [API Key Management](deployment/security/api-keys.md)
+  * [Input Validation & Prompt Injection Prevention](deployment/security/input-validation-and-prompt-injection.md)
+  * [Tool & Function Calling Security](deployment/security/tool-calling-security.md)
+  * [Data Validation](deployment/security/data-validation.md)
+  * [Output Validation](deployment/security/output-validation.md)
+  * [Data Privacy & Compliance](deployment/security/data-privacy-and-compliance.md)
+  * [Multi-Tenant Security](deployment/security/multi-tenant-security.md)
+  * [Audit Logging](deployment/security/audit-logging.md)
+  * [Network & Configuration Hardening](deployment/security/network-and-config-hardening.md)
+  * [Incident Response](deployment/security/incident-response.md)
+  * [Appendix: Hand-Rolled Patterns](deployment/security/appendix-hand-rolled-patterns.md)
 
 ## Extending BoxLang AI
 

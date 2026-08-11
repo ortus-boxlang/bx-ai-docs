@@ -105,4 +105,4 @@ if ( !aiToolRegistry().has( "webSearch@bxai" ) ) {
 - [Web Search Overview](README.md)
 - [Providers](providers.md)
 - [Tools and MCP for Agents](../agents/tools-and-mcp.md)
-- [Security Guide](../../deployment/security.md)
+- [Security Guide](../../deployment/security/README.md)

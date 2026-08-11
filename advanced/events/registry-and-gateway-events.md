@@ -58,7 +58,7 @@ BoxRegisterInterceptor( "onAIAgentRegistryUnregister", function( event ) {
 
 ## Gateway Events
 
-Gateways present human-in-the-loop interactions on a platform (CLI, HTTP, or an external module). See the [Security Guide](../../deployment/security.md) and [Middleware](../../main-components/middleware.md).
+Gateways present human-in-the-loop interactions on a platform (CLI, HTTP, or an external module). See the [Security Guide](../../deployment/security/README.md) and [Middleware](../../main-components/middleware.md).
 
 ### onGatewayCreate
 

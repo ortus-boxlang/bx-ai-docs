@@ -160,4 +160,4 @@ response = agent.run( "My order hasn't arrived" )
 * [Human-in-the-Loop](../human-in-the-loop.md) — Suspend an agent for approval before sensitive tool calls
 * [Memory Systems](../memory/README.md) — Memory configuration
 * [Pipelines](../pipelines/README.md) — Using agents in pipelines
-* [Security Guide](../../deployment/security.md) — Guardrails against prompt injection and data leakage
+* [Security Guide](../../deployment/security/README.md) — Guardrails against prompt injection and data leakage

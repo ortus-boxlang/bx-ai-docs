@@ -122,7 +122,7 @@ Every result exposes predicates: `isContinue()`, `isCancelled()`, `isApproved()`
 
 ## Built-in Middleware
 
-BoxLang AI ships **nine** middleware classes: six general-purpose ones in `bxModules.bxai.models.middleware.core`, and three security-focused ones in `bxModules.bxai.models.middleware.security` (see the [Security Guide](../deployment/security.md) for those in depth).
+BoxLang AI ships **nine** middleware classes: six general-purpose ones in `bxModules.bxai.models.middleware.core`, and three security-focused ones in `bxModules.bxai.models.middleware.security` (see the [Security Guide](../deployment/security/README.md) for those in depth).
 
 | Middleware | When to Use It |
 | --- | --- |
@@ -245,7 +245,7 @@ tape = middleware.getTape()
 
 ### Security Middleware
 
-Three middleware classes defend against prompt injection and data leakage. They're covered in depth in the [Security Guide](../deployment/security.md) — brief summaries:
+Three middleware classes defend against prompt injection and data leakage. They're covered in depth in the [Security Guide](../deployment/security/README.md) — brief summaries:
 
 ```javascript
 import bxModules.bxai.models.middleware.security.InputSanitizerMiddleware;
@@ -261,7 +261,7 @@ agent = aiAgent(
 )
 ```
 
-`settings.security.enabled = true` auto-attaches `InputSanitizerMiddleware` (and fencing) to every request without wiring it into every agent by hand — see the [Security Guide](../deployment/security.md) for the full settings reference.
+`settings.security.enabled = true` auto-attaches `InputSanitizerMiddleware` (and fencing) to every request without wiring it into every agent by hand — see the [Security Guide](../deployment/security/README.md) for the full settings reference.
 
 ## Struct-Based Inline Middleware
 
@@ -333,5 +333,5 @@ agent = aiAgent(
 * [Agent Middleware](agents/middleware.md) — attaching middleware to an agent, agent-scoped patterns
 * [Human-in-the-Loop](human-in-the-loop.md) — approval policies, durable grants, batched approvals
 * [Gateways](gateways.md) — presenting HITL requests over CLI, HTTP, or a platform module
-* [Security Guide](../deployment/security.md) — the full guardrail stack
+* [Security Guide](../deployment/security/README.md) — the full guardrail stack
 * [Custom Tools](../extending-boxlang-ai/custom-tools.md) — build tools that middleware can intercept
