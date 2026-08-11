@@ -18,6 +18,7 @@ Understanding these core concepts will help you make the most of BoxLang AI. Thi
 * [Memory Systems](concepts.md#memory-systems)
 * [RAG (Retrieval Augmented Generation)](concepts.md#rag-retrieval-augmented-generation)
 * [Tools & Function Calling](concepts.md#tools--function-calling)
+* [Human-in-the-Loop, Gateways & Security](concepts.md#human-in-the-loop-gateways--security)
 * [Audio & Speech](concepts.md#audio--speech)
 * [Image Generation](concepts.md#image-generation)
 * [Streaming & Async](concepts.md#streaming--async)
@@ -792,6 +793,45 @@ Each layer fires hooks around every step:
 
 ***
 
+## 🧑‍⚖️ Human-in-the-Loop, Gateways & Security
+
+### Human-in-the-Loop (HITL)
+
+Pausing an agent mid-run so a person can approve, reject, or edit a sensitive tool call before it executes. `HumanInTheLoopMiddleware` decides *whether* a call needs approval (via a pluggable `IApprovalPolicy`), then presents it through a *gateway* and waits for a decision.
+
+```javascript
+agent = aiAgent(
+    tools     : [ deleteRecordTool ],
+    middleware: [ new HumanInTheLoopMiddleware( toolsRequiringApproval: [ "deleteRecord" ] ) ]
+)
+```
+
+When several tool calls in one turn all need approval, they suspend together as **one** checkpoint instead of one at a time, and resuming finishes the batch without replaying the LLM call. Decisions can also be **durable** — `approve_always` persists a grant so the same tool is auto-approved for that user going forward.
+
+📖 See [Human-in-the-Loop](../main-components/human-in-the-loop.md).
+
+### Gateways
+
+The adapter a HITL approval (or any agent interaction) is presented through — a blocking CLI prompt, a signed HTTP webhook, or a platform module you register yourself. Every gateway implements the same `IGateway` interface and declares only the capabilities it supports.
+
+```javascript
+agent = aiAgent( middleware: [ new HumanInTheLoopMiddleware( gateway: aiGateway( "http" ) ) ] )
+```
+
+📖 See [Gateways](../main-components/gateways.md).
+
+### Guardrails & Security
+
+A layered defense against prompt injection and data leakage, built as ordinary middleware you opt into — heuristic input scanning, untrusted-content fencing, LLM-as-judge classification, and output redaction. Unicode hygiene (stripping invisible/zero-width characters) is on by default even without opting in.
+
+```javascript
+agent = aiAgent( middleware: [ new InputSanitizerMiddleware(), new OutputGuardMiddleware() ] )
+```
+
+📖 See the [Security Guide](../deployment/security.md).
+
+***
+
 ## 🎤 Audio & Speech
 
 {% hint style="info" %}
@@ -1173,7 +1213,7 @@ try {
 * 🧩 [Provider Setup](installation/provider-setup.md) - Configure AI providers
 * 💬 [Basic Chatting](../main-components/chatting/basic-chatting.md) - Simple AI conversations
 * 🤖 [AI Agents](../main-components/agents/) - Autonomous AI assistants
-* 🔮 [Vector Memory](../main-components/vector-memory.md) - Semantic search
+* 🔮 [Vector Memory](../main-components/memory/vector-memory.md) - Semantic search
 * 📄 [RAG Guide](../rag/rag.md) - Retrieval Augmented Generation
 
 ***

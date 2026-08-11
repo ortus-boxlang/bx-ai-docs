@@ -138,7 +138,7 @@ finalResponse = agent.resume( "approve", threadId )
 The suspension result does **not** carry a thread id — you pass `threadId` into `run()` and reuse it in `resume()`. Valid decisions are `approve`, `approve_always`, `approve_session`, `reject`, `edit`, and `cancel`.
 {% endhint %}
 
-For streaming agents use `resumeStream( onChunk, decision, threadId )`. See [Middleware](../middleware.md) for approval policies, durable grants, and batched approvals.
+For streaming agents use `resumeStream( onChunk, decision, threadId )`. See [Human-in-the-Loop](../human-in-the-loop.md) for approval policies, durable grants, and batched approvals.
 
 ## 🏢 Multi-Tenant Usage Tracking
 

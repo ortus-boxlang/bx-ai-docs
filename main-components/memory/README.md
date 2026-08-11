@@ -9,7 +9,7 @@ icon: memory
 
 Memory systems enable AI to maintain context across multiple interactions, making conversations more coherent and contextually aware. This guide covers **standard conversation memory** types that store and manage message history.
 
-> **📖 Looking for Vector Memory?** For semantic search and retrieval using embeddings, see the [Vector Memory Guide](../vector-memory.md).
+> **📖 Looking for Vector Memory?** For semantic search and retrieval using embeddings, see the [Vector Memory Guide](vector-memory.md).
 
 ## 📋 Table of Contents
 
@@ -142,7 +142,7 @@ Memory in AI systems allows for:
 * **State persistence** in long-running applications
 * **Flexible storage** options (memory, session, file, database)
 
-Without memory, each AI call is independent with no knowledge of previous interactions. Standard memory types focus on managing conversation messages chronologically, while [Vector Memory](../vector-memory.md) provides semantic search capabilities.
+Without memory, each AI call is independent with no knowledge of previous interactions. Standard memory types focus on managing conversation messages chronologically, while [Vector Memory](vector-memory.md) provides semantic search capabilities.
 
 ***
 
@@ -197,7 +197,7 @@ Choose the right memory type for your use case:
 | **Historical Awareness** | None        | Excellent          | Limited       | Perfect      | None             | Perfect            |
 | **Persistence**          | None        | None               | Session scope | File system  | Cache provider   | Database           |
 
-> **Need Semantic Search?** Check out [Vector Memory](../vector-memory.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, OpenSearch, and Hybrid memory combining recent + semantic.
+> **Need Semantic Search?** Check out [Vector Memory](vector-memory.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, OpenSearch, and Hybrid memory combining recent + semantic.
 
 ### Windowed Memory
 
@@ -265,6 +265,31 @@ memory = aiMemory( memory: "summary",
 3. Summary is kept as a special assistant message
 4. Recent messages (last N) remain unmodified
 5. Progressive summarization: new summaries build on previous ones
+
+#### Token-Based Trigger
+
+Instead of counting messages, trigger compression when the estimated **token count** of the buffer crosses a threshold — useful when message sizes vary a lot and a fixed message count under- or over-shoots your context budget.
+
+```java
+memory = aiMemory( memory: "summary", config: {
+    maxMessages     : 0,      // must be 0 when using maxTokens
+    maxTokens       : 4000,   // compress once estimated tokens reach this
+    summaryThreshold: 10,     // keep-window is unchanged: last 10 messages stay verbatim
+    summaryModel    : "gpt-4o-mini",
+    summaryProvider : "openai"
+} )
+```
+
+{% hint style="warning" %}
+`maxTokens` and `maxMessages` are **mutually exclusive triggers** — setting both to a value greater than `0` throws `InvalidConfiguration`. `summaryThreshold` always means the same thing in both modes: how many recent messages survive verbatim after compression.
+{% endhint %}
+
+Token estimation uses the same 4-characters-per-token heuristic as `aiTokens()`. Check the current estimate on any memory instance with `sizeInTokens()`:
+
+```java
+memory.sizeInTokens()                       // estimate for the instance's own userId/conversationId
+memory.sizeInTokens( "alice", "support" )   // per-call override
+```
 
 **Best for:**
 
@@ -856,32 +881,28 @@ println( newMemory.getConversationId() )  // "support-456"
 
 ### Pattern 5: Memory Summarization
 
-Explicitly summarize conversation history:
+`summarize( config )` is a method on **every** conversation memory type — `WindowMemory`, `SummaryMemory`, `CacheMemory`, `FileMemory`, `JdbcMemory`, `SessionMemory`, `HybridMemory` — not just `SummaryMemory`. Call it any time to explicitly condense old messages, regardless of whether the memory auto-triggers compression.
 
 ```java
-function summarizeConversation( memory ) {
-    messages = memory.getAll()
-
-    summaryPrompt = "Summarize this conversation in 3 bullet points:\n\n"
-
-    messages.each( msg => {
-        summaryPrompt &= "#msg.role#: #msg.content#\n"
-    } )
-
-    summary = aiChat( summaryPrompt )
-
-    return summary
-}
-
-// Usage
-memory = aiMemory( memory: "window", config: { maxMessages: 20 } )
+memory = aiMemory( memory: "window", config: { maxMessages: 50 } )
 
 // ... have a long conversation ...
 
-// Get summary
-summary = summarizeConversation( memory )
-println( "Conversation summary:\n#summary#" )
+// Explicitly compress now, with per-call overrides
+memory.summarize( {
+    keepRecent: 5,               // messages to keep verbatim (defaults to summaryThreshold)
+    model     : "gpt-4o-mini",   // overrides the instance's summaryModel for this call
+    provider  : "openai"
+} )
 ```
+
+Persistent stores (`JdbcMemory`, `FileMemory`, `CacheMemory`) automatically persist the compressed result. Vector memories are semantic indexes, not conversation buffers, so `summarize()` is a no-op there.
+
+`SummaryMemory` still auto-triggers this on its own `maxMessages`/`maxTokens` threshold — see [above](#summary-memory) — but you're no longer limited to that one memory type for on-demand compression.
+
+{% hint style="info" %}
+`onAIMemorySummarize` fires after every successful summarization, on any memory type — see [Event System](../../advanced/events.md).
+{% endhint %}
 
 ***
 
@@ -970,25 +991,22 @@ function saveConversation( memory ) {
 
 ### 5. Monitor Token Usage
 
+Every memory type exposes `sizeInTokens()` — no need to hand-roll a counter:
+
 ```java
-import bxModules.bxai.models.util.TokenCounter;
-
-function estimateMemoryCost( memory ) {
-    messages = memory.getAll()
-    totalTokens = 0
-
-    messages.each( msg => {
-        totalTokens += TokenCounter::count( msg.content )
-    } )
-
-    return totalTokens
-}
-
 // Check before making expensive calls
-tokens = estimateMemoryCost( memory )
+tokens = memory.sizeInTokens()
 if ( tokens > 3000 ) {
     println( "Warning: High token count (#tokens#). Consider trimming memory." )
 }
+```
+
+For text outside of a memory instance, use `TokenCounter` directly:
+
+```java
+import bxModules.bxai.models.util.TokenCounter;
+
+tokens = TokenCounter::count( someText )
 ```
 
 ### 6. Implement Memory Persistence
@@ -1222,7 +1240,7 @@ class {
 
 ### Vector Memory
 
-For semantic search and retrieval using embeddings, see the comprehensive [Vector Memory Guide](../vector-memory.md) which covers:
+For semantic search and retrieval using embeddings, see the comprehensive [Vector Memory Guide](vector-memory.md) which covers:
 
 * **BoxVectorMemory** - In-memory vector storage for development
 * **HybridMemory** - Combines recent messages with semantic search
@@ -1267,13 +1285,13 @@ See the [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) for c
 
 ## See Also
 
-* [Vector Memory Guide](../vector-memory.md) - Semantic search and retrieval
+* [Vector Memory Guide](vector-memory.md) - Semantic search and retrieval
 * [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) - Build your own memory types
 * [Messages Documentation](../messages/) - Building message objects
 * [Agents Documentation](../agents/) - Using memory in agents
-* [Pipeline Overview](../main-components/overview.md) - Memory in pipelines
+* [Pipeline Overview](../README.md) - Memory in pipelines
 * [Memory BIF Reference](../../../#aimemory) - aiMemory() function reference
 
 ***
 
-**Next Steps:** Learn about [Vector Memory](../vector-memory.md) for semantic search or [streaming in pipelines](../pipelines/streaming.md) for real-time responses.
+**Next Steps:** Learn about [Vector Memory](vector-memory.md) for semantic search or [streaming in pipelines](../pipelines/streaming.md) for real-time responses.

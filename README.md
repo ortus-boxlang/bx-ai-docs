@@ -64,6 +64,9 @@ graph LR
 * 🌐 **Web Search**: Real-time web search integration with agent tools and structured results
 * 🗄️ **Global Tool Registry**: Register tools by name once, reference by string everywhere
 * 🛡️ **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
+* 🧑‍⚖️ **Human-in-the-Loop**: Suspend a run for human approval before sensitive tool calls, with durable "always allow" grants and batched approvals
+* 🔌 **Gateways**: Present approvals over CLI, signed HTTP webhooks, or a platform module you register yourself
+* 🛡️ **Security & Guardrails**: Prompt-injection scanning, untrusted-content fencing, LLM-as-judge classification, and output redaction — all opt-in, all offline-testable
 
 ### 📡 Supported Providers
 
