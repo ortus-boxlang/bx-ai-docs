@@ -197,6 +197,10 @@ tool.setDescription( "New description" )
 
 ## 💡 Common Tool Patterns
 
+{% hint style="info" %}
+Tools that touch sensitive systems (databases, payments, file access) are prime targets for prompt injection. `GuardrailMiddleware` can block dangerous tools by name or validate their arguments before they ever run — see [Tool & Function Calling Security](../deployment/security.md#-tool--function-calling-security) in the Security Guide.
+{% endhint %}
+
 ### Database Query Tool
 
 ```java
@@ -672,4 +676,4 @@ aiToolRegistry().scan( new OrderService(), "orders-module" )
 * [**Tool Registry**](tool-registry.md) - Register tools globally
 * [**Custom Tools**](../extending-boxlang-ai/custom-tools.md) - Build custom tool classes
 * [**Working with Models**](models.md#binding-tools-to-models) - Binding tools to models
-* [**MCP Client**](../advanced/mcp-client.md) - Connect to external tool servers
+* [**MCP Client**](../mcp/client/README.md) - Connect to external tool servers

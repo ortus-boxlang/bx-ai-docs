@@ -326,5 +326,5 @@ agent = aiAgent( name: "ContextAgent" )
 * [Tool Registry](../tool-registry.md) — Full registry reference
 * [AI Tools](../tools.md) — `aiTool()` BIF reference
 * [Skills](skills.md) — Injecting knowledge vs. calling tools
-* [MCP Server](../../advanced/mcp-server.md) — Building your own MCP server
-* [MCP Client](../../advanced/mcp-client.md) — Consuming MCP servers directly
+* [MCP Server](../../mcp/server/README.md) — Building your own MCP server
+* [MCP Client](../../mcp/client/README.md) — Consuming MCP servers directly

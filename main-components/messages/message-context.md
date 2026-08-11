@@ -289,6 +289,10 @@ response = aiChat(
 );
 ```
 
+{% hint style="info" %}
+Retrieved documents are untrusted content — the `${context}` binding above is **fenced automatically by default** (`security.fencing.enabled`), so the model treats it as data rather than instructions. See the [Security Guide](../../deployment/security.md#-prompt-injection-prevention) (Layer 3: Fencing).
+{% endhint %}
+
 ### 2. Secure Multi-Tenant Application
 
 ```javascript
