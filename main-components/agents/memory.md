@@ -190,5 +190,5 @@ See [Memory Systems](../memory/README.md) for complete configuration options.
 
 * [Memory Systems](../memory/README.md) — All memory types, configuration
 * [Multi-Tenant Memory Guide](../memory/multi-tenant-memory.md) — Multi-tenant patterns
-* [Vector Memory Systems](../memory/vector-memory.md) — Vector/semantic memory
+* [Vector Memory Systems](../memory/vector-memory/README.md) — Vector/semantic memory
 * [Middleware](middleware.md) — HumanInTheLoopMiddleware for suspend/resume

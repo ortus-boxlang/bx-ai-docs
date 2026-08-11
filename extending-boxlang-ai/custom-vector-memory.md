@@ -1465,7 +1465,7 @@ class extends="BaseVectorMemory" {
 
 ## Related Documentation
 
-* [Vector Memory Overview](../main-components/memory/vector-memory.md) - Learn about built-in vector memory types
+* [Vector Memory Overview](../main-components/memory/vector-memory/README.md) - Learn about built-in vector memory types
 * [Custom Memory](custom-memory.md) - Create custom standard memory implementations
 * [Memory Systems](../main-components/memory/) - Understanding memory in BoxLang AI
 * [Embeddings](../rag/embeddings.md) - Working with vector embeddings

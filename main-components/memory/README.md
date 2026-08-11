@@ -9,7 +9,7 @@ icon: memory
 
 Memory systems enable AI to maintain context across multiple interactions, making conversations more coherent and contextually aware. This guide covers **standard conversation memory** types that store and manage message history.
 
-> **📖 Looking for Vector Memory?** For semantic search and retrieval using embeddings, see the [Vector Memory Guide](vector-memory.md).
+> **📖 Looking for Vector Memory?** For semantic search and retrieval using embeddings, see the [Vector Memory Guide](vector-memory/README.md).
 
 ## 📋 Table of Contents
 
@@ -142,7 +142,7 @@ Memory in AI systems allows for:
 * **State persistence** in long-running applications
 * **Flexible storage** options (memory, session, file, database)
 
-Without memory, each AI call is independent with no knowledge of previous interactions. Standard memory types focus on managing conversation messages chronologically, while [Vector Memory](vector-memory.md) provides semantic search capabilities.
+Without memory, each AI call is independent with no knowledge of previous interactions. Standard memory types focus on managing conversation messages chronologically, while [Vector Memory](vector-memory/README.md) provides semantic search capabilities.
 
 ***
 
@@ -197,7 +197,7 @@ Choose the right memory type for your use case:
 | **Historical Awareness** | None        | Excellent          | Limited       | Perfect      | None             | Perfect            |
 | **Persistence**          | None        | None               | Session scope | File system  | Cache provider   | Database           |
 
-> **Need Semantic Search?** Check out [Vector Memory](vector-memory.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, OpenSearch, and Hybrid memory combining recent + semantic.
+> **Need Semantic Search?** Check out [Vector Memory](vector-memory/README.md) for embedding-based retrieval including BoxVector (in-memory), ChromaDB, PostgreSQL pgvector, Pinecone, Qdrant, Weaviate, Milvus, OpenSearch, and Hybrid memory combining recent + semantic.
 
 ### Windowed Memory
 
@@ -1240,7 +1240,7 @@ class {
 
 ### Vector Memory
 
-For semantic search and retrieval using embeddings, see the comprehensive [Vector Memory Guide](vector-memory.md) which covers:
+For semantic search and retrieval using embeddings, see the comprehensive [Vector Memory Guide](vector-memory/README.md) which covers:
 
 * **BoxVectorMemory** - In-memory vector storage for development
 * **HybridMemory** - Combines recent messages with semantic search
@@ -1285,7 +1285,7 @@ See the [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) for c
 
 ## See Also
 
-* [Vector Memory Guide](vector-memory.md) - Semantic search and retrieval
+* [Vector Memory Guide](vector-memory/README.md) - Semantic search and retrieval
 * [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) - Build your own memory types
 * [Messages Documentation](../messages/) - Building message objects
 * [Agents Documentation](../agents/) - Using memory in agents
@@ -1294,4 +1294,4 @@ See the [Custom Memory Guide](../../extending-boxlang-ai/custom-memory.md) for c
 
 ***
 
-**Next Steps:** Learn about [Vector Memory](vector-memory.md) for semantic search or [streaming in pipelines](../pipelines/streaming.md) for real-time responses.
+**Next Steps:** Learn about [Vector Memory](vector-memory/README.md) for semantic search or [streaming in pipelines](../pipelines/streaming.md) for real-time responses.

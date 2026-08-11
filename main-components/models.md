@@ -1245,6 +1245,6 @@ if ( result.valid ) {
 * [**Transformers**](transformers.md) - Process model outputs
 * [**Document Loaders**](../rag/document-loaders.md) - Load data from various sources
 * [**RAG Guide**](../rag/rag.md) - Complete RAG workflow documentation
-* [**Vector Memory**](memory/vector-memory.md) - Semantic search and embeddings
+* [**Vector Memory**](memory/vector-memory/README.md) - Semantic search and embeddings
 * [**Pipeline Streaming**](pipelines/streaming.md) - Real-time responses
 * [**Custom AI Providers**](../extending-boxlang-ai/custom-providers.md) - Integrate custom LLM services

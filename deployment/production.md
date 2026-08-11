@@ -1237,7 +1237,7 @@ Configure alerts for:
 * 📖 [Main Documentation](../)
 * 🎯 [Best Practices](../main-components/chatting/advanced-chatting.md)
 * 💭 [Memory Systems](../main-components/memory/)
-* 🔮 [Vector Memory](../main-components/memory/vector-memory.md)
+* 🔮 [Vector Memory](../main-components/memory/vector-memory/README.md)
 * 🛠️ [Events System](../advanced/events/README.md)
 
 ***

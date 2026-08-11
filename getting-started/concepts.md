@@ -1213,7 +1213,7 @@ try {
 * 🧩 [Provider Setup](installation/provider-setup.md) - Configure AI providers
 * 💬 [Basic Chatting](../main-components/chatting/basic-chatting.md) - Simple AI conversations
 * 🤖 [AI Agents](../main-components/agents/) - Autonomous AI assistants
-* 🔮 [Vector Memory](../main-components/memory/vector-memory.md) - Semantic search
+* 🔮 [Vector Memory](../main-components/memory/vector-memory/README.md) - Semantic search
 * 📄 [RAG Guide](../rag/rag.md) - Retrieval Augmented Generation
 
 ***

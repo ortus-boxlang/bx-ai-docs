@@ -878,7 +878,7 @@ Now that you're comfortable with the basics, explore:
 
 * [**RAG Guide**](../rag/rag.md) - Complete RAG workflow
 * [**Document Loaders**](../rag/document-loaders.md) - Load data from various sources
-* [**Vector Memory**](../main-components/memory/vector-memory.md) - Semantic search
+* [**Vector Memory**](../main-components/memory/vector-memory/README.md) - Semantic search
 
 ### ⛓️ AI Pipelines
 
