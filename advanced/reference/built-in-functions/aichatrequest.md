@@ -1,3 +1,8 @@
+---
+description: Create a reusable AI Chat Request object for building requests programmatically, managing conversations, or testing AI workflows.
+icon: message
+---
+
 # aiChatRequest
 
 Create a reusable AI Chat Request object that can be sent to any AI service provider. This is useful for building requests programmatically, managing conversations, or testing AI workflows.

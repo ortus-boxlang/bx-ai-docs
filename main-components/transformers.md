@@ -1486,4 +1486,4 @@ Want to create custom transformers for your specific needs? BoxLang AI provides 
 * [**Building Custom Transformers**](../extending-boxlang-ai/custom-transformer.md) - Create your own transformers
 * [**Pipeline Streaming**](pipelines/streaming.md) - Stream through transforms
 * [**Working with Models**](models.md) - Model output transforms
-* [**Pipeline Overview**](main-components/overview.md) - Complete pipeline guide
+* [**Pipeline Overview**](pipelines/README.md) - Complete pipeline guide

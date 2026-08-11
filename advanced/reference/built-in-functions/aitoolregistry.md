@@ -1,3 +1,8 @@
+---
+description: Returns the singleton AIToolRegistry instance for registering, discovering, and resolving AI tools globally.
+icon: toolbox
+---
+
 # aiToolRegistry
 
 Returns the singleton `AIToolRegistry` instance for registering, discovering, and resolving AI tools globally.

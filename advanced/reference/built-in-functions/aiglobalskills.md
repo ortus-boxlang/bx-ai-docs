@@ -1,3 +1,8 @@
+---
+description: Access the globally shared pool of AI skills that are automatically injected into every agent's system context.
+icon: graduation-cap
+---
+
 # aiGlobalSkills
 
 Access the globally shared pool of AI skills that are automatically injected into every agent's system context.

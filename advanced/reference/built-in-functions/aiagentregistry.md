@@ -1,3 +1,8 @@
+---
+description: Get the singleton global AIAgentRegistry instance for registering, resolving, and observing agents.
+icon: robot
+---
+
 # aiAgentRegistry
 
 Get the singleton global `AIAgentRegistry` instance for registering, resolving, and observing agents.

@@ -5,7 +5,7 @@ icon: messages
 
 # 💬 Chatting
 
-Simple, powerful AI interactions using Built-in Functions (BIFs). This section covers everything from basic chat to advanced features like streaming, tools, and structured output.  Please note that chatting can only get you so far. For complex workflows, state management, and agentic behavior, check out the [Main Components](../main-components/README.md) section for pipelines and agents.
+Simple, powerful AI interactions using Built-in Functions (BIFs). This section covers everything from basic chat to advanced features like streaming, tools, and structured output.  Please note that chatting can only get you so far. For complex workflows, state management, and agentic behavior, check out the [Main Components](../README.md) section for pipelines and agents.
 
 ## 📖 Overview
 
@@ -165,7 +165,7 @@ println( result.name ) // "John"
 → [Service-Level Chatting](service-chatting.md)
 
 **"I want to build complex workflows"**
-→ See [Main Components](../main-components/README.md) for pipelines and agents
+→ See [Main Components](../README.md) for pipelines and agents
 
 ---
 
@@ -194,4 +194,4 @@ Use the `provider` parameter or set `OPENAI_API_KEY`, `CLAUDE_API_KEY`, etc. in 
 1. **Start with basics** - [Basic Chatting](basic-chatting.md)
 2. **Add advanced features** - [Advanced Chatting](advanced-chatting.md)
 3. **Optimize with services** - [Service-Level Chatting](service-chatting.md)
-4. **Scale with pipelines** - [Main Components](../main-components/README.md)
+4. **Scale with pipelines** - [Main Components](../README.md)

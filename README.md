@@ -402,7 +402,7 @@ response = agent.run( "Research AI trends in 2025" )
 
 ### 🎓 Learning Paths
 
-1. **🌱 Beginners**: Start with [Quick Start](getting-started/quickstart.md) → [Basic Chatting](main-components/chatting/basic-chatting.md) → [Examples](../examples/)
+1. **🌱 Beginners**: Start with [Quick Start](getting-started/quickstart.md) → [Basic Chatting](main-components/chatting/basic-chatting.md) → [Examples](https://github.com/ortus-boxlang/bx-ai/tree/development/examples)
 2. **🏗️ Builders**: Learn [Pipelines](main-components/pipelines/building.md) → [Memory](main-components/memory/) → [Tools](main-components/tools.md)
 3. **🚀 Advanced**: Explore [Agents](main-components/agents/) → [MCP](mcp/server/) → [Custom Providers](extending-boxlang-ai/custom-providers.md)
 

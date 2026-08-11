@@ -1,3 +1,8 @@
+---
+description: Get or create an MCP (Model Context Protocol) server instance for registering and managing tools, resources, and prompts.
+icon: server
+---
+
 # MCPServer
 
 Get or create an MCP (Model Context Protocol) server instance for registering and managing tools, resources, and prompts. MCP servers expose your application's capabilities to AI clients through a standardized protocol.

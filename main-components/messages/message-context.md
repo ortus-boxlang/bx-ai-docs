@@ -1,3 +1,8 @@
+---
+description: Inject security information, RAG data, and other contextual information into your AI messages.
+icon: lock
+---
+
 # 🔐 Message Context
 
 The BoxLang AI module provides a powerful context system for AI messages that allows you to inject security information, RAG (Retrieval Augmented Generation) data, and other contextual information into your AI operations.

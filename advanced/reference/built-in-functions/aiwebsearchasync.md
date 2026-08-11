@@ -1,5 +1,6 @@
 ---
 description: BoxLang AI aiWebSearchAsync() built-in function reference
+icon: magnifying-glass
 ---
 
 # aiWebSearchAsync

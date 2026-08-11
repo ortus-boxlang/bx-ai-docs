@@ -1,3 +1,8 @@
+---
+description: Estimate token count for AI processing — useful for staying within model limits and estimating costs.
+icon: calculator
+---
+
 # aiTokens
 
 Estimate token count for AI processing. Useful for staying within model limits, estimating costs, and optimizing prompt size before sending to AI providers.

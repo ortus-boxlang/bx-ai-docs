@@ -1,4 +1,5 @@
 ---
+description: Configure authentication, CORS, request limits, and other security settings for your MCP server.
 icon: sliders
 ---
 

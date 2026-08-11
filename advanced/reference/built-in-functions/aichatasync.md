@@ -1,3 +1,8 @@
+---
+description: Asynchronous version of aiChat() that returns a BoxLang Future for non-blocking AI requests.
+icon: message
+---
+
 # aiChatAsync
 
 Asynchronous version of `aiChat()` that returns a BoxLang Future for non-blocking AI requests.

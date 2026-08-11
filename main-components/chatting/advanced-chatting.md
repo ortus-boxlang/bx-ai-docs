@@ -989,7 +989,6 @@ For complete details on structured output including inheritance, validation, and
 
 * [**Structured Output Guide**](structured-output.md) - Complete documentation
 * [**Pipeline Integration**](../pipelines/structured-output.md) - Advanced patterns
-* [**Course Lesson 12**](../../../course/lesson-12-structured-output/) - Interactive learning
 
 ### XML Return Format for Documents
 
@@ -1350,6 +1349,6 @@ response2 = tenantChat.chat( "How can we improve it?" )
 ## Next Steps
 
 * [**Service-Level Chatting**](service-chatting.md) - Direct service control
-* [**Pipeline Overview**](../main-components/overview.md) - Learn about AI pipelines
+* [**Pipeline Overview**](../pipelines/README.md) - Learn about AI pipelines
 * [**Message Templates**](../messages/) - Advanced templating
 * [**Message Context**](../messages/message-context.md) - Inject security and RAG data

@@ -1,3 +1,8 @@
+---
+description: Wraps untrusted content in tamper-resistant boundary markers so the model treats it as data, never instructions.
+icon: shield-halved
+---
+
 # aiFence
 
 Wraps untrusted content in tamper-resistant boundary markers so the model treats it as **data**, never instructions — the core defense against indirect prompt injection from RAG documents, tool/MCP output, and web pages.

@@ -1,4 +1,5 @@
 ---
+description: Choose between HTTP and STDIO transport mechanisms for your MCP server based on deployment scenario.
 icon: network-wired
 ---
 

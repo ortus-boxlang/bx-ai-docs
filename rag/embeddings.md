@@ -1,4 +1,5 @@
 ---
+description: Generate numerical vector representations of text that power semantic search, recommendations, and clustering.
 icon: objects-column
 ---
 

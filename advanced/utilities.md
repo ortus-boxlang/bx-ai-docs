@@ -1,3 +1,8 @@
+---
+description: Utility functions for text processing, token management, and working with AI models.
+icon: screwdriver-wrench
+---
+
 # 🛠️ Utility Functions
 
 The bx-ai module provides powerful utility functions for text processing, token management, and working with AI models. These utilities help you prepare data, estimate costs, and optimize your AI interactions.
@@ -992,4 +997,3 @@ For complete details on structured output and object population:
 
 * [**Structured Output Guide**](../main-components/chatting/structured-output.md) - Full documentation
 * [**Advanced Chatting**](../main-components/chatting/advanced-chatting.md#structured-output) - Integration examples
-* [**Course Lesson 12**](../../course/lesson-12-structured-output/) - Interactive learning

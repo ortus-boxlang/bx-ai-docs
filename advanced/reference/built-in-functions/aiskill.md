@@ -1,3 +1,8 @@
+---
+description: Discover and load AI skills from a directory tree, a single file, or an inline skill definition.
+icon: graduation-cap
+---
+
 # aiSkill
 
 Discover and load AI skills from a directory tree, a single file, or create an inline skill definition.

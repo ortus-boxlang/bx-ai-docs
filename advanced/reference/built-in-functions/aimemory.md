@@ -1,3 +1,8 @@
+---
+description: Create AI memory instances for storing conversation history, context, or knowledge bases.
+icon: memory
+---
+
 # aiMemory
 
 Create AI memory instances for storing conversation history, context, or knowledge bases.

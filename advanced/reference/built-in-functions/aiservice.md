@@ -1,3 +1,8 @@
+---
+description: Get a reference to a registered AI service provider — the direct invocation interface for AI providers.
+icon: gear
+---
+
 # aiService
 
 Get a reference to a registered AI service provider. This is the direct invocation interface for AI providers, as opposed to `aiModel()` which creates pipeline-friendly runnables.

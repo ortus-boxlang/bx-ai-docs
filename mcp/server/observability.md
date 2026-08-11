@@ -1,4 +1,5 @@
 ---
+description: Track performance, monitor requests, and respond to MCP server events in real-time.
 icon: chart-line
 ---
 
@@ -387,4 +388,4 @@ class {
 
 - ⏸️ [Pause & Resume](pause-resume.md) — Pause server operations
 - ✅ [Best Practices](best-practices.md) — Production monitoring
-- 💡 [Examples](/_examples.md) — Complete working setups
+- 💡 [Examples](_examples.md) — Complete working setups

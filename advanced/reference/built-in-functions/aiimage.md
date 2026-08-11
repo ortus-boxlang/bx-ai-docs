@@ -1,3 +1,8 @@
+---
+description: Generate images from prompts using supported AI providers.
+icon: image
+---
+
 # aiImage
 
 Generate images from prompts using supported AI providers.

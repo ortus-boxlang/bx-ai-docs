@@ -1,4 +1,5 @@
 ---
+description: Encapsulate your entire MCP server in a dedicated class that extends MCPServer for better organization and testability.
 icon: building
 ---
 
@@ -324,4 +325,4 @@ class extends="org.testbox.system.BaseSpec" {
 - 🧩 [Registering Tools](registration.md) — Manual registration
 - 📋 [Annotation Discovery](annotation-discovery.md) — Auto-register
 - 🔐 [Server Configuration](server-configuration.md) — Security & auth
-- 💡 [Examples](/_examples.md) — Complete working projects
+- 💡 [Examples](_examples.md) — Complete working projects

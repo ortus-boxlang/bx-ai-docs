@@ -1,3 +1,8 @@
+---
+description: Create a fluent MCP (Model Context Protocol) client for consuming external MCP servers.
+icon: server
+---
+
 # MCP
 
 Create a fluent MCP (Model Context Protocol) client for consuming external MCP servers. MCP enables AI applications to connect to tools, data sources, and external systems through a standardized protocol.

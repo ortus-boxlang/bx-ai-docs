@@ -1,4 +1,5 @@
 ---
+description: Get your first MCP server running in 5 minutes.
 icon: rocket
 ---
 
@@ -134,4 +135,4 @@ Response:
 - 🧩 [Registering Tools](registration.md) — More complex tools
 - 📋 [Observability](observability.md) — Monitor your server
 - 🏗️ [Class-Based Servers](class-based-servers.md) — Organize complex servers
-- 💡 [Examples](/_examples.md) — Complete working code
+- 💡 [Examples](_examples.md) — Complete working code

@@ -1,3 +1,8 @@
+---
+description: Chunk text into smaller, manageable segments for AI processing, embeddings, or semantic search.
+icon: scissors
+---
+
 # aiChunk
 
 Chunk text into smaller, manageable segments for AI processing, embeddings, or semantic search. Supports multiple chunking strategies including recursive, character, word, sentence, and paragraph-based splitting.

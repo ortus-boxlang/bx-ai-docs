@@ -1,4 +1,5 @@
 ---
+description: Connect to external MCP servers to consume tools, resources, and prompts from other AI applications.
 icon: plug
 ---
 
@@ -666,9 +667,9 @@ class extends="testbox.system.BaseSpec" {
 
 ## Related Documentation
 
-* [BoxLang AI Module](../)
-* [AI Tools](../main-components/tools.md)
-* [AI Agents](../main-components/agents/)
+* [BoxLang AI Module](../../README.md)
+* [AI Tools](../../main-components/tools.md)
+* [AI Agents](../../main-components/agents/)
 
 ## External Resources
 

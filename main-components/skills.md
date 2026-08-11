@@ -260,5 +260,5 @@ npx skills add your-org/your-skills-repo --skill boxlang-api-designer
 ## Related Pages
 
 * [Agent Skills (agents/)](agents/skills.md) — Skills in the context of agent configuration
-* [aiSkill() Reference](advanced/reference/built-in-functions/aiskill.md) — Full BIF reference
-* [aiGlobalSkills() Reference](advanced/reference/built-in-functions/aiglobalskills.md) — Global skills BIF
+* [aiSkill() Reference](../advanced/reference/built-in-functions/aiskill.md) — Full BIF reference
+* [aiGlobalSkills() Reference](../advanced/reference/built-in-functions/aiglobalskills.md) — Global skills BIF

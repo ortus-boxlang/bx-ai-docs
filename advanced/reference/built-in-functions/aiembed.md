@@ -1,3 +1,8 @@
+---
+description: Generate vector embeddings for text using AI providers, enabling semantic search, similarity comparison, and clustering.
+icon: objects-column
+---
+
 # aiEmbed
 
 Generate vector embeddings for text using AI providers. Embeddings are numerical representations that capture semantic meaning, enabling semantic search, similarity comparison, clustering, and recommendations.

@@ -1,3 +1,8 @@
+---
+description: Transcribe audio from a file path, URL, or binary data into text using an AI provider.
+icon: closed-captioning
+---
+
 # aiTranscribe
 
 Transcribe audio from a file path, URL, or binary data into text using an AI provider.

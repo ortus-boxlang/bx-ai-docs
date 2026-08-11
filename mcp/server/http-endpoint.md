@@ -1,4 +1,5 @@
 ---
+description: Set up and customize HTTP endpoints and routing for your MCP server.
 icon: globe
 ---
 

@@ -1,3 +1,8 @@
+---
+description: Translate audio from any language directly into English text using an AI provider.
+icon: language
+---
+
 # aiTranslate
 
 Translate audio from any language directly into English text using an AI provider. Unlike `aiTranscribe()`, the output language is always English regardless of the source audio language.
