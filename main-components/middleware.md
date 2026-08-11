@@ -18,25 +18,30 @@ Middleware provides hooks into every stage of agent execution — before and aft
 
 Middleware wraps agent execution in layers. Each layer can inspect and modify the request/response, or halt execution entirely.
 
-```
-Agent.run(input)
-  │
-  ▼ beforeAgentRun (all middleware, in order)
-  │
-  ▼ beforeLLMCall → (LLM call, wrapLLMCall around it) → afterLLMCall
-  │
-  ▼ beforeToolCall → (tool execution, wrapToolCall around it) → afterToolCall
-  │
-  ▼ afterToolBatch (once, after every tool call in the turn is decided)
-  │
-  ▼ afterAgentRun (all middleware, in reverse order)
-  │
-  ▼ result
+```mermaid
+flowchart TD
+    A["Agent.run(input)"] --> B["beforeAgentRun<br/>(in order)"]
+    B --> C["beforeLLMCall<br/>(in order)"]
+    C --> D["LLM call<br/>(wrapLLMCall surrounds it)"]
+    D --> E["afterLLMCall<br/>(reverse order)"]
+    E --> F{"Tool calls<br/>requested?"}
+    F -->|yes| G["beforeToolCall<br/>(in order)"]
+    G --> H["Tool execution<br/>(wrapToolCall surrounds it)"]
+    H --> I["afterToolCall<br/>(reverse order)"]
+    I --> J["afterToolBatch<br/>(once per turn)"]
+    J --> C
+    F -->|no| K["afterAgentRun<br/>(reverse order)"]
+    K --> L["result"]
+
+    style A fill:#4A90E2,color:#fff
+    style L fill:#4A90E2,color:#fff
+    style F fill:#F5A623,color:#fff
 ```
 
 **Inbound hooks** (`before*`) run in registration order.
 **Outbound hooks** (`after*`) run in reverse order.
 **Wrap hooks** (`wrapLLMCall`, `wrapToolCall`) surround the call itself — call `handler()` to proceed.
+**The loop**: after `afterToolBatch`, execution returns to `beforeLLMCall` — the LLM sees the tool results and may call more tools, or respond directly and fall through to `afterAgentRun`.
 
 ## Adding Middleware to an Agent
 

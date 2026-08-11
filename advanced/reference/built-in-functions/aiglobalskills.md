@@ -1,11 +1,11 @@
 ---
-description: Access the globally shared pool of AI skills that are automatically injected into every agent's system context.
+description: Access the pool of AI skills auto-discovered from skillsDirectory at module startup and made available to every agent.
 icon: graduation-cap
 ---
 
 # aiGlobalSkills
 
-Access the globally shared pool of AI skills that are automatically injected into every agent's system context.
+Read-only accessor for the pool of skills BoxLang AI auto-discovered from `skillsDirectory` when the module started. Every agent created with `aiAgent()` gets these added as **available** (lazy-loaded via `loadSkill()`) skills automatically — no per-agent wiring needed.
 
 ## Syntax
 
@@ -19,7 +19,7 @@ No parameters.
 
 ## Returns
 
-Returns an `Array` of `AiSkill` instances configured as global skills in `ModuleConfig.bx`. Returns an empty array if no global skills are configured.
+Returns an `Array` of `AiSkill` instances — the result of scanning `settings.skillsDirectory` (default `/.agents/skills`) at module startup. Returns an empty array if `autoLoadSkills` is `false`, `skillsDirectory` is empty, or the directory doesn't exist.
 
 ## Examples
 
@@ -35,29 +35,34 @@ globals.each( skill => {
 })
 ```
 
-### Use Global Skills with an Agent
+### Promote a Global Skill to Always-On
+
+Global skills arrive as **available**, not always-on. Pull one out to make it always-on for a specific agent:
 
 ```javascript
-// Global skills are already injected automatically.
-// This example shows how to add them explicitly alongside custom skills.
+coreSkill = aiGlobalSkills().filter( s => s.getName() == "company-tone" )
+
 agent = aiAgent(
     name  : "assistant",
-    skills: aiGlobalSkills().append( myCustomSkill )
+    skills: coreSkill   // Always-on for this agent, on top of the global available pool
 )
 ```
 
-### Configure Global Skills in ModuleConfig.bx
-
-Global skills are registered in your module's `ModuleConfig.bx` and apply to every agent across the application:
+### Configuring the Auto-Discovery Directory
 
 ```javascript
-// ModuleConfig.bx (inside a BoxLang module only)
-variables.moduleSettings = {
-    globalSkills: aiSkill( path: ".ai/skills/global" )
+// config/boxlang.json — both settings already default to this
+{
+    "modules": {
+        "bxai": {
+            "settings": {
+                "skillsDirectory": "/.agents/skills",  // set to "" to disable
+                "autoLoadSkills" : true
+            }
+        }
+    }
 }
 ```
-
-For application-level registration without a module, add skills directly to each agent or use `availableSkills` with a shared array variable.
 
 ## Related Pages
 

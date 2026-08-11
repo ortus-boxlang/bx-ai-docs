@@ -143,8 +143,8 @@ agent = aiAgent(
     model          : aiModel( "openai" ),
     tools          : [ searchTool, ticketTool ],
     memory         : aiMemory( "cache" ),
-    skills         : aiSkill( ".ai/skills" ),
-    availableSkills: aiSkill( ".ai/advanced-skills" ),
+    skills         : aiSkill( ".agents/skills" ),
+    availableSkills: aiSkill( ".agents/advanced-skills" ),
     middleware     : [ new LoggingMiddleware(), new RetryMiddleware() ],
     mcpServers     : [ { url: "http://tools-server/mcp", toolNames: ["search"] } ]
 )

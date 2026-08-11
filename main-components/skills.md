@@ -15,10 +15,10 @@ Skills are reusable markdown instruction files that give agents specialized know
 
 ## 🎓 What are Skills?
 
-A skill is a markdown file (named `SKILL.md`) containing instructions, examples, and domain knowledge. Skills follow the **Agent Skills open standard** — each skill lives in its own named subdirectory under `.ai/skills/`.
+A skill is a markdown file (named `SKILL.md`) containing instructions, examples, and domain knowledge. Skills follow the **Agent Skills open standard** — each skill lives in its own named subdirectory under `.agents/skills/`.
 
 ```
-.ai/skills/
+.agents/skills/
   sql-optimizer/
     SKILL.md
   coding/
@@ -75,10 +75,10 @@ agent = aiAgent(
     name  : "Assistant",
     skills: [
         // Load from a file
-        AiSkill::fromPath( ".ai/skills/core/SKILL.md" ),
+        AiSkill::fromPath( ".agents/skills/core/SKILL.md" ),
 
         // Or use the aiSkill() BIF
-        aiSkill( ".ai/skills/professional-tone/SKILL.md" ),
+        aiSkill( ".agents/skills/professional-tone/SKILL.md" ),
 
         // Or define inline
         aiSkill(
@@ -98,7 +98,7 @@ Available skills form a pool that the agent can load on demand via a built-in `l
 // Scan a whole directory — every SKILL.md becomes an available skill
 agent = aiAgent(
     name           : "Specialist",
-    availableSkills: aiSkill( ".ai/skills" )  // Scans recursively by default
+    availableSkills: aiSkill( ".agents/skills" )  // Scans recursively by default
 )
 ```
 
@@ -108,11 +108,11 @@ When a user asks about SQL optimization, the agent finds the `sql-optimizer` ski
 
 ```javascript
 coreSkills = [
-    aiSkill( ".ai/skills/tone/SKILL.md" ),
-    aiSkill( ".ai/skills/safety/SKILL.md" )
+    aiSkill( ".agents/skills/tone/SKILL.md" ),
+    aiSkill( ".agents/skills/safety/SKILL.md" )
 ]
 
-specialistSkills = aiSkill( ".ai/skills/domains" )  // 20+ domain skills
+specialistSkills = aiSkill( ".agents/skills/domains" )  // 20+ domain skills
 
 agent = aiAgent(
     name           : "Expert",
@@ -124,14 +124,14 @@ agent = aiAgent(
 ## Using the `aiSkill()` BIF
 
 ```javascript
-// Load all skills from default directory (.ai/skills)
+// Load all skills from default directory (.agents/skills)
 skills = aiSkill()
 
 // Load all skills from a custom directory
-skills = aiSkill( ".ai/custom-skills" )
+skills = aiSkill( ".agents/custom-skills" )
 
 // Load a single skill from a file
-skill = aiSkill( ".ai/skills/sql-optimizer/SKILL.md" )
+skill = aiSkill( ".agents/skills/sql-optimizer/SKILL.md" )
 
 // Create an inline skill without a file
 skill = aiSkill(
@@ -141,19 +141,26 @@ skill = aiSkill(
 )
 
 // Disable recursive scan
-skills = aiSkill( ".ai/skills", recurse: false )
+skills = aiSkill( ".agents/skills", recurse: false )
 ```
 
 See [aiSkill() Reference](../advanced/reference/built-in-functions/aiskill.md) for full parameter documentation.
 
 ## Global Skills
 
-Global skills are automatically injected into **every** agent's system context — even agents that don't explicitly declare any skills. Configure them in module settings:
+At module startup, BoxLang AI scans a configured directory for `SKILL.md` files and makes every skill it finds **available** (lazy-loaded, not always-on) to every agent created with `aiAgent()` — no per-agent wiring needed. This is zero-config: it just works if `.agents/skills` exists in your project.
 
 ```javascript
-// ModuleConfig.bx / Application settings
-moduleSettings = {
-    globalSkills: aiSkill( ".ai/global-skills" )
+// config/boxlang.json — both settings default to this already
+{
+    "modules": {
+        "bxai": {
+            "settings": {
+                "skillsDirectory": "/.agents/skills",  // set to "" to disable auto-discovery
+                "autoLoadSkills" : true
+            }
+        }
+    }
 }
 ```
 
@@ -164,12 +171,16 @@ globals = aiGlobalSkills()
 println( "Global skills loaded: #globals.len()#" )
 ```
 
+{% hint style="info" %}
+Global skills are added as **available** skills, the same as `availableSkills` — the agent calls `loadSkill()` to pull one in when relevant. They are not injected into every system message like `skills` (always-on) are.
+{% endhint %}
+
 ## Fluent API
 
 ```javascript
 agent = aiAgent( name: "Assistant" )
     .withSkills( [ coreSkill, toneSkill ] )
-    .withAvailableSkills( aiSkill( ".ai/skills" ) )
+    .withAvailableSkills( aiSkill( ".agents/skills" ) )
 ```
 
 ## 🌐 Discover, Install, and Publish Community Skills
@@ -209,8 +220,8 @@ After install, wire the skill into your BoxLang AI agent as always-on or availab
 ```javascript
 agent = aiAgent(
   name           : "BoxLang Assistant",
-  skills         : [ aiSkill( "/.ai/skills/boxlang-expert/SKILL.md" ) ],
-  availableSkills: aiSkill( "/.ai/skills" )
+  skills         : [ aiSkill( "/.agents/skills/boxlang-expert/SKILL.md" ) ],
+  availableSkills: aiSkill( "/.agents/skills" )
 )
 ```
 
