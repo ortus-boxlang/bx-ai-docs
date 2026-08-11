@@ -1242,7 +1242,7 @@ if ( result.valid ) {
 ## Next Steps
 
 * [**Message Templates**](messages/) - Build dynamic prompts
-* [**Transformers**](transformers.md) - Process model outputs
+* [**Transformers**](transformers/README.md) - Process model outputs
 * [**Document Loaders**](../rag/document-loaders.md) - Load data from various sources
 * [**RAG Guide**](../rag/rag.md) - Complete RAG workflow documentation
 * [**Vector Memory**](memory/vector-memory/README.md) - Semantic search and embeddings

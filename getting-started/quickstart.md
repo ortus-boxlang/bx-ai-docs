@@ -885,7 +885,7 @@ Now that you're comfortable with the basics, explore:
 * [**Pipeline Overview**](../main-components/pipelines/README.md) - Learn about composable workflows
 * [**Working with Models**](../main-components/models.md) - Pipeline-compatible AI models
 * [**Message Templates**](../main-components/messages/) - Reusable prompts
-* [**Transformers**](../main-components/transformers.md) - Data processing
+* [**Transformers**](../main-components/transformers/README.md) - Data processing
 
 ### 🔧 Advanced Topics
 

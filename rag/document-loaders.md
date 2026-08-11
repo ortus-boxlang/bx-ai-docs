@@ -12,22 +12,15 @@ Document loaders are a powerful feature for importing content from various sourc
 ```mermaid
 graph TB
     subgraph "Sources"
-        FILE[📄 Files]
-        DIR[📁 Directories]
-        URL[🌐 URLs]
+        FILES[📄📁 Files & Directories]
+        REMOTE[🌐🔌 URLs & APIs]
         DB[🗄️ Databases]
-        API[🔌 APIs]
     end
 
     subgraph "Loaders"
-        TXT[TextLoader]
-        MD[MarkdownLoader]
-        CSV[CSVLoader]
-        JSON[JSONLoader]
-        XML[XMLLoader]
-        PDF[PDFLoader]
-        HTTP[HTTPLoader]
-        SQL[SQLLoader]
+        TEXT[Text-Based Loaders<br/>Text, Markdown, CSV, PDF]
+        STRUCT[Structured Data Loaders<br/>JSON, XML, SQL]
+        REMOTELOAD[Remote Loaders<br/>HTTP]
     end
 
     subgraph "Processing"
@@ -42,24 +35,14 @@ graph TB
         MEM[Vector Memory]
     end
 
-    FILE --> TXT
-    FILE --> MD
-    FILE --> CSV
-    FILE --> PDF
-    DIR --> TXT
-    DIR --> MD
-    URL --> HTTP
-    DB --> SQL
-    API --> JSON
+    FILES --> TEXT
+    REMOTE --> REMOTELOAD
+    REMOTE --> STRUCT
+    DB --> STRUCT
 
-    TXT --> PARSE
-    MD --> PARSE
-    CSV --> PARSE
-    JSON --> PARSE
-    XML --> PARSE
-    PDF --> PARSE
-    HTTP --> PARSE
-    SQL --> PARSE
+    TEXT --> PARSE
+    STRUCT --> PARSE
+    REMOTELOAD --> PARSE
 
     PARSE --> META
     META --> CHUNK
@@ -67,9 +50,9 @@ graph TB
     TRANS --> DOC
     DOC --> MEM
 
-    style FILE fill:#4A90E2
-    style DIR fill:#4A90E2
-    style URL fill:#4A90E2
+    style FILES fill:#4A90E2
+    style REMOTE fill:#4A90E2
+    style DB fill:#4A90E2
     style DOC fill:#7ED321
     style MEM fill:#BD10E0
 ```

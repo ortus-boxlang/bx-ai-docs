@@ -169,7 +169,7 @@ BoxRegisterInterceptor( "onAITokenCount", function( data ) {
 } )
 ```
 
-See [Multi-Tenant Memory Guide](../memory/multi-tenant-memory.md) for a comprehensive multi-tenancy setup.
+See [Multi-Tenant Memory Guide](../memory/multi-tenant/README.md) for a comprehensive multi-tenancy setup.
 
 ## Memory Types Quick Reference
 
@@ -189,6 +189,6 @@ See [Memory Systems](../memory/README.md) for complete configuration options.
 ## Related Pages
 
 * [Memory Systems](../memory/README.md) — All memory types, configuration
-* [Multi-Tenant Memory Guide](../memory/multi-tenant-memory.md) — Multi-tenant patterns
+* [Multi-Tenant Memory Guide](../memory/multi-tenant/README.md) — Multi-tenant patterns
 * [Vector Memory Systems](../memory/vector-memory/README.md) — Vector/semantic memory
 * [Middleware](middleware.md) — HumanInTheLoopMiddleware for suspend/resume

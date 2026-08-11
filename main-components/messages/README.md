@@ -1044,5 +1044,5 @@ result = pipeline.run( { topic: "AI", detail: "simple" } )
 
 * [**Working with Models**](../models.md) - Connect templates to AI
 * [**Message Context**](message-context.md) - Inject security and RAG data into messages
-* [**Transformers**](../transformers.md) - Process responses
+* [**Transformers**](../transformers/README.md) - Process responses
 * [**Pipeline Streaming**](../pipelines/streaming.md) - Real-time template execution

@@ -151,4 +151,4 @@ println( result )
 * [Getting Started](getting-started.md) — Creating your first agent
 * [Streaming](streaming.md) — Streaming output with agents
 * [Advanced Patterns](advanced.md) — Pipeline integration and chaining
-* [Transformers](../transformers.md) — All built-in transformer types
+* [Transformers](../transformers/README.md) — All built-in transformer types

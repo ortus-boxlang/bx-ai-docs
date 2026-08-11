@@ -996,4 +996,4 @@ try {
 For complete details on structured output and object population:
 
 * [**Structured Output Guide**](../main-components/chatting/structured-output.md) - Full documentation
-* [**Advanced Chatting**](../main-components/chatting/advanced-chatting.md#structured-output) - Integration examples
+* [**Advanced Chatting**](../main-components/chatting/advanced-chatting.md) - Integration examples

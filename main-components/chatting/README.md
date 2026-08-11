@@ -87,6 +87,21 @@ Extract type-safe, validated data from AI responses.
 
 ---
 
+### 🖼️ [Multimodal Content](multimodal-content.md)
+
+Work with images, audio, video, and documents in your AI conversations.
+
+**What you'll learn:**
+
+- Sending images by URL or embedding local files
+- Processing audio and video (provider-dependent)
+- Analyzing documents and PDFs
+- Combining multiple media types in one request
+
+**Start here if:** You need to send images, audio, video, or documents to AI models.
+
+---
+
 ## ⚡ Quick Examples
 
 ### Simple Chat

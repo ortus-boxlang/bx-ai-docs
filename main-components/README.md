@@ -440,7 +440,7 @@ french = translator.run({ text: "Hello", lang: "French" })
 
 ***
 
-### 1️⃣2️⃣ [Transformers](transformers.md)
+### 1️⃣2️⃣ [Transformers](transformers/README.md)
 
 **What:** Data processing steps in pipelines
 
@@ -463,7 +463,7 @@ result = pipeline.run( "hello" ) // "HELLO!"
 * Format conversion
 * Custom processors
 
-→ [**Read Transformers Guide**](transformers.md)
+→ [**Read Transformers Guide**](transformers/README.md)
 
 ***
 

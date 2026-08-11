@@ -647,7 +647,7 @@ pipeline3 = model3.to( transformer );
 
 ## 📚 Next Steps
 
-* 🔄 **Transformers Guide**: [Complete transformer documentation](../main-components/transformers.md)
+* 🔄 **Transformers Guide**: [Complete transformer documentation](../main-components/transformers/README.md)
 * 📖 **Pipeline Patterns**: [Building pipelines](../main-components/pipelines/README.md)
 * 🧩 **Custom Loaders**: [Building loaders](custom-loader.md)
 * 💻 **Examples**: Check `examples/pipelines/` for more examples
