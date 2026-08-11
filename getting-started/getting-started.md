@@ -190,7 +190,7 @@ After mastering the basics, explore these advanced topics:
 * **💭** [**Memory Systems**](../main-components/memory/README.md) - Maintain conversation context
 * **🛠️** [**Tools**](../main-components/tools.md) - Enable AI to call functions
 * **📄** [**Document Loaders**](../rag/document-loaders.md) - Process various file formats
-* **🔮** [**Vector Memory**](../main-components/memory/vector-memory.md) - Semantic search with embeddings
+* **🔮** [**Vector Memory**](../main-components/memory/vector-memory/README.md) - Semantic search with embeddings
 
 ***
 

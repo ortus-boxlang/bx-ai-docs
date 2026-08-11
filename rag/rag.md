@@ -673,7 +673,7 @@ function ragWithMetrics( query ) {
 ## 📚 Next Steps
 
 * 📖 **Document Loaders**: [Loading documents](document-loaders.md)
-* 🧠 **Vector Memory**: [Vector memory guide](../main-components/memory/vector-memory.md)
+* 🧠 **Vector Memory**: [Vector memory guide](../main-components/memory/vector-memory/README.md)
 * 🤖 **AI Agents**: [Building agents](../main-components/agents/)
 * 🔧 **Custom Loaders**: [Advanced loaders](../extending-boxlang-ai/custom-loader.md)
 * 💻 **Examples**: Check `examples/rag/` for complete RAG implementations

@@ -115,11 +115,11 @@ This page covers agent-level RAG setup. For deeper detail on:
 
 * **Document loaders** (PDF, CSV, JSON, XML, HTTP, web crawlers, SQL, etc.) — see [Document Loaders](../../rag/document-loaders.md)
 * **Chunking strategies, batch loading, async ingestion** — see [RAG Guide](../../rag/rag.md)
-* **Vector memory configuration** (Pinecone, Chroma, Qdrant, pgvector, etc.) — see [Vector Memory Systems](../memory/vector-memory.md)
+* **Vector memory configuration** (Pinecone, Chroma, Qdrant, pgvector, etc.) — see [Vector Memory Systems](../memory/vector-memory/README.md)
 
 ## Related Pages
 
 * [Memory Management](memory.md) — Memory types and per-call identity routing
-* [Vector Memory Systems](../memory/vector-memory.md) — Full vector store configuration
+* [Vector Memory Systems](../memory/vector-memory/README.md) — Full vector store configuration
 * [Document Loaders](../../rag/document-loaders.md) — All loader types
 * [RAG Guide](../../rag/rag.md) — End-to-end RAG implementation

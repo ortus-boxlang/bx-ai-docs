@@ -118,7 +118,7 @@ BoxLang AI provides 20+ memory types for conversation history and semantic searc
 | **Milvus** | ✅ | Enterprise, massive scale | Milvus | ✅ |
 | **Hybrid** | ✅ | Recent + semantic combined | Vector + Standard | ✅ |
 
-**📖 Learn More**: [Standard Memory Guide](main-components/memory/) · [Vector Memory Guide](main-components/memory/vector-memory.md)
+**📖 Learn More**: [Standard Memory Guide](main-components/memory/) · [Vector Memory Guide](main-components/memory/vector-memory/README.md)
 
 ### 📋 Supported Document Loaders
 

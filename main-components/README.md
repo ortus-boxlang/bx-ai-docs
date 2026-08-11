@@ -491,7 +491,7 @@ pipeline = aiModel( "openai" )
 
 ***
 
-### 1️⃣4️⃣ [Vector Memory](memory/vector-memory.md)
+### 1️⃣4️⃣ [Vector Memory](memory/vector-memory/README.md)
 
 **What:** Semantic search through conversation history
 
@@ -518,7 +518,7 @@ results = memory.getRelevant( "French capital", 1 )
 * Vector stores (Chroma, Pinecone, OpenSearch, etc.)
 * RAG workflows
 
-→ [**Read Vector Memory Guide**](memory/vector-memory.md)
+→ [**Read Vector Memory Guide**](memory/vector-memory/README.md)
 
 ***
 
