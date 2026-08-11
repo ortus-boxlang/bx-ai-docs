@@ -128,7 +128,7 @@ if ( result.isSuspended() ) {
 }
 ```
 
-Approval is triggered by **which tool** is being called (or by an `IApprovalPolicy`), not by matching text in the prompt. See [Middleware](../middleware.md) for approval policies, durable grants, and batched approvals.
+Approval is triggered by **which tool** is being called (or by an `IApprovalPolicy`), not by matching text in the prompt. See [Human-in-the-Loop](../human-in-the-loop.md) for approval policies, durable grants, and batched approvals.
 
 ### FlightRecorderMiddleware
 

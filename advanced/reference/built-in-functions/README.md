@@ -8,7 +8,7 @@ Complete reference documentation for all BoxLang AI built-in functions (BIFs). T
 
 ## 📚 Overview
 
-The BoxLang AI module provides 29 built-in functions organized into functional categories:
+The BoxLang AI module provides 33 built-in functions organized into functional categories:
 
 ### 🗨️ Chat & Conversation
 
@@ -71,6 +71,20 @@ Connect AI to external tools and data sources.
 
 * [**`MCP()`**](mcp.md) - Create MCP client for consuming servers
 * [**`MCPServer()`**](mcpserver.md) - Create MCP server for exposing tools
+
+### 🧑‍⚖️ Human-in-the-Loop & Gateways
+
+Present approvals to a human and route them through a platform.
+
+* [**`aiGateway()`**](aigateway.md) - Resolve a gateway (CLI, HTTP, or an external module) by name
+* [**`gatewayRegistry()`**](gatewayregistry.md) - Registry external gateway modules register into
+* [**`aiDecisionStore()`**](aidecisionstore.md) - Durable store for `approve_always`/`approve_session` grants
+
+### 🛡️ Security
+
+Defend against prompt injection and data leakage.
+
+* [**`aiFence()`**](aifence.md) - Fence untrusted content so the model treats it as data, not instructions
 
 ## 🎯 Quick Reference
 
@@ -255,8 +269,11 @@ docs = aiDocuments( "/path" )
 | [`aiChatRequest()`](aichatrequest.md) | Chat      | Create request objects      |
 | [`aiChatStream()`](aichatstream.md)   | Chat      | Streaming AI chat           |
 | [`aiChunk()`](aichunk.md)             | Documents | Chunk text into segments    |
+| [`aiDecisionStore()`](aidecisionstore.md) | HITL  | Durable approval-grant store |
 | [`aiDocuments()`](aidocuments.md)     | Documents | Load documents for RAG      |
 | [`aiEmbed()`](aiembed.md)             | Documents | Generate embeddings         |
+| [`aiFence()`](aifence.md)             | Security  | Fence untrusted content      |
+| [`aiGateway()`](aigateway.md)         | Gateways  | Resolve a gateway by name    |
 | [`aiGlobalSkills()`](aiglobalskills.md) | Skills  | List globally loaded skills |
 | [`aiImage()`](aiimage.md)             | Image     | Generate images             |
 | [`aiMemory()`](aimemory.md)           | Memory    | Create memory instances     |
@@ -276,6 +293,7 @@ docs = aiDocuments( "/path" )
 | [`aiTranslate()`](aitranslate.md)     | Audio     | Audio-to-English translation |
 | [`aiWebSearch()`](aiwebsearch.md)       | Search    | Search web content          |
 | [`aiWebSearchAsync()`](aiwebsearchasync.md) | Search  | Async web search            |
+| [`gatewayRegistry()`](gatewayregistry.md) | Gateways | Registry for external gateway modules |
 | [`MCP()`](mcp.md)                     | MCP       | Create MCP client           |
 | [`MCPServer()`](mcpserver.md)         | MCP       | Create MCP server           |
 
