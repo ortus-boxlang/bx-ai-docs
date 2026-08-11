@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is the **GitBook documentation repository** for the BoxLang AI Module (v2.x). The main module code lives in the sibling `bx-ai` repository - this repo contains ONLY user-facing documentation.
+This is the **GitBook documentation repository** for the BoxLang AI Module (v3.x). The main module code lives in the sibling `bx-ai` repository - this repo contains ONLY user-facing documentation.
 
 **Repository Purpose:**
 
@@ -18,12 +18,20 @@ bx-ai-docs/
 ├── README.md               # Landing page/introduction
 ├── getting-started/        # Installation, quickstart, concepts
 ├── main-components/        # Core features (chatting, agents, tools, memory, pipelines)
-│   ├── chatting/          # Multi-file: basic, advanced, service, structured output
-│   ├── memory/            # Multi-tenant memory systems
-│   ├── messages/          # Message templates and context
-│   └── pipelines/         # Composable AI workflows
+│   ├── agents/             # Agent-specific docs: getting started, memory, middleware, skills, tools/MCP
+│   ├── audio/              # Text-to-speech, speech-to-text, audio translation
+│   ├── chatting/           # Multi-file: basic, advanced, service, structured output
+│   ├── image-generation/   # aiImage() and image generation
+│   ├── memory/             # Multi-tenant memory systems
+│   ├── messages/           # Message templates and context
+│   ├── pipelines/          # Composable AI workflows
+│   ├── web-search/         # aiWebSearch() and web search providers
+│   ├── human-in-the-loop.md  # HITL: approval policies, durable grants, batching
+│   ├── gateways.md         # Gateway SPI: CLI/HTTP/mock + external platform gateways
+│   └── middleware.md       # Canonical middleware reference: hooks, results, built-ins
 ├── rag/                   # RAG, embeddings, document loaders
-├── advanced/              # MCP, events, utilities
+├── mcp/                   # MCP client + server (transports, registration, security, observability)
+├── advanced/              # Events, utilities
 │   └── reference/         # BIF reference docs (aiChat, aiAgent, aiModel, etc.)
 ├── deployment/            # Production, security
 ├── extending-boxlang-ai/  # Custom providers, transformers, loaders, memory
@@ -65,39 +73,37 @@ model = aiModel( provider: "openai", params: { model: "gpt-4o" } )
 agent = aiAgent( name: "Helper", memory: vectorMemory )
     .withInstructions( "You are helpful" )
 
-// ✅ CORRECT: Pipeline with .transform() shorthand
+// ✅ CORRECT: Pipeline with .transform() shorthand or .to( aiTransform() ) — both are real, .transform() is shorthand for the latter
 pipeline = aiModel( provider: "openai" )
     .transform( text => text.toUpper() )
-    .transform( text => text.trim() )
+    .to( aiTransform( text => text.trim() ) )
 
-// ✅ CORRECT: Structured output via options.returnFormat
+// ✅ CORRECT: Structured output via options.returnFormat (aiChat/aiAgent) or .structuredOutput() on a pipeline/model runnable
 person = aiChat(
     messages: "Extract: John is 30",
     options: { returnFormat: { name: "string", age: "numeric" } }
 )
+
+model = aiModel( provider: "openai" ).structuredOutput( { name: "string", age: "numeric" } )
 ```
 
 ### ❌ NEVER Use These Patterns
 
 ```javascript
-// ❌ WRONG: Model name as first param
-model = aiModel( "gpt-4o" )
+// ❌ WRONG: Model name as first param — first positional param is the PROVIDER, not the model name
+model = aiModel( "gpt-4o" )  // use aiModel( provider: "openai", params: { model: "gpt-4o" } )
 
 // ❌ WRONG: .build() doesn't exist
 agent = aiAgent().build()
 
-// ❌ WRONG: .withMemory() doesn't exist (pass in constructor)
+// ❌ WRONG: .withMemory() doesn't exist (pass memory in the aiAgent()/aiModel() constructor)
 agent = aiAgent().withMemory( memory )
-
-// ❌ WRONG: .structuredOutput() doesn't exist
-result = aiChat( "Extract data" ).structuredOutput( schema )
 
 // ❌ WRONG: structured: parameter doesn't exist
 result = aiChat( messages: "Extract", structured: { ... } )
-
-// ❌ WRONG: Verbose pipeline syntax
-pipeline.to( aiTransform( closure ) )  // Use .transform( closure )
 ```
+
+**Note:** `.structuredOutput( schema )` and `.to( aiTransform( closure ) )` ARE real, verified APIs — see [main-components/pipelines/structured-output.md](main-components/pipelines/structured-output.md) and [main-components/pipelines/README.md](main-components/pipelines/README.md). Do not flag them as hallucinated.
 
 ## Code Block Syntax Highlighting
 
@@ -172,9 +178,9 @@ Document both approaches where relevant, clearly labeled.
 ### Fixing Hallucinated Code
 
 1. Search for pattern: `grep -r "pattern" --include="*.md" .`
-2. Verify correct pattern in source code
-3. Use `multi_replace_string_in_file` for batch fixes across multiple files
-4. Check both English and Spanish bootcamp lessons if applicable
+2. Verify correct pattern in source code (`bx-ai/src/main/bx/`) — never fix from memory alone
+3. Apply the fix consistently across every matching file
+4. Re-run the search to confirm zero remaining hits
 
 ## GitBook Frontmatter
 
@@ -196,10 +202,9 @@ Common icons: `message`, `robot`, `wrench`, `brain`, `memory`, `book`, etc.
 Before committing documentation changes:
 
 - [ ] Code examples use correct BIF signatures (verified against source)
-- [ ] No `.build()`, `.withMemory()`, `.structuredOutput()`, `structured:` param
-- [ ] `aiModel()` uses `provider:` parameter, not model name directly
-- [ ] Pipelines use `.transform()` shorthand, not `.to( aiTransform() )`
-- [ ] Structured output uses `options: { returnFormat: ... }`
+- [ ] No `.build()`, `.withMemory()`, or a `structured:` param — none of these exist
+- [ ] `aiModel()`'s first positional param is the `provider` (e.g. `"openai"`), not a model name (e.g. `"gpt-4o"`)
+- [ ] Structured output uses `options: { returnFormat: ... }` (aiChat/aiAgent) or `.structuredOutput( schema )` (pipeline/model runnables) — both real
 - [ ] `SUMMARY.md` updated if pages added/moved/removed
 - [ ] Code blocks use `javascript` syntax for BoxLang examples
 - [ ] Emojis used strategically (not overboard)

@@ -282,6 +282,10 @@ response = aiChat( message.render() );
 println( response );
 ```
 
+{% hint style="info" %}
+Retrieved documents are untrusted content. `setContext()` above is fenced automatically by default (`security.fencing.enabled`), so the model treats retrieved text as data rather than instructions. See the [Security Guide](../deployment/security.md#-prompt-injection-prevention).
+{% endhint %}
+
 ### Step 6: Use with Agent (Automatic Retrieval)
 
 Agents handle retrieval automatically:
@@ -669,7 +673,7 @@ function ragWithMetrics( query ) {
 ## 📚 Next Steps
 
 * 📖 **Document Loaders**: [Loading documents](document-loaders.md)
-* 🧠 **Vector Memory**: [Vector memory guide](../main-components/vector-memory.md)
+* 🧠 **Vector Memory**: [Vector memory guide](../main-components/memory/vector-memory.md)
 * 🤖 **AI Agents**: [Building agents](../main-components/agents/)
 * 🔧 **Custom Loaders**: [Advanced loaders](../extending-boxlang-ai/custom-loader.md)
 * 💻 **Examples**: Check `examples/rag/` for complete RAG implementations
