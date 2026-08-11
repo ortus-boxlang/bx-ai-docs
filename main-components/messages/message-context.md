@@ -416,7 +416,7 @@ context: {
 * [**AiMessage Documentation**](./) - Full message builder documentation
 * [**Agents Documentation**](../agents/) - AI Agent documentation
 * [**Pipelines Documentation**](../pipelines/) - Runnable pipelines documentation
-* [**Event System**](../../advanced/events.md) - Interceptor documentation
+* [**Event System**](../../advanced/events/README.md) - Interceptor documentation
 
 ***
 

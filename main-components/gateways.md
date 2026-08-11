@@ -234,7 +234,7 @@ For a gateway whose pending state must outlive the process, override `setCheckpo
 | `onGatewayRegistryRegister` | A gateway is registered into the registry |
 | `onGatewayRegistryUnregister` | A gateway is removed |
 
-See [Event System](../advanced/events.md).
+See [Event System](../advanced/events/registry-and-gateway-events.md#gateway-events).
 
 ## Related Pages
 

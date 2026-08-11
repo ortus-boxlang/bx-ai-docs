@@ -1332,7 +1332,7 @@ response2 = tenantChat.chat( "How can we improve it?" )
 * ✅ **Analytics**: Understand which tenants/projects use AI most
 * ✅ **Chargeback**: Generate detailed usage reports for internal billing
 
-**See Also**: [Event System - onAITokenCount](../../advanced/events.md#multi-tenant-usage-tracking-v210) for interceptor-based billing logic.
+**See Also**: [Event System - onAITokenCount](../../advanced/events/token-usage-events.md#multi-tenant-usage-tracking-v210) for interceptor-based billing logic.
 
 ***
 

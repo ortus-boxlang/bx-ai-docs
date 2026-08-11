@@ -901,7 +901,7 @@ Persistent stores (`JdbcMemory`, `FileMemory`, `CacheMemory`) automatically pers
 `SummaryMemory` still auto-triggers this on its own `maxMessages`/`maxTokens` threshold — see [above](#summary-memory) — but you're no longer limited to that one memory type for on-demand compression.
 
 {% hint style="info" %}
-`onAIMemorySummarize` fires after every successful summarization, on any memory type — see [Event System](../../advanced/events.md).
+`onAIMemorySummarize` fires after every successful summarization, on any memory type — see [Event System](../../advanced/events/memory-events.md#onaimemorysummarize).
 {% endhint %}
 
 ***

@@ -102,7 +102,17 @@
 ## Advanced
 
 * [Working with Models](main-components/models.md)
-* [Event System](advanced/events.md)
+* [Event System](advanced/events/README.md)
+  * [Core Events](advanced/events/core-events.md)
+  * [Token & Usage Events](advanced/events/token-usage-events.md)
+  * [MCP Events](advanced/events/mcp-events.md)
+  * [Audio Events](advanced/events/audio-events.md)
+  * [Image Events](advanced/events/image-events.md)
+  * [Memory Events](advanced/events/memory-events.md)
+  * [Web Search Events](advanced/events/web-search-events.md)
+  * [Registry & Gateway Events](advanced/events/registry-and-gateway-events.md)
+  * [Common Use Cases & Examples](advanced/events/common-use-cases.md)
+  * [Best Practices](advanced/events/best-practices.md)
 * [🛠️ Utility Functions](advanced/utilities.md)
 * [Reference](advanced/reference/README.md)
   * [Built-In Functions Reference](advanced/reference/built-in-functions/README.md)

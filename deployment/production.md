@@ -1238,7 +1238,7 @@ Configure alerts for:
 * 🎯 [Best Practices](../main-components/chatting/advanced-chatting.md)
 * 💭 [Memory Systems](../main-components/memory/)
 * 🔮 [Vector Memory](../main-components/memory/vector-memory.md)
-* 🛠️ [Events System](../advanced/events.md)
+* 🛠️ [Events System](../advanced/events/README.md)
 
 ***
 

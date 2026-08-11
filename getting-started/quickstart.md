@@ -889,7 +889,7 @@ Now that you're comfortable with the basics, explore:
 
 ### 🔧 Advanced Topics
 
-* [**Event System**](../advanced/events.md) - Intercept and customize AI operations
+* [**Event System**](../advanced/events/README.md) - Intercept and customize AI operations
 * [**Custom Memory**](../extending-boxlang-ai/custom-memory.md) - Build custom memory implementations
 * [**Custom Loaders**](../extending-boxlang-ai/custom-loader.md) - Create custom document loaders
 * [**Custom Transformers**](../extending-boxlang-ai/custom-transformer.md) - Build custom transformers
