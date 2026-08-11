@@ -107,7 +107,7 @@ salesResults = salesChat.getRelevant( "plan", 5 )       // Only sales messages
 
 All providers support `getAllDocuments()`, `getRelevant()`, and `findSimilar()` with automatic tenant filtering.
 
-For enterprise patterns, security considerations, and advanced multi-tenancy, see the [Multi-Tenant Memory Guide](../multi-tenant-memory.md).
+For enterprise patterns, security considerations, and advanced multi-tenancy, see the [Multi-Tenant Memory Guide](../multi-tenant/README.md).
 
 ***
 
@@ -301,10 +301,10 @@ agent.run( "What was my last invoice amount?" )
 ## See Also
 
 * [Memory Systems Guide](../) - Standard conversation memory
-* [Custom Vector Memory](../../../extending-boxlang-ai/custom-vector-memory.md) - Build your own provider
+* [Custom Vector Memory](../../../extending-boxlang-ai/custom-vector-memory/README.md) - Build your own provider
 * [Embeddings Guide](../../../rag/embeddings.md) - Understanding embeddings
 * [Agents Documentation](../../agents/) - Using memory in agents
 
 ***
 
-**Next Steps:** Learn about [building custom vector memory](../../../extending-boxlang-ai/custom-vector-memory.md) providers.
+**Next Steps:** Learn about [building custom vector memory](../../../extending-boxlang-ai/custom-vector-memory/README.md) providers.

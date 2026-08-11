@@ -523,5 +523,5 @@ article = aiModel()
 * [Simple Structured Output](../chatting/structured-output.md) - Basic usage patterns
 * [Working with Models](../models.md) - Model configuration and setup
 * [Message Templates](../messages/) - Creating reusable prompts
-* [Transformers](../transformers.md) - Data transformation in pipelines
+* [Transformers](../transformers/README.md) - Data transformation in pipelines
 * [Pipeline Overview](README.md) - Understanding pipeline concepts

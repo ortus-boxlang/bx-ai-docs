@@ -586,4 +586,4 @@ function robustStream( required pipeline, required bindings ) {
 * [**Pipeline Overview**](README.md) - Complete pipeline guide
 * [**Working with Models**](../models.md) - Model configuration
 * [**Message Templates**](../messages/) - Dynamic prompts
-* [**Transformers**](../transformers.md) - Data transformation
+* [**Transformers**](../transformers/README.md) - Data transformation

@@ -949,9 +949,9 @@ IAiMemory function add( required any message ) {
 
 * [Memory Systems Guide](../main-components/memory/) - Standard memory types
 * [Vector Memory Guide](../main-components/memory/vector-memory/README.md) - Vector memory implementations
-* [Custom Vector Memory](custom-vector-memory.md) - Building vector memory providers
+* [Custom Vector Memory](custom-vector-memory/README.md) - Building vector memory providers
 * [IAiMemory Interface](https://github.com/ortus-boxlang/bx-ai/blob/development/src/main/bx/models/memory/IAiMemory.bx) - Full interface specification
 
 ***
 
-**Next Steps:** Explore [Custom Vector Memory](custom-vector-memory.md) for building embedding-based memory providers.
+**Next Steps:** Explore [Custom Vector Memory](custom-vector-memory/README.md) for building embedding-based memory providers.

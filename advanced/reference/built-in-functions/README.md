@@ -304,7 +304,7 @@ docs = aiDocuments( "/path" )
 * [**Agents Documentation**](../../../main-components/agents/) - Deep dive into agents
 * [**Memory Systems**](../../../main-components/memory/) - Memory types and usage
 * [**RAG Guide**](../../../rag/rag.md) - Build knowledge-based AI
-* [**Transformers**](../../../main-components/transformers.md) - Data transformation
+* [**Transformers**](../../../main-components/transformers/README.md) - Data transformation
 * [**Examples**](https://github.com/ortus-boxlang/bx-ai/tree/development/examples) - Working code examples
 
 ## 💡 Tips

@@ -79,7 +79,7 @@ flowchart LR
 * 🛡️ [Middleware](../../main-components/middleware.md) — every security middleware's full constructor reference
 * 🧑‍⚖️ [Human-in-the-Loop](../../main-components/human-in-the-loop.md) — human approval for sensitive tool calls
 * 🔌 [Gateways](../../main-components/gateways.md) — HMAC-signed HTTP delivery for approvals and events
-* 🚀 [Production Deployment](../production.md)
+* 🚀 [Production Deployment](../production/README.md)
 * 📖 [Main Documentation](../../)
 * 💬 [FAQ](../../readme/faq.md)
 * 🧠 [Key Concepts](../../getting-started/concepts.md)

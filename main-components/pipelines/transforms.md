@@ -121,10 +121,10 @@ println( result.name )
 println( result.age )
 ```
 
-See [Transformers](../transformers.md) for the full reference on built-in transformer types.
+See [Transformers](../transformers/README.md) for the full reference on built-in transformer types.
 
 ## Related Pages
 
 * [Building Pipelines](building.md) — Pipeline construction and data flow
 * [Multi-Model Workflows](multi-model.md) — Chaining models and reusable templates
-* [Transformers](../transformers.md) — Built-in transformer types
+* [Transformers](../transformers/README.md) — Built-in transformer types

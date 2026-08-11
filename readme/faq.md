@@ -381,7 +381,7 @@ function getAIResponse( prompt ) {
 * Use multiple providers for critical apps
 * Cache responses when possible
 
-**Guide**: [Production Deployment](../deployment/production.md) _(coming soon)_
+**Guide**: [Production Deployment](../deployment/production/README.md) _(coming soon)_
 
 ***
 
@@ -629,7 +629,7 @@ user2Agent = aiAgent( memory: aiMemory( memory: "window", config: { userId: "use
 
 **Works with ALL memory types**: Window, Cache, File, JDBC, Vector, etc.
 
-**Full guide**: [Multi-Tenant Memory](../main-components/memory/multi-tenant-memory.md)
+**Full guide**: [Multi-Tenant Memory](../main-components/memory/multi-tenant/README.md)
 
 ***
 
