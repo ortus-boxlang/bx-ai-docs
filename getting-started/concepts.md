@@ -718,7 +718,7 @@ agents = aiAgentRegistry().listAgents()
 Reusable instruction sets stored in markdown files (following the Agent Skills open standard) that inject specialized context into an agent's system prompt.
 
 ```
-.ai/skills/
+.agents/skills/
   sql-expert/
     SKILL.md          ← YAML frontmatter + markdown instructions
 ```
@@ -730,8 +730,8 @@ Two modes:
 ```javascript
 agent = aiAgent(
     name           : "data-analyst",
-    skills         : [ aiSkill( path: ".ai/skills/sql-expert/SKILL.md" ) ],
-    availableSkills: aiSkill()  // All skills in .ai/skills/
+    skills         : [ aiSkill( path: ".agents/skills/sql-expert/SKILL.md" ) ],
+    availableSkills: aiSkill()  // All skills in .agents/skills/
 )
 ```
 

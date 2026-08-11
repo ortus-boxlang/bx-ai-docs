@@ -92,8 +92,8 @@ Skills inject domain knowledge into the agent's system context:
 agent = aiAgent(
     name           : "CodeReviewer",
     instructions   : "Review code for quality and security",
-    skills         : aiSkill( ".ai/skills/security" ),       // always-on
-    availableSkills: aiSkill( ".ai/skills/languages" )       // lazy-loaded
+    skills         : aiSkill( ".agents/skills/security" ),       // always-on
+    availableSkills: aiSkill( ".agents/skills/languages" )       // lazy-loaded
 )
 
 response = agent.run( "Review this Python function: ..." )

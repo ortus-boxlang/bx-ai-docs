@@ -83,10 +83,11 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | **Grok** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | **Groq** | Cloud | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | **HuggingFace** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
-| **MiniMax** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **MiniMax** | Cloud | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
 | **Mistral** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Ollama** | Local | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **OpenAI** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **OpenAI-Compatible** | Local/Self-hosted | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
 | **OpenRouter** | Gateway | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Perplexity** | Cloud | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Voyage** | Cloud | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |

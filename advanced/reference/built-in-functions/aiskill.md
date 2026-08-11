@@ -17,7 +17,7 @@ aiSkill( path, name, description, content, recurse )
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `path` | string | No | A directory or file path. If a directory, scanned recursively for `SKILL.md` files. If a file path, loads that skill directly. Defaults to `.ai/skills`. |
+| `path` | string | No | A directory or file path. If a directory, scanned recursively for `SKILL.md` files. If a file path, loads that skill directly. Defaults to `.agents/skills`. |
 | `name` | string | No | Unique name for an inline skill (used when no `path` is given). |
 | `description` | string | No | What the skill does and when to use it. If omitted, uses the first paragraph of the skill's markdown content. |
 | `content` | string | No | Full instruction content for an inline skill (body text after YAML frontmatter). |
@@ -37,7 +37,7 @@ aiSkill( path, name, description, content, recurse )
 ### Load All Skills from Default Directory
 
 ```javascript
-// Loads all SKILL.md files found under .ai/skills/
+// Loads all SKILL.md files found under .agents/skills/
 skills = aiSkill()
 
 agent = aiAgent(
@@ -62,7 +62,7 @@ agent = aiAgent(
 
 ```javascript
 // Load one specific skill
-sqlSkill = aiSkill( path: ".ai/skills/sql-optimizer/SKILL.md" )
+sqlSkill = aiSkill( path: ".agents/skills/sql-optimizer/SKILL.md" )
 
 agent = aiAgent(
     name  : "data-analyst",
@@ -95,7 +95,7 @@ agent = aiAgent(
 
 ```javascript
 // Load shared team skills plus an inline override
-skills = aiSkill()  // loads from .ai/skills/
+skills = aiSkill()  // loads from .agents/skills/
 
 agent = aiAgent(
     name           : "assistant",

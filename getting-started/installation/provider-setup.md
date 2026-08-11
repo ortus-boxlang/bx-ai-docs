@@ -24,6 +24,7 @@ This guide covers detailed setup instructions for all supported AI providers, he
   * [🤗 HuggingFace](provider-setup.md#-huggingface)
   * [⚡ Groq](provider-setup.md#-groq)
   * [🔷 DeepSeek](provider-setup.md#-deepseek)
+  * [🌙 MiniMax](provider-setup.md#-minimax)
   * [🟠 Mistral](provider-setup.md#-mistral)
   * [🌐 OpenRouter (Multi-Model Gateway)](provider-setup.md#-openrouter-multi-model-gateway)
   * [🔎 Perplexity](provider-setup.md#-perplexity)
@@ -31,6 +32,7 @@ This guide covers detailed setup instructions for all supported AI providers, he
   * [🚀 Voyage](provider-setup.md#-voyage)
   * [🟠 AWS Bedrock](provider-setup.md#-aws-bedrock)
   * [🐳 Docker Desktop AI Models](provider-setup.md#-docker-desktop-ai-models)
+  * [🔌 OpenAI-Compatible Endpoints](provider-setup.md#-openai-compatible-endpoints)
 * [🦙 Local AI with Ollama](provider-setup.md#-local-ai-with-ollama)
   * [Why Ollama?](provider-setup.md#why-ollama)
   * [Installation Methods](provider-setup.md#installation-methods)
@@ -77,6 +79,8 @@ This guide covers detailed setup instructions for all supported AI providers, he
 | **Voyage**      | Cloud   | State-of-art embeddings        | \$$    | Fast    | N/A     |
 | **Bedrock**     | Cloud   | AWS enterprise, multi-model    | \$$$   | Fast    | 200K    |
 | **Docker Desktop** | Local   | Docker-managed models       | Free   | Fast    | Varies  |
+| **MiniMax**     | Cloud   | Fast chat, embeddings          | $      | Fast    | Varies  |
+| **OpenAI-Compatible** | Local/Self-hosted | Any OpenAI-shaped endpoint | Varies | Varies | Varies |
 
 ### 💡 Recommendations by Use Case
 
@@ -392,6 +396,38 @@ result = aiChat(
 
 ***
 
+### 🌙 MiniMax
+
+**Best for**: Fast, cost-effective chat and embeddings
+
+**Get API Key**: [https://platform.minimax.io/](https://platform.minimax.io/)
+
+**Configuration**:
+
+```json
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "provider": "minimax",
+        "apiKey": "...",
+        "defaultParams": {
+          "model": "MiniMax-M2.5-highspeed"
+        }
+      }
+    }
+  }
+}
+```
+
+**Special Features**:
+
+* Chat, streaming, and embeddings in one provider
+* Fast default chat model (`MiniMax-M2.5-highspeed`)
+* Dedicated embeddings model (`embo-01`)
+
+***
+
 ### 🟠 Mistral
 
 **Best for**: European data residency, balanced performance/cost
@@ -694,6 +730,64 @@ aiChatStream(
 * ✅ **OpenAI-compatible** - Works with existing code
 * ✅ **Easy model switching** - Managed through Docker Desktop UI
 * ✅ **Privacy-first** - All processing local
+
+***
+
+### 🔌 OpenAI-Compatible Endpoints
+
+**Best for**: Self-hosted LLMs (vLLM, LocalAI, text-generation-inference), local embedding containers, or any OpenAI API proxy
+
+Unlike Docker Desktop's per-model provider names, `openai-compatible` is a single provider you point at **any** endpoint that implements the OpenAI API shape by passing `baseURL` in `options`:
+
+```javascript
+// Self-hosted LLM
+result = aiChat(
+    "What is BoxLang?",
+    {},
+    {
+        provider: "openai-compatible",
+        baseURL : "http://vllm-server:8000/v1",
+        apiKey  : ""  // omit or leave empty — auth header is skipped when no key is set
+    }
+)
+
+// Local embedding container
+embeddings = aiEmbed(
+    "Hello World",
+    {},
+    {
+        provider: "openai-compatible",
+        baseURL : "http://embedding-service:8080/v1"
+    }
+)
+```
+
+Or configure it once via `aiService()` for reuse:
+
+```javascript
+service = aiService( "openai-compatible" ).configure({
+    baseURL: "http://localhost:8080/v1",
+    model  : "llama-2-70b"
+})
+
+result = service.chat( aiChatRequest( "Hello!" ) )
+```
+
+**Configuration Options**:
+
+| Option          | Description                                                        |
+| ---------------- | ------------------------------------------------------------------ |
+| `baseURL`         | Base URL; appends `/chat/completions` and `/embeddings` automatically |
+| `chatURL`         | Direct chat endpoint URL (overrides `baseURL` for chat)            |
+| `embeddingsURL`   | Direct embeddings endpoint URL (overrides `baseURL` for embeddings) |
+| `apiKey`          | Optional — the `Authorization` header is skipped entirely when empty |
+| `model`           | Default model name sent with every request                         |
+
+**Special Features**:
+
+* ✅ **Works with any OpenAI-compatible server** — no auth required if the endpoint doesn't need it
+* ✅ **`baseURL` overridable per-call** — switch endpoints without reconfiguring the module
+* ✅ **Chat, streaming, and embeddings** — same capability set as `openai`
 
 ***
 

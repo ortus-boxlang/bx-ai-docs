@@ -20,10 +20,10 @@ There are two modes:
 
 ## Skill File Format
 
-Skills are markdown files with optional YAML frontmatter, stored under `.ai/skills/` by convention:
+Skills are markdown files with optional YAML frontmatter, stored under `.agents/skills/` by convention:
 
 ```
-.ai/skills/
+.agents/skills/
   sql-optimizer/
     SKILL.md
   coding/
@@ -53,14 +53,14 @@ If `description` is omitted, the first paragraph of the markdown body is used �
 ## Loading Skills
 
 ```javascript
-// Load all skills from the default .ai/skills directory
+// Load all skills from the default .agents/skills directory
 skills = aiSkill()
 
 // Load from a custom path
-skills = aiSkill( ".ai/my-skills" )
+skills = aiSkill( ".agents/my-skills" )
 
 // Load a single skill file
-skill = aiSkill( ".ai/skills/sql-optimizer/SKILL.md" )
+skill = aiSkill( ".agents/skills/sql-optimizer/SKILL.md" )
 
 // Create an inline skill (no file needed)
 inlineSkill = aiSkill(
@@ -77,7 +77,7 @@ Full skill content is injected into the system context on every agent call:
 ```javascript
 agent = aiAgent(
     name  : "SQLReviewer",
-    skills: aiSkill( ".ai/skills/sql-optimizer" )
+    skills: aiSkill( ".agents/skills/sql-optimizer" )
 )
 
 // The SQL optimization instructions are always in context
@@ -90,8 +90,8 @@ Multiple always-on skills:
 agent = aiAgent(
     name  : "ContentEditor",
     skills: [
-        aiSkill( ".ai/skills/brand-voice" ),
-        aiSkill( ".ai/skills/grammar-rules" )
+        aiSkill( ".agents/skills/brand-voice" ),
+        aiSkill( ".agents/skills/grammar-rules" )
     ]
 )
 ```
@@ -103,7 +103,7 @@ With lazy loading, only a compact index (name + description) is injected into th
 ```javascript
 agent = aiAgent(
     name           : "EngineeringAssistant",
-    availableSkills: aiSkill( ".ai/skills" )   // Scans entire directory
+    availableSkills: aiSkill( ".agents/skills" )   // Scans entire directory
 )
 // The agent sees: "Available skills: sql-optimizer, boxlang-expert, security-review"
 // When asked a SQL question, the AI calls loadSkill("sql-optimizer") to get the full content
@@ -116,23 +116,30 @@ Use always-on for globally relevant skills and lazy-loading for specialized know
 ```javascript
 agent = aiAgent(
     name           : "PlatformAssistant",
-    skills         : aiSkill( ".ai/skills/core" ),          // Always injected
-    availableSkills: aiSkill( ".ai/skills/specialized" )    // Available on demand
+    skills         : aiSkill( ".agents/skills/core" ),          // Always injected
+    availableSkills: aiSkill( ".agents/skills/specialized" )    // Available on demand
 )
 ```
 
 ## Global Skills
 
-At the module level you can configure skills that are automatically available to **every agent** in your application:
+BoxLang AI auto-discovers skills at module startup from a configured directory and makes them **available** (lazy-loaded via `loadSkill()`, not always-on) to every agent — zero config if `.agents/skills` already exists in your project:
 
 ```javascript
-// In ModuleConfig.bx or Application.bx startup
-ModuleSettings = {
-    globalSkills: aiSkill( ".ai/global-skills" )
+// config/boxlang.json — both settings default to this already
+{
+    "modules": {
+        "bxai": {
+            "settings": {
+                "skillsDirectory": "/.agents/skills",  // set to "" to disable
+                "autoLoadSkills" : true
+            }
+        }
+    }
 }
 ```
 
-Access the global pool at runtime:
+See [Global Skills](../skills.md#global-skills) on the main Skills page for the full mechanism. Access the global pool at runtime:
 
 ```javascript
 globalSkills = aiGlobalSkills()
@@ -145,10 +152,10 @@ println( "Global skills: #globalSkills.len()#" )
 agent = aiAgent( name: "Assistant" )
 
 // Add always-on skill
-agent.withSkills( [ aiSkill( ".ai/skills/tone" ) ] )
+agent.withSkills( [ aiSkill( ".agents/skills/tone" ) ] )
 
 // Add lazy skill
-agent.withAvailableSkills( [ aiSkill( ".ai/skills/advanced" ) ] )
+agent.withAvailableSkills( [ aiSkill( ".agents/skills/advanced" ) ] )
 ```
 
 ## Related Pages

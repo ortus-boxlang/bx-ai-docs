@@ -11,6 +11,27 @@ A **gateway** is a bidirectional human-interaction adapter. It translates platfo
 
 It is more than a message transport: a gateway also handles identity, threads, interactive actions, streaming, approvals, and resuming suspended runs.
 
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant M as HumanInTheLoopMiddleware
+    participant G as Gateway (e.g. HttpGateway)
+    participant H as Human
+    participant App as Your App
+
+    A->>M: tool call needs approval
+    M->>G: requestHumanInteraction()
+    G-->>H: signed webhook / notification
+    Note over A: agent.run() suspends
+    H->>G: POST decision
+    G->>G: atomic claim (rejects duplicates)
+    G-->>App: resolved decision + threadID
+    App->>A: agent.resume( decision, threadID )
+    A-->>H: final response
+```
+
+`CliGateway` collapses this to one synchronous prompt; `MockGateway` lets you script the same flow in tests with no I/O. See [Human-in-the-Loop](human-in-the-loop.md) for the suspend/resume mechanics this builds on.
+
 ## 🚀 Resolving a Gateway
 
 ```javascript
