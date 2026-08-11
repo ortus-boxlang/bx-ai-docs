@@ -240,4 +240,4 @@ See [Event System](../advanced/events/registry-and-gateway-events.md#gateway-eve
 
 * [Human-in-the-Loop](human-in-the-loop.md) — approvals, policies, durable grants
 * [aiGateway()](../advanced/reference/built-in-functions/aigateway.md) · [gatewayRegistry()](../advanced/reference/built-in-functions/gatewayregistry.md)
-* [Security Guide](../deployment/security.md) — signing, secrets, and network exposure
+* [Security Guide](../deployment/security/README.md) — signing, secrets, and network exposure

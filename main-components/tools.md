@@ -198,7 +198,7 @@ tool.setDescription( "New description" )
 ## 💡 Common Tool Patterns
 
 {% hint style="info" %}
-Tools that touch sensitive systems (databases, payments, file access) are prime targets for prompt injection. `GuardrailMiddleware` can block dangerous tools by name or validate their arguments before they ever run — see [Tool & Function Calling Security](../deployment/security.md#-tool--function-calling-security) in the Security Guide.
+Tools that touch sensitive systems (databases, payments, file access) are prime targets for prompt injection. `GuardrailMiddleware` can block dangerous tools by name or validate their arguments before they ever run — see [Tool & Function Calling Security](../deployment/security/tool-calling-security.md) in the Security Guide.
 {% endhint %}
 
 ### Database Query Tool

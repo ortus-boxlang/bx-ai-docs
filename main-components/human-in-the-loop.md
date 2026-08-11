@@ -276,4 +276,4 @@ hitl = new HumanInTheLoopMiddleware(
 * [Gateways](gateways.md) — presenting interactions on a platform
 * [Middleware](middleware.md) — the full middleware pipeline and hooks
 * [Agent Memory Management](agents/memory.md) — checkpointers and suspend/resume
-* [Security Guide](../deployment/security.md) — guardrails around prompts and responses
+* [Security Guide](../deployment/security/README.md) — guardrails around prompts and responses

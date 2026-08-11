@@ -151,4 +151,4 @@ expect( results[ 1 ] ).toHaveKey( "score" )
 
 - [Custom AI Providers](custom-providers.md)
 - [Web Search Overview](../main-components/web-search/README.md)
-- [Security Guide](../deployment/security.md)
+- [Security Guide](../deployment/security/README.md)

@@ -101,6 +101,6 @@ Fencing is on by default even when `settings.security.enabled` is `false` — it
 
 ## Related
 
-* [Security Guide](../../../deployment/security.md) — the full guardrail stack
+* [Security Guide](../../../deployment/security/README.md) — the full guardrail stack
 * [Message Context](../../../main-components/messages/message-context.md)
 * [RAG](../../../rag/rag.md)

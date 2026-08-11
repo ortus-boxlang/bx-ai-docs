@@ -662,7 +662,7 @@ answer = aiChat(
 * ✅ Review provider privacy policies
 * ✅ Sanitize/anonymize data before sending
 
-**Full guide**: [Security & Best Practices](../deployment/security.md) _(coming soon)_
+**Full guide**: [Security & Best Practices](../deployment/security/README.md) _(coming soon)_
 
 ***
 

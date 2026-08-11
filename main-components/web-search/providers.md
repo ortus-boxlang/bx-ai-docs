@@ -196,4 +196,4 @@ export EXA_API_KEY="your-exa-key"
 - [Overview](README.md)
 - [Getting Started](getting-started.md)
 - [Agent Integration](agent-tools.md)
-- [Security Guide](../../deployment/security.md)
+- [Security Guide](../../deployment/security/README.md)

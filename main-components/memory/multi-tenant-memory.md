@@ -1331,7 +1331,7 @@ println( newMemory.getConversationId() );  // "chat456"
 * [Memory Systems Guide](./) - Standard conversation memory
 * [Vector Memory Guide](vector-memory.md) - Semantic search with isolation
 * [Agents Documentation](../agents/) - Using memory in agents
-* [Security Guide](../../deployment/security.md) - Application security
+* [Security Guide](../../deployment/security/README.md) - Application security
 
 ***
 
