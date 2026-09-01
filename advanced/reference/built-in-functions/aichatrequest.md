@@ -38,7 +38,7 @@ Messages can be:
 | `provider`     | string  | (config)     | The AI provider to use (openai, claude, etc.)          |
 | `apiKey`       | string  | (config/env) | API key for the provider                               |
 | `returnFormat` | string  | `"single"`   | Response format: "single", "all", "raw", "json", "xml" |
-| `timeout`      | numeric | `30`         | Request timeout in seconds                             |
+| `timeout`      | numeric | `90`         | Request timeout in seconds                             |
 | `logResponse`  | boolean | `false`      | Log the AI response                                    |
 | `logRequest`   | boolean | `false`      | Log the AI request                                     |
 

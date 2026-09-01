@@ -123,7 +123,7 @@ All providers are configured in your `boxlang.json` file:
 | `apiKey`        | string | `""`       | API key for the provider        |
 | `chatURL`       | string | Auto       | Custom API endpoint URL         |
 | `defaultParams` | struct | `{}`       | Default parameters for requests |
-| `timeout`       | number | `30`       | Request timeout in seconds      |
+| `timeout`       | number | `90`       | Request timeout in seconds      |
 | `returnFormat`  | string | `"single"` | Default return format           |
 
 ***
@@ -582,6 +582,22 @@ export AWS_SECRET_ACCESS_KEY="your-secret-key"
 export AWS_REGION="us-east-1"
 ```
 
+**Bearer-Token Auth** (simplest option — no SigV4 signing required):
+
+```bash
+export AWS_BEARER_TOKEN_BEDROCK="your-bearer-token"
+```
+
+```javascript
+result = aiChat( provider: "bedrock", messages: "Hello!", options: {
+    providerOptions: { region: "us-east-1", bearerToken: "..." }
+} )
+```
+
+Bearer-token auth is opt-in only — it is never inferred from a plain `apiKey`, so a Bedrock `apiKey` value continues to mean AWS access/secret keys unless `bearerToken`/`AWS_BEARER_TOKEN_BEDROCK` is explicitly set.
+
+**Default Credential Chain**: with no explicit `apiKey`/`bearerToken`, Bedrock resolves credentials in order — explicit → environment (`AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`) → ECS/EKS container credentials (including EKS Pod Identity's rotating token file) → EC2 IMDSv2. Resolved credentials are cached (expiry-aware) with a short negative cache, so a host with no metadata service doesn't re-pay the timeout on every call.
+
 **Example Usage**:
 
 ```javascript
@@ -615,10 +631,15 @@ aiChatStream(
 
 **Special Features**:
 * ✅ **Full streaming support** (v2.1.0+)
+* ✅ **Tool use** for Claude-on-Bedrock, including batched HITL approvals (v3.4.0+)
+* ✅ **Bearer-token auth** as an alternative to SigV4 signing (v3.4.0+)
+* ✅ **Guardrails** and `x-amzn-bedrock-*` header passthrough (v3.4.0+)
 * ✅ **Inference profiles** for cost optimization
-* ✅ **IAM-based authentication** for enterprise security
+* ✅ **IAM-based authentication** for enterprise security, including the full default credential chain
 * ✅ **Cross-region inference** for global deployments
-* ✅ **All model families**: Claude, Titan, Llama, Mistral
+* ✅ **All model families**: Claude, Titan, Llama, Mistral, Cohere (embeddings)
+
+**Known limitation**: Cohere-on-Bedrock chat is response-side only as of 3.4.0 — replies are parsed correctly, but the request transform still sends Cohere a Claude-shaped body, so Cohere-on-Bedrock chat is not yet functional end to end. Cohere/Titan-v2 **embeddings** on Bedrock are unaffected.
 
 ***
 

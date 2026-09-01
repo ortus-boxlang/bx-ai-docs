@@ -28,7 +28,7 @@ aiChatStream(messages, callback, params, options)
 | --------------------- | ------- | ------------ | ---------------------------- |
 | `provider`            | string  | (config)     | The AI provider to use       |
 | `apiKey`              | string  | (config/env) | API key for the provider     |
-| `timeout`             | numeric | `30`         | Request timeout in seconds   |
+| `timeout`             | numeric | `90`         | Request timeout in seconds   |
 | `logResponse`         | boolean | `false`      | Log the response to ai.log   |
 | `logResponseToConsole`| boolean | `false`      | Log the response to console  |
 | `logRequest`          | boolean | `false`      | Log the request to ai.log    |

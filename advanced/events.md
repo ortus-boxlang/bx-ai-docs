@@ -1,5 +1,5 @@
 ---
-description: Intercept, monitor, and customize AI operations at every stage with the module's 63 interception points.
+description: Intercept, monitor, and customize AI operations at every stage with the module's 70 interception points.
 icon: bullhorn
 ---
 
@@ -77,6 +77,23 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 50 | [onMCPClientRequest](events.md#50-onmcpclientrequest)    | MCP client HTTP request          | `client`, `baseURL`, `operation`, `name`         |
 | 51 | [onMCPClientResponse](events.md#51-onmcpclientresponse)  | MCP client HTTP response         | `client`, `baseURL`, `operation`, `response`     |
 | 52 | [onMCPClientError](events.md#52-onmcpclienterror)        | MCP client HTTP error            | `client`, `baseURL`, `operation`, `error`        |
+| 53 | [beforeAIWebSearch](events.md#53-beforeaiwebsearch) | Before a web search query executes | `provider`, `query`, `options` |
+| 54 | [afterAIWebSearch](events.md#54-afteraiwebsearch) | After a web search returns results | `provider`, `query`, `results`, `cached` |
+| 55 | [onAIWebSearchRequest](events.md#55-onaiwebsearchrequest) | Before the search provider's HTTP request | `provider`, `url`, `method`, `headers` |
+| 56 | [onAIWebSearchResponse](events.md#56-onaiwebsearchresponse) | After the search provider's HTTP response | `provider`, `url`, `statusCode`, `response` |
+| 57 | [onAIWebSearchError](events.md#57-onaiwebsearcherror) | A web search throws | `provider`, `query`, `error` |
+| 58 | [onAIMemorySummarize](events.md#58-onaimemorysummarize) | A memory instance's `summarize()` completes | `memory`, `key`, `type`, `userId`, `conversationId` |
+| 59 | [onGatewayCreate](events.md#59-ongatewaycreate) | `aiGateway()` resolves or creates a gateway | `gateway` |
+| 60 | [onGatewayRegistryRegister](events.md#60-ongatewayregistryregister) | A gateway is registered into `aiGatewayRegistry()` | `gateway`, `key`, `module` |
+| 61 | [onGatewayRegistryUnregister](events.md#61-ongatewayregistryunregister) | A gateway is removed from the registry | `key`, `module` |
+| 62 | [onAiDecisionStoreCreate](events.md#62-onaidecisionstorecreate) | `aiDecisionStore()` creates a store instance | `storeType`, `storeClass`, `storeConfig` |
+| 63 | [onGatewaySessionCreate](events.md#63-ongatewaysessioncreate) | `aiGatewaySession()` constructs a session | `session` |
+| 64 | [onGatewayConnect](events.md#64-ongatewayconnect) | A gateway's `start()` makes a real not-running → running transition | `gateway` |
+| 65 | [onGatewayDisconnect](events.md#65-ongatewaydisconnect) | A gateway's `stop()` makes a real running → not-running transition | `gateway` |
+| 66 | [onGatewayMessageReceived](events.md#66-ongatewaymessagereceived) | A gateway's `parseInbound()` parses an inbound message | `gateway`, `message`, `threadId`, `userId`, `conversationId` |
+| 67 | [onGatewayMessageSent](events.md#67-ongatewaymessagesent) | A gateway's `deliver()` sends an outbound message | `gateway`, `event`, `context`, `result`, `threadId` |
+| 68 | [onAIAgentRunCancel](events.md#68-onaiagentruncancel) | `agent.cancelRun()` actually affects a run in flight | `agent`, `threadId`, `reason` |
+| 69 | [onAIAgentRunSteer](events.md#69-onaiagentrunsteer) | `agent.steerRun()` actually affects a run in flight | `agent`, `threadId`, `input` |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -3119,7 +3136,7 @@ BoxRegisterInterceptor( "onGatewayCreate", function( event ) {
 
 ### 60. onGatewayRegistryRegister
 
-Fired when a gateway is registered into `gatewayRegistry()` — typically by an external gateway module at load time.
+Fired when a gateway is registered into `aiGatewayRegistry()` — typically by an external gateway module at load time.
 
 | Argument | Type | Description |
 | --- | --- | --- |
@@ -3153,6 +3170,96 @@ Fired when `aiDecisionStore()` creates a store for durable human-approval grants
 ```javascript
 BoxRegisterInterceptor( "onAiDecisionStoreCreate", function( event ) {
     println( "Decision store: #event.storeType# -> #event.storeClass#" )
+})
+```
+
+***
+
+## 🎮 Gateway Session & Run Control Events (63–69)
+
+### 63. onGatewaySessionCreate
+
+Fired when `aiGatewaySession()` constructs a `GatewaySession`.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `session` | `GatewaySession` | The constructed session (not yet started) |
+
+```javascript
+BoxRegisterInterceptor( "onGatewaySessionCreate", function( event ) {
+    println( "Gateway session created for agent: #event.session.getAgent().getName()#" )
+})
+```
+
+### 64. onGatewayConnect
+
+Fired from a gateway's `start()`, only on a real not-running → running transition (never on a redundant call while already running). A gateway extending `BaseGateway` gets this tracking automatically.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The gateway that just started |
+
+### 65. onGatewayDisconnect
+
+Fired from a gateway's `stop()`, only on a real running → not-running transition.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The gateway that just stopped |
+
+### 66. onGatewayMessageReceived
+
+Fired from a gateway's `parseInbound()`, once per parsed inbound message.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The gateway that received the message |
+| `message` | `any` | The parsed message payload |
+| `threadId` | `String` | Thread the message belongs to |
+| `userId` | `String` | Sender's user id, if known |
+| `conversationId` | `String` | Conversation id, if known |
+
+```javascript
+BoxRegisterInterceptor( "onGatewayMessageReceived", function( event ) {
+    log.info( "Message on thread #event.threadId# from user #event.userId#" )
+})
+```
+
+### 67. onGatewayMessageSent
+
+Fired from a gateway's `deliver()`, once per outbound delivery.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `gateway` | `IGateway` | The gateway that sent the message |
+| `event` | `any` | The outbound event/payload |
+| `context` | `Struct` | Delivery context |
+| `result` | `GatewayDeliveryResult` | The delivery result |
+| `threadId` | `String` | Thread the message belongs to |
+
+### 68. onAIAgentRunCancel
+
+Fired when `agent.cancelRun( threadId )` actually affects a run currently in flight — never on the no-op case (no run in flight for that thread).
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `agent` | `AiAgent` | The agent whose run was cancelled |
+| `threadId` | `String` | The thread the cancelled run belongs to |
+| `reason` | `String` | The cancellation reason passed to `cancelRun()` |
+
+### 69. onAIAgentRunSteer
+
+Fired when `agent.steerRun( threadId, input )` actually affects a run currently in flight — never on the no-op case.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `agent` | `AiAgent` | The agent whose run was steered |
+| `threadId` | `String` | The thread the steered run belongs to |
+| `input` | `any` | The message spliced into the live turn |
+
+```javascript
+BoxRegisterInterceptor( "onAIAgentRunSteer", function( event ) {
+    println( "Steered run on thread #event.threadId#" )
 })
 ```
 

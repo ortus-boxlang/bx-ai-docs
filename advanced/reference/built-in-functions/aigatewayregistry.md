@@ -3,14 +3,14 @@ description: Returns the singleton GatewayRegistry — the extension point exter
 icon: plug
 ---
 
-# gatewayRegistry
+# aiGatewayRegistry
 
 Returns the singleton `GatewayRegistry` — the extension point external gateway modules use to make their gateway resolvable by `aiGateway()`.
 
 ## Syntax
 
 ```javascript
-gatewayRegistry()
+aiGatewayRegistry()
 ```
 
 ## Parameters
@@ -45,11 +45,11 @@ Keys follow the `name` or `name@module` convention, so two modules can each prov
 ```javascript
 // In your gateway module's ModuleConfig onLoad()
 function onLoad() {
-    gatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
+    aiGatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
 }
 
 function onUnload() {
-    gatewayRegistry().unregisterByModule( "bx-ai-gateway-myplatform" )
+    aiGatewayRegistry().unregisterByModule( "bx-ai-gateway-myplatform" )
 }
 ```
 
@@ -62,15 +62,15 @@ gateway = aiGateway( "myplatform" )
 ### Inspecting the Registry
 
 ```javascript
-if ( gatewayRegistry().has( "myplatform" ) ) {
-    gateway = gatewayRegistry().get( "myplatform" )
+if ( aiGatewayRegistry().has( "myplatform" ) ) {
+    gateway = aiGatewayRegistry().get( "myplatform" )
 }
 
 // Fully-qualified key
-gateway = gatewayRegistry().get( "myplatform@bx-ai-gateway-myplatform" )
+gateway = aiGatewayRegistry().get( "myplatform@bx-ai-gateway-myplatform" )
 
 // Everything currently registered
-registered = gatewayRegistry().listGateways()
+registered = aiGatewayRegistry().listGateways()
 ```
 
 ## Events

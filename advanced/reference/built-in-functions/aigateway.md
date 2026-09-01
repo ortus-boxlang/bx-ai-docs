@@ -10,15 +10,17 @@ Resolves an `IGateway` instance by name — a gateway bx-ai ships in core, or on
 ## Syntax
 
 ```javascript
-aiGateway( name, options )
+aiGateway( name, options, register, module )
 ```
 
 ## Parameters
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `name` | `string` | ✅ | — | A core gateway name (`mock`, `cli`, `http`), a name registered in `gatewayRegistry()`, or a full class path |
+| `name` | `string` | ✅ | — | A core gateway name (`mock`, `cli`, `http`), a name registered in `aiGatewayRegistry()`, or a full class path |
 | `options` | `struct` | ❌ | `{}` | Configuration passed to the gateway's `configure()`. Shape is gateway-specific |
+| `register` | `boolean` | ❌ | `false` | Auto-register the constructed instance into `aiGatewayRegistry()`, same pattern as `aiAgent()`/`aiTool()` |
+| `module` | `string` | ❌ | `""` | Namespaces the registry key when `register: true` (`name` or `name@module`) |
 
 ## Returns
 
@@ -31,7 +33,7 @@ A configured `IGateway` instance.
 ## Resolution Order
 
 1. **Core gateways** — `mock`, `cli`, `http`
-2. **Registered gateways** — anything a module put in `gatewayRegistry()`
+2. **Registered gateways** — anything a module put in `aiGatewayRegistry()`
 3. **Class path** — the name is tried as a directly-instantiable class
 4. Otherwise `GatewayNotSupported`
 
@@ -74,10 +76,17 @@ agent = aiAgent(
 
 ```javascript
 // The module registers itself when it loads
-gatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
+aiGatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
 
 // Resolve it by name anywhere
 gateway = aiGateway( "myplatform" )
+```
+
+### Auto-Registering on Construction
+
+```javascript
+// Equivalent to constructing the gateway, then calling aiGatewayRegistry().register()
+gateway = aiGateway( name: "http", options: { secret: getSecret() }, register: true, module: "bx-ai-gateway-myplatform" )
 ```
 
 ### Checking Capabilities
@@ -100,4 +109,4 @@ Fires `onGatewayCreate` with `{ gateway }` on every resolution path.
 
 * [Gateways](../../../main-components/gateways.md)
 * [Human-in-the-Loop](../../../main-components/human-in-the-loop.md)
-* [gatewayRegistry()](gatewayregistry.md)
+* [aiGatewayRegistry()](aigatewayregistry.md)

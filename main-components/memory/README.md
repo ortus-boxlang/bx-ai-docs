@@ -881,9 +881,9 @@ println( newMemory.getConversationId() )  // "support-456"
 
 ### Pattern 5: Memory Summarization
 
-`summarize( config )` is a method on **every** conversation memory type — `WindowMemory`, `SummaryMemory`, `CacheMemory`, `FileMemory`, `JdbcMemory`, `SessionMemory`, `HybridMemory` — not just `SummaryMemory`. Call it any time to explicitly condense old messages, regardless of whether the memory auto-triggers compression.
+`summarize( config = {}, userId = "", conversationId = "" )` is a method on **every** conversation memory type — `WindowMemory`, `SummaryMemory`, `CacheMemory`, `FileMemory`, `JdbcMemory`, `SessionMemory`, `HybridMemory` — not just `SummaryMemory`. Call it any time to explicitly condense old messages, regardless of whether the memory auto-triggers compression.
 
-```java
+```javascript
 memory = aiMemory( memory: "window", config: { maxMessages: 50 } )
 
 // ... have a long conversation ...
@@ -894,7 +894,12 @@ memory.summarize( {
     model     : "gpt-4o-mini",   // overrides the instance's summaryModel for this call
     provider  : "openai"
 } )
+
+// Scope the compression to one user/conversation on a shared, multi-tenant instance
+memory.summarize( {}, "user-123", "conv-456" )
 ```
+
+`userId`/`conversationId` override the instance default and correctly scope the read, the AI compression, and the persisted result to just that user, that conversation, or — with neither passed — the instance default. Omitting both summarizes the instance-default scope (or all/shared data for stateless instances). Every `summarize()` call is serialized per `(key, userId, conversationId)` scope, so concurrent calls for different scopes on one shared instance don't clobber each other's in-flight compression.
 
 Persistent stores (`JdbcMemory`, `FileMemory`, `CacheMemory`) automatically persist the compressed result. Vector memories are semantic indexes, not conversation buffers, so `summarize()` is a no-op there.
 

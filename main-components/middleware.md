@@ -258,6 +258,8 @@ agent = aiAgent(
 
 `settings.security.enabled = true` auto-attaches `InputSanitizerMiddleware` (and fencing) to every request without wiring it into every agent by hand — see the [Security Guide](../deployment/security.md) for the full settings reference.
 
+`OutputGuardMiddleware` also scans the model's **reasoning**, not just its final answer — see [Reasoning](reasoning.md). **Streaming caveat**: streaming guards are detection-only, not prevention. `afterLLMCall` fires once the stream has ended, so `block` throws only after the caller's callback has already received every chunk, and `redact` rewrites an aggregate the provider has already finished emitting.
+
 ## Struct-Based Inline Middleware
 
 For simple cases, pass a struct with hook functions — no class required:
