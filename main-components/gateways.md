@@ -22,7 +22,7 @@ mock = aiGateway( "mock" )
 | BIF | Purpose |
 |---|---|
 | `aiGateway( name, options )` | Resolve a gateway — a core name, or one registered by a module |
-| `gatewayRegistry()` | The singleton registry external gateway modules register into |
+| `aiGatewayRegistry()` | The singleton registry external gateway modules register into |
 
 Attach one to HITL middleware and approvals are presented there:
 
@@ -144,7 +144,7 @@ Platform gateways — Slack, Discord, Teams, Telegram — ship as **their own mo
 
 ```javascript
 // Inside the gateway module's ModuleConfig onLoad()
-gatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
+aiGatewayRegistry().register( new MyPlatformGateway(), "bx-ai-gateway-myplatform" )
 
 // Anywhere in your application
 gateway = aiGateway( "myplatform" )
@@ -153,10 +153,10 @@ gateway = aiGateway( "myplatform" )
 Registry keys are `name` or `name@module`, so two modules can provide same-named gateways without colliding:
 
 ```javascript
-gatewayRegistry().has( "myplatform" )
-gatewayRegistry().get( "myplatform@bx-ai-gateway-myplatform" )
-gatewayRegistry().listGateways()
-gatewayRegistry().unregisterByModule( "bx-ai-gateway-myplatform" )
+aiGatewayRegistry().has( "myplatform" )
+aiGatewayRegistry().get( "myplatform@bx-ai-gateway-myplatform" )
+aiGatewayRegistry().listGateways()
+aiGatewayRegistry().unregisterByModule( "bx-ai-gateway-myplatform" )
 ```
 
 If nothing is registered under the name, `aiGateway()` falls back to treating it as a directly-instantiable class path, and throws `GatewayNotSupported` if that fails too.
@@ -210,13 +210,19 @@ For a gateway whose pending state must outlive the process, override `setCheckpo
 | Event | Fired when |
 |---|---|
 | `onGatewayCreate` | `aiGateway()` resolves or creates a gateway |
+| `onGatewaySessionCreate` | `aiGatewaySession()` constructs a session |
 | `onGatewayRegistryRegister` | A gateway is registered into the registry |
 | `onGatewayRegistryUnregister` | A gateway is removed |
+| `onGatewayConnect` | A gateway's `start()` makes a real not-running → running transition |
+| `onGatewayDisconnect` | A gateway's `stop()` makes a real running → not-running transition |
+| `onGatewayMessageReceived` | A gateway's `parseInbound()` parses an inbound message |
+| `onGatewayMessageSent` | A gateway's `deliver()` sends an outbound message |
 
 See [Event System](../advanced/events.md).
 
 ## Related Pages
 
+* [Gateway Sessions](gateway-sessions.md) — wiring an agent to inbound gateway traffic
 * [Human-in-the-Loop](human-in-the-loop.md) — approvals, policies, durable grants
-* [aiGateway()](../advanced/reference/built-in-functions/aigateway.md) · [gatewayRegistry()](../advanced/reference/built-in-functions/gatewayregistry.md)
+* [aiGateway()](../advanced/reference/built-in-functions/aigateway.md) · [aiGatewayRegistry()](../advanced/reference/built-in-functions/aigatewayregistry.md) · [aiGatewaySession()](../advanced/reference/built-in-functions/aigatewaysession.md)
 * [Security Guide](../deployment/security.md) — signing, secrets, and network exposure

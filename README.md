@@ -66,6 +66,9 @@ graph LR
 * 🛡️ **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
 * 🧑‍⚖️ **Human-in-the-Loop**: Suspend a run for human approval before sensitive tool calls, with durable "always allow" grants and batched approvals
 * 🔌 **Gateways**: Present approvals over CLI, signed HTTP webhooks, or a platform module you register yourself
+* 📡 **Gateway Sessions**: Wire an agent to inbound gateway messages, with reject/queue/steer/interrupt dispatch policies for a busy thread
+* 🎮 **Agent Run Control**: Cancel or steer a run already in flight, addressed purely by `threadId`
+* 🧠 **Normalized Reasoning**: One `message.reasoning`/`delta.reasoning` envelope across every reasoning-capable provider
 * 🛡️ **Security & Guardrails**: Prompt-injection scanning, untrusted-content fencing, LLM-as-judge classification, and output redaction — all opt-in, all offline-testable
 
 ### 📡 Supported Providers
@@ -74,11 +77,12 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 
 | Provider | Type | Chat | Stream | Tools | Embeddings | Vision | Audio |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Bedrock** | Cloud | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| **Bedrock** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Claude** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | **Cohere** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **DeepSeek** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Docker Desktop** | Local | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **ElevenLabs** | Cloud | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **Gemini** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Grok** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | **Groq** | Cloud | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
@@ -91,7 +95,7 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | **Perplexity** | Cloud | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Voyage** | Cloud | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
 
-> **Legend:** Vision support requires a multimodal model from the provider (e.g., `gpt-4o`, `claude-3`, `gemini-2.0`). Image/Audio (transcription/TTS) support is currently in development. OpenRouter capabilities depend on the selected underlying model.
+> **Legend:** Vision support requires a multimodal model from the provider (e.g., `gpt-4o`, `claude-3`, `gemini-2.0`). Audio covers text-to-speech/speech-to-text/translation, shown here only for providers whose *only* capability is audio (ElevenLabs) — see [Audio/Speech](main-components/audio/README.md) for the full per-provider TTS/STT matrix. OpenRouter capabilities depend on the selected underlying model.
 
 ### 🗃️ Supported Memory Types
 

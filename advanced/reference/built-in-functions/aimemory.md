@@ -296,6 +296,39 @@ context = vectorMemory.getRelevant( "BoxLang syntax", limit: 3 );
 }
 ```
 
+### Summary Memory
+
+```javascript
+{
+    maxMessages: 20,        // Total messages before summarization triggers (0 disables this trigger)
+    maxTokens: 0,           // Token-based trigger instead — mutually exclusive with maxMessages
+    summaryThreshold: 10,   // Keep-window: how many recent messages stay verbatim after compression
+    summaryModel: "gpt-4o-mini",
+    summaryProvider: "openai"
+}
+```
+
+`maxTokens` and `maxMessages` are mutually exclusive triggers — set one, not both; setting both to a value greater than `0` throws `InvalidConfiguration`.
+
+## Summarizing on Demand — `summarize()`
+
+`summarize( config = {}, userId = "", conversationId = "" )` is available on **every** memory type returned by `aiMemory()`, not just `SummaryMemory` — call it any time to explicitly condense history, regardless of whether the memory auto-triggers compression.
+
+```javascript
+memory = aiMemory( memory: "window", config: { maxMessages: 50 } )
+
+memory.summarize( {
+    keepRecent: 5,             // messages to keep verbatim (defaults to summaryThreshold)
+    model     : "gpt-4o-mini", // overrides the instance's summaryModel for this call
+    provider  : "openai"
+} )
+
+// Scope to one user/conversation on a shared, multi-tenant instance
+memory.summarize( {}, "user-123", "conv-456" )
+```
+
+Omitting both `userId` and `conversationId` summarizes the instance-default scope. Vector memories are semantic indexes, not conversation buffers, so `summarize()` is a no-op there. Fires `onAIMemorySummarize` on success — see [Event System](../../events.md).
+
 ## Notes
 
 * **Auto-detection**: Default memory type from module configuration

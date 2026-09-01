@@ -28,7 +28,7 @@ aiEmbed(input, params, options)
 | `provider`            | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama) |
 | `apiKey`              | string  | (config/env) | API key for the provider                                |
 | `returnFormat`        | string  | `"raw"`      | Response format: "raw", "embeddings", "first"           |
-| `timeout`             | numeric | `30`         | Request timeout in seconds                              |
+| `timeout`             | numeric | `90`         | Request timeout in seconds                              |
 | `logResponse`         | boolean | `false`      | Log the response to ai.log                              |
 | `logResponseToConsole`| boolean | `false`      | Log the response to console                             |
 | `logRequest`          | boolean | `false`      | Log the request to ai.log                               |

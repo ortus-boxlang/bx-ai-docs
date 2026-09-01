@@ -46,7 +46,7 @@ aiTranslate( audio, params={}, options={} )
 | `apiKey` | string | (env var) | Provider API key. Falls back to `<PROVIDER>_API_KEY` environment variable |
 | `returnFormat` | string | `"text"` | `"text"` — returns plain English string; `"response"` — returns `AiTranscriptionResponse` |
 | `responseFormat` | string | `"json"` | Provider-level format: `json`, `text`, `verbose_json`, `srt`, `vtt` |
-| `timeout` | numeric | `30` | HTTP request timeout in seconds |
+| `timeout` | numeric | `90` | HTTP request timeout in seconds |
 | `logRequest` | boolean | `false` | Log request to the module log file |
 | `logRequestToConsole` | boolean | `false` | Print request payload to the console |
 | `logResponse` | boolean | `false` | Log response to the module log file |

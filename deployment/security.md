@@ -1217,6 +1217,10 @@ agent = aiAgent( name: "support-bot", model: aiModel( "claude" ), middleware: [ 
 
 Built-in redactors (opt-in set): `email`, `ssn`, `creditCard`, `awsAccessKey`, `privateKeyBlock`, `jwt`, `genericApiToken` — plus `phone` and your own via `customRedactors`, which accepts either a regex string or a closure `function( text, mask )` for dynamic redaction (partial masking, keep-last-4, an external lookup, etc.).
 
+`OutputGuardMiddleware` also scans the model's **reasoning** (extended thinking / `message.reasoning`), not just its final answer — a secret named while thinking and never repeated in the answer is still redacted, and `action: "block"` fires for it too. See [Reasoning](../main-components/reasoning.md).
+
+**Streaming caveat**: streaming guards are detection-only, not prevention. `afterLLMCall` fires once the stream has ended, so `block` throws only after the caller's callback has already received every chunk, and `redact` rewrites an aggregate the provider has already finished emitting — withholding content mid-stream would need a per-chunk hook, which isn't implemented yet.
+
 ```javascript
 guard = new OutputGuardMiddleware(
     customRedactors: {

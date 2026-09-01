@@ -9,7 +9,7 @@ Complete reference documentation for all BoxLang AI built-in functions (BIFs). T
 
 ## 📚 Overview
 
-The BoxLang AI module provides 33 built-in functions organized into functional categories:
+The BoxLang AI module provides 34 built-in functions organized into functional categories:
 
 ### 🗨️ Chat & Conversation
 
@@ -78,7 +78,8 @@ Connect AI to external tools and data sources.
 Present approvals to a human and route them through a platform.
 
 * [**`aiGateway()`**](aigateway.md) - Resolve a gateway (CLI, HTTP, or an external module) by name
-* [**`gatewayRegistry()`**](gatewayregistry.md) - Registry external gateway modules register into
+* [**`aiGatewayRegistry()`**](aigatewayregistry.md) - Registry external gateway modules register into
+* [**`aiGatewaySession()`**](aigatewaysession.md) - Wire an agent to one or more gateways for inbound message handling
 * [**`aiDecisionStore()`**](aidecisionstore.md) - Durable store for `approve_always`/`approve_session` grants
 
 ### 🛡️ Security
@@ -294,7 +295,8 @@ docs = aiDocuments( "/path" )
 | [`aiTranslate()`](aitranslate.md)     | Audio     | Audio-to-English translation |
 | [`aiWebSearch()`](aiwebsearch.md)       | Search    | Search web content          |
 | [`aiWebSearchAsync()`](aiwebsearchasync.md) | Search  | Async web search            |
-| [`gatewayRegistry()`](gatewayregistry.md) | Gateways | Registry for external gateway modules |
+| [`aiGatewayRegistry()`](aigatewayregistry.md) | Gateways | Registry for external gateway modules |
+| [`aiGatewaySession()`](aigatewaysession.md) | Gateways | Wire an agent to gateways for inbound messages |
 | [`MCP()`](mcp.md)                     | MCP       | Create MCP client           |
 | [`MCPServer()`](mcpserver.md)         | MCP       | Create MCP server           |
 

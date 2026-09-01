@@ -31,7 +31,7 @@ aiSpeak( text, params={}, options={} )
 | `outputFormat` | string | `mp3` | Audio format: `mp3`, `wav`, `flac`, `opus`, `pcm` |
 | `speed` | numeric | `1.0` | Playback speed multiplier. Range: 0.25 – 4.0 |
 | `outputFile` | string | `""` | When set, saves audio to this path and returns the file path string instead of `AiSpeechResponse` |
-| `timeout` | numeric | `30` | HTTP request timeout in seconds |
+| `timeout` | numeric | `90` | HTTP request timeout in seconds |
 | `logRequest` | boolean | `false` | Log request to the module log file |
 | `logRequestToConsole` | boolean | `false` | Print request payload to the console |
 | `logResponse` | boolean | `false` | Log response to the module log file |

@@ -49,7 +49,7 @@ The `audio` parameter is auto-detected:
 | `responseFormat` | string | `"json"` | Provider-level format: `json`, `text`, `verbose_json`, `srt`, `vtt` |
 | `timestamps` | array | `[]` | Timestamp granularities: `["segment"]`, `["word"]`, or both |
 | `diarize` | boolean | `false` | Enable speaker diarization (Groq only) |
-| `timeout` | numeric | `30` | HTTP request timeout in seconds |
+| `timeout` | numeric | `90` | HTTP request timeout in seconds |
 | `logRequest` | boolean | `false` | Log request to the module log file |
 | `logRequestToConsole` | boolean | `false` | Print request payload to the console |
 | `logResponse` | boolean | `false` | Log response to the module log file |
