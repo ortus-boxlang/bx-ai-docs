@@ -156,7 +156,7 @@ response = agent.run( "My order hasn't arrived" )
 
 * [AI Skills](../skills.md) — Full skills reference
 * [Tool Registry](../tool-registry.md) — Global tool registry
-* [Middleware](../middleware.md) — Full middleware reference
+* [Middleware Overview](../middleware/README.md) — Full middleware reference and per-middleware pages
 * [Human-in-the-Loop](../human-in-the-loop.md) — Suspend an agent for approval before sensitive tool calls
 * [Memory Systems](../memory/README.md) — Memory configuration
 * [Pipelines](../pipelines/README.md) — Using agents in pipelines

@@ -467,7 +467,7 @@ result = pipeline.run( "hello" ) // "HELLO!"
 
 ***
 
-### 1️⃣3️⃣ [Middleware](middleware.md)
+### 1️⃣3️⃣ [Middleware](middleware/README.md)
 
 **What:** Intercept and modify pipeline execution at any stage
 
@@ -487,7 +487,7 @@ pipeline = aiModel( "openai" )
 * Pre/post processing
 * Middleware chaining
 
-→ [**Read Middleware Guide**](middleware.md)
+→ [**Read Middleware Guide**](middleware/README.md)
 
 ***
 

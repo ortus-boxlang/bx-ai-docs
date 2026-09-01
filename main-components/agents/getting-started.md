@@ -188,7 +188,7 @@ If you want reusable, encapsulated agents for larger applications, see:
 ## ⚙️ Constructor Parameters
 
 | Parameter | Type | Description |
-|---|---|---|
+| --- | --- | --- |
 | `name` | string | Agent name (also used as identifier) |
 | `description` | string | What this agent does (used in sub-agent delegation) |
 | `instructions` | string | System-level instructions for the agent |
@@ -306,5 +306,6 @@ factualAgent = aiAgent(
 * [Tools & MCP](tools-and-mcp.md)
 * [Skills](skills.md)
 * [Middleware](middleware.md)
+* [Run Control](run-control.md)
 * [Streaming](streaming.md)
 * [Sub-Agents & Hierarchy](hierarchy.md)

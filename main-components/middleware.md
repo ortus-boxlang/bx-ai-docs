@@ -14,6 +14,22 @@ icon: filter
 
 Middleware provides hooks into every stage of agent execution — before and after LLM calls, tool invocations, and the full agent run. Use it for logging, retrying failures, enforcing guardrails, human approval, and more without touching your agent code.
 
+## Dedicated Middleware Pages
+
+This page remains a full reference, and each middleware class now also has a dedicated page with focused configuration and behavior details:
+
+* [Middleware Overview](middleware/README.md)
+* [LoggingMiddleware](middleware/logging.md)
+* [RetryMiddleware](middleware/retry.md)
+* [GuardrailMiddleware](middleware/guardrail.md)
+* [MaxToolCallsMiddleware](middleware/max-tool-calls.md)
+* [HumanInTheLoopMiddleware](middleware/human-in-the-loop.md)
+* [FlightRecorderMiddleware](middleware/flight-recorder.md)
+* [InputSanitizerMiddleware](middleware/input-sanitizer.md)
+* [OutputGuardMiddleware](middleware/output-guard.md)
+* [LLMGuardMiddleware](middleware/llm-guard.md)
+* [RunControlMiddleware (Internal)](middleware/run-control.md)
+
 ## How It Works
 
 Middleware wraps agent execution in layers. Each layer can inspect and modify the request/response, or halt execution entirely.

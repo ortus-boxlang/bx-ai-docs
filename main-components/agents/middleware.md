@@ -9,7 +9,7 @@ icon: filter
 # Agent Middleware
 
 {% hint style="info" %}
-**Since BoxLang AI v3.0+**. This page covers attaching middleware to an **agent** specifically. For the full hook list, the complete `AiMiddlewareResult` vocabulary, every built-in middleware's constructor, and custom middleware classes, see [Middleware](../middleware.md) — that page is the canonical reference.
+**Since BoxLang AI v3.0+**. This page covers attaching middleware to an **agent** specifically. For the full hook list, the complete `AiMiddlewareResult` vocabulary, and one page per middleware class, see [Middleware Overview](../middleware/README.md).
 {% endhint %}
 
 ## Adding Middleware to an Agent
@@ -67,7 +67,7 @@ class UsageTrackerMiddleware extends="bxModules.bxai.models.middleware.BaseAiMid
 }
 ```
 
-Every other hook (`beforeLLMCall`/`afterLLMCall`, `beforeToolCall`/`afterToolCall`, `afterToolBatch`, the wrap-style hooks, `onError`) behaves identically whether attached to an agent or a bare model — see [Middleware](../middleware.md#lifecycle-hooks) for all of them.
+Every other hook (`beforeLLMCall`/`afterLLMCall`, `beforeToolCall`/`afterToolCall`, `afterToolBatch`, the wrap-style hooks, `onError`) behaves identically whether attached to an agent or a bare model — see [Middleware Overview](../middleware/README.md#hook-reference) for all of them.
 
 ## Suspending an Agent for Human Approval
 
@@ -103,7 +103,11 @@ This is a thin slice of a larger topic — approval policies, durable `approve_a
 
 ## Related Pages
 
-* [Middleware](../middleware.md) — full hook reference, `AiMiddlewareResult`, every built-in middleware, custom middleware classes
+* [Middleware Overview](../middleware/README.md) — full hook reference and middleware index
+* [HumanInTheLoopMiddleware](../middleware/human-in-the-loop.md) — dedicated middleware reference
+* [RetryMiddleware](../middleware/retry.md) — retry/backoff configuration
+* [GuardrailMiddleware](../middleware/guardrail.md) — tool-level blocking and argument patterns
+* [OutputGuardMiddleware](../middleware/output-guard.md) — output redaction and exfiltration stripping
 * [Human-in-the-Loop](../human-in-the-loop.md) — approval policies, durable grants, batching
 * [Memory Management](memory.md) — checkpointers and suspend/resume
 * [Advanced Patterns](advanced.md) — event interception alternatives
