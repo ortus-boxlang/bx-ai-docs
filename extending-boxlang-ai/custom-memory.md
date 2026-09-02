@@ -58,18 +58,6 @@ graph TB
 
 ***
 
-## 📋 Table of Contents
-
-* [When to Build Custom Memory](custom-memory.md#when-to-build-custom-memory)
-* [Understanding BaseMemory](custom-memory.md#understanding-basememory)
-* [IAiMemory Interface](custom-memory.md#iaimemory-interface)
-* [Creating a Custom Memory](custom-memory.md#creating-a-custom-memory)
-* [Advanced Examples](custom-memory.md#advanced-examples)
-* [Testing Your Memory](custom-memory.md#testing-your-memory)
-* [Best Practices](custom-memory.md#best-practices)
-
-***
-
 ## 🎯 When to Build Custom Memory
 
 Consider building custom memory when you need:

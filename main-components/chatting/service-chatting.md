@@ -57,18 +57,6 @@ graph TB
 * Custom timeouts and endpoints
 * Reusable service instances
 
-## 📋 Table of Contents
-
-* [Creating Services](service-chatting.md#creating-services)
-* [Building Chat Requests](service-chatting.md#building-chat-requests)
-* [Direct Service Invocation](service-chatting.md#direct-service-invocation)
-* [Multiple Providers](service-chatting.md#multiple-providers)
-* [Custom Configuration](service-chatting.md#custom-configuration)
-* [When to Use Services](service-chatting.md#when-to-use-services)
-* [Best Practices](service-chatting.md#best-practices)
-
-***
-
 ## Creating Services
 
 ### 🔄 Service Lifecycle

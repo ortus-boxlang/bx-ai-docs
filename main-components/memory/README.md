@@ -11,19 +11,6 @@ Memory systems enable AI to maintain context across multiple interactions, makin
 
 > **📖 Looking for Vector Memory?** For semantic search and retrieval using embeddings, see the [Vector Memory Guide](vector-memory.md).
 
-## 📋 Table of Contents
-
-* [🔒 Multi-Tenant Isolation](./#-multi-tenant-isolation)
-* [Overview](./#overview)
-* [Memory Types](./#memory-types)
-* [Creating Memory](./#creating-memory)
-* [Using Memory in Pipelines](./#using-memory-in-pipelines)
-* [Memory Patterns](./#memory-patterns)
-* [Best Practices](./#best-practices)
-* [Advanced Memory](./#advanced-memory)
-
-***
-
 ## 🔒 Multi-Tenant Isolation
 
 All memory types support multi-tenant isolation through `userId` and `conversationId` parameters:

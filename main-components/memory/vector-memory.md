@@ -11,20 +11,6 @@ Vector memory enables **semantic search and retrieval** using embeddings to find
 
 > **📖 Looking for Standard Memory?** For conversation history management, see the [Memory Systems Guide](./).
 
-## 📋 Table of Contents
-
-* [🔒 Multi-Tenant Isolation](vector-memory.md#-multi-tenant-isolation)
-* [Overview](vector-memory.md#overview)
-* [How Vector Memory Works](vector-memory.md#how-vector-memory-works)
-* [Choosing a Vector Provider](vector-memory.md#choosing-a-vector-provider)
-* [Vector Memory Types](vector-memory.md#vector-memory-types)
-* [Hybrid Memory](vector-memory.md#hybrid-memory)
-* [Configuration Examples](vector-memory.md#configuration-examples)
-* [Best Practices](vector-memory.md#best-practices)
-* [Advanced Usage](vector-memory.md#advanced-usage)
-
-***
-
 ## 🔒 Multi-Tenant Isolation
 
 **All vector memory providers support multi-tenant isolation** through `userId` and `conversationId` parameters. This enables secure, isolated vector storage for:

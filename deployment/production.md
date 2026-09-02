@@ -9,23 +9,6 @@ icon: server
 
 Comprehensive guide for deploying BoxLang AI applications to production environments. Learn about monitoring, error handling, performance optimization, security, and operational best practices.
 
-## 📋 Table of Contents
-
-* [Pre-Deployment Checklist](production.md#pre-deployment-checklist)
-* [Configuration Management](production.md#configuration-management)
-* [Error Handling & Resilience](production.md#error-handling--resilience)
-* [Monitoring & Observability](production.md#monitoring--observability)
-* [Performance Optimization](production.md#performance-optimization)
-* [Cost Management](production.md#cost-management)
-* [High Availability](production.md#high-availability)
-* [Scaling Strategies](production.md#scaling-strategies)
-* [Database & Memory](production.md#database--memory)
-* [Container Deployment](production.md#container-deployment)
-* [Security Hardening](production.md#security-hardening)
-* [Operational Procedures](production.md#operational-procedures)
-
-***
-
 ## ✅ Pre-Deployment Checklist
 
 ### Essential Requirements

@@ -9,22 +9,6 @@ icon: circle-play
 
 Get up and running with BoxLang AI in minutes. This comprehensive guide walks you through everything from your first AI chat to building autonomous agents with memory, tools, and RAG capabilities.
 
-## 📖 Table of Contents
-
-* [Prerequisites](quickstart.md#-prerequisites)
-* [Your First AI Chat](quickstart.md#-your-first-ai-chat)
-* [Understanding the Basics](quickstart.md#-understanding-the-basics)
-* [Working with Different Providers](quickstart.md#-working-with-different-providers)
-* [Building Conversations](quickstart.md#-building-conversations)
-* [Controlling AI Behavior](quickstart.md#-controlling-ai-behavior)
-* [Practical Examples](quickstart.md#-practical-examples)
-* [Introduction to Pipelines](quickstart.md#-introduction-to-pipelines)
-* [Document Loading & RAG](quickstart.md#-document-loading--rag)
-* [AI Agents Quick Start](quickstart.md#-ai-agents-quick-start)
-* [Structured Output](quickstart.md#-structured-output)
-* [Async & Streaming](quickstart.md#-async--streaming)
-* [Next Steps](quickstart.md#-next-steps)
-
 ## 📋 Prerequisites
 
 * BoxLang installed and configured

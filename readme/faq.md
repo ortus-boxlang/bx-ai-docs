@@ -9,20 +9,6 @@ icon: circle-question
 
 Quick answers to the most common questions about BoxLang AI. If you don't find your answer here, check the [main documentation](../) or ask in the [community forum](https://community.boxlang.io).
 
-## 📋 Table of Contents
-
-* [Getting Started](faq.md#getting-started)
-* [Providers & Models](faq.md#providers--models)
-* [Costs & Pricing](faq.md#costs--pricing)
-* [Performance & Reliability](faq.md#performance--reliability)
-* [Features & Capabilities](faq.md#features--capabilities)
-* [Memory & Context](faq.md#memory--context)
-* [Security & Privacy](faq.md#security--privacy)
-* [Troubleshooting](faq.md#troubleshooting)
-* [Best Practices](faq.md#best-practices)
-
-***
-
 ## 🚀 Getting Started
 
 ### Why use BoxLang AI instead of calling provider APIs directly?

@@ -9,20 +9,6 @@ icon: user-ninja
 
 Master advanced AI interaction techniques including multi-turn conversations, AI tools, async operations, and streaming responses.
 
-## 📋 Table of Contents
-
-* [Multi-Message Conversations](advanced-chatting.md#-multi-message-conversations)
-* [AI Tools (Function Calling)](advanced-chatting.md#-ai-tools-function-calling)
-* [Async Requests](advanced-chatting.md#-async-requests)
-* [Streaming Responses](advanced-chatting.md#-streaming-responses)
-* [Multimodal Content](advanced-chatting.md#-multimodal-content)
-* [JSON Mode](advanced-chatting.md#-json-mode)
-* [Advanced Parameters](advanced-chatting.md#-advanced-parameters)
-* [Multi-Tenant Usage Tracking](advanced-chatting.md#-multi-tenant-usage-tracking-v210)
-* [Best Practices](advanced-chatting.md#-best-practices)
-
-***
-
 ## 💬 Multi-Message Conversations
 
 Create rich, contextual conversations with system prompts and conversation history.

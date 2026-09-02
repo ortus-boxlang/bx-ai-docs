@@ -9,34 +9,6 @@ icon: arrow-right-arrow-left
 
 Transform and process data between pipeline steps. Learn about built-in transformers (return formats) and custom data transformations.
 
-## 📖 Table of Contents
-
-* [Built-In Transformers: Return Formats](transformers.md#-built-in-transformers-return-formats)
-  * [Transformation Pipeline](transformers.md#-transformation-pipeline)
-  * [Available Return Formats](transformers.md#-available-return-formats)
-  * [Single Format](transformers.md#single-format-default-for-functions)
-  * [All Format](transformers.md#all-format)
-  * [Raw Format](transformers.md#raw-format-default-for-pipelines)
-  * [JSON Format](transformers.md#json-format-new)
-  * [XML Format](transformers.md#xml-format-new)
-  * [Using Return Formats in Pipelines](transformers.md#using-return-formats-in-pipelines)
-* [Core Built-In Transformers](transformers.md#-core-built-in-transformers)
-  * [CodeExtractorTransformer](transformers.md#codeextractortransformer)
-  * [JSONExtractorTransformer](transformers.md#jsonextractortransformer)
-  * [XMLExtractorTransformer](transformers.md#xmlextractortransformer)
-  * [TextCleanerTransformer](transformers.md#textcleanertransformer)
-  * [AiTransformRunnable](transformers.md#aitransformrunnable)
-* [Custom Transformers](transformers.md#-custom-transformers)
-  * [Custom Transform Flow](transformers.md#-custom-transform-flow)
-  * [Inline Transform](transformers.md#inline-transform)
-  * [Using aiTransform()](transformers.md#using-aitransform)
-* [Advanced Patterns](transformers.md#advanced-patterns)
-  * [Chaining Transforms](transformers.md#-chaining-transforms)
-  * [Combining Return Formats with Custom Transforms](transformers.md#combining-return-formats-with-custom-transforms)
-  * [Transform Library](transformers.md#transform-library)
-* [Best Practices](transformers.md#best-practices)
-* [Building Your Own Transformers](transformers.md#-building-your-own-transformers)
-
 ## 🎯 Built-In Transformers: Return Formats
 
 The most common "transformers" in bx-ai are **return formats** - built-in ways to automatically transform AI responses.

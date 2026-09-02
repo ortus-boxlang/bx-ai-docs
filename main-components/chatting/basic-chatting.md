@@ -9,20 +9,6 @@ icon: message
 
 Learn the fundamentals of interacting with AI using simple, straightforward chat requests.
 
-## 📋 Table of Contents
-
-* [The aiChat() Function](basic-chatting.md#the-aichat-function)
-* [Simple Questions](basic-chatting.md#simple-questions)
-* [Working with Parameters](basic-chatting.md#working-with-parameters)
-* [Message Roles](basic-chatting.md#message-roles)
-* [Provider Selection](basic-chatting.md#provider-selection)
-* [Return Formats](basic-chatting.md#return-formats)
-* [API Keys](basic-chatting.md#api-keys)
-* [Error Handling](basic-chatting.md#error-handling)
-* [Best Practices](basic-chatting.md#best-practices)
-
-***
-
 ## The `aiChat()` Function
 
 The `aiChat()` function is your primary interface for AI interactions. It's designed to be simple yet powerful.

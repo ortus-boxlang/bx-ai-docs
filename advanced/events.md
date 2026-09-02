@@ -7,17 +7,6 @@ icon: bullhorn
 
 The BoxLang AI module provides a comprehensive event system that allows you to intercept, monitor, and customize AI operations at various stages. These events give you fine-grained control over the AI lifecycle, from object creation to request/response handling.
 
-## 📋 Table of Contents
-
-* [Overview](events.md#overview)
-* [Event Interception](events.md#event-interception)
-* [Available Events](events.md#available-events)
-* [Common Use Cases](events.md#common-use-cases)
-* [Examples](events.md#examples)
-* [Best Practices](events.md#best-practices)
-
-***
-
 ## 🔍 Overview
 
 The event system allows you to **monitor**, **modify**, **validate**, **audit**, **secure**, and **customize** AI operations without modifying core code.

@@ -9,15 +9,6 @@ icon: download
 
 Get the BoxLang AI module installed and ready to use in minutes.
 
-### 📑 Table of Contents
-
-* [System Requirements](./#-system-requirements)
-* [Installation Methods](./#-installation-methods)
-* [Module Configuration](./#-module-configuration)
-* [Running Ollama with Docker](./#-running-ollama-with-docker)
-* [Verification](./#-verification)
-* [Next Steps](./#-next-steps)
-
 ### ⚙️ System Requirements
 
 * **BoxLang Runtime**: 1.8+

@@ -10,17 +10,6 @@ icon: brain
 
 Learn how to use AI models as pipeline-compatible runnables. Models wrap AI service providers for seamless integration into pipelines.
 
-## 📖 Table of Contents
-
-* [Creating Models](models.md#-creating-models)
-* [Models in Pipelines](models.md#-models-in-pipelines)
-* [Model Parameters](models.md#-model-parameters)
-* [Model Options](models.md#-model-options)
-* [Models with Document Loaders & RAG](models.md#-models-with-document-loaders--rag)
-* [Models with Transformers](models.md#-models-with-transformers)
-* [Model Patterns](models.md#model-patterns)
-* [Advanced Usage](models.md#advanced-usage)
-
 ## 🚀 Creating Models
 
 The `aiModel()` BIF creates pipeline-compatible AI models.

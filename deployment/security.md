@@ -9,27 +9,6 @@ icon: shield-halved
 
 Comprehensive security guide for BoxLang AI applications. Learn about API key management, input validation, prompt injection prevention, data privacy, multi-tenant security, and compliance best practices.
 
-## 📋 Table of Contents
-
-* [Security Overview](security.md#security-overview)
-* [API Key Management](security.md#api-key-management)
-* [Input Validation](security.md#input-validation)
-* [Prompt Injection Prevention](security.md#-prompt-injection-prevention)
-* [Tool & Function Calling Security](security.md#-tool--function-calling-security)
-* [External Data Source Validation](security.md#-external-data-source-validation)
-* [Web Search Specific Security](security.md#-web-search-specific-security)
-* [Output Validation](security.md#-output-validation)
-* [Data Privacy](security.md#-data-privacy)
-* [Multi-Tenant Security](security.md#-multi-tenant-security)
-* [Audit Logging](security.md#-audit-logging)
-* [Compliance](security.md#-compliance)
-* [Secure Configuration](security.md#-secure-configuration)
-* [Network Security](security.md#-network-security)
-* [Incident Response](security.md#-incident-response)
-* [Appendix: Hand-Rolled Patterns](security.md#-appendix-hand-rolled-patterns)
-
-***
-
 ## 🛡️ Security Overview
 
 ### Security Principles

@@ -74,30 +74,6 @@ graph TB
     style MEM fill:#BD10E0
 ```
 
-## 📖 Table of Contents
-
-* [Overview](document-loaders.md#overview)
-* [Spreadsheet Loader Integration (bx-spreadsheet)](document-loaders.md#spreadsheet-loader-integration-bx-spreadsheet)
-* [BIF Reference](document-loaders.md#bif-reference)
-* [Document Structure](document-loaders.md#document-structure)
-* [Available Loaders](document-loaders.md#available-loaders)
-  * [TextLoader](document-loaders.md#textloader)
-  * [MarkdownLoader](document-loaders.md#markdownloader)
-  * [CSVLoader](document-loaders.md#csvloader)
-  * [JSONLoader](document-loaders.md#jsonloader)
-  * [XMLLoader](document-loaders.md#xmlloader)
-  * [PDFLoader](document-loaders.md#pdfloader)
-  * [LogLoader](document-loaders.md#logloader)
-  * [HTTPLoader](document-loaders.md#httploader)
-  * [FeedLoader](document-loaders.md#feedloader)
-  * [SQLLoader](document-loaders.md#sqlloader)
-  * [DirectoryLoader](document-loaders.md#directoryloader)
-  * [WebCrawlerLoader](document-loaders.md#webcrawlerloader)
-* [Memory Integration](document-loaders.md#memory-integration)
-* [Chunking](document-loaders.md#chunking)
-* [Transformations](document-loaders.md#transformations)
-* [Advanced Usage](document-loaders.md#advanced-usage)
-
 ## Overview
 
 The document loading system provides:

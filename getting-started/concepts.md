@@ -9,25 +9,6 @@ icon: book
 
 Understanding these core concepts will help you make the most of BoxLang AI. This guide explains the terminology and ideas you'll encounter throughout the documentation.
 
-## 📋 Table of Contents
-
-* [AI & Machine Learning](concepts.md#ai--machine-learning)
-* [Language Models](concepts.md#language-models)
-* [Messages & Conversations](concepts.md#messages--conversations)
-* [Embeddings & Vectors](concepts.md#embeddings--vectors)
-* [Memory Systems](concepts.md#memory-systems)
-* [RAG (Retrieval Augmented Generation)](concepts.md#rag-retrieval-augmented-generation)
-* [Tools & Function Calling](concepts.md#tools--function-calling)
-* [Human-in-the-Loop, Gateways & Security](concepts.md#human-in-the-loop-gateways--security)
-* [Audio & Speech](concepts.md#audio--speech)
-* [Image Generation](concepts.md#image-generation)
-* [Streaming & Async](concepts.md#streaming--async)
-* [Pipelines & Composition](concepts.md#pipelines--composition)
-* [Providers & Services](concepts.md#providers--services)
-* [Tokens & Costs](concepts.md#tokens--costs)
-
-***
-
 ## 🤖 AI & Machine Learning
 
 ### Artificial Intelligence (AI)

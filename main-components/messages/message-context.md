@@ -7,18 +7,6 @@ icon: lock
 
 The BoxLang AI module provides a powerful context system for AI messages that allows you to inject security information, RAG (Retrieval Augmented Generation) data, and other contextual information into your AI operations.
 
-## 📋 Table of Contents
-
-* [Overview](message-context.md#overview)
-* [Using Context with aiChat()](message-context.md#using-context-with-aichat)
-* [Using Context with AiMessage](message-context.md#using-context-with-aimessage)
-* [Using Context with Runnable Pipelines](message-context.md#using-context-with-runnable-pipelines)
-* [Using Context with Agents](message-context.md#using-context-with-agents)
-* [Common Use Cases](message-context.md#common-use-cases)
-* [Best Practices](message-context.md#best-practices)
-
-***
-
 ## 🔍 Overview
 
 The context system provides a way to inject contextual data into AI messages:

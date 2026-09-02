@@ -9,57 +9,6 @@ icon: puzzle-piece
 
 This guide covers detailed setup instructions for all supported AI providers, helping you choose the right provider and configure it properly for your use case.
 
-## 📋 Table of Contents
-
-* [📋 Table of Contents](provider-setup.md#-table-of-contents)
-* [🎯 Quick Provider Comparison](provider-setup.md#-quick-provider-comparison)
-  * [💡 Recommendations by Use Case](provider-setup.md#-recommendations-by-use-case)
-* [🔧 Configuration Basics](provider-setup.md#-configuration-basics)
-  * [Configuration Options Reference](provider-setup.md#configuration-options-reference)
-* [☁️ Cloud Providers](provider-setup.md#️-cloud-providers)
-  * [🟢 OpenAI (ChatGPT)](provider-setup.md#-openai-chatgpt)
-  * [🟣 Claude (Anthropic)](provider-setup.md#-claude-anthropic)
-  * [🔵 Gemini (Google)](provider-setup.md#-gemini-google)
-  * [🔸 Grok (xAI)](provider-setup.md#-grok-xai)
-  * [🤗 HuggingFace](provider-setup.md#-huggingface)
-  * [⚡ Groq](provider-setup.md#-groq)
-  * [🔷 DeepSeek](provider-setup.md#-deepseek)
-  * [🟠 Mistral](provider-setup.md#-mistral)
-  * [🌐 OpenRouter (Multi-Model Gateway)](provider-setup.md#-openrouter-multi-model-gateway)
-  * [🔎 Perplexity](provider-setup.md#-perplexity)
-  * [🧡 Cohere](provider-setup.md#-cohere)
-  * [🚀 Voyage](provider-setup.md#-voyage)
-  * [🟠 AWS Bedrock](provider-setup.md#-aws-bedrock)
-  * [🐳 Docker Desktop AI Models](provider-setup.md#-docker-desktop-ai-models)
-* [🦙 Local AI with Ollama](provider-setup.md#-local-ai-with-ollama)
-  * [Why Ollama?](provider-setup.md#why-ollama)
-  * [Installation Methods](provider-setup.md#installation-methods)
-    * [Option 1: Native Installation](provider-setup.md#option-1-native-installation)
-    * [Option 2: Docker (Recommended for Production)](provider-setup.md#option-2-docker-recommended-for-production)
-  * [Pull and Configure Models](provider-setup.md#pull-and-configure-models)
-  * [BoxLang Configuration](provider-setup.md#boxlang-configuration)
-  * [Verify Installation](provider-setup.md#verify-installation)
-  * [Model Selection Guide](provider-setup.md#model-selection-guide)
-  * [Hardware Requirements](provider-setup.md#hardware-requirements)
-* [🔐 Environment Variables](provider-setup.md#-environment-variables)
-  * [In boxlang.json](provider-setup.md#in-boxlangjson)
-  * [Set Environment Variables](provider-setup.md#set-environment-variables)
-  * [Auto-Detection](provider-setup.md#auto-detection)
-  * [Web Search Provider Notes](provider-setup.md#web-search-provider-notes)
-* [🔄 Multiple Providers](provider-setup.md#-multiple-providers)
-  * [Provider Services](provider-setup.md#provider-services)
-* [🔧 Troubleshooting](provider-setup.md#-troubleshooting)
-  * [❌ "No API key provided"](provider-setup.md#-no-api-key-provided)
-  * [⏱️ "Connection timeout"](provider-setup.md#️-connection-timeout)
-  * [🔌 "Connection refused" (Ollama)](provider-setup.md#-connection-refused-ollama)
-  * [🚫 "Model not found"](provider-setup.md#-model-not-found)
-  * [💰 "Rate limit exceeded"](provider-setup.md#-rate-limit-exceeded)
-  * [🔑 "Invalid API key"](provider-setup.md#-invalid-api-key)
-* [🚀 Next Steps](provider-setup.md#-next-steps)
-* [💡 Tips for Production](provider-setup.md#-tips-for-production)
-
-***
-
 ## 🎯 Quick Provider Comparison
 
 | Provider        | Type    | Best For                       | Cost   | Speed   | Context |

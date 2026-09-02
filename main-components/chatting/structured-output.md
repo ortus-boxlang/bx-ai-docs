@@ -10,18 +10,6 @@ icon: box
 
 Get **type-safe, validated responses** from AI providers by defining expected output schemas. The module automatically converts AI responses into properly typed objects, eliminating manual parsing and validation.
 
-## 📋 Table of Contents
-
-* [Why Use Structured Output?](structured-output.md#why-use-structured-output)
-* [Quick Start](structured-output.md#quick-start)
-* [Using Classes](structured-output.md#using-classes)
-* [Using Struct Templates](structured-output.md#using-struct-templates)
-* [Arrays of Objects](structured-output.md#arrays-of-objects)
-* [Manual Population](structured-output.md#manual-population)
-* [Best Practices](structured-output.md#best-practices)
-
-***
-
 ## Why Use Structured Output?
 
 ### 🔄 Data Extraction Flow

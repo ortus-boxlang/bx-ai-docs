@@ -9,21 +9,6 @@ icon: users-gear
 
 This guide covers implementing **secure, isolated memory** for multi-user and multi-conversation applications using BoxLang AI's built-in multi-tenant support.
 
-## 📋 Table of Contents
-
-* [📖 Overview](multi-tenant-memory.md#-overview)
-* [Core Concepts](multi-tenant-memory.md#core-concepts)
-* [Implementation Patterns](multi-tenant-memory.md#implementation-patterns)
-* [Memory Type Strategies](multi-tenant-memory.md#memory-type-strategies)
-* [Vector Memory Multi-Tenancy](multi-tenant-memory.md#vector-memory-multi-tenancy)
-* [Security Considerations](multi-tenant-memory.md#security-considerations)
-* [Performance Optimization](multi-tenant-memory.md#performance-optimization)
-* [Enterprise Patterns](multi-tenant-memory.md#enterprise-patterns)
-* [Migration Guide](multi-tenant-memory.md#migration-guide)
-* [Troubleshooting](multi-tenant-memory.md#troubleshooting)
-
-***
-
 ## 📖 Overview
 
 Multi-tenant memory isolation enables:

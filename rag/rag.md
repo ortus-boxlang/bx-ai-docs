@@ -9,18 +9,6 @@ icon: brain-circuit
 
 Retrieval-Augmented Generation (RAG) combines the power of document retrieval with AI generation to create intelligent systems that answer questions using your own data. BoxLang AI provides a complete RAG workflow from document loading to context injection.
 
-## 📖 Table of Contents
-
-* [What is RAG?](rag.md#-what-is-rag)
-* [Complete RAG Workflow](rag.md#-complete-rag-workflow)
-* [Quick Start: Complete RAG System](rag.md#-quick-start-complete-rag-system)
-* [Step-by-Step Implementation](rag.md#-step-by-step-implementation)
-* [Advanced RAG Patterns](rag.md#-advanced-rag-patterns)
-* [Vector Database Options](rag.md#-vector-database-options)
-* [Performance Optimization](rag.md#-performance-optimization)
-* [Best Practices](rag.md#-best-practices)
-* [Monitoring & Metrics](rag.md#-monitoring--metrics)
-
 ## 🎯 What is RAG?
 
 RAG enhances AI responses by:

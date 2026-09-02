@@ -44,14 +44,6 @@ graph TB
     style POP fill:#BD10E0
 ```
 
-## 📋 Table of Contents
-
-* [Text Chunking](utilities.md#text-chunking)
-* [Token Counting](utilities.md#token-counting)
-* [Combining Utilities](utilities.md#combining-utilities)
-* [Tips and Tricks](utilities.md#tips-and-tricks)
-* [Object Population](utilities.md#object-population)
-
 ## 📄 Text Chunking
 
 Break large texts into manageable segments that fit within AI token limits. Essential for processing long documents, articles, or books.
