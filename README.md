@@ -79,6 +79,7 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **Bedrock** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Claude** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| **Cloudflare** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Cohere** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **DeepSeek** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Docker Desktop** | Local | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |

@@ -24,6 +24,7 @@ aiService(provider, options)
 
 * **openai** - OpenAI (GPT models)
 * **claude** - Anthropic Claude
+* **cloudflare** - Cloudflare Workers AI (requires `accountId` option or `CLOUDFLARE_ACCOUNT_ID`)
 * **gemini** - Google Gemini
 * **ollama** - Ollama (local models)
 * **groq** - Groq

@@ -19,6 +19,7 @@ This guide covers detailed setup instructions for all supported AI providers, he
 | **Ollama**      | Local   | Privacy, offline, free         | Free   | Medium  | Varies  |
 | **Groq**        | Cloud   | Ultra-fast inference           | \$$    | Fastest | 32K     |
 | **DeepSeek**    | Cloud   | Code, reasoning                | $      | Fast    | 64K     |
+| **Cloudflare**  | Cloud   | Edge inference, open models    | $      | Fast    | Varies  |
 | **HuggingFace** | Cloud   | Open-source models             | $      | Medium  | Varies  |
 | **OpenRouter**  | Gateway | Access multiple models         | Varies | Fast    | Varies  |
 | **Perplexity**  | Cloud   | Research, citations            | \$$    | Fast    | 8K      |
@@ -338,6 +339,67 @@ result = aiChat(
   }
 }
 ```
+
+***
+
+### ☁️ Cloudflare Workers AI
+
+**Best for**: Open models (Llama, Qwen, GPT-OSS, and more) running on Cloudflare's global network
+
+**Get API Key**: [https://dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) (create a token with the **Workers AI** permission)
+
+**Account ID**: Required. Find it in the Cloudflare dashboard sidebar or under **Workers & Pages**. Provide it with the `accountId` option or the `CLOUDFLARE_ACCOUNT_ID` environment variable.
+
+**Configuration**:
+
+```json
+{
+  "modules": {
+    "bxai": {
+      "settings": {
+        "provider": "cloudflare",
+        "apiKey": "${CLOUDFLARE_API_KEY}",
+        "providers": {
+          "cloudflare": {
+            "options": {
+              "accountId": "${CLOUDFLARE_ACCOUNT_ID}"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Usage**:
+
+```javascript
+// Uses CLOUDFLARE_API_KEY and CLOUDFLARE_ACCOUNT_ID from the environment
+answer = aiChat( "What is BoxLang?", {}, { provider: "cloudflare" } )
+
+// Or pass the account ID directly and pick a model
+answer = aiChat(
+    "What is BoxLang?",
+    { model: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
+    { provider: "cloudflare", accountId: "your-account-id" }
+)
+
+// Embeddings
+vector = aiEmbed( "BoxLang is a modern JVM language", {}, { provider: "cloudflare" } )
+```
+
+**Default Models**:
+
+* Chat: `@cf/openai/gpt-oss-20b`
+* Embeddings: `@cf/baai/bge-base-en-v1.5`
+
+Browse all models in the [Workers AI model catalog](https://developers.cloudflare.com/workers-ai/models/).
+
+**Special Features**:
+
+* **Chat, streaming, tool calling and embeddings** through the Workers AI OpenAI compatible API
+* **Free daily allocation** on every Cloudflare account
 
 ***
 
@@ -885,6 +947,7 @@ For example:
 * `GOOGLE_API_KEY` (alternative for Gemini)
 * `GROQ_API_KEY`
 * `DEEPSEEK_API_KEY`
+* `CLOUDFLARE_API_KEY` (also set `CLOUDFLARE_ACCOUNT_ID`)
 * `HUGGINGFACE_API_KEY`
 * `HF_TOKEN` (alternative for HuggingFace)
 * `MISTRAL_API_KEY`
