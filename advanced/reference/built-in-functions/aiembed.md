@@ -25,7 +25,7 @@ aiEmbed(input, params, options)
 
 | Option                | Type    | Default      | Description                                             |
 | --------------------- | ------- | ------------ | ------------------------------------------------------- |
-| `provider`            | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama) |
+| `provider`            | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama, cloudflare, etc.) |
 | `apiKey`              | string  | (config/env) | API key for the provider                                |
 | `returnFormat`        | string  | `"raw"`      | Response format: "raw", "embeddings", "first"           |
 | `timeout`             | numeric | `90`         | Request timeout in seconds                              |

@@ -128,6 +128,7 @@ agent = aiAgent(
 | Provider         | Best For                       | Cost   | Speed        |
 | ---------------- | ------------------------------ | ------ | ------------ |
 | **Claude**       | Long context, analysis         | Medium | Medium       |
+| **Cloudflare**   | Open models on the edge        | Low    | Fast         |
 | **Cohere**       | Embeddings, RAG                | Low    | Fast         |
 | **DeepSeek**     | Code generation, reasoning     | Low    | Fast         |
 | **Gemini**       | Google integration, multimodal | Low    | Fast         |

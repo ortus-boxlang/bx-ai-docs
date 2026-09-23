@@ -60,7 +60,7 @@ Every chat provider is covered, by one of three routes:
 
 | Route | Providers |
 |---|---|
-| Inherited from `BaseService` via `super.chat()`/`super.chatStream()` | Grok, Groq, Mistral, DeepSeek, OpenRouter, Perplexity, MiniMax, HuggingFace, Docker Model Runner, OpenAI-Compatible |
+| Inherited from `BaseService` via `super.chat()`/`super.chatStream()` | Grok, Groq, Mistral, DeepSeek, Cloudflare, OpenRouter, Perplexity, MiniMax, HuggingFace, Docker Model Runner, OpenAI-Compatible |
 | Inherited from `BaseService` directly | Cohere, Gemini |
 | Explicit per-wire mapping | Claude (`thinking_delta`), Ollama (`message.thinking`), Claude-on-Bedrock (`delta.thinking`), OpenAI-shaped Bedrock models (`reasoning`/`reasoning_content`) |
 

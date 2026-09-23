@@ -345,7 +345,7 @@ while ( !done ) {
 // Check available providers
 supportedProviders = [
     "openai", "claude", "gemini", "ollama",
-    "groq", "grok", "deepseek", "mistral",
+    "groq", "grok", "deepseek", "mistral", "cloudflare",
     "cohere", "huggingface", "perplexity", "voyage"
 ];
 
