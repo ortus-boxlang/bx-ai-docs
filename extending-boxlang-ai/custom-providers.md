@@ -215,6 +215,7 @@ class extends="BaseService" {
 * `OpenAIService.bx` - Standard OpenAI
 * `GroqService.bx` - Groq (OpenAI-compatible)
 * `DeepSeekService.bx` - DeepSeek (OpenAI-compatible)
+* `CloudflareService.bx` - Cloudflare Workers AI (OpenAI-compatible, builds its URLs from an account ID in `configure()`)
 * `PerplexityService.bx` - Perplexity (OpenAI-compatible)
 
 ### Type 2: Custom Authentication

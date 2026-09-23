@@ -43,7 +43,7 @@ graph LR
 
 ### ✨ Key Features
 
-* 🌐 **Multi-Provider Support**: Work with OpenAI, Claude, Gemini, Grok, Groq, DeepSeek, Ollama, and more
+* 🌐 **Multi-Provider Support**: Work with OpenAI, Claude, Gemini, Grok, Groq, DeepSeek, Cloudflare Workers AI, Ollama, and more
 * 🔄 **Unified API**: One consistent interface across all providers
 * 👥 **Multi-Tenant Memory**: Enterprise-grade isolation with userId and conversationId across all 20 memory types
 * 🎨 **Multimodal Content**: Process images, audio, video, and documents alongside text
@@ -79,6 +79,7 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **Bedrock** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Claude** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| **Cloudflare** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Cohere** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **DeepSeek** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Docker Desktop** | Local | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |

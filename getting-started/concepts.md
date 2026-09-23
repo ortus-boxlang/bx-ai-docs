@@ -1061,7 +1061,7 @@ template.run( {
 
 A company/service that offers AI models (OpenAI, Anthropic, Google, etc.).
 
-**BoxLang AI supports**: OpenAI, Claude, Gemini, Groq, Grok, DeepSeek, Ollama, Perplexity, HuggingFace, Mistral, OpenRouter, Cohere, Voyage.
+**BoxLang AI supports**: OpenAI, Claude, Gemini, Groq, Grok, DeepSeek, Cloudflare Workers AI, Ollama, Perplexity, HuggingFace, Mistral, OpenRouter, Cohere, Voyage.
 
 ### Service Instance
 

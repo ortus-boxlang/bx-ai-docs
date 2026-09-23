@@ -862,6 +862,42 @@ financeEmb = aiEmbed(
 
 **Note:** Voyage specializes in embeddings only. For chat completions, use OpenAI, Claude, or another provider.
 
+### Cloudflare Workers AI
+
+**Models:**
+
+* `@cf/baai/bge-base-en-v1.5` (768 dimensions) - Default, balanced English model
+* `@cf/baai/bge-small-en-v1.5` (384 dimensions) - Fastest, smallest
+* `@cf/baai/bge-large-en-v1.5` (1024 dimensions) - Highest quality English
+* `@cf/baai/bge-m3` (1024 dimensions) - Multilingual
+
+**Setup:**
+
+```bash
+# Create a token with the Workers AI permission at https://dash.cloudflare.com/profile/api-tokens
+export CLOUDFLARE_API_KEY="your-token"
+export CLOUDFLARE_ACCOUNT_ID="your-account-id"
+```
+
+**Usage:**
+
+```javascript
+// Default model
+embedding = aiEmbed( "BoxLang is a modern JVM language", {}, { provider: "cloudflare" } )
+
+// Multilingual
+embedding = aiEmbed(
+    "BoxLang es un lenguaje moderno",
+    { model: "@cf/baai/bge-m3" },
+    { provider: "cloudflare", accountId: "your-account-id" }
+)
+```
+
+**When to Use Cloudflare:**
+
+* You already run on Cloudflare
+* You want low cost open embedding models with a free daily allocation
+
 ### Cohere
 
 **Models:**

@@ -654,6 +654,7 @@ aiToolRegistry().scan( new OrderService(), "orders-module" )
 | Gemini   | 🔜 Coming         | In development                    |
 | Ollama   | ✅ Model-dependent | Works with supported models       |
 | DeepSeek | ✅ Full            | Good support                      |
+| Cloudflare | ✅ Model-dependent | Use a function calling model (default `@cf/openai/gpt-oss-20b`) |
 | Grok     | ✅ Full            | Good support                      |
 
 ## Next Steps

@@ -45,7 +45,7 @@ Comprehensive guide to configuring all supported AI providers.
 
 **Time:** 10-15 minutes
 
-* **🤖 Multi-Provider Support** - OpenAI, Claude, Gemini, Ollama, Grok, Groq, DeepSeek, Perplexity, and more
+* **🤖 Multi-Provider Support** - OpenAI, Claude, Gemini, Ollama, Grok, Groq, DeepSeek, Cloudflare Workers AI, Perplexity, and more
 * **💬 Simple Chat Interface** - Start with one-line AI conversations
 * **🔄 Composable Pipelines** - Build complex AI workflows by chaining operations
 * **🧠 Intelligent Agents** - Create autonomous agents with memory and tools

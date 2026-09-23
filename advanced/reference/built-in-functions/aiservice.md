@@ -24,6 +24,7 @@ aiService(provider, options)
 
 * **openai** - OpenAI (GPT models)
 * **claude** - Anthropic Claude
+* **cloudflare** - Cloudflare Workers AI (requires `accountId` option or `CLOUDFLARE_ACCOUNT_ID`)
 * **gemini** - Google Gemini
 * **ollama** - Ollama (local models)
 * **groq** - Groq
@@ -344,7 +345,7 @@ while ( !done ) {
 // Check available providers
 supportedProviders = [
     "openai", "claude", "gemini", "ollama",
-    "groq", "grok", "deepseek", "mistral",
+    "groq", "grok", "deepseek", "mistral", "cloudflare",
     "cohere", "huggingface", "perplexity", "voyage"
 ];
 
