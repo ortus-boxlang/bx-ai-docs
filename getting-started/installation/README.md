@@ -50,7 +50,7 @@ Add to your `box.json` for managed dependencies:
   "name": "my-boxlang-app",
   "version": "1.0.0",
   "dependencies": {
-    "bx-ai": "^2"
+    "bx-ai": "^3"
   }
 }
 ```
@@ -135,7 +135,7 @@ Configure multiple providers with default parameters and service options:
         "providers": {
           "openai": {
             "params": {
-              "model": "gpt-4"
+              "model": "<openai-model-name>"
             },
             "options": {
               "apiKey": "${OPENAI_API_KEY}"
@@ -151,7 +151,7 @@ Configure multiple providers with default parameters and service options:
           },
           "claude": {
             "params": {
-              "model": "claude-3-5-sonnet-20241022"
+              "model": "claude-sonnet-5-5"
             },
             "options": {
               "apiKey": "${CLAUDE_API_KEY}",
@@ -301,7 +301,7 @@ This is the quick-reference subset. See the [**Provider Setup Guide**](provider-
 ```json
 {
   "defaultParams": {
-    "model": "gpt-4o",
+    "model": "<model-name>",
     "temperature": 0.7,
     "max_tokens": 1000,
     "frequency_penalty": 0.1

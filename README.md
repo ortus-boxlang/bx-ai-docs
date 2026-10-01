@@ -1,17 +1,17 @@
 ---
-description: BoxLang AI is a comprehensive library that brings enterprise-grade artificial intelligence capabilities to the JVM ecosystem. Whether you're building chatbots, content generators, code assistants, RAG systems, or complex AI workflows, this library provides everything you need.
+description: BoxLang AI is the module for building AI into your applications with one fluent API for chat, agents, tools, memory, RAG, MCP, and enterprise governance.
 icon: house-chimney-heart
 ---
 
 # Introduction
 
-Welcome to the **BoxLang AI Library** - your unified gateway to integrating AI capabilities into any JVM application. This library provides an elegant, easy-to-use API for interacting with multiple AI providers, from simple chat requests to complex multi-agent systems.
+**BoxLang AI** lets you build AI into your applications with one fluent API for chat, agents, tools, memory, RAG, and MCP across many providers, with the governance controls you need in production. It is part of the BoxLang software productivity platform, built for developers, built for AI, built to ship.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image.png" alt="BoxLang AI overview"><figcaption></figcaption></figure>
 
 ## 🙋 What is BoxLang AI?
 
-BoxLang AI is a comprehensive library that brings enterprise-grade artificial intelligence capabilities to the JVM ecosystem. Whether you're building chatbots, content generators, code assistants, RAG systems, or complex AI workflows, this module provides everything you need.
+BoxLang AI is a module that gives you a unified API for chatbots, content generation, code assistants, RAG systems, and multi-step agent workflows. Start with one line of code and grow into agents, memory, tools, and middleware as your needs grow.
 
 ```mermaid
 graph LR
@@ -43,33 +43,33 @@ graph LR
 
 ### ✨ Key Features
 
-* 🌐 **Multi-Provider Support**: Work with OpenAI, Claude, Gemini, Grok, Groq, DeepSeek, Cloudflare Workers AI, Ollama, and more
-* 🔄 **Unified API**: One consistent interface across all providers
-* 👥 **Multi-Tenant Memory**: Enterprise-grade isolation with userId and conversationId across all 20 memory types
-* 🎨 **Multimodal Content**: Process images, audio, video, and documents alongside text
-* 🏠 **Local AI Support**: Run models locally with Ollama for privacy and offline use
-* 🔗 **AI Pipelines**: Chain operations together for complex multi-step workflows
-* ⚡ **Streaming Responses**: Get real-time responses as they're generated
-* 🛠️ **Tool Integration**: Enable AI to call functions and access real-time data
-* 🚀 **Async Support**: Non-blocking operations for better performance
-* 📝 **Template System**: Create reusable prompts with dynamic placeholders
-* 🤖 **AI Agents**: Autonomous agents with memory, tools, and reasoning
-* 📄 **Document Loaders**: Load and process various file formats for RAG
-* 🧠 **Vector Memory**: Semantic search with 12 vector database integrations
-* 🎯 **AI Skills**: Composable, reusable knowledge blocks injected into agent system messages at runtime
-* 🔌 **MCP Server Integration**: Seed agents and models directly from MCP servers — tools discovered automatically
-* 🔌 **Middleware Pipeline**: Intercept and transform AI requests/responses with a powerful middleware system
-* 🎵 **Audio & Speech**: Text-to-speech, speech-to-text, and audio translation across multiple providers
-* 🖼️ **Image Generation**: Generate images from text prompts with provider-agnostic API
-* 🌐 **Web Search**: Real-time web search integration with agent tools and structured results
-* 🗄️ **Global Tool Registry**: Register tools by name once, reference by string everywhere
-* 🛡️ **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
-* 🧑‍⚖️ **Human-in-the-Loop**: Suspend a run for human approval before sensitive tool calls, with durable "always allow" grants and batched approvals
-* 🔌 **Gateways**: Present approvals over CLI, signed HTTP webhooks, or a platform module you register yourself
-* 📡 **Gateway Sessions**: Wire an agent to inbound gateway messages, with reject/queue/steer/interrupt dispatch policies for a busy thread
-* 🎮 **Agent Run Control**: Cancel or steer a run already in flight, addressed purely by `threadId`
-* 🧠 **Normalized Reasoning**: One `message.reasoning`/`delta.reasoning` envelope across every reasoning-capable provider
-* 🛡️ **Security & Guardrails**: Prompt-injection scanning, untrusted-content fencing, LLM-as-judge classification, and output redaction — all opt-in, all offline-testable
+* **Multi-Provider Support**: Work with OpenAI, Claude, Gemini, Grok, Groq, DeepSeek, Cloudflare Workers AI, Ollama, and more
+* **Unified API**: One consistent interface across all providers
+* **Multi-Tenant Memory**: Enterprise-grade isolation with userId and conversationId across all 20 memory types
+* **Multimodal Content**: Process images, audio, video, and documents alongside text
+* **Local AI Support**: Run models locally with Ollama for privacy and offline use
+* **AI Pipelines**: Chain operations together for complex multi-step workflows
+* **Streaming Responses**: Get real-time responses as they're generated
+* **Tool Integration**: Enable AI to call functions and access real-time data
+* **Async Support**: Non-blocking operations for better performance
+* **Template System**: Create reusable prompts with dynamic placeholders
+* **AI Agents**: Autonomous agents with memory, tools, and reasoning
+* **Document Loaders**: Load and process various file formats for RAG
+* **Vector Memory**: Semantic search with 12 vector database integrations
+* **AI Skills**: Composable, reusable knowledge blocks injected into agent system messages at runtime
+* **MCP Server Integration**: Seed agents and models directly from MCP servers — tools discovered automatically
+* **Middleware Pipeline**: Intercept and transform AI requests/responses with a powerful middleware system
+* **Audio & Speech**: Text-to-speech, speech-to-text, and audio translation across multiple providers
+* **Image Generation**: Generate images from text prompts with provider-agnostic API
+* **Web Search**: Real-time web search integration with agent tools and structured results
+* **Global Tool Registry**: Register tools by name once, reference by string everywhere
+* **Provider Capabilities**: Type-safe capability system — providers declare what they support, BIFs enforce it
+* **Human-in-the-Loop**: Suspend a run for human approval before sensitive tool calls, with durable "always allow" grants and batched approvals
+* **Gateways**: Present approvals over CLI, signed HTTP webhooks, or a platform module you register yourself
+* **Gateway Sessions**: Wire an agent to inbound gateway messages, with reject/queue/steer/interrupt dispatch policies for a busy thread
+* **Agent Run Control**: Cancel or steer a run already in flight, addressed purely by `threadId`
+* **Normalized Reasoning**: One `message.reasoning`/`delta.reasoning` envelope across every reasoning-capable provider
+* **Security & Guardrails**: Prompt-injection scanning, untrusted-content fencing, LLM-as-judge classification, and output redaction — all opt-in, all offline-testable
 
 ### 📡 Supported Providers
 
@@ -247,6 +247,16 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | `MCP()`       | Connect to MCP servers   | MCPClient   | External tools, resources |
 | `MCPServer()` | Create MCP server instances | MCPServer   | Expose tools to agents    |
 
+### 🛡️ Governance & Gateways
+
+| BIF | Purpose | Return Type | Example Use Case |
+| --- | ------- | ----------- | ---------------- |
+| `aiFence()` | Wrap untrusted content in boundary markers so the model treats it as data | String | Defending against indirect prompt injection |
+| `aiGateway()` | Resolve a gateway by name | IGateway | Human approvals over CLI or signed HTTP |
+| `aiGatewayRegistry()` | Access the registry external gateway modules register into | GatewayRegistry | Custom platform gateways |
+| `aiGatewaySession()` | Wire an agent to inbound gateway messages | GatewaySession | Chat platform agents |
+| `aiDecisionStore()` | Create the store for durable human-approval grants | IDecisionStore | Human-in-the-Loop "always allow" |
+
 ### 🎵 Audio & Speech
 
 | BIF               | Purpose                        | Return Type | Example Use Case                  |
@@ -284,7 +294,7 @@ println( answer )
 ```javascript
 answer = aiChat(
     "Write a haiku about coding",
-    { temperature: 0.9, model: "gpt-4" }
+    { temperature: 0.9 }
 )
 ```
 
@@ -413,13 +423,11 @@ response = agent.run( "Research AI trends in 2025" )
 
 ***
 
-## 🌟 Upgrade to Plus
+## 🌟 Part of the BoxLang Platform
 
-BoxLang and BoxLang AI are both Professional Open-Source (POS) projects.  However, we also offer enterprise features, priority support, SLAs, and much more in our [BoxLang +/++ Plans.](https://boxlang.io/plans)
+BoxLang AI is part of **BoxLang, the software productivity platform for building, modernizing and running applications, with developers and AI agents working together**.
 
-* 🏢 **Enterprise Modules**: Advanced components and integrations
-* 🛠️ **Advanced Tooling**: Enhanced development and debugging tools
-* ⚡ **Priority Support**: Direct access to our engineering team
-* 🔐 **Enterprise Features**: SSO, audit logs, advanced security
+* [BoxLang AI overview](https://boxlang.ortusbooks.com/boxlang-ai) in the main BoxLang docs
+* [Agentic Development](https://boxlang.ortusbooks.com/getting-started/agentic-development) to set up skills, MCP servers, and agents that write BoxLang code with you
 
-**Learn more**: [boxlang.io/plans](https://boxlang.io/plans)
+BoxLang and BoxLang AI are professional open source projects. Most modules are open source and free to use, and **every BoxLang+ module is free to try for 60 days**. The trial starts automatically the first time you start a BoxLang server or CLI with a BoxLang+ module installed, with no sign-up and no key. When you want enterprise support, SLAs, and premium modules, [join us](https://www.boxlang.io/plans).
