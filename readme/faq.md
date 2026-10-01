@@ -192,6 +192,10 @@ privateAgent = aiAgent(
 
 **AI Provider costs**: Pay-per-use (except Ollama which is free)
 
+{% hint style="warning" %}
+Model names and prices below are examples and change often. Always check your provider's current pricing page.
+{% endhint %}
+
 **Typical pricing** (per 1M tokens):
 
 * GPT-3.5 Turbo: $0.50 input / $1.50 output
@@ -654,6 +658,10 @@ answer = aiChat(
 ***
 
 ### How do I prevent prompt injection attacks?
+
+{% hint style="success" %}
+BoxLang AI includes opt-in security middleware: [`InputSanitizerMiddleware`](../main-components/middleware/input-sanitizer.md) scans inbound content and tool results, [`GuardrailMiddleware`](../main-components/middleware/guardrail.md) blocks tools and argument patterns, and [`aiFence()`](../advanced/reference/built-in-functions/aifence.md) fences untrusted content. See the [Security Guide](../deployment/security.md).
+{% endhint %}
 
 **Prompt injection**: When users trick AI by embedding instructions in their input.
 

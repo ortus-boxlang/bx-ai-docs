@@ -88,7 +88,7 @@ poem = aiChat(
 ```javascript
 answer = aiChat(
     "Explain quantum physics",
-    { model: "gpt-4", temperature: 0.3 }
+    { model: "<model-name>", temperature: 0.3 }
 )
 ```
 
@@ -151,7 +151,7 @@ answer = aiChat(
 ```javascript
 answer = aiChat(
     "Analyze this code",
-    { model: "claude-3-opus-20240229" },
+    { model: "claude-sonnet-5-5" },
     { provider: "claude" }
 )
 ```
@@ -272,7 +272,6 @@ detailed = aiChat(
 code = aiChat(
     "Write a BoxLang function to reverse a string",
     {
-        model: "gpt-4",
         temperature: 0.3
     }
 )

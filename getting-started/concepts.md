@@ -267,7 +267,7 @@ response = aiChat(
             ]
         )
     ],
-    { provider: "openai", model: "gpt-4o" }
+    { provider: "openai", model: "<vision-model-name>" }
 )
 ```
 
@@ -1082,7 +1082,7 @@ service = aiService( "openai", {
 // Configure
 service.configure({
     apiKey: getSystemSetting( "OPENAI_API_KEY" ),
-    model: "gpt-4",
+    model: "<model-name>",
     temperature: 0.7
 })
 
@@ -1094,7 +1094,7 @@ response = service.invoke( request )
 
 ### Model
 
-A specific AI model within a provider (e.g., `gpt-4`, `claude-3-opus`, `gemini-pro`).
+A specific AI model within a provider (for example, a provider's small and fast model, or its largest reasoning model). Check your provider's documentation for current model names.
 
 **Model selection matters**:
 
@@ -1154,7 +1154,8 @@ println( "Tokens: #count#" )
 
 // Estimate cost
 tokens = aiTokens( myPrompt )
-cost = tokens * 0.00003  // $0.03 per 1K tokens for GPT-4
+pricePerToken = 0.00001  // use your provider's current pricing
+cost = tokens * pricePerToken
 ```
 
 ### Input vs Output Tokens

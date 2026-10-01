@@ -106,6 +106,10 @@ All providers are configured in your `boxlang.json` file:
 }
 ```
 
+{% hint style="warning" %}
+Model names, context sizes, and prices in this guide are examples and change often. Check each provider's documentation for the current list.
+{% endhint %}
+
 **Available Models**:
 
 | Model           | Description           | Context | Best For                  |

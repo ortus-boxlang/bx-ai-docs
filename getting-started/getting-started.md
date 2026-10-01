@@ -1,12 +1,13 @@
 ---
-description: >-
-  The easiest way to build AI-powered applications, and autonomous agents on the JVM. Connect to OpenAI, Claude, Gemini, and more with under 10 lines of code.
+description: Build AI-powered applications and autonomous agents on the JVM with one unified API for OpenAI, Claude, Gemini, Ollama, and more.
 icon: crosshairs-simple
 ---
 
 # Overview
 
-**BoxLang AI is the fastest path** from idea to production-grade AI applications. With a single line of code, connect to 12+ providers including OpenAI, Claude, Gemini, Grok, and Ollama. BoxLang AI delivers a unified API, autonomous agent architecture, multi-tenant memory systems, and enterprise-ready integrations—giving you everything needed to build sophisticated AI applications without the complexity.
+**BoxLang AI** is the module for building AI into your applications. It gives you one unified API across many providers, including OpenAI, Claude, Gemini, Grok, and Ollama, plus agents, multi-tenant memory, tools, RAG, MCP, and the middleware controls you need to run AI in production.
+
+It is part of the [BoxLang software productivity platform](https://boxlang.ortusbooks.com), built for developers, built for AI, built to ship.
 
 We recommend you use **simple chat functions** (`aiChat()`, `aiMessage()`) when you want to quickly add AI capabilities to existing applications. Use **AI Agents and Pipelines** when you have more advanced needs that require autonomous reasoning, tool calling, memory systems, RAG, and multi-step workflows.
 
@@ -36,7 +37,7 @@ Comprehensive guide to configuring all supported AI providers.
 **What you'll learn:**
 
 * Provider comparison and recommendations
-* Getting API keys for 12+ cloud providers (OpenAI, Claude, Gemini, etc.)
+* Getting API keys for the supported cloud providers (OpenAI, Claude, Gemini, and more)
 * Setting up Ollama for local AI (no API costs!)
 * Configuration best practices
 * Environment variables and security
@@ -44,6 +45,10 @@ Comprehensive guide to configuring all supported AI providers.
 * Troubleshooting provider issues
 
 **Time:** 10-15 minutes
+
+***
+
+## ✨ What You Get
 
 * **🤖 Multi-Provider Support** - OpenAI, Claude, Gemini, Ollama, Grok, Groq, DeepSeek, Cloudflare Workers AI, Perplexity, and more
 * **💬 Simple Chat Interface** - Start with one-line AI conversations
@@ -148,8 +153,8 @@ We recommend this progression:
 ### Simple Chat
 
 ```javascript
-result = aiChat( "What is BoxLang?" );
-println( result );
+result = aiChat( "What is BoxLang?" )
+println( result )
 ```
 
 ### Structured Output
@@ -174,10 +179,10 @@ println( person.name ) // "John"
 // Create an agent with defaults:
 // - memory from global config (window) by default
 // - model and provider from global config
-agent = aiAgent( name: "MyAgent" ).withInstructions( "You are a helpful assistant" );
+agent = aiAgent( name: "MyAgent" ).withInstructions( "You are a helpful assistant" )
 
 // Run the agent with a user prompt
-response = agent.run( "Hello! Remember my name is Alice." );
+response = agent.run( "Hello! Remember my name is Alice." )
 ```
 
 ***
@@ -198,4 +203,12 @@ After mastering the basics, explore these advanced topics:
 
 * **🐛 Found a bug?** [Report it on GitHub](https://github.com/ortus-boxlang/bx-ai/issues)
 * **💡 Have an idea?** [Start a discussion](https://community.ortussolutions.com)
-* **🆘 Professional Support?** [AI Services](https://ai.ortussolutions.com)
+* **🆘 Professional Support?** [AI Services](https://ai.ortussolutions.com) and [BoxLang+ plans](https://www.boxlang.io/plans)
+
+***
+
+## 🚀 Part of the BoxLang Platform
+
+Building with an AI coding agent? See [Agentic Development](https://boxlang.ortusbooks.com/getting-started/agentic-development) to set up skills, MCP servers, and project guides so your agent writes idiomatic BoxLang.
+
+**Every BoxLang+ module is free to try for 60 days.** The trial starts automatically the first time you start a BoxLang server or CLI with a BoxLang+ module installed, with no sign-up and no key.
