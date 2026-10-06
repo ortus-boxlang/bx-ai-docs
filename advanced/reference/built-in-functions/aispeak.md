@@ -124,7 +124,7 @@ The default gender-to-voice mapping (overridable in `config/boxlang.json`):
 | **OpenAI** | `ash` | `nova` |
 | **Grok / xAI** | `rex` | `eve` |
 | **Gemini** | `Fenrir` | `Aoede` |
-| **Mistral** | _(provider default)_ | `Charlotte` |
+| **Mistral** | _(provider default)_ | _(first preset voice)_ |
 | **ElevenLabs** | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
 | **Cartesia** | `47c38ca4-5f35-497b-b1a3-415245fb35e1` (Daniel) | `db6b0ed5-d5d3-463d-ae85-518a07d3c2b4` (Skylar) |
 
@@ -175,7 +175,7 @@ BoxRegisterInterceptor( "afterAISpeech", function( event ) {
 | Provider | Available Voices | `"male"` keyword | `"female"` keyword |
 |---|---|---|---|
 | **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
-| **Mistral** | `Charlotte` | _(provider default)_ | `Charlotte` |
+| **Mistral** | _(first preset voice)_ | _(provider default)_ | _(first preset voice)_ |
 | **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others) | `Fenrir` | `Aoede` |
 | **Grok / xAI** | `eve` (default), `ara`, `rex` | `rex` | `eve` |
 | **ElevenLabs** | Premade voices (e.g. `EXAVITQu4vr4xnSDxMaL` Sarah, `CwhRBWXzGAHq8TQ4Fs17` Roger) or any voice ID your plan can use | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |

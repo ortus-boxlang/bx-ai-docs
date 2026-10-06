@@ -56,7 +56,7 @@ graph LR
 | **Mistral** | ✅ `voxtral-mini-tts-2603` | ✅ `voxtral-mini-latest` | ❌ | `MISTRAL_API_KEY` |
 | **Groq / Whisper** | ❌ | ✅ `whisper-large-v3` | ✅ | `GROQ_API_KEY` |
 | **Grok / xAI** | ✅ custom | ❌ | ❌ | `GROK_API_KEY` |
-| **Gemini** | ✅ `gemini-2.5-flash-preview-tts` | ✅ `gemini-2.5-flash` | ❌ | `GEMINI_API_KEY` |
+| **Gemini** | ✅ `gemini-3.8-flash-tts` | ✅ `gemini-2.5-flash` | ❌ | `GEMINI_API_KEY` |
 | **ElevenLabs** | ✅ `eleven_multilingual_v2` | ✅ `scribe_v1` | ❌ | `ELEVENLABS_API_KEY` |
 | **Cartesia** | ✅ `sonic-3.6` | ✅ `ink-whisper` | ❌ | `CARTESIA_API_KEY` |
 

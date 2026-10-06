@@ -138,6 +138,14 @@ aiSpeakStream(
 
 `aiSpeakStream()` fires `beforeAISpeech` and `afterAISpeech` (with `stream: true` in the event data), plus `onAISpeakRequest` from the provider.
 
+## 🎧 Try it
+
+Working demos that play streamed speech in a browser:
+
+- [bx-ai `examples/http-streaming-speech`](https://github.com/ortus-boxlang/bx-ai/tree/development/examples/http-streaming-speech): `<audio>` mode (mp3) and voice-agent mode (PCM with word highlighting and barge-in)
+- [bx-ai-intro `examples/speech-stream-http`](https://github.com/ortus-boxlang/bx-ai-intro/tree/master/examples/speech-stream-http): same demo with the intro setup
+- bx-ai-intro examples 41 and 42: CLI walkthroughs of streaming and Cartesia
+
 ## See Also
 
 - [aiSpeakStream reference](../../advanced/reference/built-in-functions/aispeakstream.md)

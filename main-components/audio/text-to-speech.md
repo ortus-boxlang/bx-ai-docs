@@ -254,7 +254,7 @@ voices.each( voice => {
 | Provider | Available Voices | `"male"` keyword | `"female"` keyword |
 |---|---|---|---|
 | **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
-| **Mistral** | `Charlotte` | _(provider default)_ | `Charlotte` |
+| **Mistral** | _(first preset voice)_ | _(provider default)_ | _(first preset voice)_ |
 | **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others via API) | `Fenrir` | `Aoede` |
 | **Grok / xAI** | `eve` (default), `ara`, `rex` | `rex` | `eve` |
 | **ElevenLabs** | Premade voices (e.g. `EXAVITQu4vr4xnSDxMaL` Sarah, `CwhRBWXzGAHq8TQ4Fs17` Roger) or any voice ID your plan can use | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
