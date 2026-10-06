@@ -30,7 +30,7 @@ aiSpeak( text, params={}, options={} )
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `provider` | string | (config) | AI provider: `openai`, `mistral`, `gemini`, `grok`, `elevenlabs` |
+| `provider` | string | (config) | AI provider: `openai`, `mistral`, `gemini`, `grok`, `elevenlabs`, `cartesia` |
 | `apiKey` | string | (env var) | Provider API key (falls back to `<PROVIDER>_API_KEY` env var) |
 | `voice` | string | (config) | Voice name or ID for the provider, **or** the gender keyword `"male"` / `"female"` (resolved per provider via `audio.voiceGenderMap` in your config) |
 | `outputFormat` | string | `mp3` | Audio output format: `mp3`, `wav`, `flac`, `opus`, `pcm` |
@@ -208,12 +208,30 @@ jsonResponse = { audio: audio.getBase64(), mimeType: audio.getMimeType() }
 ```javascript
 audio = aiSpeak(
     "This is a premium voice synthesis example.",
-    { voice_id: "21m00Tcm4TlvDq8ikWAM" },  // Rachel voice ID
+    { voice_id: "EXAVITQu4vr4xnSDxMaL" },  // Sarah, a premade voice that works on every plan
     { provider: "elevenlabs" }
 )
 audio.saveToFile( "premium.mp3" )
 println( "Format: #audio.getAudioFormat()#, Size: #audio.getSize()# bytes" )
 ```
+
+### Cartesia: low-latency Sonic voices
+
+```javascript
+audio = aiSpeak(
+    "Fast, natural speech with Cartesia Sonic.",
+    {
+        voice      : "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",  // Skylar. Any voice ID from the Cartesia library
+        language   : "en",
+        emotion    : "happy",   // generation_config: emotion, volume (0.5-2.0), speed (0.6-1.5)
+        sample_rate: 44100
+    },
+    { provider: "cartesia", outputFormat: "wav" }
+)
+audio.saveToFile( "sonic.wav" )
+```
+
+Cartesia supports `mp3`, `wav`, `pcm`, `mulaw` and `alaw`. `flac` and `opus` throw `InvalidArgument`. Set `CARTESIA_API_KEY` or pass `apiKey`. To stream the audio instead, see [Streaming Text-to-Speech](streaming-speech.md).
 
 ### Generate comparison files across all voices
 
@@ -236,12 +254,17 @@ voices.each( voice => {
 | Provider | Available Voices | `"male"` keyword | `"female"` keyword |
 |---|---|---|---|
 | **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
-| **Mistral** | `Charlotte` | _(provider default)_ | `Charlotte` |
+| **Mistral** | _(first preset voice)_ | _(provider default)_ | _(first preset voice)_ |
 | **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others via API) | `Fenrir` | `Aoede` |
-| **Grok / xAI** | `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`, `eve` | `onyx` | `nova` |
-| **ElevenLabs** | Voice IDs from your ElevenLabs voice library | _(provider default)_ | `21m00Tcm4TlvDq8ikWAM` |
+| **Grok / xAI** | `eve` (default), `ara`, `rex` | `rex` | `eve` |
+| **ElevenLabs** | Premade voices (e.g. `EXAVITQu4vr4xnSDxMaL` Sarah, `CwhRBWXzGAHq8TQ4Fs17` Roger) or any voice ID your plan can use | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
+| **Cartesia** | Any voice ID (UUID) from the Cartesia voice library | `47c38ca4-5f35-497b-b1a3-415245fb35e1` (Daniel) | `db6b0ed5-d5d3-463d-ae85-518a07d3c2b4` (Skylar) |
 
-> For ElevenLabs, pass a `voice_id` in `params` for specific voices. The `"male"`/`"female"` keywords resolve to the IDs configured in `audio.voiceGenderMap`.
+> For ElevenLabs and Cartesia, pass a `voice_id` in `params` (or `voice`) for specific voices. Library voices on ElevenLabs need a paid plan over the API.
+>
+> To stream audio as it is generated, see [Streaming Text-to-Speech](streaming-speech.md). Provider notes: Cartesia supports `mp3`, `wav`, `pcm`, `mulaw` and `alaw` (not `flac` or `opus`). Grok supports `mp3`, `wav`, `pcm`, `mulaw` and `alaw`. ElevenLabs supports `mp3`, `wav`, `pcm`, `mulaw`, `alaw` and `opus`.
+>
+> For ElevenLabs The `"male"`/`"female"` keywords resolve to the IDs configured in `audio.voiceGenderMap`.
 
 ### Customising the gender map
 

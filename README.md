@@ -83,6 +83,7 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | **Cohere** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **DeepSeek** | Cloud | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Docker Desktop** | Local | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Cartesia** | Cloud | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **ElevenLabs** | Cloud | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **Gemini** | Cloud | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Grok** | Cloud | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
@@ -96,7 +97,7 @@ BoxLang supports a variety of AI providers out of the box. You can also create c
 | **Perplexity** | Cloud | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Voyage** | Cloud | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
 
-> **Legend:** Vision support requires a multimodal model from the provider (e.g., `gpt-4o`, `claude-3`, `gemini-2.0`). Audio covers text-to-speech/speech-to-text/translation, shown here only for providers whose *only* capability is audio (ElevenLabs) — see [Audio/Speech](main-components/audio/README.md) for the full per-provider TTS/STT matrix. OpenRouter capabilities depend on the selected underlying model.
+> **Legend:** Vision support requires a multimodal model from the provider (e.g., `gpt-4o`, `claude-3`, `gemini-2.0`). Audio covers text-to-speech/speech-to-text/translation, shown here only for providers whose *only* capability is audio (ElevenLabs, Cartesia) — see [Audio/Speech](main-components/audio/README.md) for the full per-provider TTS/STT matrix. OpenRouter capabilities depend on the selected underlying model.
 
 ### 🗃️ Supported Memory Types
 

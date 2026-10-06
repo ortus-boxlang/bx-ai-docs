@@ -42,6 +42,7 @@ flowchart LR
 | **Mistral** | ❌ No |
 | **Gemini** | ❌ No |
 | **ElevenLabs** | ❌ No |
+| **Cartesia** | ❌ No (throws `UnsupportedCapability`) |
 | **Grok / xAI** | ❌ No |
 
 ## 🔧 The `aiTranslate()` Function
