@@ -19,9 +19,9 @@ summary = aiSpeakStream( text, callback, params={}, options={} )
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `text` | string | ✅ Yes | The text to synthesize. Must not be empty |
-| `callback` | function | ✅ Yes | Called with each event struct. Return `false` to stop early |
+| `callback` | function | ✅ Yes | Called with each event struct. Return `false` to stop early and close the provider connection |
 | `params` | struct | No | Provider parameters: `model`, `voice` (or `voice_id`), `sample_rate`, `language`, `add_timestamps`, `transport` (Cartesia) |
-| `options` | struct | No | `provider`, `apiKey`, `outputFormat`, `speed`, `timeout`, logging |
+| `options` | struct | No | `provider`, `apiKey`, `outputFormat`, `speed`, `timeout` (idle timeout in seconds, default 30), logging |
 
 ## Callback events
 

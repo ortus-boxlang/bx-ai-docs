@@ -37,7 +37,7 @@ summary = aiSpeak().text( "Hello" ).provider( "cartesia" ).asPCM().stream( callb
 | `text` | string | The text to synthesize. Required and non-empty |
 | `callback` | function | Called with one event struct per event (see below) |
 | `params` | struct | Provider parameters: `model`, `voice`, `sample_rate`, `language`, and so on |
-| `options` | struct | `provider`, `apiKey`, `outputFormat`, `timeout`, logging. `outputFile` is ignored when streaming |
+| `options` | struct | `provider`, `apiKey`, `outputFormat`, `timeout` (idle timeout in seconds), logging. `outputFile` is ignored when streaming |
 
 ## 📨 Callback events
 
@@ -62,7 +62,11 @@ summary = aiSpeakStream( "A long sentence...", ( event ) => {
 println( summary.completed )  // false
 ```
 
-> Over SSE (Cartesia pcm, mulaw and alaw, Mistral, Gemini) the connection is drained after you stop: later events are ignored rather than the socket being closed.
+Stopping closes the connection to the provider immediately, for both raw-byte and SSE streams, so generation stops and the final `done` event arrives right away.
+
+## ⏲️ Timeout
+
+`options.timeout` (default 30 seconds) is an **idle timeout**: the longest the stream will wait for the response headers or between received bytes, on both success and error responses. A provider that stalls is aborted with a `ProviderError`, while a healthy stream of any length is never cut off.
 
 ## 📋 Return value
 
