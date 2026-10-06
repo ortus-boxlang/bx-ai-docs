@@ -25,7 +25,7 @@ aiSpeak( text, params={}, options={} )
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `provider` | string | (config default) | AI provider name: `openai`, `mistral`, `gemini`, `grok`, `elevenlabs` |
+| `provider` | string | (config default) | AI provider name: `openai`, `mistral`, `gemini`, `grok`, `elevenlabs`, `cartesia` |
 | `apiKey` | string | (env var) | Provider API key. Falls back to `<PROVIDER>_API_KEY` environment variable |
 | `voice` | string | (config default) | Voice name or ID. Pass a provider-specific voice name (e.g. `nova`) **or** a gender keyword `"male"` / `"female"` which is resolved to the correct voice for the active provider using `audio.voiceGenderMap` from your module config. See voice reference table below |
 | `outputFormat` | string | `mp3` | Audio format: `mp3`, `wav`, `flac`, `opus`, `pcm` |
@@ -122,10 +122,11 @@ The default gender-to-voice mapping (overridable in `config/boxlang.json`):
 | Provider | `"male"` | `"female"` |
 |---|---|---|
 | **OpenAI** | `ash` | `nova` |
-| **Grok / xAI** | `onyx` | `nova` |
+| **Grok / xAI** | `rex` | `eve` |
 | **Gemini** | `Fenrir` | `Aoede` |
 | **Mistral** | _(provider default)_ | `Charlotte` |
-| **ElevenLabs** | _(provider default)_ | `21m00Tcm4TlvDq8ikWAM` |
+| **ElevenLabs** | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
+| **Cartesia** | `47c38ca4-5f35-497b-b1a3-415245fb35e1` (Daniel) | `db6b0ed5-d5d3-463d-ae85-518a07d3c2b4` (Skylar) |
 
 To override any mapping, set `audio.voiceGenderMap` in your `config/boxlang.json`:
 
@@ -154,7 +155,7 @@ response = { audio: audio.getBase64(), mimeType: audio.getMimeType() }
 ```javascript
 audio = aiSpeak(
     "Bonjour, bienvenue dans BoxLang AI.",
-    { voice_id: "21m00Tcm4TlvDq8ikWAM" },
+    { voice_id: "EXAVITQu4vr4xnSDxMaL" },
     { provider: "elevenlabs" }
 )
 audio.saveToFile( expandPath( "/audio/french.mp3" ) )
@@ -176,10 +177,13 @@ BoxRegisterInterceptor( "afterAISpeech", function( event ) {
 | **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
 | **Mistral** | `Charlotte` | _(provider default)_ | `Charlotte` |
 | **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others) | `Fenrir` | `Aoede` |
-| **Grok / xAI** | `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`, `eve` | `onyx` | `nova` |
-| **ElevenLabs** | Voice IDs from your voice library | _(provider default)_ | `21m00Tcm4TlvDq8ikWAM` |
+| **Grok / xAI** | `eve` (default), `ara`, `rex` | `rex` | `eve` |
+| **ElevenLabs** | Premade voices (e.g. `EXAVITQu4vr4xnSDxMaL` Sarah, `CwhRBWXzGAHq8TQ4Fs17` Roger) or any voice ID your plan can use | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
+| **Cartesia** | Any voice ID (UUID) from the Cartesia voice library | `47c38ca4-5f35-497b-b1a3-415245fb35e1` (Daniel) | `db6b0ed5-d5d3-463d-ae85-518a07d3c2b4` (Skylar) |
 
-> For ElevenLabs, pass a `voice_id` in `params` for specific voices. The `"male"`/`"female"` keywords resolve to the IDs in `audio.voiceGenderMap`.
+> To stream audio as it is generated, see [aiSpeakStream](aispeakstream.md).
+>
+> For ElevenLabs and Cartesia, pass a `voice_id` in `params` for specific voices. The `"male"`/`"female"` keywords resolve to the IDs in `audio.voiceGenderMap`.
 
 ## See Also
 

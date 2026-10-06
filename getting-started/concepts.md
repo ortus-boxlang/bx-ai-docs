@@ -838,7 +838,9 @@ audio = aiSpeak()
     .speak()
 ```
 
-**Supported providers:** OpenAI, Mistral, Gemini, Grok, ElevenLabs
+**Supported providers:** OpenAI, Mistral, Gemini, Grok, ElevenLabs, Cartesia
+
+Need audio as it is generated, for a voice agent or telephony bridge? Use [`aiSpeakStream()`](../main-components/audio/streaming-speech.md).
 
 ### Speech-to-Text (STT)
 
@@ -855,7 +857,7 @@ text = aiTranscribe()
     .transcribe()
 ```
 
-**Supported providers:** OpenAI, Groq, Mistral, Gemini, ElevenLabs
+**Supported providers:** OpenAI, Groq, Mistral, Gemini, ElevenLabs, Cartesia
 
 ### Audio Translation
 

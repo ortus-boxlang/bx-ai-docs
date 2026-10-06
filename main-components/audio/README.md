@@ -30,6 +30,7 @@ graph LR
         C3[Groq]
         C4[Gemini]
         C5[ElevenLabs]
+        C7[Cartesia]
         C6["Grok / xAI"]
     end
 
@@ -41,8 +42,8 @@ graph LR
     A1 --> B1
     A2 --> B2
     A3 --> B2
-    B1 --> C1 & C2 & C4 & C5 & C6
-    B2 --> C1 & C2 & C3 & C4 & C5
+    B1 --> C1 & C2 & C4 & C5 & C6 & C7
+    B2 --> C1 & C2 & C3 & C4 & C5 & C7
     B1 --> D1
     B2 --> D2
 ```
@@ -57,6 +58,9 @@ graph LR
 | **Grok / xAI** | ✅ custom | ❌ | ❌ | `GROK_API_KEY` |
 | **Gemini** | ✅ `gemini-2.5-flash-preview-tts` | ✅ `gemini-2.5-flash` | ❌ | `GEMINI_API_KEY` |
 | **ElevenLabs** | ✅ `eleven_multilingual_v2` | ✅ `scribe_v1` | ❌ | `ELEVENLABS_API_KEY` |
+| **Cartesia** | ✅ `sonic-3.6` | ✅ `ink-whisper` | ❌ | `CARTESIA_API_KEY` |
+
+> Need audio as it is generated (voice agents, telephony)? See [Streaming Text-to-Speech](streaming-speech.md).
 
 ## ⚡ Quick Start
 
