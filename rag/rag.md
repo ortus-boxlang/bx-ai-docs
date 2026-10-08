@@ -512,6 +512,18 @@ memory = aiMemory( memory: "mysql", config: {
 } );
 ```
 
+### MariaDB with Native Vector Search
+
+```javascript
+memory = aiMemory( memory: "mariadb", config: {
+    collection: "knowledge",
+    datasource: "myMariaDS",  // MariaDB 11.7+ (requires the bx-mariadb module)
+    embeddingProvider: "openai",
+    embeddingModel: "text-embedding-3-small",
+    distanceFunction: "COSINE"  // or "L2"
+} );
+```
+
 ### TypeSense
 
 ```javascript

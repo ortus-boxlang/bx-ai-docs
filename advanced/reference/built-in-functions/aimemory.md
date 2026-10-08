@@ -91,6 +91,7 @@ aiMemory(memory, key, userId, conversationId, config)
 | `chroma`    | ChromaDB vector database       | Production RAG, local/cloud |
 | `milvus`    | Milvus vector database         | Large-scale vector search   |
 | `mysql`     | MySQL vector extension         | MySQL vector search         |
+| `mariadb`   | MariaDB 11.7+ native vectors   | In-database vector search   |
 | `typesense` | Typesense vector search        | Fast semantic search        |
 | `pgvector`  | PostgreSQL vector extension    | PostgreSQL-based RAG        |
 | `pinecone`  | Pinecone cloud vectors         | Managed cloud vector DB     |

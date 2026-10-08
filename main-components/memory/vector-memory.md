@@ -95,6 +95,7 @@ salesResults = salesChat.getRelevant( "plan", 5 )       // Only sales messages
 | Chroma      | Metadata                     | $and operator      |
 | Milvus      | Metadata                     | filter expressions |
 | MySQL       | Dedicated columns            | SQL WHERE          |
+| MariaDB     | Dedicated columns            | SQL WHERE          |
 | OpenSearch  | Metadata                     | bool filter        |
 | Postgres    | Dedicated columns            | SQL WHERE          |
 | Pinecone    | Metadata                     | $eq operators      |
@@ -247,6 +248,7 @@ agent.run( "What was my last invoice amount?" )
 | **ChromaDB**   | Python integration, local dev           | ⚙️ Moderate | Free      | Good        | ✅            |
 | **PostgreSQL** | Existing Postgres infrastructure        | ⚙️ Moderate | Low       | Good        | ✅            |
 | **MySQL**      | Existing MySQL 9+ infrastructure        | ⚙️ Moderate | Low       | Good        | ✅            |
+| **MariaDB**    | Existing MariaDB 11.7+, in-database HNSW search | ⚙️ Moderate | Low       | Very Good   | ✅            |
 | **OpenSearch** | AWS integration, enterprise search      | ⚙️ Moderate | Free/Paid | Excellent   | ✅            |
 | **TypeSense**  | Fast typo-tolerant search, autocomplete | ⚙️ Easy     | Free/Paid | Excellent   | ✅            |
 | **Pinecone**   | Production, cloud-first                 | ⚙️ Easy     | Paid      | Excellent   | ✅            |
@@ -270,6 +272,7 @@ agent.run( "What was my last invoice amount?" )
 
 * **PostgreSQL**: If you already use Postgres
 * **MySQL**: If you already use MySQL 9+
+* **MariaDB**: If you already use MariaDB 11.7+ (native vector index and distance functions)
 * **OpenSearch**: AWS infrastructure, enterprise search features
 * **TypeSense**: Fast typo-tolerant search with low latency
 * **Qdrant**: Best performance for self-hosted
@@ -681,6 +684,128 @@ exported = memory.export()
 
 * **Community Edition** (Free): VECTOR data type, app-layer distance calculations
 * **HeatWave** (Oracle Cloud): Native DISTANCE() function, VECTOR INDEX, GPU acceleration
+
+***
+
+### MariaDBVectorMemory
+
+MariaDB 11.7+ with native [vector search](https://mariadb.com/docs/server/reference/sql-structure/vectors): the `VECTOR(n)` type, an HNSW `VECTOR INDEX`, and the `VEC_DISTANCE_*` functions. Unlike `MysqlVectorMemory`, the ranking runs inside the database, so only the top matches are sent back.
+
+**Features:**
+
+* Native `VECTOR(n)` storage and HNSW vector index
+* Similarity search computed by MariaDB (`VEC_DISTANCE_COSINE` / `VEC_DISTANCE_EUCLIDEAN`)
+* Dedicated `userId` and `conversationId` columns for multi-tenant isolation
+* Metadata filtering through `JSON_VALUE`
+* Optional `autoCreate` so locked-down databases can use a pre-created table
+
+**Requirements:**
+
+* MariaDB 11.7 or later (11.8 LTS recommended)
+* The `bx-mariadb` module installed (`install-bx-module bx-mariadb`)
+* A configured BoxLang datasource using the `mariadb` driver
+
+**Setup:**
+
+```bash
+docker run -p 3308:3306 \
+  -e MARIADB_ROOT_PASSWORD=root \
+  -e MARIADB_DATABASE=vectordb \
+  mariadb:11.8
+```
+
+```json
+// boxlang.json
+{
+    "runtime": {
+        "datasources": {
+            "myMariaDS": {
+                "driver": "mariadb",
+                "connectionString": "jdbc:mariadb://localhost:3308/vectordb",
+                "username": "root",
+                "password": "root"
+            }
+        }
+    }
+}
+```
+
+**Configuration:**
+
+```java
+memory = aiMemory( memory: "mariadb", config: {
+    collection: "ai_memory",
+    embeddingProvider: "openai",
+    embeddingModel: "text-embedding-3-small",
+    datasource: "myMariaDS",         // Required
+    table: "bx_ai_vectors",          // Optional: default is "bx_ai_vectors"
+    dimensions: 1536,                // Must match the embedding model (default 1536)
+    distanceFunction: "COSINE",      // COSINE (default) or L2
+    m: 8,                            // Optional HNSW M, 3 to 200 (default 8)
+    autoCreate: true                 // Create the table if missing (default true)
+} )
+```
+
+**Multi-Tenant Configuration:**
+
+```java
+memory = aiMemory( memory: "mariadb",
+    key: createUUID(),
+    userId: "user123",
+    conversationId: "chat456",
+    config: {
+        collection: "all_conversations",
+        embeddingProvider: "openai",
+        embeddingModel: "text-embedding-3-small",
+        datasource: "myMariaDS"
+    }
+)
+```
+
+**Distance Functions:**
+
+* **COSINE**: cosine distance, best for semantic search. Score is `1 - distance`.
+* **L2**: Euclidean distance. Score is `1 / (1 + distance)`.
+* Dot product is not available because MariaDB has no native dot product function.
+
+**Table layout:**
+
+Tables are created for you. All collections that share a table are separate rows identified by the `collection` column.
+
+```sql
+CREATE TABLE bx_ai_vectors (
+    doc_key BINARY(32) NOT NULL,          -- SHA-256 of collection + id, primary key
+    id VARCHAR(255) NOT NULL,
+    collection VARCHAR(255) NOT NULL DEFAULT 'default',
+    text LONGTEXT NOT NULL,
+    embedding VECTOR(1536) NOT NULL,
+    metadata JSON NOT NULL,
+    userId VARCHAR(255) NOT NULL DEFAULT '',
+    conversationId VARCHAR(255) NOT NULL DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (doc_key),
+    KEY idx_bx_ai_vectors_id (collection, id),
+    KEY idx_bx_ai_vectors_tenant (collection, userId, conversationId),
+    VECTOR INDEX idx_bx_ai_vectors_embedding (embedding) M=8 DISTANCE=cosine
+);
+```
+
+**Things to know:**
+
+* **One vector index per table.** MariaDB allows a single vector index per table, and it is fixed to one distance metric and one dimension size. Every collection in a table shares them. If you configure a different `distanceFunction` for an existing table, a `MariaDBVectorMemory.DistanceMismatch` error is thrown instead of silently skipping the index. Use a different `table` for a different metric or model.
+* **Primary key size.** A table with a vector index needs a primary key of 256 bytes or less, which is why the key is a hash of the collection and id.
+* **Filtered searches.** The `userId`, `conversationId` and metadata filters are applied alongside the index scan. MariaDB filters while it walks the index, so a very selective filter on a large table can return fewer rows than `limit`. The server's `mhnsw_ef_search` setting controls how many candidates are examined, so raise it if that happens.
+* **Pre-created tables.** Set `autoCreate: false` to require an existing table. A missing table throws `MariaDBVectorMemory.TableNotFound`.
+* **Filter keys** must be simple names (letters, numbers and underscores). Anything else throws `MariaDBVectorMemory.InvalidFilterKey`.
+* **Dimension mismatch.** If an embedding does not match `dimensions`, a `MariaDBVectorMemory.DimensionMismatch` error names both sizes. Set `dimensions` to match your model, for example 768 for `nomic-embed-text`.
+
+**Best For:**
+
+* Existing MariaDB 11.7+ deployments
+* Applications that want vector search next to relational data
+* In-database ranking without loading every row
+* ACID compliance requirements
 
 ***
 
