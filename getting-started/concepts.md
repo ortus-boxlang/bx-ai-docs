@@ -397,6 +397,7 @@ Specialized database optimized for storing and searching vector embeddings.
 * BoxVector - Built-in, simple in memory option
 * Weaviate - Scalable, cloud-native
 * MySQL (with vector support) - Common relational DB
+* MariaDB (11.7+ native vector search) - Ranking runs in the database
 
 ***
 
@@ -419,7 +420,7 @@ Stores chat history to maintain context across interactions.
 
 Stores documents as embeddings for semantic search. Enables RAG.
 
-**Types**: ChromaDB, PostgreSQL, Pinecone, Qdrant, Weaviate, MySQL, TypeSense, BoxVector, Milvus, OpenSearch
+**Types**: ChromaDB, PostgreSQL, Pinecone, Qdrant, Weaviate, MySQL, MariaDB, TypeSense, BoxVector, Milvus, OpenSearch
 
 **Use cases**:
 

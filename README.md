@@ -115,6 +115,7 @@ BoxLang AI provides 20+ memory types for conversation history and semantic searc
 | **Chroma** | ✅ | Python integration, local dev | ChromaDB | ✅ |
 | **Postgres** | ✅ | Existing PostgreSQL infrastructure | PostgreSQL | ✅ |
 | **MySQL** | ✅ | Existing MySQL 9+ infrastructure | MySQL | ✅ |
+| **MariaDB** | ✅ | Existing MariaDB 11.7+ infrastructure | MariaDB | ✅ |
 | **OpenSearch** | ✅ | AWS integration, enterprise search | OpenSearch | ✅ |
 | **TypeSense** | ✅ | Fast typo-tolerant search | TypeSense | ✅ |
 | **Pinecone** | ✅ | Production cloud-native | Pinecone Cloud | ✅ |

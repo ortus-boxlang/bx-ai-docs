@@ -555,6 +555,24 @@ memory = aiMemory( memory: "mysql",
 
 **Storage**: Dedicated VARCHAR(255) columns with composite index
 
+### MariaDB (11.7+ Native Vectors)
+
+```java
+memory = aiMemory( memory: "mariadb",
+    key: createUUID(),
+    userId: "user123",
+    conversationId: "chat456",
+    config: {
+        collection: "ai_vectors",
+        datasource: "mainMariaDB",
+        embeddingProvider: "openai",
+        dimensions: 1536
+    }
+)
+```
+
+**Storage**: Dedicated VARCHAR(255) columns with composite index. Searches use MariaDB's native vector index with the tenant columns as filters.
+
 ### TypeSense
 
 ```java
