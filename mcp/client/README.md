@@ -71,12 +71,14 @@ if ( result.getSuccess() ) {
 
 ### ⏱️ Timeout Configuration
 
-Set request timeout in milliseconds:
+Set request timeout in milliseconds. It applies to each request, so a client that does the [handshake](#controlling-what-a-client-can-reach) can wait up to twice the limit when a server does not answer at all. The limit is rounded up to whole seconds (at least one):
 
 ```java
 client = MCP( "http://localhost:3000" )
     .withTimeout( 5000 )  // 5 second timeout
 ```
+
+> 🚨 Before 3.6.0 the number was passed to `bx:http` as seconds, so `withTimeout( 5000 )` waited about 83 minutes and the default of 30000 about 8 hours. If you relied on that, set a larger value.
 
 ### Custom Headers
 
@@ -149,6 +151,7 @@ By default an `MCPClient` calls the URL you give it, follows redirects and reads
 | `withRedirects( false )` | A redirect (3xx) becomes a failed response and the new address is never called. |
 | `withMaxResponseBytes( n )` | Refuses an answer longer than `n` characters. |
 | `withHandshake()` | Sends `initialize` and `notifications/initialized` once, then sends back the `Mcp-Session-Id` the server returns. |
+| `withHttpVersion( "HTTP/1.1" )` | Chooses the HTTP version. The default is `HTTP/2`, the same as `bx:http`. |
 
 **Block private addresses:**
 
@@ -190,28 +193,50 @@ client.listTools()
 client.getSessionId()   // the Mcp-Session-Id from the server, empty if none
 ```
 
+**HTTP version.** On a plain `http` address, `HTTP/2` starts with an upgrade request (`Upgrade: h2c`). Some servers answer that badly when the body of a POST arrives after the headers. `HTTP/1.1` sends no upgrade. Over `https` the version is negotiated and this makes no difference you need to care about:
+
+```javascript
+client = MCP( "http://localhost:3000/mcp" ).withHttpVersion( "HTTP/1.1" )
+```
+
+Anything other than `HTTP/2` or `HTTP/1.1` throws `InvalidArgument`.
+
 The same options work when you attach servers to an agent or a model, see [Agent Tools & MCP](../../main-components/agents/tools-and-mcp.md#mcp-server-options).
 
 ## Discovery Methods
 
 ### List Tools
 
-Discover available tools on the server:
+Discover available tools on the server. The tools are in the `tools` key of the data:
 
 ```java
-tools = MCP( "http://localhost:3000" ).listTools()
+response = MCP( "http://localhost:3000" ).listTools()
 
-if ( tools.getSuccess() ) {
-    for ( tool in tools.getData() ) {
+if ( response.isSuccess() ) {
+    for ( tool in response.getData().tools ) {
         writeOutput( "
             <div>
                 <h3>#tool.name#</h3>
                 <p>#tool.description#</p>
-                <pre>#serializeJSON( tool.parameters )#</pre>
+                <pre>#serializeJSON( tool.inputSchema )#</pre>
             </div>
         " )
     }
 }
+```
+
+A server that sends its tools in pages adds a `nextCursor` to the data. Pass it back to `listTools( cursor )` to read the next page:
+
+```javascript
+client = MCP( "http://localhost:3000" )
+tools  = []
+cursor = ""
+do {
+    response = client.listTools( cursor )
+    if ( !response.isSuccess() ) break
+    tools.append( response.getData().tools, true )
+    cursor = response.getData().nextCursor ?: ""
+} while ( len( cursor ) )
 ```
 
 ### List Resources
