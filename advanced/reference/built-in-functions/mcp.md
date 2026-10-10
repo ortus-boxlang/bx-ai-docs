@@ -66,6 +66,7 @@ MCP(baseURL)
 Returns an `MCPClient` instance with fluent API for:
 
 * Configuration: `withTimeout()`, `withBearerToken()`, `withHeaders()`
+* Safety controls: `withUrlGuard()`, `withRedirects()`, `withMaxResponseBytes()`, `withHandshake()`, see [Controlling What a Client Can Reach](../../../mcp/client/README.md#controlling-what-a-client-can-reach)
 * Callbacks: `onSuccess()`, `onError()`
 * Discovery: `listTools()`, `listResources()`, `listPrompts()`
 * Invocation: `send()`, `callTool()`, `getResource()`, `getPrompt()`

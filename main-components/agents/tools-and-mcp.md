@@ -270,26 +270,88 @@ contextTool = aiTool(
 
 ## MCP Server Seeding (v3.0+)
 
-Connect agents to remote MCP servers. Tool names from the server are automatically fetched and made available to the agent:
+Connect agents to remote MCP servers. The tools each server lists are fetched when the agent is built and made available to the agent:
 
 ```javascript
 agent = aiAgent(
     name      : "ResearchAgent",
     mcpServers: [
         {
-            url      : "http://localhost:3000/mcp",
-            toolNames: [ "web_search", "fetch_page" ]
+            url       : "http://localhost:3000/mcp",
+            toolFilter: [ "web_search", "fetch_page" ]
         },
         {
-            url      : "http://internal-tools/mcp",
-            toolNames: [ "query_crm" ]
+            url       : "http://internal-tools/mcp",
+            toolFilter: [ "query_crm" ]
         }
     ]
 )
 
-// Agent can use web_search, fetch_page, and query_crm from the MCP servers
+// The agent can use web_search, fetch_page, and query_crm from the MCP servers
 response = agent.run( "Find recent news about BoxLang" )
 ```
+
+You can also attach servers one at a time with `withMCPServer( server, config )`, where `server` is a URL or a pre-configured `MCPClient`, or in one call with `withMCPServers( servers )`.
+
+### MCP Server Options
+
+Each server entry takes a `url` plus any of these options:
+
+| Option | Type | What it does |
+|---|---|---|
+| `token` | string | Bearer token sent with every request |
+| `user`, `password` | string | Basic authentication |
+| `headers` | struct | Extra HTTP headers |
+| `timeout` | numeric | Request timeout in milliseconds |
+| `toolFilter` | array | Expose **only** these tools. Without it every tool the server lists is exposed |
+| `prefix` | string | Expose tools as `prefix__name`, so two servers cannot clash |
+| `urlGuard` | function | Called with the URL before every request. Return `false` or throw to refuse it |
+| `redirects` | boolean | `false` stops the client from following redirects |
+| `maxResponseBytes` | numeric | Refuse an answer longer than this many characters |
+| `handshake` | boolean | Send the MCP `initialize` handshake before the first call |
+
+> 💡 The older `toolNames` key shown in earlier examples is ignored. It never limited which tools the agent can call. Use `toolFilter`. Likewise the bearer token option is `token`.
+
+### Keep Servers From Clashing: `prefix`
+
+Two servers can each offer a tool called `search`, and the model cannot tell them apart. A prefix fixes that. The model sees `boxlang__search` and `coldbox__search`, and each server still receives the original name `search`:
+
+```javascript
+agent = aiAgent( name: "DocsAgent" )
+    .withMCPServer( "https://boxlang.example.com/mcp", { prefix: "boxlang" } )
+    .withMCPServer( "https://coldbox.example.com/mcp", { prefix: "coldbox" } )
+```
+
+### Expose Only the Safe Tools: `toolFilter`
+
+A server may offer a tool that writes data, for example `sendFeedback`. Name the tools you accept and the model never sees the rest:
+
+```javascript
+agent = aiAgent( name: "DocsAgent" )
+    .withMCPServer(
+        "https://boxlang.example.com/mcp",
+        { toolFilter: [ "searchDocumentation", "getPage" ] }
+    )
+```
+
+### Limit What a Server Can Reach
+
+When server addresses come from users or settings, add a guard, turn redirects off and cap the answer size:
+
+```javascript
+agent = aiAgent( name: "SafeAgent" )
+    .withMCPServer(
+        userSuppliedUrl,
+        {
+            urlGuard        : ( url ) => !isPrivateAddress( url ),
+            redirects       : false,
+            maxResponseBytes: 200000,
+            timeout         : 10000
+        }
+    )
+```
+
+`isPrivateAddress()` stands for your own check, BoxLang does not ship one. A refused URL means the tools of that server are not added, and the failure is written to the `ai` log. See [Controlling What a Client Can Reach](../../mcp/client/README.md#controlling-what-a-client-can-reach) for how each option works. To decide per call whether a tool may run, use [middleware](../middleware.md).
 
 ### MCP Authentication
 
@@ -298,10 +360,10 @@ agent = aiAgent(
     name      : "SecureAgent",
     mcpServers: [
         {
-            url        : "https://tools-server/mcp",
-            toolNames  : [ "search" ],
-            bearerToken: server.bearerToken,
-            headers    : { "X-Tenant-ID": "acme" }
+            url       : "https://tools-server/mcp",
+            toolFilter: [ "search" ],
+            token     : server.bearerToken,
+            headers   : { "X-Tenant-ID": "acme" }
         }
     ]
 )

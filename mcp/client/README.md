@@ -139,6 +139,59 @@ client = MCP( "http://localhost:3000" )
     .onError( logError )
 ```
 
+### Controlling What a Client Can Reach 🔒
+
+By default an `MCPClient` calls the URL you give it, follows redirects and reads the whole answer. When the URL comes from a user, a settings screen or any place you do not fully control, turn on the controls below. All of them are **off by default**, so existing code behaves the same.
+
+| Method | What it does |
+|---|---|
+| `withUrlGuard( fn )` | Called with the URL **before every request**. Return `false` or throw to refuse it. Nothing is sent. |
+| `withRedirects( false )` | A redirect (3xx) becomes a failed response and the new address is never called. |
+| `withMaxResponseBytes( n )` | Refuses an answer longer than `n` characters. |
+| `withHandshake()` | Sends `initialize` and `notifications/initialized` once, then sends back the `Mcp-Session-Id` the server returns. |
+
+**Block private addresses:**
+
+```javascript
+client = MCP( "https://docs.example.com/mcp" )
+    .withUrlGuard( ( url ) => {
+        if ( isPrivateAddress( url ) ) {
+            throw( "Blocked: private address" )
+        }
+        return true
+    } )
+
+response = client.listTools()
+// response.isSuccess() is false and response.getError() says "Blocked: private address"
+```
+
+`isPrivateAddress()` stands for your own check, BoxLang does not ship one. The guard runs on every call, so check the address again there instead of trusting an earlier check. A refused call returns a failed `MCPResponse`, fires `onMCPClientError` and counts as an error in the client stats.
+
+**Do not follow redirects.** A public server can answer "go to `http://10.0.0.5/admin`". With redirects off, the client stops at the first answer:
+
+```javascript
+response = MCP( url ).withRedirects( false ).listTools()
+// A 302 gives response.isSuccess() == false and response.getStatusCode() == 302
+```
+
+**Cap the answer size:**
+
+```javascript
+response = MCP( url ).withMaxResponseBytes( 200000 ).listTools()
+```
+
+> 💡 The answer is read before it is measured. The limit protects what you parse, keep and pass on to a model. It does not stop the download itself.
+
+**Handshake.** The MCP specification asks a client to say hello first. Some servers refuse calls without it. `withHandshake()` does it once, on the first call:
+
+```javascript
+client = MCP( url ).withHandshake()
+client.listTools()
+client.getSessionId()   // the Mcp-Session-Id from the server, empty if none
+```
+
+The same options work when you attach servers to an agent or a model, see [Agent Tools & MCP](../../main-components/agents/tools-and-mcp.md#mcp-server-options).
+
 ## Discovery Methods
 
 ### List Tools
