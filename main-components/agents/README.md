@@ -146,7 +146,7 @@ agent = aiAgent(
     skills         : aiSkill( ".ai/skills" ),
     availableSkills: aiSkill( ".ai/advanced-skills" ),
     middleware     : [ new LoggingMiddleware(), new RetryMiddleware() ],
-    mcpServers     : [ { url: "http://tools-server/mcp", toolNames: ["search"] } ]
+    mcpServers     : [ { url: "http://tools-server/mcp", toolFilter: ["search"] } ]
 )
 
 response = agent.run( "My order hasn't arrived" )
