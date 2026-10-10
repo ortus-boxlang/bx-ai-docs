@@ -309,6 +309,7 @@ Each server entry takes a `url` plus any of these options:
 | `redirects` | boolean | `false` stops the client from following redirects |
 | `maxResponseBytes` | numeric | Refuse an answer longer than this many characters |
 | `handshake` | boolean | Send the MCP `initialize` handshake before the first call |
+| `httpVersion` | string | `HTTP/2` (the default) or `HTTP/1.1`. Use `HTTP/1.1` for a server on a plain http address that does not handle the HTTP/2 upgrade |
 
 > 💡 The older `toolNames` key shown in earlier examples is ignored. It never limited which tools the agent can call. Use `toolFilter`. Likewise the bearer token option is `token`.
 
