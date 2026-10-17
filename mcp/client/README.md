@@ -7,6 +7,17 @@ icon: plug
 
 The BoxLang AI Module includes built-in support for the Model Context Protocol (MCP), a standardized way for AI applications to connect to external data sources and tools.
 
+## 🔀 Two Transports
+
+The `MCP()` BIF picks the transport from its argument. Both clients implement `IMCPClient`, have the same methods and return the same `MCPResponse`.
+
+| You pass | You get | The server is |
+|---|---|---|
+| A URL, `MCP( "https://host/mcp" )` | `MCPHttpClient` | A web service, reached over HTTP with SSE answers |
+| A struct, `MCP( { command: [ "bxplaywright", "mcp" ] } )` | `MCPStdioClient` | A program the client launches, reached over stdin and stdout. See [Stdio Servers](stdio.md) |
+
+The rest of this page uses HTTP. Everything about discovery, calling tools, reading resources, prompts, stats, events and error handling applies to both.
+
 ## 🎯 What is MCP?
 
 Model Context Protocol is an open protocol that enables AI models to:
@@ -143,7 +154,7 @@ client = MCP( "http://localhost:3000" )
 
 ### Controlling What a Client Can Reach 🔒
 
-By default an `MCPClient` calls the URL you give it, follows redirects and reads the whole answer. When the URL comes from a user, a settings screen or any place you do not fully control, turn on the controls below. All of them are **off by default**, so existing code behaves the same.
+By default an HTTP client (`MCPHttpClient`) calls the URL you give it, follows redirects and reads the whole answer. When the URL comes from a user, a settings screen or any place you do not fully control, turn on the controls below. All of them are **off by default**, so existing code behaves the same.
 
 | Method | What it does |
 |---|---|
@@ -545,7 +556,7 @@ The MCP client expects servers to implement these endpoints:
 **Since BoxLang AI v3.2.0+**
 {% endhint %}
 
-`MCPClient` now tracks internal usage and performance metrics via a `MCPClientStats` instance using atomic variables for thread safety.
+MCP clients (HTTP and stdio) track internal usage and performance metrics via a `MCPClientStats` instance using atomic variables for thread safety.
 
 ### Getting Stats
 
@@ -554,8 +565,8 @@ client = MCP( "http://localhost:3000" )
 
 // Make some calls
 tools = client.listTools()
-result = client.callTool( "search", { query: "BoxLang" } )
-resource = client.getResource( "config://app" )
+result = client.send( "search", { query: "BoxLang" } )
+resource = client.readResource( "config://app" )
 
 // Get full stats
 stats = client.getStats()
@@ -582,7 +593,7 @@ println( "Summary: #serializeJSON( summary )#" )
 ### Stats Breakdown
 
 **Tracked operation types:**
-- `tool` — covers `listTools` + `callTool`
+- `tool` — covers `listTools` + `send`
 - `resource` — covers `listResources` + `getResource`
 - `prompt` — covers `listPrompts` + `getPrompt`
 - `discovery` — covers `getCapabilities`
@@ -748,6 +759,8 @@ class extends="testbox.system.BaseSpec" {
 * [BoxLang AI Module](../../README.md)
 * [AI Tools](../../main-components/tools.md)
 * [AI Agents](../../main-components/agents/)
+* [MCP Stdio Client](stdio.md)
+* [Tools & MCP for agents](../../main-components/agents/tools-and-mcp.md)
 
 ## External Resources
 

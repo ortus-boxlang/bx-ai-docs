@@ -270,7 +270,7 @@ contextTool = aiTool(
 
 ## MCP Server Seeding (v3.0+)
 
-Connect agents to remote MCP servers. The tools each server lists are fetched when the agent is built and made available to the agent:
+Connect agents to MCP servers, either remote servers behind a URL or programs that run as a child process (see [Stdio Servers](#stdio-servers-child-processes)). The tools each server lists are fetched when the agent is built and made available to the agent:
 
 ```javascript
 agent = aiAgent(
@@ -291,7 +291,7 @@ agent = aiAgent(
 response = agent.run( "Find recent news about BoxLang" )
 ```
 
-You can also attach servers one at a time with `withMCPServer( server, config )`, where `server` is a URL or a pre-configured `MCPClient`, or in one call with `withMCPServers( servers )`.
+You can also attach servers one at a time with `withMCPServer( server, config )`, where `server` is a URL, a stdio struct (`{ command: [ ... ] }`) or a pre-configured `IMCPClient`, or in one call with `withMCPServers( servers )`.
 
 ### MCP Server Options
 
@@ -312,6 +312,53 @@ Each server entry takes a `url` plus any of these options:
 | `httpVersion` | string | `HTTP/2` (the default) or `HTTP/1.1`. Use `HTTP/1.1` for a server on a plain http address that does not handle the HTTP/2 upgrade |
 
 > 💡 The older `toolNames` key shown in earlier examples is ignored. It never limited which tools the agent can call. Use `toolFilter`. Likewise the bearer token option is `token`.
+
+### Stdio Servers (Child Processes)
+
+Many MCP servers are programs you launch, such as `bxplaywright mcp` or `npx -y @modelcontextprotocol/server-github`. Give the entry a `command` instead of a `url`:
+
+```javascript
+agent = aiAgent(
+    name      : "BrowserAgent",
+    model     : aiModel( provider: "openai" ),
+    mcpServers: [
+        {
+            command   : [ "bxplaywright", "mcp" ],
+            env       : { HEADLESS: "true" },
+            prefix    : "browser",
+            toolFilter: [ "browser_visit", "browser_click" ]
+        }
+    ]
+)
+
+response = agent.run( "Open boxlang.io and tell me the title of the page" )
+
+// Shut the child processes down when you are done
+agent.closeMCPServers()
+```
+
+The same works with `withMCPServer( { command: [ ... ] }, { prefix: "browser" } )` and `withMCPServers( [ ... ] )`, and the list can mix URLs and commands.
+
+| Option | Type | What it does |
+|---|---|---|
+| `command` | array | **Required.** The executable followed by its arguments, one element each. Never a shell string |
+| `env` | struct | Environment variables added to the child process |
+| `cwd` | string | Working directory of the child process |
+| `inheritEnv` | boolean | `false` starts the child with only `env`. Default `true` |
+| `maxRestarts` | numeric | How many times in a row a dead server is started again. Default `2` |
+| `commandGuard` | function | `( command ) => boolean`, called before every launch. Return `false` to refuse it |
+| `timeout` | numeric | Milliseconds to wait for each answer. Default `30000` |
+| `toolFilter`, `prefix` | | Same as for URL servers |
+
+* The options that only exist for HTTP (`token`, `user`, `password`, `headers`, `urlGuard`, `redirects`, `maxResponseBytes`, `httpVersion`, `handshake`) throw `InvalidArgument` for a stdio server.
+* A server that cannot start, exits at once or fails the handshake is written to the `ai` log and the agent carries on without its tools. A command **refused** by the `mcp.stdio.allowedCommands` setting or by `commandGuard` throws `MCPCommandRefused` instead.
+* `closeMCPServers()` closes the clients the agent built itself. A client you pass in ready-made is yours to close.
+
+{% hint style="warning" %}
+A stdio server is a program that runs on your machine with your permissions. Do not build the `command` from user input. See the [security section](../../mcp/client/stdio.md#security) of the stdio guide for the allow list and the command guard.
+{% endhint %}
+
+See [MCP Stdio Client](../../mcp/client/stdio.md) for the lifecycle, restarts, timeouts and logging.
 
 ### Keep Servers From Clashing: `prefix`
 

@@ -1,11 +1,18 @@
 ---
-description: Create a fluent MCP (Model Context Protocol) client for consuming external MCP servers.
+description: Create a fluent MCP (Model Context Protocol) client for consuming external MCP servers over HTTP or as a child process over stdio.
 icon: server
 ---
 
 # MCP
 
 Create a fluent MCP (Model Context Protocol) client for consuming external MCP servers. MCP enables AI applications to connect to tools, data sources, and external systems through a standardized protocol.
+
+The argument decides the transport:
+
+* a **URL string** gives an HTTP client (`MCPHttpClient`)
+* a **struct with a `command`** gives a stdio client (`MCPStdioClient`) that launches the server as a child process and talks to it over stdin and stdout
+
+Both implement `IMCPClient`, have the same methods, and return the same `MCPResponse`.
 
 ## 🔌 MCP Client-Server Flow
 
@@ -16,32 +23,30 @@ sequenceDiagram
     participant Server as MCP Server
     participant Res as External Resources
 
-    App->>MCP: MCP(baseURL)
-    App->>MCP: withTimeout/withAuth
+    App->>MCP: MCP( url ) or MCP( { command: [...] } )
+    App->>MCP: withTimeout / withBearerToken
 
     alt Discovery Phase
         App->>MCP: listTools()
-        MCP->>Server: GET /tools
+        MCP->>Server: tools/list
         Server-->>MCP: Available tools
-        MCP-->>App: Tool definitions
+        MCP-->>App: MCPResponse
     end
 
     alt Invocation Phase
-        App->>MCP: callTool(name, args)
-        MCP->>Server: POST /call
+        App->>MCP: send( name, args )
+        MCP->>Server: tools/call
         Server->>Res: Access data/API
         Res-->>Server: Resource data
         Server-->>MCP: Tool result
-        MCP-->>App: Response data
+        MCP-->>App: MCPResponse
     end
 
     alt Resource Access
-        App->>MCP: getResource(uri)
-        MCP->>Server: GET /resource
-        Server->>Res: Fetch resource
-        Res-->>Server: Resource content
-        Server-->>MCP: Resource data
-        MCP-->>App: Resource
+        App->>MCP: readResource( uri )
+        MCP->>Server: resources/read
+        Server-->>MCP: Resource content
+        MCP-->>App: MCPResponse
     end
 
     style MCP fill:#4A90E2
@@ -52,24 +57,63 @@ sequenceDiagram
 ## Syntax
 
 ```javascript
-MCP(baseURL)
+// HTTP
+MCP( url )
+
+// Stdio: a child process
+MCP( { command: [ "executable", "arg1", "arg2" ], env: {}, cwd: "", inheritEnv: true, maxRestarts: 2, commandGuard: fn, timeout: 30000 } )
 ```
 
 ## Parameters
 
-| Parameter | Type   | Required | Description                                  |
-| --------- | ------ | -------- | -------------------------------------------- |
-| `baseURL` | string | Yes      | The base URL of the MCP server to connect to |
+| Parameter | Type             | Required | Description                                                                                                |
+| --------- | ---------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| `server`  | string \| struct | Yes      | The URL of the MCP server (HTTP), or a struct that describes the program to launch (stdio), see below.     |
+
+### Stdio struct
+
+| Key            | Type     | Default           | Description                                                                                         |
+| -------------- | -------- | ----------------- | --------------------------------------------------------------------------------------------------- |
+| `command`      | array    | required          | The executable followed by its arguments, one element each. Never a shell string.                   |
+| `env`          | struct   | `{}`              | Environment variables added to the child process.                                                   |
+| `cwd`          | string   | current directory | Working directory of the child process.                                                             |
+| `inheritEnv`   | boolean  | `true`            | `false` starts the child with only `env`.                                                           |
+| `maxRestarts`  | numeric  | `2`               | How many times in a row a dead server is started again before the client gives up.                  |
+| `commandGuard` | function | none              | `( command ) => boolean`, called before every launch. Return `false` or throw to refuse the command. |
+| `timeout`      | numeric  | `30000`           | Milliseconds to wait for each answer.                                                               |
+
+A bad struct throws `InvalidArgument`. A command refused by the guard or by the `mcp.stdio.allowedCommands` setting throws `MCPCommandRefused`. See the [MCP Stdio Client](../../../mcp/client/stdio.md) guide.
 
 ## Returns
 
-Returns an `MCPClient` instance with fluent API for:
+Returns an `IMCPClient`: an `MCPHttpClient` for a URL, an `MCPStdioClient` for a struct. Both have:
 
-* Configuration: `withTimeout()`, `withBearerToken()`, `withHeaders()`
-* Safety controls: `withUrlGuard()`, `withRedirects()`, `withMaxResponseBytes()`, `withHandshake()`, see [Controlling What a Client Can Reach](../../../mcp/client/README.md#controlling-what-a-client-can-reach)
-* Callbacks: `onSuccess()`, `onError()`
-* Discovery: `listTools()`, `listResources()`, `listPrompts()`
-* Invocation: `send()`, `callTool()`, `getResource()`, `getPrompt()`
+* Configuration: `withTimeout()`, `onSuccess()`, `onError()`
+* Discovery: `listTools()`, `listResources()`, `listPrompts()`, `getCapabilities()`
+* Invocation: `send( tool, args )`, `readResource( uri )`, `getPrompt( name, args )`
+* Statistics: `getStats()`, `getSummary()`, `resetStats()`
+* Lifecycle: `close()`, a no-op for HTTP that shuts the child process down for stdio
+
+Only `MCPHttpClient` has:
+
+* `withBearerToken()`, `withAuth()`, `withHeaders()`
+* Safety controls: `withUrlGuard()`, `withRedirects()`, `withMaxResponseBytes()`, `withHandshake()`, `withHttpVersion()`, see [Controlling What a Client Can Reach](../../../mcp/client/README.md#controlling-what-a-client-can-reach)
+
+Only `MCPStdioClient` has `isRunning()`, `getProtocolVersion()` and `getStderrTail()`.
+
+### The MCPResponse
+
+Every call returns an `MCPResponse`. Nothing throws from a call, a failure is a response with `isSuccess()` false.
+
+| Method            | Description                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| `isSuccess()`     | `true` when the server answered with a result                            |
+| `hasError()`      | `true` when the call failed                                              |
+| `getData()`       | The result of the call, an empty struct on failure                       |
+| `getError()`      | The error message, empty on success                                      |
+| `getStatusCode()` | The HTTP status. For stdio, `200` for an answer and `0` when none came   |
+| `getHeaders()`    | The HTTP response headers, empty for stdio                               |
+| `onSuccess( fn )` / `onError( fn )` | Run a function when the response is a success or an error |
 
 ## Examples
 
@@ -84,10 +128,27 @@ result = client.send( "searchDocs", { query: "syntax" } );
 println( result.getData() );
 ```
 
+### A Stdio Server
+
+```javascript
+// Launch a server as a child process
+client = MCP( { command: [ "bxplaywright", "mcp" ], env: { HEADLESS: "true" } } );
+
+result = client.send( "browser_visit", { url: "https://boxlang.io" } );
+if ( result.isSuccess() ) {
+    println( result.getData() );
+} else {
+    println( "Failed: #result.getError()#" );
+}
+
+// Stop the child process
+client.close();
+```
+
 ### With Configuration
 
 ```javascript
-// Configure client with options
+// Configure an HTTP client with options
 client = MCP( "http://localhost:3000" )
     .withTimeout( 5000 )
     .withBearerToken( "my-secret-token" )
@@ -105,10 +166,10 @@ result = client.send( "getTasks", {} );
 // Add success and error handlers
 client = MCP( "http://localhost:3000" )
     .onSuccess( ( response ) => {
-        writeLog( "Success: #response.getData()#" );
+        writeLog( text: "Success: #response.getData()#", type: "information", log: "ai" );
     })
     .onError( ( response ) => {
-        writeLog( "Error: #response.getError()#", "error" );
+        writeLog( text: "Error: #response.getError()#", type: "error", log: "ai" );
     });
 
 client.send( "processData", { input: "test" } );
@@ -116,71 +177,56 @@ client.send( "processData", { input: "test" } );
 
 ### Discover Tools
 
-```javascript
-// List available tools from server
-client = MCP( "http://localhost:3000" );
-
-tools = client.listTools();
-println( "Available Tools:" );
-tools.each( tool => {
-    println( "  - #tool.name#: #tool.description#" );
-});
-```
-
-### Call Specific Tool
+`listTools()` returns an `MCPResponse`, the tools are in `getData().tools`.
 
 ```javascript
-// Call a tool by name
 client = MCP( "http://localhost:3000" );
 
-result = client.callTool( "search", {
-    query: "BoxLang documentation",
-    limit: 10
-});
-
-println( result.getData() );
+response = client.listTools();
+if ( response.isSuccess() ) {
+    println( "Available Tools:" );
+    response.getData().tools.each( tool => {
+        println( "  - #tool.name#: #tool.description#" );
+    });
+}
 ```
+
+A server that pages its tools answers with a `nextCursor`. Pass it to `listTools( cursor )` to read the next page.
 
 ### Discover Resources
 
 ```javascript
-// List available resources
 client = MCP( "http://localhost:3000" );
 
-resources = client.listResources();
-println( "Available Resources:" );
-resources.each( resource => {
-    println( "  - #resource.uri#: #resource.description#" );
+response = client.listResources();
+response.getData().resources.each( resource => {
+    println( "  - #resource.uri#: #resource.name#" );
 });
 ```
 
-### Get Resource
+### Read a Resource
 
 ```javascript
-// Fetch a specific resource
 client = MCP( "http://localhost:3000" );
 
-resource = client.getResource( "docs://readme" );
+resource = client.readResource( "docs://readme" );
 println( resource.getData() );
 ```
 
 ### Discover Prompts
 
 ```javascript
-// List available prompts
 client = MCP( "http://localhost:3000" );
 
-prompts = client.listPrompts();
-println( "Available Prompts:" );
-prompts.each( prompt => {
+response = client.listPrompts();
+response.getData().prompts.each( prompt => {
     println( "  - #prompt.name#: #prompt.description#" );
 });
 ```
 
-### Get Prompt
+### Get a Prompt
 
 ```javascript
-// Get a prompt template
 client = MCP( "http://localhost:3000" );
 
 prompt = client.getPrompt( "greeting", {
@@ -188,50 +234,20 @@ prompt = client.getPrompt( "greeting", {
     language: "Spanish"
 });
 
-messages = prompt.getData();
-// Use messages with AI model
-```
-
-### Authentication
-
-```javascript
-// Bearer token authentication
-client = MCP( "https://api.example.com/mcp" )
-    .withBearerToken( getSystemSetting( "MCP_TOKEN" ) );
-
-result = client.send( "secureOperation", { data: "sensitive" } );
-```
-
-### Custom Headers
-
-```javascript
-// Add custom headers for tracking
-client = MCP( "http://localhost:3000" )
-    .withHeaders({
-        "X-User-ID": session.userID,
-        "X-Request-ID": createUUID(),
-        "X-App-Version": "1.0.0"
-    });
-
-result = client.send( "loggedOperation", {} );
+messages = prompt.getData().messages;
 ```
 
 ### Error Handling
 
 ```javascript
-// Handle errors explicitly
 client = MCP( "http://localhost:3000" );
 
-try {
-    result = client.send( "riskyOperation", { input: data } );
+result = client.send( "riskyOperation", { input: data } );
 
-    if ( result.isError() ) {
-        println( "MCP Error: #result.getError()#" );
-    } else {
-        println( "Success: #result.getData()#" );
-    }
-} catch ( any e ) {
-    println( "Connection Error: #e.message#" );
+if ( result.hasError() ) {
+    println( "MCP Error: #result.getError()#" );
+} else {
+    println( "Success: #result.getData()#" );
 }
 ```
 
@@ -240,35 +256,49 @@ try {
 ```javascript
 // Set custom timeout for long operations
 client = MCP( "http://localhost:3000" )
-    .withTimeout( 30000 ); // 30 seconds
+    .withTimeout( 30000 ); // 30 seconds, in milliseconds
 
 result = client.send( "longRunningTask", { input: largeDataset } );
 ```
 
-### Integration with AI Agent
+### Integration with AI Agents
+
+The easiest way to use the tools of an MCP server is to give the server to an agent or a model. It lists the tools, wraps each one, and calls them for you.
 
 ```javascript
-// Use MCP tools with AI agent
+agent = aiAgent(
+    name: "ops",
+    model: aiModel( provider: "openai" ),
+    mcpServers: [
+        "http://localhost:3000",
+        { command: [ "bxplaywright", "mcp" ], prefix: "browser", toolFilter: [ "browser_visit" ] }
+    ]
+);
+
+response = agent.run( "Search for BoxLang docs" );
+
+// Release the child processes
+agent.closeMCPServers();
+```
+
+See [Tools & MCP](../../../main-components/agents/tools-and-mcp.md) for `prefix`, `toolFilter` and the rest of the options.
+
+You can also build the tools yourself from a client:
+
+```javascript
 client = MCP( "http://localhost:3000" );
 
-// Discover available tools
-mcpTools = client.listTools();
+mcpTools = client.listTools().getData().tools;
 
-// Create AI tools from MCP tools
 aiTools = mcpTools.map( mcpTool => {
     return aiTool(
-        name: mcpTool.name,
-        description: mcpTool.description,
-        handler: ( args ) => {
-            result = client.callTool( mcpTool.name, args );
-            return result.getData();
-        }
+        mcpTool.name,
+        mcpTool.description,
+        ( args ) => client.send( mcpTool.name, args ).getData()
     );
 });
 
-// Use with agent
-agent = aiAgent( tools: aiTools );
-response = agent.run( "Search for BoxLang docs" );
+agent = aiAgent( name: "mcp-agent", model: aiModel( provider: "openai" ), tools: aiTools );
 ```
 
 ### Multiple MCP Servers
@@ -279,22 +309,17 @@ docsServer = MCP( "http://docs.example.com:3000" );
 apiServer = MCP( "http://api.example.com:3001" );
 
 // Use different servers
-docs = docsServer.callTool( "search", { query: "API" } );
-data = apiServer.callTool( "getData", { id: 123 } );
+docs = docsServer.send( "search", { query: "API" } );
+data = apiServer.send( "getData", { id: 123 } );
 ```
 
 ### Health Check
 
+A failed call does not throw, check the response.
+
 ```javascript
-// Check if MCP server is available
 function checkMCPHealth( baseURL ) {
-    try {
-        client = MCP( baseURL ).withTimeout( 2000 );
-        tools = client.listTools();
-        return true;
-    } catch ( any e ) {
-        return false;
-    }
+    return MCP( baseURL ).withTimeout( 2000 ).listTools().isSuccess();
 }
 
 if ( checkMCPHealth( "http://localhost:3000" ) ) {
@@ -304,68 +329,42 @@ if ( checkMCPHealth( "http://localhost:3000" ) ) {
 }
 ```
 
-### Logging Wrapper
-
-```javascript
-// Wrap client with logging
-function createLoggingMCPClient( baseURL ) {
-    return MCP( baseURL )
-        .onSuccess( ( response ) => {
-            writeLog(
-                "MCP Success: #serializeJSON(response.getData())#",
-                "information"
-            );
-        })
-        .onError( ( response ) => {
-            writeLog(
-                "MCP Error: #response.getError()#",
-                "error"
-            );
-        });
-}
-
-client = createLoggingMCPClient( "http://localhost:3000" );
-```
-
 ### Retry Logic
 
 ```javascript
 // Implement retry logic for MCP calls
 function mcpCallWithRetry( client, toolName, args, maxRetries = 3 ) {
-    for ( var i = 1; i <= maxRetries; i++ ) {
-        try {
-            result = client.callTool( toolName, args );
+    for ( var attempt = 1; attempt <= maxRetries; attempt++ ) {
+        var result = client.send( toolName, args );
 
-            if ( !result.isError() ) {
-                return result.getData();
-            }
+        if ( result.isSuccess() ) {
+            return result.getData();
+        }
 
-            if ( i < maxRetries ) {
-                sleep( 1000 * i ); // Exponential backoff
-            }
-        } catch ( any e ) {
-            if ( i == maxRetries ) {
-                throw( e );
-            }
+        if ( attempt < maxRetries ) {
+            sleep( 1000 * attempt ); // Linear backoff
         }
     }
 
-    throw( "MCP call failed after #maxRetries# attempts" );
+    throw( type: "MCPCallFailed", message: "MCP call failed after #maxRetries# attempts" );
 }
 ```
+
+{% hint style="warning" %}
+Do not retry a tool call that changes something, such as a purchase or a file write, unless the tool is safe to repeat. The stdio client never repeats a call by itself for this reason.
+{% endhint %}
 
 ### Dynamic Tool Discovery
 
 ```javascript
-// Dynamically discover and use tools
 client = MCP( "http://localhost:3000" );
 
-// Find tool by name pattern
-tools = client.listTools();
-searchTool = tools.find( t => t.name.findNoCase( "search" ) );
+// Find a tool by name pattern
+tools = client.listTools().getData().tools;
+searchTools = tools.filter( t => t.name.findNoCase( "search" ) );
 
-if ( !isNull( searchTool ) ) {
-    result = client.callTool( searchTool.name, { query: "BoxLang" } );
+if ( searchTools.len() ) {
+    result = client.send( searchTools[ 1 ].name, { query: "BoxLang" } );
     println( result.getData() );
 }
 ```
@@ -375,14 +374,13 @@ if ( !isNull( searchTool ) ) {
 ```javascript
 // Cache MCP tool responses
 function callMCPWithCache( client, toolName, args, ttl = 60 ) {
-    cacheKey = "mcp_#toolName#_#hash(serializeJSON(args))#";
+    cacheKey = "mcp_#toolName#_#hash( jsonSerialize( args ) )#";
 
     if ( cacheExists( cacheKey ) ) {
         return cacheGet( cacheKey );
     }
 
-    result = client.callTool( toolName, args );
-    data = result.getData();
+    data = client.send( toolName, args ).getData();
 
     cachePut( cacheKey, data, ttl );
     return data;
@@ -394,36 +392,39 @@ data = callMCPWithCache( client, "expensiveTool", { id: 123 }, 300 );
 
 ## Notes
 
-* 🔌 **Protocol**: Implements Model Context Protocol standard for AI integrations
-* 🌐 **HTTP-Based**: Works with any MCP server over HTTP/HTTPS
+* 🔌 **Protocol**: Implements the Model Context Protocol standard for AI integrations
+* 🌐 **Two transports**: HTTP/HTTPS for remote servers, stdio for programs you launch
 * 🔧 **Fluent API**: Chainable configuration methods
 * 🎯 **Discovery**: Dynamically discover tools, resources, and prompts
-* 🔐 **Security**: Supports bearer tokens and custom headers
+* 🔐 **Security**: Bearer tokens, custom headers and URL controls for HTTP. An allow list and a command guard for stdio
 * ⚡ **Configurable**: Timeout and header customization
-* 📡 **Callbacks**: Success and error handlers for async workflows
+* 📡 **Callbacks**: Success and error handlers
 
 ## Related Functions
 
 * [`MCPServer()`](mcpserver.md) - Create MCP server to expose tools
 * [`aiTool()`](aitool.md) - Create AI tools (can wrap MCP tools)
 * [`aiAgent()`](aiagent.md) - Use MCP tools with agents
+* [MCP Stdio Client](../../../mcp/client/stdio.md) - Launch a server as a child process
 
 ## Best Practices
 
 ✅ **Discover before using** - List tools/resources to understand capabilities
 
-✅ **Handle errors** - Check response status and handle errors gracefully
+✅ **Check the response** - Calls do not throw, look at `isSuccess()`
 
 ✅ **Use timeouts** - Set appropriate timeouts for network operations
 
 ✅ **Secure connections** - Use HTTPS and bearer tokens for production
 
-✅ **Cache responses** - Cache expensive MCP calls when appropriate
+✅ **Close stdio clients** - Call `close()`, or `agent.closeMCPServers()`
 
-✅ **Retry on failure** - Implement retry logic for transient errors
+✅ **Cache responses** - Cache expensive MCP calls when appropriate
 
 ❌ **Don't hardcode URLs** - Use environment variables for MCP server URLs
 
-❌ **Don't ignore errors** - Always check if response is error before using data
+❌ **Don't ignore errors** - Always check the response before using data
+
+❌ **Don't build a command from user input** - A stdio client runs a program
 
 ❌ **Don't skip authentication** - Use tokens for protected MCP servers
