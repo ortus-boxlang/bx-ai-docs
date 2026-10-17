@@ -82,7 +82,7 @@ if ( structKeyExists( parsedArgs.options, "server" ) ) {
 }
 
 // Start STDIO transport (blocks until shutdown)
-MCPRequestProcessor::startStdio( serverName )
+MCPRequestProcessor::processStdio( serverName )
 ```
 
 ### Run STDIO Server
@@ -102,10 +102,23 @@ MCP_SERVER_NAME=myApp boxlang mcp-stdio.bxs
 
 ✅ JSON-RPC over STDIN/STDOUT
 ✅ Line-based protocol
-✅ Graceful shutdown signal
+✅ Graceful shutdown: the server stops when its STDIN closes, or on a `shutdown` request
 ✅ Process lifecycle management
 ❌ No HTTP headers/CORS (not needed)
 ❌ No status codes (JSON-RPC error codes used)
+
+### Rules for a STDIO Server
+
+1. **Only protocol messages on STDOUT**, one JSON object per line. Send banners and logs to STDERR, for example `systemOutput( "Starting", true, true )`. `println()` writes to STDOUT and would corrupt the stream.
+2. **Exit when STDIN closes.** That is how a client asks a server to stop. `MCPRequestProcessor::processStdio()` does this for you.
+
+### Connecting to a STDIO Server from BoxLang
+
+A BoxLang AI agent can launch any STDIO server, including one written with BoxLang AI, as a child process. See [MCP Stdio Client](../client/stdio.md).
+
+```javascript
+client = MCP( { command: [ "boxlang", "mcp-stdio.bxs", "--server", "myApp" ] } )
+```
 
 ### STDIO Communication
 

@@ -108,6 +108,7 @@
   * [Best Practices](mcp/server/best-practices.md)
   * [Examples & Use Cases](mcp/server/_examples.md)
 * [MCP Clients](mcp/client/README.md)
+  * [Stdio Servers (Child Process)](mcp/client/stdio.md)
 
 ## RAG
 

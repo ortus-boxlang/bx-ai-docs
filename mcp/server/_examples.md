@@ -159,10 +159,10 @@ client = MCP( "http://localhost/~bxai/mcp.bxm?server=public" )
 tools = client.listTools()
 
 // Invoke a tool
-result = client.callTool( "searchProducts", { query: "laptop" } )
+result = client.send( "searchProducts", { query: "laptop" } )
 
-if ( result.success ) {
-    products = result.data.content
+if ( result.isSuccess() ) {
+    products = result.getData().content
     writeOutput( "Found #arrayLen( products )# products" )
 }
 ```
@@ -204,7 +204,7 @@ MCPServer( "stdio-server" )
 var serverName = getSystemSetting( "MCP_SERVER_NAME", "default" )
 
 // Start STDIO transport
-MCPRequestProcessor::startStdio( serverName )
+MCPRequestProcessor::processStdio( serverName )
 ```
 
 Run: `boxlang mcp-stdio.bxs --server stdio-server`

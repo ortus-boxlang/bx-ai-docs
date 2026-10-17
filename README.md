@@ -246,7 +246,7 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 
 | BIF           | Purpose                  | Return Type | Example Use Case          |
 | ------------- | ------------------------ | ----------- | ------------------------- |
-| `MCP()`       | Connect to MCP servers   | MCPClient   | External tools, resources |
+| `MCP()`       | Connect to MCP servers (HTTP URL or stdio child process) | IMCPClient   | External tools, resources |
 | `MCPServer()` | Create MCP server instances | MCPServer   | Expose tools to agents    |
 
 ### 🛡️ Governance & Gateways

@@ -111,7 +111,7 @@ sequenceDiagram
 | [Getting Started](getting-started.md) | Creating agents, configuration, model selection, return formats |
 | [Class-Based Agents](class-based-agents.md) | Build encapsulated reusable agents by extending `AiAgent` |
 | [Memory Management](memory.md) | Memory types, per-call identity routing, resume/suspend, multi-tenant |
-| [Tools & MCP](tools-and-mcp.md) | Tool Registry, ClosureTool, MCP server seeding |
+| [Tools & MCP](tools-and-mcp.md) | Tool Registry, ClosureTool, MCP server seeding (URLs and stdio child processes) |
 | [Skills](skills.md) | Always-on and lazy-loaded skills for domain knowledge injection |
 | [Middleware](middleware.md) | Lifecycle hooks for logging, retry, guardrails, human-in-the-loop |
 | [Sub-Agents & Hierarchy](hierarchy.md) | Parent-child agent delegation patterns |

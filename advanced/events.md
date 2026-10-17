@@ -2929,16 +2929,17 @@ BoxRegisterInterceptor( "onMCPServerResume", function( event ) {
 
 ### 50. onMCPClientRequest
 
-Fired before an MCP client sends an HTTP request.
+Fired before an MCP client sends a request, over HTTP or to a stdio server.
 
-**When**: Before every MCP client HTTP call
+**When**: Before every MCP client call
 
 #### Event Arguments
 
 | Argument | Type | Description |
 |---|---|---|
-| `client` | `MCPClient` | The MCP client instance |
-| `baseURL` | string | Server base URL |
+| `client` | `IMCPClient` | The MCP client instance (`MCPHttpClient` or `MCPStdioClient`) |
+| `baseURL` | string | Server base URL, or `stdio:<executable>` for a stdio server |
+| `transport` | string | `http` or `stdio` |
 | `operation` | string | Operation type (`tool`, `resource`, `prompt`, `discovery`) |
 | `name` | string | Tool/resource/prompt name |
 | `requestBody` | struct | Request payload |
@@ -2955,21 +2956,22 @@ BoxRegisterInterceptor( "onMCPClientRequest", function( event ) {
 
 ### 51. onMCPClientResponse
 
-Fired after an MCP client receives a successful HTTP response.
+Fired after an MCP client receives a successful answer.
 
-**When**: On successful MCP client HTTP response
+**When**: On a successful MCP client answer
 
 #### Event Arguments
 
 | Argument | Type | Description |
 |---|---|---|
-| `client` | `MCPClient` | The MCP client instance |
-| `baseURL` | string | Server base URL |
+| `client` | `IMCPClient` | The MCP client instance (`MCPHttpClient` or `MCPStdioClient`) |
+| `baseURL` | string | Server base URL, or `stdio:<executable>` for a stdio server |
+| `transport` | string | `http` or `stdio` |
 | `operation` | string | Operation type |
 | `name` | string | Tool/resource/prompt name |
 | `response` | `MCPResponse` | The response object |
 | `executionTime` | numeric | Request duration in ms |
-| `statusCode` | numeric | HTTP status code |
+| `statusCode` | numeric | HTTP status code. For stdio, `200` |
 
 #### Example
 
@@ -2983,20 +2985,21 @@ BoxRegisterInterceptor( "onMCPClientResponse", function( event ) {
 
 ### 52. onMCPClientError
 
-Fired when an MCP client encounters an HTTP error or network exception.
+Fired when an MCP client call fails.
 
-**When**: On HTTP errors (bad status / JSON-RPC error) or network exceptions
+**When**: On HTTP errors (bad status / JSON-RPC error), network exceptions, or for a stdio server a timeout, an exited process or a failed launch
 
 #### Event Arguments
 
 | Argument | Type | Description |
 |---|---|---|
-| `client` | `MCPClient` | The MCP client instance |
-| `baseURL` | string | Server base URL |
+| `client` | `IMCPClient` | The MCP client instance (`MCPHttpClient` or `MCPStdioClient`) |
+| `baseURL` | string | Server base URL, or `stdio:<executable>` for a stdio server |
+| `transport` | string | `http` or `stdio` |
 | `operation` | string | Operation type |
 | `name` | string | Tool/resource/prompt name |
 | `error` | string | Error message |
-| `statusCode` | numeric | HTTP status code (if available) |
+| `statusCode` | numeric | HTTP status code (if available). For stdio, `200` for a JSON-RPC error and `0` when no answer came |
 | `executionTime` | numeric | Request duration in ms |
 | `exception` | any | Exception object (if from catch block) |
 

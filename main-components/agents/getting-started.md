@@ -119,6 +119,19 @@ agent = aiAgent(
 response = agent.run( "Find recent news about BoxLang" )
 ```
 
+A server can also be a program the agent launches, with `command` instead of `url`:
+
+```javascript
+agent = aiAgent(
+    name      : "BrowserAgent",
+    model     : aiModel( provider: "openai" ),
+    mcpServers: [ { command: [ "bxplaywright", "mcp" ], prefix: "browser" } ]
+)
+
+// Shut the child process down when you are done
+agent.closeMCPServers()
+```
+
 See [Tools & MCP](tools-and-mcp.md) for the full MCP integration guide.
 
 ## Agent with the Agent Registry (v3.2.0+)
@@ -201,7 +214,7 @@ If you want reusable, encapsulated agents for larger applications, see:
 | `skills` | array | Always-on skills (v3.0+) |
 | `availableSkills` | array | Lazy-loaded skills (v3.0+) |
 | `middleware` | array | Middleware instances or structs (v3.0+) |
-| `mcpServers` | array | MCP server configs `{ url, toolFilter, prefix, token, ... }`, see [MCP Server Options](tools-and-mcp.md#mcp-server-options) (v3.0+) |
+| `mcpServers` | array | MCP server configs, `{ url, toolFilter, prefix, token, ... }` for an HTTP server or `{ command, env, toolFilter, prefix, ... }` for a stdio child process, see [MCP Server Options](tools-and-mcp.md#mcp-server-options) (v3.0+) |
 | `register` | boolean | Auto-register in the Agent Registry (v3.2.0+, default: `false`) |
 | `module` | string | Module namespace for the registry (v3.2.0+) |
 | `checkpointer` | IAiMemory | Memory backend for suspend/resume (v3.0+) |
