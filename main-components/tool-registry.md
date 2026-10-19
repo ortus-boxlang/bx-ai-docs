@@ -155,7 +155,7 @@ agent = aiAgent(
 registry = aiToolRegistry()
 
 // List all registered keys
-println( registry.keys() )
+println( registry.getKeys() )
 
 // Detailed info about a specific tool
 info = registry.getToolInfo( "search" )
@@ -265,6 +265,24 @@ agent = aiAgent( tools: [ "webSearch@bxai" ] )
 > 💡 `provider = ""` means "use the configured default provider" (HTTP by default). `maxResults = 0` means "use provider/module defaults".
 
 
+
+## Tools From Other Modules
+
+Any BoxLang module can register tools in the registry, and they appear as `name@module` keys next to the `@bxai` built-ins. Registering only makes a tool available: an agent gets it only when its `tools` list names it.
+
+| Module | Keys | Adds |
+|---|---|---|
+| `bx-audio` | `audioInfo@bxaudio`, `audioTrim@bxaudio`, `audioMaster@bxaudio`, ... (26 tools) | Audio editing, mastering, analysis and local speech. See [Audio Editing Tools](audio/bx-audio-tools.md) |
+
+```javascript
+// Every tool a module registered
+audioTools = aiToolRegistry().getByModule( "bxaudio" )
+
+// The module names that have registered tools
+aiToolRegistry().getModules()
+```
+
+To ship tools from your own module, see [Shipping Tools From Your Own Module](../extending-boxlang-ai/custom-tools.md#shipping-tools-from-your-own-module).
 
 ## Agent Registry (v3.2.0+)
 

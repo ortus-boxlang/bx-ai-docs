@@ -7,6 +7,8 @@ icon: volume-high
 
 # 🔊 Audio — Speech & Transcription
 
+> 💡 To let agents **edit and measure** audio files (trim, mix, master, analyze), install the `bx-audio` module. See [Audio Editing Tools](bx-audio-tools.md).
+
 BoxLang AI provides three first-class audio operations through a unified BIF interface: **Text-to-Speech** (`aiSpeak`), **Speech-to-Text** (`aiTranscribe`), and **Audio Translation** (`aiTranslate`). Each BIF works across all supported providers with consistent parameters and return values, so you can switch providers without rewriting application code.
 
 ## 🏗️ Architecture

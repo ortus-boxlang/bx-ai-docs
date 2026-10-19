@@ -77,6 +77,7 @@
   * [Streaming Text-to-Speech](main-components/audio/streaming-speech.md)
   * [Speech-to-Text](main-components/audio/speech-to-text.md)
   * [Audio Translation](main-components/audio/audio-translation.md)
+  * [Audio Editing Tools (bx-audio)](main-components/audio/bx-audio-tools.md)
 * [Image Generation](main-components/image-generation/README.md)
   * [Generating Images](main-components/image-generation/generating.md)
   * [Image Response & Formats](main-components/image-generation/response-formats.md)

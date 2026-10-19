@@ -91,7 +91,7 @@ agent = aiAgent(
 ## Inspecting Tool Availability
 
 ```javascript
-toolKeys = aiToolRegistry().keys()
+toolKeys = aiToolRegistry().getKeys()
 println( toolKeys.toList() )
 
 // Verify web search tool is present

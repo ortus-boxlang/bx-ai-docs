@@ -40,7 +40,7 @@ Agents are keyed as:
 | `resolveAgents( agents )` | Resolve mixed key/instance arrays to `AiAgent[]` |
 | `getAgentInfo( key )` | Lightweight metadata: name, description, module |
 | `listAgents()` | Return all registered agents with metadata |
-| `keys()` | List all keys |
+| `getKeys()` | List all keys |
 | `clear()` | Remove all entries |
 
 ## Events Fired
