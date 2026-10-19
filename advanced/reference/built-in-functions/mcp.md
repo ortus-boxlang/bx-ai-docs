@@ -68,7 +68,7 @@ MCP( { command: [ "executable", "arg1", "arg2" ], env: {}, cwd: "", inheritEnv: 
 
 | Parameter | Type             | Required | Description                                                                                                |
 | --------- | ---------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
-| `server`  | string \| struct | Yes      | The URL of the MCP server (HTTP), or a struct that describes the program to launch (stdio), see below.     |
+| `mcpServer` | string \| struct | Yes    | The URL of the MCP server (HTTP), or a struct that describes the program to launch (stdio), see below.     |
 
 ### Stdio struct
 
@@ -84,7 +84,7 @@ MCP( { command: [ "executable", "arg1", "arg2" ], env: {}, cwd: "", inheritEnv: 
 
 A bad struct throws `InvalidArgument`, and so does an option a stdio server does not have (the HTTP-only ones, or a typo such as `commandGaurd`). A command refused by the guard or by the `mcp.stdio.allowedCommands` setting throws `MCPCommandRefused`.
 
-The first argument used to be called `baseURL`. `MCP( baseURL: url )` still works, the name is now `server`. See the [MCP Stdio Client](../../../mcp/client/stdio.md) guide.
+The first argument used to be called `baseURL`. `MCP( baseURL: url )` still works, the name is now `mcpServer`. See the [MCP Stdio Client](../../../mcp/client/stdio.md) guide.
 
 ## Returns
 
