@@ -193,6 +193,50 @@ class extends="BaseTool" {
 }
 ```
 
+## Shipping Tools From Your Own Module
+
+A module can offer tools to BoxLang AI without requiring it. The module registers its `@AITool` class when BoxLang AI is present, and does nothing when it is not. This is how the `bx-audio` module adds its audio tools.
+
+Put the tools in a class, and register it from your `ModuleConfig`:
+
+```javascript
+// ModuleConfig.bx
+function onLoad() {
+    registerAiTools()
+}
+
+// BoxLang AI may activate after this module, so try again once every module is active
+function afterModuleActivations() {
+    registerAiTools()
+}
+
+function onUnload() {
+    try {
+        aiToolRegistry().unregisterByModule( "mymodule" )
+    } catch ( any e ) {
+        // BoxLang AI is not there, nothing to remove
+    }
+}
+
+function registerAiTools() {
+    var registry = ""
+    try {
+        registry = aiToolRegistry()
+    } catch ( any e ) {
+        return false // BoxLang AI is not installed or not active yet
+    }
+    // Calling twice is harmless
+    if ( !registry.has( "myTool@mymodule" ) ) {
+        registry.scanClass( new bxModules.mymodule.models.tools.MyTools(), "mymodule" )
+    }
+    return true
+}
+```
+
+Do not use `this.dependencies` for this: it makes BoxLang AI mandatory. Keep the tools in the module's own namespace (`@mymodule`) so they never collide with `@bxai` tools, and give every `@AITool` method a description and a hint for each parameter, because that is all the model sees.
+
+If your tools touch files, validate every path from the model against allowed folders, and never overwrite existing files.
+
 ## Tool Lifecycle Events
 
 Every tool invocation fires BoxLang interceptor events:

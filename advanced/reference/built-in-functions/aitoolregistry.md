@@ -91,7 +91,7 @@ all = registry.listTools()
 all.each( tool => println( tool.getName() ) )
 
 // Get all keys
-keys = registry.keys()
+keys = registry.getKeys()
 println( keys )  // [ "getWeather", "searchProducts@shop-module", ... ]
 ```
 
@@ -114,7 +114,9 @@ aiToolRegistry().unregisterByModule( "my-module" )
 | `scanClass( instance, module )` | Scan a single class instance |
 | `get( key )` | Retrieve a tool by key |
 | `has( key )` | Check if a key exists |
-| `keys()` | Return all registered keys |
+| `getKeys()` | Return all registered keys |
+| `getByModule( module )` | Return all `ITool` instances registered under a module name |
+| `getModules()` | Return the module names that have registered tools |
 | `listTools()` | Return all registered `ITool` instances |
 | `getToolInfo( key )` | Return name and description info for a key |
 | `resolveTools( array )` | Resolve an array of keys and/or instances to `ITool[]` |

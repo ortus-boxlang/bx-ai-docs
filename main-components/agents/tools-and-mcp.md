@@ -101,7 +101,7 @@ agent = aiAgent(
 | `has( key )` | Check if a tool exists |
 | `resolveTools( array )` | Convert string keys to `ITool` instances |
 | `unregister( key )` | Remove a tool |
-| `keys()` | List all registered keys |
+| `getKeys()` | List all registered keys |
 
 See [Tool Registry](../tool-registry.md) for the full reference.
 
