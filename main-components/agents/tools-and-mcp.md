@@ -350,7 +350,8 @@ The same works with `withMCPServer( { command: [ ... ] }, { prefix: "browser" } 
 | `timeout` | numeric | Milliseconds to wait for each answer. Default `30000` |
 | `toolFilter`, `prefix` | | Same as for URL servers |
 
-* The options that only exist for HTTP (`token`, `user`, `password`, `headers`, `urlGuard`, `redirects`, `maxResponseBytes`, `httpVersion`, `handshake`) throw `InvalidArgument` for a stdio server.
+* The options that only exist for HTTP (`token`, `user`, `password`, `headers`, `urlGuard`, `redirects`, `maxResponseBytes`, `httpVersion`, `handshake`) throw `InvalidArgument` for a stdio server, and so does any option the server does not have, such as the typo `commandGaurd`. `prefix` and `toolFilter` can sit in the same struct as the `command`.
+* The first call waits for the launch and the handshake, and `timeout` covers that wait. A program that downloads itself on its first run (`npx -y ...`) can need more than the default 30 seconds: use a larger `timeout`, for example `120000`.
 * A server that cannot start, exits at once or fails the handshake is written to the `ai` log and the agent carries on without its tools. A command **refused** by the `mcp.stdio.allowedCommands` setting or by `commandGuard` throws `MCPCommandRefused` instead.
 * `closeMCPServers()` closes the clients the agent built itself. A client you pass in ready-made is yours to close.
 
