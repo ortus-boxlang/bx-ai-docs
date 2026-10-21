@@ -47,7 +47,7 @@ A profile is a named combination of provider, model, params, options and key. Us
 
 ```json
 "profiles": {
-  "fast":    { "provider": "openai", "model": "gpt-4.1-mini", "params": { "temperature": 0 }, "apiKeyEnv": "OPENAI_API_KEY" },
+  "fast":    { "description": "Cheap and quick", "provider": "openai", "model": "gpt-4.1-mini", "params": { "temperature": 0 }, "apiKeyEnv": "OPENAI_API_KEY" },
   "planner": { "provider": "claude", "model": "claude-opus-5-5", "params": { "max_tokens": 8192 }, "apiKeyEnv": "CLAUDE_API_KEY" }
 }
 ```

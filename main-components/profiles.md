@@ -17,12 +17,14 @@ In `boxlang.json`:
     "provider": "openai",
     "profiles": {
       "fast": {
+        "description": "Cheap and quick, for small tasks",
         "provider": "openai",
         "model": "gpt-4.1-mini",
         "params": { "temperature": 0 },
         "apiKeyEnv": "OPENAI_API_KEY"
       },
       "planner": {
+        "description": "Slower and smarter, for planning",
         "provider": "claude",
         "model": "claude-opus-5-5",
         "params": { "temperature": 0.7, "max_tokens": 8192 },
@@ -36,6 +38,7 @@ In `boxlang.json`:
 
 | Key | Meaning |
 |---|---|
+| `description` | Free text for people and UIs. Returned by `aiProfile()` and `aiProfiles()` |
 | `provider` | Provider key. Empty uses the top level `provider` |
 | `model` | Shorthand for `params.model` |
 | `params` | Request params for this profile |
