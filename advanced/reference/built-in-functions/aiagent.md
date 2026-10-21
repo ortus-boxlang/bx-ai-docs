@@ -55,7 +55,8 @@ aiAgent(name, description, instructions, model, memory, tools, subAgents, params
 | `name`         | string  | No       | `"BxAi"`     | The agent's name/identifier                                     |
 | `description`  | string  | No       | `""`         | The agent's role or purpose description                         |
 | `instructions` | string  | No       | `""`         | System instructions for agent behavior                          |
-| `model`        | AiModel | No       | `aiModel()`  | The AI model provider to use                                    |
+| `model`        | AiModel | No       | `aiModel()`  | The AI model provider to use. Not with `profile`                |
+| `profile`      | string  | No       | `""`         | Build the model from a [profile](../../../main-components/profiles.md). Switch later with `withProfile()` or per run with `options.profile` |
 | `memory`       | any     | No       | `aiMemory()` | Single IAiMemory instance or array of memories                  |
 | `tools`        | array   | No       | `[]`         | Array of Tool objects the agent can use                         |
 | `subAgents`    | array   | No       | `[]`         | Array of sub-agents for task delegation                         |

@@ -146,7 +146,7 @@ model = aiModel(
 )
 ```
 
-**📖 See** [**Module Configuration**](../getting-started/installation/#-predefined-providers-v210) for complete setup guide.
+**📖 See** [**Module Configuration**](../getting-started/configuration.md) for complete setup guide.
 
 ### Model Configuration
 
