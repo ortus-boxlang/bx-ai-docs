@@ -83,6 +83,7 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 67 | [onGatewayMessageSent](events.md#67-ongatewaymessagesent) | A gateway's `deliver()` sends an outbound message | `gateway`, `event`, `context`, `result`, `threadId` |
 | 68 | [onAIAgentRunCancel](events.md#68-onaiagentruncancel) | `agent.cancelRun()` actually affects a run in flight | `agent`, `threadId`, `reason` |
 | 69 | [onAIAgentRunSteer](events.md#69-onaiagentrunsteer) | `agent.steerRun()` actually affects a run in flight | `agent`, `threadId`, `input` |
+| 70 | [onAIProfileSwitch](events.md#70-onaiprofileswitch) | An agent switches profile, for good or for one run | `agent`, `from`, `to`, `scope` |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -3252,6 +3253,23 @@ Fired when `agent.steerRun( threadId, input )` actually affects a run currently 
 ```javascript
 BoxRegisterInterceptor( "onAIAgentRunSteer", function( event ) {
     println( "Steered run on thread #event.threadId#" )
+})
+```
+
+### 70. onAIProfileSwitch
+
+Fired when an agent switches [profile](../main-components/profiles.md): `agent.withProfile( name )`, or a run that passes `options.profile` for another profile.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `agent` | `AiAgent` | The agent that switched |
+| `from` | `String` | The profile it had, empty when it was built from a model |
+| `to` | `String` | The profile it switched to |
+| `scope` | `String` | `agent` for `withProfile()`, `run` for a single run |
+
+```javascript
+BoxRegisterInterceptor( "onAIProfileSwitch", function( event ) {
+    println( "#event.agent.getAgentName()# #event.from# -> #event.to# (#event.scope#)" )
 })
 ```
 

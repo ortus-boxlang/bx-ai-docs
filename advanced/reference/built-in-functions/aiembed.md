@@ -25,7 +25,8 @@ aiEmbed(input, params, options)
 
 | Option                | Type    | Default      | Description                                             |
 | --------------------- | ------- | ------------ | ------------------------------------------------------- |
-| `provider`            | string  | (config)     | The AI provider to use (openai, cohere, voyage, ollama, cloudflare, etc.) |
+| `profile`             | string  | (config)     | A [profile](../../../main-components/profiles.md): its provider, key, params and options. Call values win |
+| `provider`            | string  | (embeddings setting, then config) | The AI provider to use (openai, cohere, voyage, ollama, cloudflare, etc.). Default: `embeddings.defaultProvider`, else `provider` |
 | `apiKey`              | string  | (config/env) | API key for the provider                                |
 | `returnFormat`        | string  | `"raw"`      | Response format: "raw", "embeddings", "first"           |
 | `timeout`             | numeric | `90`         | Request timeout in seconds                              |

@@ -19,6 +19,7 @@ aiService(provider, options)
 | ---------- | ------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `provider` | string        | No       | (config)     | The provider to use. If not provided, uses default from module configuration                                                                        |
 | `options`  | string/struct | No       | (config/env) | Configuration options or simple API key string. If string, treated as API key. If struct, can include: `apiKey`, `baseURL`, `timeout`, `headers`, `logRequest`, `logResponse`, `maxRetries`, etc. If not provided, uses configuration or `<PROVIDER>_API_KEY` environment variable |
+| `profile`  | string        | No       | (config)     | A [profile](../../../main-components/profiles.md): supplies the provider, key and options. Explicit arguments win. Can also be passed as `options.profile` |
 
 ### Supported Providers
 

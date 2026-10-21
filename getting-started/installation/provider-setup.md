@@ -765,7 +765,82 @@ curl -fsSL https://ollama.ai/install.sh | sh
 
 #### Option 2: Docker (Recommended for Production)
 
-See [Running Ollama with Docker](./#running-ollama-with-docker) in the installation guide.
+For production deployments or easier setup, use the included Docker Compose configuration:
+
+##### 📋 Quick Start
+
+```bash
+docker compose -f docker-compose-ollama.yml up -d
+```
+
+This starts:
+
+* **Ollama Server** on `http://localhost:11434`
+* **Web UI** on `http://localhost:3000`
+
+##### 🎯 What's Included
+
+The Docker setup provides:
+
+* ✅ **Ollama LLM Server** - Fully configured and ready to use
+* ✅ **Web UI** - Browser-based interface for testing and management
+* ✅ **Pre-loaded Models** - Automatically pulls `qwen3:0.6b`, `gemma3`, and `nomic-embed-text`
+* ✅ **Health Checks** - Automatic monitoring and restart capabilities
+* ✅ **Persistent Storage** - Data stored locally in `./.ollama` directory
+* ✅ **Production Ready** - Configured with proper restart policies
+
+##### 📊 Managing the Service
+
+```bash
+# View logs
+docker compose -f docker-compose-ollama.yml logs -f
+
+# Restart services
+docker compose -f docker-compose-ollama.yml restart
+
+# Check status
+docker compose -f docker-compose-ollama.yml ps
+```
+
+##### 🌐 Accessing the Web UI
+
+Open your browser to `http://localhost:3000` and login with:
+
+* **Email**: `admin@boxlang.io` (default)
+* **Password**: `rocks` (default)
+
+**⚠️ Change these credentials before production use!**
+
+##### 🔐 Persistent Storage
+
+All Ollama and Web UI data (models, chat history, configurations) is stored in `./.ollama`:
+
+```bash
+.ollama/
+├── server/     # Ollama model data
+└── webui/      # Web UI data and settings
+```
+
+**Important**: Add `.ollama/` to your `.gitignore` to avoid committing large model files.
+
+##### ⚙️ Before Deploying to Production
+
+Update these settings in `docker-compose-ollama.yml`:
+
+1. **Change Default Credentials** — set strong `WEBUI_ADMIN_USER`/`WEBUI_ADMIN_PASS` (or `WEBUI_EMAIL`/`WEBUI_PASSWORD`) values, ideally via Docker secrets or an env file rather than committed to the compose file.
+2. **Choose Production Models** — update the `ollama pull` lines in the `command:` block to the models you actually need.
+3. **Add Resource Limits** (recommended):
+
+   ```yaml
+   deploy:
+     resources:
+       limits:
+         memory: 8g
+         cpus: '4.0'
+   ```
+4. **SSL/TLS** - Use a reverse proxy (nginx/traefik) for HTTPS.
+
+See the comments in `docker-compose-ollama.yml` for complete production setup notes.
 
 ### Pull and Configure Models
 

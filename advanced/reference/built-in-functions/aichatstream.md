@@ -26,6 +26,7 @@ aiChatStream(messages, callback, params, options)
 
 | Option                | Type    | Default      | Description                  |
 | --------------------- | ------- | ------------ | ---------------------------- |
+| `profile`             | string  | (config)     | A [profile](../../../main-components/profiles.md): its provider, key, params and options. Call values win |
 | `provider`            | string  | (config)     | The AI provider to use       |
 | `apiKey`              | string  | (config/env) | API key for the provider     |
 | `timeout`             | numeric | `90`         | Request timeout in seconds   |

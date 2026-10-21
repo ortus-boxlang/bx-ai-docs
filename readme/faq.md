@@ -93,7 +93,7 @@ answer = aiChat(
 * `llama3.2:3b` - Meta's model, good quality (2GB)
 * `mistral:7b` - Best quality for the size (4GB)
 
-**Guide**: [Installation - Ollama Setup](../getting-started/installation/#ollama-local-ai)
+**Guide**: [Provider Setup - Ollama](../getting-started/installation/provider-setup.md)
 
 ***
 
