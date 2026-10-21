@@ -21,7 +21,7 @@ aiProfile( name = "" )
 
 ## Returns
 
-A struct with `name`, `provider`, `model`, `params`, `options`, `apiKeyEnv`, `hasApiKey` and `isDefault`. Throws `ProfileNotFound` if the profile does not exist.
+A struct with `name`, `description`, `provider`, `model`, `params`, `options`, `apiKeyEnv`, `hasApiKey` and `isDefault`. Throws `ProfileNotFound` if the profile does not exist.
 
 ## Examples
 

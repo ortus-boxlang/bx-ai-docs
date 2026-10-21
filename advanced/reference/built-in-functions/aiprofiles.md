@@ -19,7 +19,7 @@ No parameters.
 
 ## Returns
 
-An array of structs, the default profile first: `name`, `provider`, `model`, `params`, `options`, `apiKeyEnv`, `hasApiKey`, `isDefault`. Secret looking params and options are masked as `****`.
+An array of structs, the default profile first: `name`, `description`, `provider`, `model`, `params`, `options`, `apiKeyEnv`, `hasApiKey`, `isDefault`. Secret looking params and options are masked as `****`.
 
 ## Examples
 
