@@ -27,7 +27,8 @@ Guidelines for production MCP servers.
 - ✅ Separate public and admin servers
 - ✅ Use different API keys per server
 - ✅ Log all authentication failures
-- ✅ Implement rate limiting if needed
+- ✅ Use `.withRateLimit()` and a dedicated cache for the counters ([Rate Limiting](rate-limiting.md))
+- ✅ Use `.withTrustedProxies()` when the server sits behind a proxy or load balancer
 - ✅ Enable statistics for monitoring
 
 ## Design Patterns

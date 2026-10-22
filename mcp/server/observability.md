@@ -83,7 +83,16 @@ writeOutput( "Auth failures: #stats.security.authFailures#" )
 writeOutput( "API key failures: #stats.security.apiKeyFailures#" )
 writeOutput( "Body size violations: #stats.security.bodySizeViolations#" )
 writeOutput( "IP filter failures: #stats.security.ipFilterFailures#" )
+writeOutput( "Rate limit failures: #stats.security.rateLimitFailures#" )
+
+// Rate limit details, only when the server has a rate limit
+if ( server.hasRateLimit() ) {
+    writeOutput( "Allowed: #stats.rateLimit.allowed#, blocked: #stats.rateLimit.blocked#" )
+    writeOutput( "Top blocked: #serializeJSON( stats.rateLimit.topBlocked )#" )
+}
 ```
+
+See [Rate Limiting](rate-limiting.md#stats).
 
 ### Managing Statistics
 
@@ -197,6 +206,23 @@ function onMCPError( event, interceptData ) {
         file: "mcp-errors",
         text: "MCP Error: #exception.message#"
     )
+}
+```
+
+#### `onMCPRateLimitHit`
+
+Fired when a client is blocked by the [rate limit](rate-limiting.md), once per client per window. It shares the log budget of 10 per minute per server, so a flood cannot flood your interceptors. The stats keep the exact totals.
+
+```javascript
+function onMCPRateLimitHit( event, interceptData ) {
+    // interceptData contains:
+    // - mcpServer: The MCPServer instance
+    // - serverName: The server name
+    // - key: The client (an IP, or a short hash for API keys and custom keys)
+    // - keyType: "ip", "apiKey", "global" or "custom"
+    // - limit, window: The limit and the window in seconds
+    // - retryAfter: Seconds until the client can call again
+    // - requestData: The request
 }
 ```
 

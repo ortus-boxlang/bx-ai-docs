@@ -79,6 +79,7 @@ graph TB
 | 🏗️ [Class-Based Servers](class-based-servers.md) | Extend MCPServer for better organization |
 | 🌍 [HTTP Endpoint & Routing](http-endpoint.md) | Set up custom HTTP endpoints |
 | 📊 [Observability & Monitoring](observability.md) | Statistics, events, and real-time monitoring |
+| 🚦 [Rate Limiting](rate-limiting.md) | Limit how often one client can call your server |
 | ⏸️ [Pause & Resume](pause-resume.md) | Temporarily halt servers for maintenance |
 | ⭐ [Best Practices](best-practices.md) | Security, design patterns, production setup |
 | 💡 [Examples & Use Cases](_examples.md) | Complete working code examples |

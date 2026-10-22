@@ -84,7 +84,7 @@ You can leave these alone until you need them.
 | `image` | [Image generation](../main-components/image-generation/README.md) |
 | `security` | [Security](../deployment/security.md) |
 | `webSearch` | [Web search](../main-components/web-search/README.md) |
-| `mcp` | [MCP stdio clients](../mcp/client/stdio.md) |
+| `mcp` | [MCP stdio clients](../mcp/client/stdio.md), [MCP server rate limiting](../mcp/server/rate-limiting.md#module-settings) and trusted proxies |
 | `skillsDirectory`, `autoLoadSkills` | [Skills](../main-components/skills.md) |
 | `gateways` | [Gateways](../main-components/gateways.md) |
 | `hitl` | [Human-in-the-Loop](../main-components/human-in-the-loop.md) |

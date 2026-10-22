@@ -166,7 +166,23 @@ if ( server.hasAllowedIPs() ) {
 
 **Proxy deployment tip:**
 - Ensure your proxy/load balancer forwards the expected client IP headers
-- Keep trusted proxy infrastructure under your control to avoid spoofed headers
+- Set [trusted proxies](#trusted-proxies) so clients cannot forge those headers
+
+## Trusted Proxies
+
+By default the forwarded headers above are trusted from anyone, so a client that reaches the server directly can send `X-Forwarded-For: 1.2.3.4` and pick its own IP. That defeats an IP allow list and the `ip` [rate limit](rate-limiting.md). Tell the server which proxies are yours:
+
+```javascript
+mcpServer( "myApp" )
+    .withTrustedProxies( [ "10.0.0.0/8", "192.168.1.1" ] )
+```
+
+| Setting | Behavior |
+|---|---|
+| Empty (default) or `[ "*" ]` | Forwarded headers are trusted from anyone, as before. `"*"` is only safe when clients can reach the server only through your proxy. |
+| IPs or CIDR ranges | Forwarded headers are honored only when the connection comes from one of these. `X-Forwarded-For` is read from the right, and the first address that is not a trusted proxy is the client. Any other connection is the client itself. |
+
+IPv4 and IPv6 ranges work. Set it for every server through the `mcp.server.trustedProxies` [module setting](rate-limiting.md#module-settings). `getTrustedProxies()` returns the list.
 
 **Built-in BoxLang MCP server configuration:**
 
@@ -356,10 +372,11 @@ When a request arrives, checks execute in this order:
 
 1. **Body Size Check** — Reject oversized payloads first
 2. **IP Allow List Check** — Reject disallowed client addresses
-3. **CORS Validation** — Check origin header
-4. **Basic Authentication** — Verify credentials
-5. **API Key Validation** — Call custom provider
-6. **Request Processing** — Only after all checks pass
+3. **CORS Validation** — Check origin header (a preflight stops here)
+4. **Rate Limit** — Reject clients over their limit ([details](rate-limiting.md))
+5. **Basic Authentication** — Verify credentials
+6. **API Key Validation** — Call custom provider
+7. **Request Processing** — Only after all checks pass
 
 **Short-Circuit Behavior:**
 - Each layer can immediately reject the request
@@ -367,6 +384,7 @@ When a request arrives, checks execute in this order:
 - Security headers always included in responses
 - Events fired for all security failures
 - IP allow list failures return `403 Forbidden`
+- Rate limit failures return `429 Too Many Requests`
 
 ## Security Headers 🛡️
 
@@ -387,6 +405,7 @@ All HTTP responses automatically include industry-standard security headers:
 ## Next Steps
 
 - 🧩 [Registering Tools](registration.md) — Add functionality
+- 🚦 [Rate Limiting](rate-limiting.md) — Limit how often a client can call
 - 📋 [Observability](observability.md) — Monitor requests
 - 🏗️ [Class-Based Servers](class-based-servers.md) — Organize complex servers
 - ✅ [Best Practices](best-practices.md) — Production setup
