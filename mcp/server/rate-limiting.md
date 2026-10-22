@@ -27,10 +27,36 @@ mcpServer( "myApp" ).withRateLimit( {
     cacheName: "mcpLimits",  // which cache, "default" if empty
     failOpen : true          // store fails: allow (true) or answer 503 (false)
 } )
-mcpServer( "myApp" ).withRateLimit( false )   // no limit for this server
+mcpServer( "myApp" ).withRateLimit( false )   // remove the limit from this server
 ```
 
 An explicit struct overrides the [module settings](#module-settings). A bad value throws `InvalidArgument`.
+
+## Several limits
+
+Give a server a limit per minute and a limit per hour, or any other windows:
+
+```javascript
+mcpServer( "myApp" ).withRateLimit( {
+    limits: [
+        { limit: 60,   window: 60 },     // 60 per minute
+        { limit: 1000, window: 3600 }    // 1000 per hour
+    ]
+} )
+```
+
+A request has to pass **all** the limits. When one refuses, the other limits get the request back, so a refused call never uses up an allowance. `Retry-After` is the longest of the waits, and the `X-RateLimit-*` headers describe the limit the client is closest to. Each limit needs its own window. `limits` is used instead of `limit` and `window`.
+
+## Turn it on and off
+
+```javascript
+server.disableRateLimit()      // stop checking, keep the setup, counters and history
+server.enableRateLimit()       // check again (uses the module defaults if no limit was set)
+server.isRateLimitEnabled()
+server.hasRateLimit()          // a limit is configured, on or off
+```
+
+While it is off, requests are not counted or limited and no history is added. `withRateLimit( false )` removes the limit for good. BxLens shows the same switch to an admin.
 
 ## Who is limited: `key`
 
@@ -122,11 +148,43 @@ Blocked requests are **never logged one by one**, so a flood cannot flood your l
 stats = server.getStats()
 stats.security.rateLimitFailures
 stats.rateLimit
-// { keyType, limit, window, allowed, blocked, storeErrors,
-//   topBlocked : [ { client, blocked, lastBlockedAt } ] }   // at most 20, so memory stays flat
+// { enabled, keyType, limit, window, limits : [ { limit, window } ],
+//   allowed, blocked, storeErrors, retentionDays,
+//   topBlocked : [ { client, type, requests, blocked, peakPerMinute, pctOfLimit, lastBlockedAt } ] }
 ```
 
-`resetStats()` clears them.
+`allowed`, `blocked` and `storeErrors` count since the server started. `topBlocked` is today's top 20, so it recycles every UTC day. `resetStats()` clears the numbers, and `resetRateLimitStats()` also clears the history.
+
+## History and reports
+
+The server remembers what each client did, per client and per UTC day: requests, blocked requests, the busiest minute, and the last block. It keeps this in the BoxLang cache for `retention` days, so it survives a restart and nodes that share the cache see each other's numbers.
+
+```javascript
+server.withRateLimit( { limit: 60, cacheName: "mcpLimits", retention: 30 } )
+
+report = server.getRateLimitReport( { days: 7, top: 20 } )
+// { since, nodes, retentionDays,
+//   days         : [ { day, requests, blocked } ],
+//   topConsumers : [ { client, type, requests, blocked, peakPerMinute, pctOfLimit, lastBlockedAt } ] }
+```
+
+- `days` counts today as the first day. `top` is the number of clients, the busiest by requests first.
+- `pctOfLimit` is the busiest minute of the client against the limit of the shortest window, scaled to a minute. Over 100 means the client hit the limit.
+- IPs show plain. API keys and custom keys show as a short hash, like in the logs.
+- `retention` is in days: the module setting `retentionDays` (default 7, 0 for none, at most 365) unless the server sets its own. With 0 only today is kept, in memory.
+
+**How it stays small and fast.** A request only changes numbers in memory. About every `historyFlushSeconds` (default 30, at least 5) the next request writes the day to the cache, with a time to live of the retention, so old days disappear by themselves. A day keeps at most `historyMaxClients` clients (default 500, from 50 to 5,000). When it is full, the smallest clients are folded into one `(other)` row: the totals stay exact and only the detail of the smallest is dropped. There is one document per server, node and day, so nodes never overwrite each other. A restarted node continues its day.
+
+If the process stops, up to `historyFlushSeconds` of history is lost. The counters that enforce the limit are written on every request and are not affected.
+
+## Reset
+
+```javascript
+server.resetRateLimit()         // every client has its requests back
+server.resetRateLimitStats()    // clear the stats and every day of history
+```
+
+`resetRateLimit()` deletes the counters from the store when the store implements the optional `IClearableRateLimitStore` (`clear( prefix )`). The cache and memory stores do. It returns `false` when it cannot, and then the counters expire by themselves within two windows. `limiter.reset( key )` still resets one client.
 
 ## Event
 
@@ -157,13 +215,16 @@ Defaults for every MCP server, in `boxlang.json`:
             "key"      : "ip",
             "store"    : "cache",
             "cacheName": "default",
-            "failOpen" : true
+            "failOpen" : true,
+            "retentionDays"       : 7,
+            "historyFlushSeconds" : 30,
+            "historyMaxClients"   : 500
         }
     }
 }
 ```
 
-With `enabled: true` every MCP server is limited with no code change. With `key: "apiKey"` a server is limited once it has an API key provider. `withRateLimit( false )` opts one server out.
+`retentionDays`, `historyFlushSeconds` and `historyMaxClients` are the defaults for [history](#history-and-reports), and a server can override them with `retention`, `historyFlushSeconds` and `historyMaxClients`. With `enabled: true` every MCP server is limited with no code change. With `key: "apiKey"` a server is limited once it has an API key provider. `withRateLimit( false )` opts one server out.
 
 ## Next Steps
 
