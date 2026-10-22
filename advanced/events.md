@@ -1,5 +1,5 @@
 ---
-description: Intercept, monitor, and customize AI operations at every stage with the module's 70 interception points.
+description: Intercept, monitor, and customize AI operations at every stage with the module's 71 interception points.
 icon: bullhorn
 ---
 
@@ -84,6 +84,7 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 68 | [onAIAgentRunCancel](events.md#68-onaiagentruncancel) | `agent.cancelRun()` actually affects a run in flight | `agent`, `threadId`, `reason` |
 | 69 | [onAIAgentRunSteer](events.md#69-onaiagentrunsteer) | `agent.steerRun()` actually affects a run in flight | `agent`, `threadId`, `input` |
 | 70 | [onAIProfileSwitch](events.md#70-onaiprofileswitch) | An agent switches profile, for good or for one run | `agent`, `from`, `to`, `scope` |
+| 71 | [onMCPRateLimitHit](events.md#71-onmcpratelimithit) | An MCP server blocks a client over its rate limit | `mcpServer`, `serverName`, `key`, `keyType`, `limit`, `window`, `retryAfter`, `requestData` |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -3270,6 +3271,29 @@ Fired when an agent switches [profile](../main-components/profiles.md): `agent.w
 ```javascript
 BoxRegisterInterceptor( "onAIProfileSwitch", function( event ) {
     println( "#event.agent.getAgentName()# #event.from# -> #event.to# (#event.scope#)" )
+})
+```
+
+***
+
+### 71. onMCPRateLimitHit
+
+Fired when an MCP server blocks a client that is over its [rate limit](../mcp/server/rate-limiting.md). It fires once per client per window, and shares the log budget of 10 per minute per server, so a flood cannot flood your interceptors. The server stats keep the exact totals.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `mcpServer` | `MCPServer` | The server that blocked the request |
+| `serverName` | `String` | The server name |
+| `key` | `String` | The client: an IP, or a short hash for API keys and custom keys |
+| `keyType` | `String` | `ip`, `apiKey`, `global` or `custom` |
+| `limit` | `Numeric` | Requests allowed per window |
+| `window` | `Numeric` | The window in seconds |
+| `retryAfter` | `Numeric` | Seconds until the client can call again |
+| `requestData` | `Struct` | The request |
+
+```javascript
+BoxRegisterInterceptor( "onMCPRateLimitHit", function( event ) {
+    println( "#event.serverName# blocked #event.keyType# #event.key#, retry in #event.retryAfter#s" )
 })
 ```
 

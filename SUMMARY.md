@@ -108,6 +108,7 @@
   * [Class-Based Servers](mcp/server/class-based-servers.md)
   * [HTTP Endpoint & Routing](mcp/server/http-endpoint.md)
   * [Observability & Monitoring](mcp/server/observability.md)
+  * [Rate Limiting](mcp/server/rate-limiting.md)
   * [Pause & Resume](mcp/server/pause-resume.md)
   * [Best Practices](mcp/server/best-practices.md)
   * [Examples & Use Cases](mcp/server/_examples.md)
