@@ -9,7 +9,7 @@ Complete reference documentation for all BoxLang AI built-in functions (BIFs). T
 
 ## 📚 Overview
 
-The BoxLang AI module provides 34 built-in functions organized into functional categories:
+The BoxLang AI module provides 37 built-in functions organized into functional categories:
 
 ### 🗨️ Chat & Conversation
 
@@ -30,6 +30,14 @@ Create autonomous agents and model runnables.
 * [**`aiAgentRegistry()`**](aiagentregistry.md) - Access the global agent registry singleton
 * [**`aiModel()`**](aimodel.md) - Create AI model runnables for pipelines
 * [**`aiService()`**](aiservice.md) - Get AI service provider instances
+
+### 🧩 Profiles & Providers
+
+Named provider, model, params and key combinations, and what you can pick from. None of them return an API key.
+
+* [**`aiProfile()`**](aiprofile.md) - Describe one profile
+* [**`aiProfiles()`**](aiprofiles.md) - List the configured profiles
+* [**`aiProviders()`**](aiproviders.md) - List the providers you can select
 
 ### 🖼️ Image Generation
 

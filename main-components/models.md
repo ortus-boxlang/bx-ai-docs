@@ -148,6 +148,20 @@ model = aiModel(
 
 **📖 See** [**Module Configuration**](../getting-started/configuration.md) for complete setup guide.
 
+### Profiles (v3.7+)
+
+A profile names a whole setup (provider, model, params, options, key). Define it once in `boxlang.json`, then build a model from it:
+
+```javascript
+fastModel    = aiModel( profile: "fast" )
+plannerModel = aiModel( profile: "planner" )
+
+// Call values still win over the profile
+model = aiModel( profile: "fast", params: { temperature: 0.5 } )
+```
+
+See [Profiles](profiles.md).
+
 ### Model Configuration
 
 ```java

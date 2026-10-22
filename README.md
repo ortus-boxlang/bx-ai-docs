@@ -45,6 +45,7 @@ graph LR
 
 * **Multi-Provider Support**: Work with OpenAI, Claude, Gemini, Grok, Groq, DeepSeek, Cloudflare Workers AI, Ollama, and more
 * **Unified API**: One consistent interface across all providers
+* **Profiles**: Name a provider, model, params and key once (`fast`, `planner`), then pick it per call, per agent or per run
 * **Multi-Tenant Memory**: Enterprise-grade isolation with userId and conversationId across all 20 memory types
 * **Multimodal Content**: Process images, audio, video, and documents alongside text
 * **Local AI Support**: Run models locally with Ollama for privacy and offline use
@@ -241,6 +242,9 @@ BoxLang AI provides a comprehensive set of BIFs for different AI operations. You
 | `aiEmbed()`  | Generate vector embeddings | Array/Struct | Semantic search, similarity |
 | `aiPopulate()` | Populate a class instance, struct, or array from JSON data or struct.   | Any |  This is useful for testing, custom workflows, or working with cached AI responses.   |
 | `aiTokens()` | Estimate token counts      | Numeric      | Cost estimation, limits     |
+| `aiProfiles()` | List the configured profiles, never a key | Array | Model pickers, `/profile` commands |
+| `aiProfile()` | Describe one profile | Struct | Show the active setup |
+| `aiProviders()` | List the providers you can select | Array | Provider pickers |
 
 ### ⚙️ MCP (Model Context Protocol)
 

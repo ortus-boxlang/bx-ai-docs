@@ -171,6 +171,23 @@ coordinator = aiAgent(
 )
 ```
 
+## Sub-Agents with Profiles (v3.7+)
+
+Give a sub-agent its own [profile](../profiles.md) when you create it, for example a stronger model for the researcher:
+
+```javascript
+researchAgent = aiAgent( name: "Researcher", profile: "planner" )
+writerAgent   = aiAgent( name: "Writer", profile: "fast" )
+
+coordinator = aiAgent(
+    name     : "Coordinator",
+    profile  : "fast",
+    subAgents: [ researchAgent, writerAgent ]
+)
+```
+
+A profile passed to `coordinator.run()` applies to the coordinator only. A sub-agent is called as a tool without the parent's run options, so it keeps its own profile.
+
 ## Related Pages
 
 * [Getting Started](getting-started.md) — Creating basic agents
