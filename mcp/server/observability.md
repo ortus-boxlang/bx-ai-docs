@@ -88,7 +88,8 @@ writeOutput( "Rate limit failures: #stats.security.rateLimitFailures#" )
 // Rate limit details, only when the server has a rate limit
 if ( server.hasRateLimit() ) {
     writeOutput( "Allowed: #stats.rateLimit.allowed#, blocked: #stats.rateLimit.blocked#" )
-    writeOutput( "Top blocked: #serializeJSON( stats.rateLimit.topBlocked )#" )
+    writeOutput( "Enabled: #stats.rateLimit.enabled#, limits: #serializeJSON( stats.rateLimit.limits )#" )
+    writeOutput( "Top blocked today: #serializeJSON( stats.rateLimit.topBlocked )#" )
 }
 ```
 
