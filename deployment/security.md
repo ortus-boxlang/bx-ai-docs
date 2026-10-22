@@ -61,6 +61,20 @@ apiKey = getSystemSetting( "OPENAI_API_KEY" )
 response = aiChat( "Hello" )  // Auto-detects OPENAI_API_KEY
 ```
 
+### Profiles and Keys (v3.7+)
+
+A [profile](../main-components/profiles.md) should name the environment variable that holds its key, not the key:
+
+```json
+"profiles": {
+  "planner": { "provider": "claude", "model": "claude-opus-5-5", "apiKeyEnv": "CLAUDE_API_KEY" }
+}
+```
+
+* `aiProfile()`, `aiProfiles()` and `aiProviders()` return `hasApiKey` and the variable name, never the key. Params and options that look like secrets show as `****`.
+* A profile key is only sent to the profile's own provider.
+* Profiles are removed from request options, so they do not reach logs or events.
+
 ### Secrets Manager Integration
 
 #### AWS Secrets Manager

@@ -147,8 +147,9 @@ response = model.run( "Explain quantum computing" )
 * Parameter configuration
 * Return formats (text, JSON, XML, raw)
 * Pipeline composition
+* [Profiles](profiles.md): name a provider, model and params once, then pick it by name
 
-→ [**Read Models Guide**](models.md)
+→ [**Read Models Guide**](models.md) · [**Read Profiles Guide**](profiles.md)
 
 ***
 

@@ -128,6 +128,22 @@ response.data.each( (item, index) => {
 
 ### Configuration Options
 
+#### Defaults and Profiles (v3.7+)
+
+Without any setting, `aiEmbed()` uses your chat provider. If that provider has no embeddings (Claude, for example), set an embeddings default once:
+
+```json
+"embeddings": { "defaultProvider": "openai", "defaultModel": "text-embedding-3-small" }
+```
+
+Or use a [profile](../main-components/profiles.md):
+
+```javascript
+embedding = aiEmbed( "Hello World", {}, { profile: "embed" } )
+```
+
+The order of priority is the call, then the profile, then the `embeddings` setting, then the default provider. An empty `defaultApiKey` uses `<PROVIDER>_API_KEY`, never the chat provider's key.
+
 #### Provider Selection
 
 ```java

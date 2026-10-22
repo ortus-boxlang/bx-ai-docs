@@ -19,7 +19,7 @@ aiChatAsync(messages, params, options)
 | ---------- | ------ | -------- | --------------------------------------------------------------------------------------------------- |
 | `messages` | any    | Yes      | The messages to pass to the AI model (string, struct, array, or AiMessage)                          |
 | `params`   | struct | No       | Request parameters for the AI provider                                                              |
-| `options`  | struct | No       | Request options (provider, apiKey, returnFormat, timeout, logRequest, logRequestToConsole, logResponse, logResponseToConsole) |
+| `options`  | struct | No       | Request options (profile, provider, apiKey, returnFormat, timeout, logRequest, logRequestToConsole, logResponse, logResponseToConsole) |
 
 Parameters are identical to [`aiChat()`](aichat.md).
 

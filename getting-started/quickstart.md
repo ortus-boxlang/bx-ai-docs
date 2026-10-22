@@ -198,6 +198,8 @@ answer = aiChat(
 * 🚀 **Speed**: No network latency
 * 🔌 **Offline**: Works without internet
 
+**Switching between setups?** Name them once as [profiles](../main-components/profiles.md) (`fast`, `planner`) and pick one with `{ profile: "fast" }`.
+
 ## 💭 Building Conversations
 
 ### Multi-Turn Dialogue

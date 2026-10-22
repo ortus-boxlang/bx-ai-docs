@@ -75,6 +75,9 @@ All providers are configured in your `boxlang.json` file:
 | `defaultParams` | struct | `{}`       | Default parameters for requests |
 | `timeout`       | number | `90`       | Request timeout in seconds      |
 | `returnFormat`  | string | `"single"` | Default return format           |
+| `profiles`      | struct | `{}`       | Named provider, model, params and key combinations, see [Profiles](../../main-components/profiles.md) |
+| `defaultProfile`| string | `""`       | Profile used when a call names no provider |
+| `embeddings`    | struct | `{}`       | `defaultProvider`, `defaultModel`, `defaultApiKey` for `aiEmbed()` |
 
 ***
 
@@ -1083,6 +1086,8 @@ quickResult = aiChat(
     { provider: "groq" }
 )
 ```
+
+**Tip**: if you switch between the same few setups, name them once as [profiles](../../main-components/profiles.md) (`fast`, `planner`) and use `{ profile: "fast" }`.
 
 ### Provider Services
 

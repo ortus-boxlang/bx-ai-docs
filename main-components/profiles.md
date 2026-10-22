@@ -70,6 +70,10 @@ An explicit provider, key, param or option in the call always wins. Params layer
 Pass either `model` or `profile` to `aiAgent()`, not both.
 {% endhint %}
 
+{% hint style="info" %}
+Profiles cover chat, streaming and embeddings. Audio (`aiSpeak()`, `aiTranscribe()`, `aiTranslate()`) and images (`aiImage()`) keep using the `audio` and `image` settings.
+{% endhint %}
+
 ## 🔀 Switch an agent
 
 ```javascript

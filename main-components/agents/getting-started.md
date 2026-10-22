@@ -175,6 +175,21 @@ agent = aiAgentRegistry().get( "support-agent@my-app" )
 
 See [Agent Registry](../tool-registry.md#agent-registry) for the full registry API.
 
+## Agent with a Profile (v3.7+)
+
+Build the agent's model from a [profile](../profiles.md) instead of a model:
+
+```javascript
+agent = aiAgent( name: "Assistant", profile: "fast" )
+
+agent.run( "Quick question" )                                  // uses "fast"
+agent.run( "Plan the migration", {}, { profile: "planner" } )  // this run only, same memory
+agent.withProfile( "planner" )                                 // switch for good
+agent.getProfile()                                             // "planner"
+```
+
+Memory, tools, sub-agents, instructions and the agent's own params and options stay when the profile changes. Pass either `model` or `profile`, not both.
+
 ## Fluent Configuration
 
 For runtime changes, use setter methods:

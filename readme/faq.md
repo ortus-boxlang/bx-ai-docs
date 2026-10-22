@@ -182,6 +182,8 @@ privateAgent = aiAgent(
 * Cloud for production, Ollama for development
 * Specialized models for specific tasks (code, analysis, chat)
 
+**Name your setups with profiles** (v3.7+): define `fast` and `planner` once in `boxlang.json` and use `aiChat( "Hi", {}, { profile: "fast" } )` or `aiAgent( profile: "planner" )`. See [Profiles](../main-components/profiles.md).
+
 ***
 
 ## 💰 Costs & Pricing
@@ -725,6 +727,8 @@ OPENAI_API_KEY=sk-1234567890abcdef
 // BoxLang (auto-detected)
 answer = aiChat( "Hello" )  // Uses OPENAI_API_KEY automatically
 ```
+
+**✅ Use `apiKeyEnv` in a profile** (v3.7+): a [profile](../main-components/profiles.md) names the environment variable that holds its key, so no key is stored in `boxlang.json`.
 
 **✅ Use BoxLang configuration**:
 

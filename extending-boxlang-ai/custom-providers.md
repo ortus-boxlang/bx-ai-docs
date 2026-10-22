@@ -928,6 +928,10 @@ class {
 }
 ```
 
+### Using a Custom Provider in a Profile (v3.7+)
+
+A [profile](../main-components/profiles.md) can name a custom provider in `provider`. The module only logs a warning for a provider it does not ship, because your module may register it later. A profile cannot be named like any provider, yours included, so name it for its job (`fast`, `planner`).
+
 ### Direct Usage
 
 Most common approach - instantiate directly:
