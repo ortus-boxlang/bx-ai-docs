@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="t d"><title id="t">Agent profile switching</title><desc id="d">withProfile replaces the agent model for good. A run option profile uses a temporary model for one run. Memory, tools, sub-agents and instructions stay.</desc><style>text{font-family:Helvetica,Arial,sans-serif;fill:#1f2937}.t{font-size:15px;font-weight:600}.s{font-size:12px;fill:#4b5563}.h{font-size:18px;font-weight:700}</style>
+<rect width="900" height="380" fill="#ffffff"/>
+<text x="450" y="34" text-anchor="middle" class="h">Switching an agent's profile</text>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+<rect x="40" y="60" width="820" height="150" rx="12" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="60" y="88" class="t">Agent (stays the same)</text>
+<g stroke="#9ca3af" stroke-width="1.5" fill="#e5e7eb"><rect x="60" y="110" width="140" height="70" rx="8"/><rect x="215" y="110" width="140" height="70" rx="8"/><rect x="370" y="110" width="140" height="70" rx="8"/><rect x="525" y="110" width="140" height="70" rx="8"/></g>
+<rect x="690" y="110" width="150" height="70" rx="8" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="3"/>
+<g text-anchor="middle"><text x="130" y="150" class="t">Memory</text><text x="285" y="150" class="t">Tools</text><text x="440" y="150" class="t">Sub-agents</text><text x="595" y="150" class="t">Instructions</text><text x="765" y="140" class="t">Model</text><text x="765" y="160" class="s">built from the profile</text></g>
+<g stroke="#6b7280" stroke-width="2" marker-end="url(#a)" fill="none"><path d="M765,215 L765,262"/><path d="M720,215 L560,260" stroke-dasharray="6 4"/></g>
+<rect x="640" y="262" width="250" height="90" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+<text x="765" y="290" text-anchor="middle" class="t">agent.withProfile( "planner" )</text><text x="765" y="312" text-anchor="middle" class="s">Model replaced for good</text><text x="765" y="332" text-anchor="middle" class="s">getProfile() returns "planner"</text>
+<rect x="260" y="262" width="360" height="90" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+<text x="440" y="290" text-anchor="middle" class="t">agent.run( input, params, { profile } )</text><text x="440" y="312" text-anchor="middle" class="s">Temporary model for this run only</text><text x="440" y="332" text-anchor="middle" class="s">Next run uses the agent's own profile again</text>
+</svg>

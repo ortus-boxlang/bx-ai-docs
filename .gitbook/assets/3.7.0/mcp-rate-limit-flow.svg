@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="t d"><title id="t">MCP server rate limit flow</title><desc id="d">A request passes the trusted proxy check, then the rate limit, then authentication, then the handler. A blocked request gets 429.</desc><style>text{font-family:Helvetica,Arial,sans-serif;fill:#1f2937}.t{font-size:15px;font-weight:600}.s{font-size:12px;fill:#4b5563}.h{font-size:18px;font-weight:700}</style>
+<rect width="900" height="300" fill="#ffffff"/>
+<text x="450" y="34" text-anchor="middle" class="h">Where the rate limit runs</text>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+<g stroke="#9ca3af" stroke-width="1.5"><rect x="20" y="80" width="140" height="80" rx="10" fill="#f3f4f6"/><rect x="200" y="80" width="170" height="80" rx="10" fill="#e5e7eb"/><rect x="410" y="80" width="170" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><rect x="620" y="80" width="120" height="80" rx="10" fill="#e5e7eb"/><rect x="780" y="80" width="100" height="80" rx="10" fill="#f3f4f6"/></g>
+<g stroke="#6b7280" stroke-width="2" marker-end="url(#a)"><line x1="162" y1="120" x2="196" y2="120"/><line x1="372" y1="120" x2="406" y2="120"/><line x1="582" y1="120" x2="616" y2="120"/><line x1="742" y1="120" x2="776" y2="120"/><line x1="495" y1="162" x2="495" y2="216"/></g>
+<g text-anchor="middle"><text x="90" y="116" class="t">Request</text><text x="90" y="138" class="s">CORS preflight</text><text x="90" y="153" class="s">is not counted</text>
+<text x="285" y="116" class="t">Trusted proxies</text><text x="285" y="138" class="s">find the client IP</text>
+<text x="495" y="116" class="t">Rate limit</text><text x="495" y="138" class="s">sliding window counter</text><text x="495" y="153" class="s">key: ip, apiKey, global</text>
+<text x="680" y="116" class="t">Auth</text><text x="680" y="138" class="s">checked after</text>
+<text x="830" y="125" class="t">Handler</text></g>
+<rect x="380" y="216" width="230" height="64" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+<text x="495" y="242" text-anchor="middle" class="t">Blocked: 429</text><text x="495" y="262" text-anchor="middle" class="s">-32002, Retry-After, X-RateLimit-*</text>
+</svg>
