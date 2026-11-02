@@ -48,14 +48,14 @@ AiImageRequest.of( "..." )
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `n` | numeric | `1` | Number of images to generate (DALL-E 3 max is 1) |
+| `n` | numeric | `1` | Number of images to generate |
 | `size` | string | `auto` | Image dimensions, e.g. `"1024x1024"`, `"1792x1024"`, `"1024x1792"` |
-| `quality` | string | `auto` | Image quality: `standard`, `hd` (OpenAI DALL-E 3); `low`, `medium`, `high` (gpt-image-1) |
-| `style` | string | `""` | Visual style: `vivid`, `natural` (OpenAI DALL-E 3); provider-specific elsewhere |
+| `quality` | string | `auto` | Image quality: `low`, `medium`, `high`, `xhigh`, `max`, `auto` (OpenAI GPT Image models) |
+| `style` | string | `""` | Visual style, provider-specific |
 | `instructions` | string | `""` | Additional style / tone / mood instructions appended to the prompt |
 | `outputFormat` | string | `url` | How the provider returns image data: `url` or `b64_json` |
 | `format` | string | `png` | Output image format: `png`, `jpeg`, or `webp` (provider-specific) |
-| `outputCompression` | numeric | — | Compression level for OpenAI `gpt-image-1` (`output_compression`) |
+| `outputCompression` | numeric | — | Compression level for OpenAI GPT Image models (`output_compression`, jpeg and webp) |
 
 ### `options` — Module Options
 
@@ -63,7 +63,7 @@ AiImageRequest.of( "..." )
 |---|---|---|---|
 | `provider` | string | (config) | AI provider: `openai`, `gemini`, `grok`, `openrouter` |
 | `apiKey` | string | (env var) | Provider API key |
-| `model` | string | (provider default) | Model override (e.g. `"dall-e-3"`, `"gpt-image-1"`) |
+| `model` | string | (provider default) | Model override (e.g. `"gpt-image-2.5-sunburst"`) |
 | `n` | numeric | `1` | Number of images to generate |
 | `size` | string | `auto` | Image dimensions |
 | `quality` | string | `auto` | Image quality level |
@@ -71,7 +71,7 @@ AiImageRequest.of( "..." )
 | `instructions` | string | `""` | Additional instructions appended to prompt |
 | `outputFormat` | string | `url` | Response format: `url` or `b64_json` |
 | `format` | string | `png` | Output image format: `png`, `jpeg`, `webp` |
-| `outputCompression` | numeric | — | Compression level (OpenAI `gpt-image-1`) |
+| `outputCompression` | numeric | — | Compression level (OpenAI GPT Image models) |
 | `outputFile` | string | `""` | If set, saves the first image to this path and returns the file path string |
 | `timeout` | numeric | `30` | HTTP request timeout in seconds |
 | `logRequest` | boolean | `false` | Log requests to the module log file |
@@ -88,7 +88,7 @@ When `aiImage()` is called **with no prompt** (or via `AiImageRequest.of()`), it
 | Method | Description |
 |---|---|
 | `.prompt( text )` | Set the text description of the image |
-| `.model( name )` | Set the AI model (e.g. `"gpt-image-1"`, `"dall-e-3"`) |
+| `.model( name )` | Set the AI model (e.g. `"gpt-image-2.5-flare"`, `"gpt-image-2.5-sunburst"`) |
 | `.provider( name )` | Set the provider (`"openai"`, `"gemini"`, `"grok"`, `"openrouter"`) |
 | `.apiKey( key )` | Set the API key |
 | `.size( dims )` | Set image dimensions, e.g. `"1024x1024"`, `"1792x1024"`, `"1024x1792"` |
@@ -99,7 +99,7 @@ When `aiImage()` is called **with no prompt** (or via `AiImageRequest.of()`), it
 | `.format( fmt )` | Set output image format: `"png"`, `"jpeg"`, `"webp"` |
 | `.outputFormat( fmt )` | Set provider response format: `"url"` or `"b64_json"` |
 | `.outputFile( path )` | Automatically save the first image to this file path on `.generate()` |
-| `.outputCompression( value )` | Set compression level (OpenAI `gpt-image-1`) |
+| `.outputCompression( value )` | Set compression level (OpenAI GPT Image models) |
 | `.withOptions( struct )` | Apply a struct of high-level options in bulk |
 | `.withParams( struct )` | Merge additional provider API parameters |
 | `.withLogging( request, response, console )` | Enable request/response logging |
@@ -140,15 +140,14 @@ When `aiImage()` is called **with no prompt** (or via `AiImageRequest.of()`), it
 response = aiImage()
     .prompt( "a breathtaking mountain sunrise" )
     .provider( "openai" )
-    .size( "1792x1024" )
+    .size( "1536x1024" )
     .high()
-    .style( "vivid" )
     .generate()
 
 // Using size aliases and quality helpers
 response = aiImage()
     .prompt( "a cozy coffee shop interior, warm lighting" )
-    .model( "dall-e-3" )
+    .model( "gpt-image-2.5-sunburst" )
     .instructions( "painterly style, impressionist brush strokes" )
     .outputFile( "/tmp/coffeeshop.png" )
     .generate()
@@ -173,7 +172,7 @@ response = aiImage()
     .landscape()
     .generate()
 
-// Output compression (OpenAI gpt-image-1)
+// Output compression (OpenAI GPT Image models)
 path = aiImage()
     .prompt( "a watercolor painting of a mountain lake" )
     .outputCompression( 80 )
@@ -195,32 +194,33 @@ Internally, `.generate()` calls `aiImage()` with the accumulated state, which fi
 
 ### OpenAI
 
-OpenAI offers two model families for image generation:
+OpenAI image generation uses the GPT Image models:
 
-- **`gpt-image-1`** (default) — Latest model with `format` (png/jpeg/webp) and `outputCompression` support
-- **`dall-e-3`** — Earlier model with `quality` and `style` controls
+- **`gpt-image-2.5-flare`** (default) — Fast, high-quality everyday image generation
+- **`gpt-image-2.5-sunburst`** — OpenAI's most capable model for image generation and editing
+
+`gpt-image-1` was shut down on 2026-10-23 and DALL-E 2 and 3 on 2026-05-12. See OpenAI's [deprecations](https://developers.openai.com/api/docs/deprecations).
 
 ```javascript
-// OpenAI with gpt-image-1 (default) — format and compression
+// OpenAI with the default model — format and compression
 response = aiImage(
     "A photorealistic portrait of a cat wearing a crown",
     { format: "webp" },
     { provider: "openai" }
 )
 
-// OpenAI DALL-E 3 with quality and style
+// The most capable model, with quality and size
 response = aiImage(
     "A photorealistic portrait of a cat wearing a crown",
     {
-        n: 1,
+        model: "gpt-image-2.5-sunburst",
         size: "1024x1024",
-        quality: "hd",
-        style: "natural"
+        quality: "high"
     },
     { provider: "openai" }
 )
 
-// Fluent builder with gpt-image-1 features
+// Fluent builder with format and compression
 response = aiImage()
     .prompt( "A watercolor painting of a mountain lake" )
     .provider( "openai" )
@@ -230,13 +230,11 @@ response = aiImage()
     .generate()
 ```
 
-**Supported sizes (DALL-E 3):** `1024x1024`, `1024x1792`, `1792x1024`
+**Sizes:** `1024x1024`, `1536x1024`, `1024x1536`, or a custom `WIDTHxHEIGHT` (multiples of 16, aspect ratio between 1:3 and 3:1)
 
-**Quality options (DALL-E 3):** `standard`, `hd`
+**Quality options:** `low`, `medium`, `high`, `xhigh`, `max`, `auto` (default)
 
-**Style options (DALL-E 3):** `vivid`, `natural`
-
-**Format options (gpt-image-1):** `png`, `jpeg`, `webp`
+**Format options:** `png` (default), `jpeg`, `webp`. `outputCompression` (0 to 100) applies to `jpeg` and `webp`.
 
 ### Gemini (Imagen)
 
@@ -336,7 +334,7 @@ println( "Saved #paths.len()# images" )
 ### Fluent Builder — WebP with Compression
 
 ```javascript
-// Use gpt-image-1 format and compression features via fluent builder
+// Use the GPT Image format and compression features via fluent builder
 path = aiImage()
     .prompt( "A watercolor painting of a mountain lake" )
     .provider( "openai" )

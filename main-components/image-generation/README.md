@@ -42,7 +42,7 @@ graph LR
 
 | Provider | Model | Size Control | Quality | Style | Format | Env Var |
 |---|---|---|---|---|---|---|
-| **OpenAI** | `gpt-image-1` (default), DALL-E 3 | ✅ | ✅ | ✅ | ✅ (png/jpeg/webp) | `OPENAI_API_KEY` |
+| **OpenAI** | `gpt-image-2.5-flare` (default), `gpt-image-2.5-sunburst` | ✅ | ✅ | ✅ | ✅ (png/jpeg/webp) | `OPENAI_API_KEY` |
 | **Gemini** | `imagen-3.0-generate-008` | ✅ (aspect ratio) | ❌ | ❌ | ❌ | `GEMINI_API_KEY` |
 | **Grok / xAI** | `grok-2-image` | ✅ | ❌ | ❌ | ❌ | `GROK_API_KEY` |
 | **OpenRouter** | FLUX Schnell (default), many | ✅ | ❌ | ❌ | ❌ | `OPENROUTER_API_KEY` |
@@ -137,7 +137,7 @@ Configure global image defaults in `boxlang.json`:
         "image": {
           "defaultProvider": "openai",
           "defaultApiKey": "",
-          "defaultModel": "gpt-image-1",
+          "defaultModel": "gpt-image-2.5-flare",
           "defaultSize": "1024x1024",
           "defaultQuality": "standard",
           "defaultStyle": "vivid",
