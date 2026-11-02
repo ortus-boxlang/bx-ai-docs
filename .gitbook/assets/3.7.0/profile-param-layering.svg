@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" role="img" aria-labelledby="t d"><title id="t">Profile param layering</title><desc id="d">Params layer from defaultParams, to provider params, to the profile, to the params of the call. The call wins.</desc><style>text{font-family:Helvetica,Arial,sans-serif;fill:#1f2937}.t{font-size:15px;font-weight:600}.s{font-size:12px;fill:#4b5563}.h{font-size:18px;font-weight:700}</style>
+<rect width="900" height="260" fill="#ffffff"/>
+<text x="450" y="34" text-anchor="middle" class="h">How params are layered</text>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+<g stroke="#9ca3af" stroke-width="1.5"><rect x="30" y="80" width="180" height="90" rx="10" fill="#f3f4f6"/><rect x="250" y="80" width="180" height="90" rx="10" fill="#e5e7eb"/><rect x="470" y="80" width="180" height="90" rx="10" fill="#dbeafe" stroke="#2563eb"/><rect x="690" y="80" width="180" height="90" rx="10" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="3"/></g>
+<g stroke="#6b7280" stroke-width="2" marker-end="url(#a)"><line x1="212" y1="125" x2="246" y2="125"/><line x1="432" y1="125" x2="466" y2="125"/><line x1="652" y1="125" x2="686" y2="125"/></g>
+<g text-anchor="middle"><text x="120" y="118" class="t">defaultParams</text><text x="120" y="140" class="s">top level setting</text>
+<text x="340" y="118" class="t">providers.&lt;name&gt;</text><text x="340" y="140" class="s">.params</text>
+<text x="560" y="118" class="t">profile</text><text x="560" y="140" class="s">params from the profile</text>
+<text x="780" y="118" class="t">call</text><text x="780" y="140" class="s">params of the call</text>
+<text x="450" y="212" class="s">Later layers override earlier ones. An explicit provider, key, param or option in the call always wins.</text><text x="120" y="68" class="s">lowest</text><text x="780" y="68" class="s">highest</text></g></svg>
