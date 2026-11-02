@@ -175,7 +175,7 @@ BoxRegisterInterceptor( "afterAISpeech", function( event ) {
 | Provider | Available Voices | `"male"` keyword | `"female"` keyword |
 |---|---|---|---|
 | **OpenAI** | `alloy`, `ash`, `echo`, `fable`, `onyx`, `nova`, `shimmer` | `ash` | `nova` |
-| **Mistral** | _(first preset voice)_ | _(provider default)_ | _(first preset voice)_ |
+| **Mistral** | A voice name (looked up and sent as `voice_id`) or a voice id (UUID). Default: the first preset voice | _(provider default)_ | _(first preset voice)_ |
 | **Gemini** | `Fenrir`, `Aoede`, `Kore` (and others) | `Fenrir` | `Aoede` |
 | **Grok / xAI** | `eve` (default), `ara`, `rex` | `rex` | `eve` |
 | **ElevenLabs** | Premade voices (e.g. `EXAVITQu4vr4xnSDxMaL` Sarah, `CwhRBWXzGAHq8TQ4Fs17` Roger) or any voice ID your plan can use | `CwhRBWXzGAHq8TQ4Fs17` (Roger) | `EXAVITQu4vr4xnSDxMaL` (Sarah) |
