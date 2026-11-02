@@ -212,7 +212,7 @@ function onMCPError( event, interceptData ) {
 
 #### `onMCPRateLimitHit`
 
-Fired when a client is blocked by the [rate limit](rate-limiting.md), once per client per window. It shares the log budget of 10 per minute per server, so a flood cannot flood your interceptors. The stats keep the exact totals.
+Fired when a client is blocked by the [rate limit](rate-limiting.md), once per client per window. It fires at most 10 times per minute per server, so a flood cannot flood your interceptors. The stats keep the exact totals.
 
 ```javascript
 function onMCPRateLimitHit( event, interceptData ) {

@@ -3278,7 +3278,7 @@ BoxRegisterInterceptor( "onAIProfileSwitch", function( event ) {
 
 ### 71. onMCPRateLimitHit
 
-Fired when an MCP server blocks a client that is over its [rate limit](../mcp/server/rate-limiting.md). It fires once per client per window, and shares the log budget of 10 per minute per server, so a flood cannot flood your interceptors. The server stats keep the exact totals.
+Fired when an MCP server blocks a client that is over its [rate limit](../mcp/server/rate-limiting.md). It fires once per client per window, at most 10 times per minute per server, so a flood cannot flood your interceptors. Nothing is logged. The server stats keep the exact totals.
 
 | Argument | Type | Description |
 | --- | --- | --- |

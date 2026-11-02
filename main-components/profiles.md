@@ -85,6 +85,8 @@ agent.withProfile( "planner" )
 agent.getProfile() // "planner"
 ```
 
+The middleware, skills and MCP servers of the agent's model also stay. `agent.setModel( model )` sets the profile to the one the new model was built from, or empty when it has none.
+
 `stream()` takes the same `profile` option. To give a sub-agent its own profile, create it with one: `aiAgent( name: "researcher", profile: "planner" )`, then pass it in `subAgents`.
 
 ## 📋 List
@@ -103,7 +105,7 @@ See [aiProfiles](../advanced/reference/built-in-functions/aiprofiles.md), [aiPro
 
 * Use `apiKeyEnv`. The key is read from the environment when the profile is used.
 * Listings return `hasApiKey` and the variable name, never the key. Params and options that look like secrets (`key`, `token`, `secret`, `password`) show as `****`.
-* A profile key is only sent to the profile's own provider.
+* A profile key is only sent to the profile's own provider. The same goes for its params (including its model) and options: `aiChat( "Hi", {}, { profile: "fast", provider: "claude" } )` sends none of them to Claude.
 * Profiles are never copied into request options, so they do not reach logs or events.
 
 ## 📡 Event

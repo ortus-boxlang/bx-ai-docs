@@ -188,7 +188,7 @@ agent.withProfile( "planner" )                                 // switch for goo
 agent.getProfile()                                             // "planner"
 ```
 
-Memory, tools, sub-agents, instructions and the agent's own params and options stay when the profile changes. Pass either `model` or `profile`, not both.
+Memory, tools, sub-agents, instructions, the agent's own params and options, and the middleware, skills and MCP servers of its model stay when the profile changes. `setModel()` sets the agent's profile to the one its new model was built from. Pass either `model` or `profile`, not both.
 
 ## Fluent Configuration
 
