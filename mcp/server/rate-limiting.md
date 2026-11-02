@@ -63,7 +63,7 @@ While it is off, requests are not counted or limited and no history is added. `w
 | Value | Meaning |
 |---|---|
 | `"ip"` (default) | The client IP from `getClientIP()`. Set [trusted proxies](server-configuration.md#trusted-proxies) in production. |
-| `"apiKey"` | The key from `X-API-Key` or a Bearer token, **only when your API key provider accepts it**. A missing or rejected key falls back to the client IP, so fake keys cannot dodge the limit or fill the cache. Needs `withApiKeyProvider()` first. |
+| `"apiKey"` | The key from `X-API-Key` or a Bearer token, **only when your API key provider accepts it**. A key the server has not seen yet is counted on the client IP first, and only then checked by your provider, so a flood of fake keys is refused before your provider runs. A missing or rejected key stays on the IP, so fake keys cannot dodge the limit or fill the cache. Needs `withApiKeyProvider()` first. |
 | `"global"` | One shared bucket for every client of this server |
 | a lambda | `( requestData ) => string`. An empty result means this request is not limited, which is how you exempt clients. |
 
@@ -132,17 +132,16 @@ Counter keys look like `bxai:mcp:ratelimit:<server>:<hash>:<window number>`. The
 
 ## Logs
 
-Blocked requests are **never logged one by one**, so a flood cannot flood your logs.
+The rate limit **never logs on the request path**, so a flood cannot fill your logs or slow the server down with log writes.
 
-- A client's first block in a window can write one warning on the `mcp` logger, with the client (an IP is logged plain, API keys and custom keys as a short hash), the limit and the retry time.
-- Each server writes at most **10** of those warnings per minute. This is not a setting.
-- When lines were suppressed, one summary info line follows: requests blocked, clients, lines suppressed.
-- Store and key lambda errors are logged at most once per minute.
-- Allowed requests are never logged.
+- Allowed requests, blocked requests, store and key lambda errors, and history failures are not logged.
+- They only change the [stats](#stats) and the history, which keep the exact totals.
+- Use the [`onMCPRateLimitHit` event](#event) if you want to act on blocks.
+- Turning the limit on or off (`enableRateLimit()`, `disableRateLimit()`) writes one info line. That is configuration, not traffic.
 
 ## Stats
 
-`getStats()` includes `security.rateLimitFailures` and a `rateLimit` section. The totals are exact, whatever the log budget did.
+`getStats()` includes `security.rateLimitFailures` and a `rateLimit` section with exact totals. `rateLimit.storeErrors` counts store failures, since they are not logged.
 
 ```javascript
 stats = server.getStats()
@@ -188,7 +187,7 @@ server.resetRateLimitStats()    // clear the stats and every day of history
 
 ## Event
 
-`onMCPRateLimitHit` fires on a client's first block in a window and shares the log budget of 10 per minute. See [events](../../advanced/events.md#71-onmcpratelimithit).
+`onMCPRateLimitHit` fires on a client's first block in a window, at most 10 times per minute per server. See [events](../../advanced/events.md#71-onmcpratelimithit).
 
 ## Look at or reset a client
 

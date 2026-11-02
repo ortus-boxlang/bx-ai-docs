@@ -150,7 +150,7 @@ server.clearAllowedIPs()
 - CIDR ranges are supported (for example `203.0.113.0/24`)
 - Non-matching requests are rejected with `403 Forbidden`
 
-**Request extraction order for client IP:**
+**Client IP:** by default it is the connection's remote address, and forwarded headers are ignored. With [trusted proxies](#trusted-proxies) set, these headers are read in order:
 1. `x-forwarded-for`
 2. `cf-connecting-ip`
 3. `true-client-ip`
@@ -166,11 +166,11 @@ if ( server.hasAllowedIPs() ) {
 
 **Proxy deployment tip:**
 - Ensure your proxy/load balancer forwards the expected client IP headers
-- Set [trusted proxies](#trusted-proxies) so clients cannot forge those headers
+- Set [trusted proxies](#trusted-proxies), or every client will look like your proxy
 
 ## Trusted Proxies
 
-By default the forwarded headers above are trusted from anyone, so a client that reaches the server directly can send `X-Forwarded-For: 1.2.3.4` and pick its own IP. That defeats an IP allow list and the `ip` [rate limit](rate-limiting.md). Tell the server which proxies are yours:
+Forwarded headers are **not trusted by default** (v3.7+). A client that reaches the server directly could send `X-Forwarded-For: 1.2.3.4` and pick its own IP, which would defeat an IP allow list and the `ip` [rate limit](rate-limiting.md). So the client IP is the address of the connection, until you tell the server which proxies are yours:
 
 ```javascript
 mcpServer( "myApp" )
@@ -179,8 +179,13 @@ mcpServer( "myApp" )
 
 | Setting | Behavior |
 |---|---|
-| Empty (default) or `[ "*" ]` | Forwarded headers are trusted from anyone, as before. `"*"` is only safe when clients can reach the server only through your proxy. |
+| Empty (default) | Forwarded headers are never trusted. The client IP is the address of the connection. |
 | IPs or CIDR ranges | Forwarded headers are honored only when the connection comes from one of these. `X-Forwarded-For` is read from the right, and the first address that is not a trusted proxy is the client. Any other connection is the client itself. |
+| `[ "*" ]` | Forwarded headers are trusted from anyone, the behavior before v3.7. Only safe when clients can reach the server only through your proxy. |
+
+{% hint style="warning" %}
+Upgrading from 3.6 or earlier: a server behind a proxy that uses `withAllowedIPs()` must now set its trusted proxies, or the allow list sees the proxy's address.
+{% endhint %}
 
 IPv4 and IPv6 ranges work. Set it for every server through the `mcp.server.trustedProxies` [module setting](rate-limiting.md#module-settings). `getTrustedProxies()` returns the list.
 

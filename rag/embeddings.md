@@ -142,7 +142,7 @@ Or use a [profile](../main-components/profiles.md):
 embedding = aiEmbed( "Hello World", {}, { profile: "embed" } )
 ```
 
-The order of priority is the call, then the profile, then the `embeddings` setting, then the default provider. An empty `defaultApiKey` uses `<PROVIDER>_API_KEY`, never the chat provider's key.
+The order of priority is the call, then `options.profile`, then the `embeddings` setting, then `defaultProfile`, then the default provider. `defaultProfile` is a chat profile, so only its provider, key and options are used, never its chat params or model. An empty `defaultApiKey` uses `<PROVIDER>_API_KEY`. The global `apiKey` is only used when the embeddings provider is the global provider.
 
 #### Provider Selection
 
