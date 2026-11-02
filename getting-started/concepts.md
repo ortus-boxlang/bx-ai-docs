@@ -900,7 +900,7 @@ dataURI = response.toDataURI()
 
 | Provider | Model |
 |---|---|
-| **OpenAI** | `gpt-image-1`, DALL-E models |
+| **OpenAI** | `gpt-image-2.5-flare` (default), `gpt-image-2.5-sunburst` |
 | **Gemini** | `imagen-3.0-generate-008` |
 | **Grok / xAI** | `grok-2-image` |
 | **OpenRouter** | FLUX Schnell (default), many others |

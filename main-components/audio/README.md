@@ -55,7 +55,7 @@ graph LR
 | Provider | TTS (`aiSpeak`) | STT (`aiTranscribe`) | Translation (`aiTranslate`) | Env Var |
 |---|---|---|---|---|
 | **OpenAI** | ✅ `tts-1` | ✅ `whisper-1` | ✅ | `OPENAI_API_KEY` |
-| **Mistral** | ✅ `voxtral-mini-tts-2603` | ✅ `voxtral-mini-latest` | ❌ | `MISTRAL_API_KEY` |
+| **Mistral** | ✅ `voxtral-mini-tts-3-0` | ✅ `voxtral-mini-latest` | ❌ | `MISTRAL_API_KEY` |
 | **Groq / Whisper** | ❌ | ✅ `whisper-large-v3` | ✅ | `GROQ_API_KEY` |
 | **Grok / xAI** | ✅ custom | ❌ | ❌ | `GROK_API_KEY` |
 | **Gemini** | ✅ `gemini-3.8-flash-tts` | ✅ `gemini-2.5-flash` | ❌ | `GEMINI_API_KEY` |

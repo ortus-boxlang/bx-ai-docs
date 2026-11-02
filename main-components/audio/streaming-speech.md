@@ -86,7 +86,7 @@ A summary struct:
 | **Cartesia** | ✅ | `/tts/bytes` for mp3 and wav, `/tts/sse` for raw formats | `mp3`, `wav`, `pcm`, `mulaw`, `alaw` | SSE adds word timestamps. Force a transport with `params.transport` (`bytes` or `sse`). `mp3` and `wav` cannot use SSE |
 | **ElevenLabs** | ✅ | `/stream` chunked bytes | `mp3`, `pcm`, `mulaw`, `alaw`, `opus` | `wav` cannot stream. Stream `pcm` instead |
 | **OpenAI** | ✅ | Chunked bytes | Any `response_format`. `pcm` (24kHz) and `wav` start fastest | `params.stream_format` is ignored |
-| **Mistral** | ✅ | SSE (`stream: true`) | `mp3`, `wav`, `pcm`, `flac`, `opus` | A UUID `voice` is sent as `voice_id` |
+| **Mistral** | ✅ | SSE (`stream: true`) | `mp3`, `wav`, `pcm`, `flac`, `opus` | `voice` is sent as `voice_id`: a UUID as is, a voice name after a lookup |
 | **Gemini** | ✅ | Interactions API SSE | Raw 24kHz 16-bit mono PCM, labelled `pcm` | Headerless PCM. Wrap it yourself for a container |
 | **Grok / xAI** | ❌ | WebSocket only (not implemented) | | Throws `UnsupportedCapability`. Use `aiSpeak()` |
 | Others | ❌ | | | Throw `UnsupportedCapability` |
