@@ -1,5 +1,5 @@
 ---
-description: Use an MCP server that runs as a child process, over stdin and stdout, with MCP( { command: [ ... ] } ).
+description: "Use an MCP server that runs as a child process, over stdin and stdout, with MCP( { command: [ ... ] } )."
 icon: terminal
 ---
 
