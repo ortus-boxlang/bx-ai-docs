@@ -99,6 +99,7 @@ Returns an `IMCPClient`: an `MCPHttpClient` for a URL, an `MCPStdioClient` for a
 Only `MCPHttpClient` has:
 
 * `withBearerToken()`, `withAuth()`, `withHeaders()`
+* `withOAuth()` with `startAuthorization()`, `completeAuthorization()`, `isAuthorized()` and `revokeAuthorization()`: people sign in with OAuth. See [OAuth Sign In](../../../mcp/client/oauth.md)
 * Safety controls: `withUrlGuard()`, `withRedirects()`, `withMaxResponseBytes()`, `withHandshake()`, `withHttpVersion()`, see [Controlling What a Client Can Reach](../../../mcp/client/README.md#controlling-what-a-client-can-reach)
 
 Only `MCPStdioClient` has `isRunning()`, `getProtocolVersion()` and `getStderrTail()`.

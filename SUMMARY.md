@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
   * [Release History](readme/release-history/README.md)
+    * [3.8.0](readme/release-history/3.8.0.md)
     * [3.7.0](readme/release-history/3.7.0.md)
     * [3.6.0](readme/release-history/3.6.0.md)
     * [3.5.0](readme/release-history/3.5.0.md)
@@ -114,6 +115,7 @@
   * [Examples & Use Cases](mcp/server/_examples.md)
 * [MCP Clients](mcp/client/README.md)
   * [Stdio Servers (Child Process)](mcp/client/stdio.md)
+  * [OAuth Sign In](mcp/client/oauth.md)
 
 ## RAG
 
