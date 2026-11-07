@@ -85,6 +85,7 @@ The event system allows you to **monitor**, **modify**, **validate**, **audit**,
 | 69 | [onAIAgentRunSteer](events.md#69-onaiagentrunsteer) | `agent.steerRun()` actually affects a run in flight | `agent`, `threadId`, `input` |
 | 70 | [onAIProfileSwitch](events.md#70-onaiprofileswitch) | An agent switches profile, for good or for one run | `agent`, `from`, `to`, `scope` |
 | 71 | [onMCPRateLimitHit](events.md#71-onmcpratelimithit) | An MCP server blocks a client over its rate limit | `mcpServer`, `serverName`, `key`, `keyType`, `limit`, `window`, `retryAfter`, `requestData` |
+| 72 | [onMCPAuthorizationRequired](events.md#72-onmcpauthorizationrequired) | A person has to sign in to an OAuth protected MCP server, or grant more scope | `client`, `baseURL`, `subject`, `reason`, `challenge`, `scope` |
 
 ### 🔄 Event Lifecycle Diagram
 
@@ -3294,6 +3295,30 @@ Fired when an MCP server blocks a client that is over its [rate limit](../mcp/se
 ```javascript
 BoxRegisterInterceptor( "onMCPRateLimitHit", function( event ) {
     println( "#event.serverName# blocked #event.keyType# #event.key#, retry in #event.retryAfter#s" )
+})
+```
+
+***
+
+### 72. onMCPAuthorizationRequired
+
+Fired when an MCP client that uses [OAuth](../mcp/client/oauth.md) cannot go on without a person signing in, or without more scope. Use it to show a sign in.
+
+**When**: A call has no usable tokens (none, or the refresh was refused), the server answers `401` again after a refresh, or the server answers `403` with `insufficient_scope`.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `client` | `MCPHttpClient` | The client. Call `startAuthorization( subject )` on it to get the sign in address |
+| `baseURL` | `String` | The MCP server address |
+| `subject` | `String` | Whose tokens the call used |
+| `reason` | `String` | `no_token`, `unauthorized` or `insufficient_scope` |
+| `challenge` | `String` | The `WWW-Authenticate` header of the answer, when there was one |
+| `scope` | `String` | The scope the server asked for, when it said |
+
+```javascript
+BoxRegisterInterceptor( "onMCPAuthorizationRequired", function( event ) {
+    link = event.client.startAuthorization( event.subject ).authorizationUrl
+    notifyPerson( event.subject, "Sign in to continue: #link#" )
 })
 ```
 

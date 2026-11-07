@@ -119,6 +119,17 @@ client = MCP( "http://localhost:3000" )
     .withAuth( "username", "password" )
 ```
 
+**OAuth (people sign in):**
+
+A server that asks each person to sign in with OAuth needs no fixed token. `withOAuth()` follows the MCP authorization specification, keeps the tokens in a store you choose and refreshes them:
+
+```java
+client = MCP( "https://mail.example.com/mcp" )
+    .withOAuth( { redirectUri: "https://app.example.com/oauth/callback" } )
+```
+
+See [OAuth Sign In](oauth.md) for the sign in flow, signing in each person on their own, token stores and the events.
+
 ### Callbacks
 
 Register success and error callbacks:
@@ -613,6 +624,7 @@ Three new interception points fire from every HTTP call:
 | `onMCPClientRequest` | Before the HTTP request |
 | `onMCPClientResponse` | On successful response |
 | `onMCPClientError` | On HTTP errors or network exceptions |
+| `onMCPAuthorizationRequired` | A person has to sign in (see [OAuth Sign In](oauth.md)) |
 
 ```javascript
 BoxRegisterInterceptor( "onMCPClientRequest", function( event ) {
