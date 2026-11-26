@@ -41,6 +41,10 @@ Give a provider its own `params` and `options`. They apply whenever that provide
 }
 ```
 
+Settings are found by the id you pass to `aiService()` (`openai-compatible`, `docker`) and by the service name (`OpenAICompatible`, `DockerModelRunner`). When both exist the id wins. Before v3.8.0 only the service name was read, so `providers.docker` and `providers["openai-compatible"]` were ignored.
+
+Order, lowest to highest: built-in provider defaults, `defaultParams`, `providers.<name>.params`, profile, call params. Options you pass to `aiService()` or in a profile win over `providers.<name>.options`, which only fill the gaps.
+
 ## Profiles
 
 A profile is a named combination of provider, model, params, options and key. Use it when you switch between setups, such as a `fast` model and a `planner` model:

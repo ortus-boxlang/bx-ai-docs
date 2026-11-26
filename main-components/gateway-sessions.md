@@ -33,6 +33,19 @@ A second message arriving on a busy thread is handled per a configurable `policy
 
 `maxQueueDepth` (default `50`) bounds how many messages can buffer per thread under `queue`/`interrupt` before further messages fall back to an immediate rejection.
 
+## 🪪 Conversation Identity (v3.8+)
+
+Every turn runs with a `conversationId` and, when the platform names the sender, a `userId`, so the agent's memory keeps each chat apart. Before 3.8.0 a turn carried only `{ threadId }`, and every chat on every platform shared one memory bucket.
+
+* The conversation is the chat namespaced by its gateway, for example `telegram:42`. When the platform has threads it adds the thread: `telegram:42:topic-7`, so a Telegram forum topic or a Slack thread is its own conversation.
+* `threadId` still names the run: queueing, cancel, steer and checkpoints.
+* Conversations kept in the old shared bucket are not found under the new keys.
+
+Subclass `GatewaySession` to change the keys. Both methods are public:
+
+* `resolveConversationId( message, sourceGateway )` returns the conversation id of a message, for example to move a chat to another conversation after a "/new" command.
+* `turnOptions( message, sourceGateway, threadId )` returns the options one turn runs with: `threadId`, `conversationId`, and `userId` when the message has one. Override it to name the identity another way, for example with a platform qualified user id.
+
 ## 📡 Delivery
 
 Gateways that declare the `"streaming"` capability get chunk-by-chunk delivery via `deliverChunk()`; others get one buffered `deliver()` call once the turn completes. A gateway that pushes inbound messages (rather than being driven by a request/response cycle) implements `IGateway.onMessage()` to register the session's dispatch callback, and `IGateway.onError()` to be notified if its connection drops unexpectedly rather than requiring a caller to poll.

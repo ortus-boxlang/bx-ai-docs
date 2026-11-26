@@ -112,6 +112,10 @@ MCP_SERVER_NAME=myApp boxlang mcp-stdio.bxs
 1. **Only protocol messages on STDOUT**, one JSON object per line. Send banners and logs to STDERR, for example `systemOutput( "Starting", true, true )`. `println()` writes to STDOUT and would corrupt the stream.
 2. **Exit when STDIN closes.** That is how a client asks a server to stop. `MCPRequestProcessor::processStdio()` does this for you.
 
+3. **Notifications get no response.** A message without an `id`, such as `notifications/initialized` or `notifications/cancelled`, is answered with nothing: STDIO writes no line, and HTTP answers `202 Accepted` with no body (v3.8+; before, they got a `Method not found` error).
+
+The runtime's console log appenders are moved to STDERR before the server logs anything, so log lines no longer land on STDOUT between the JSON-RPC messages (v3.8+).
+
 ### Connecting to a STDIO Server from BoxLang
 
 A BoxLang AI agent can launch any STDIO server, including one written with BoxLang AI, as a child process. See [MCP Stdio Client](../client/stdio.md).

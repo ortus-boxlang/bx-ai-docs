@@ -97,6 +97,8 @@ class {
 }
 ```
 
+Tools found by `scan()` and `scanClass()` list the method's parameters in their `inputSchema`: the type, whether each is required, and the `@paramName` hint as its description (v3.8+; before, the schema was empty).
+
 **Annotation Formats:**
 
 - `@mcpTool` — Name from method name, description from function hint
