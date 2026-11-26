@@ -15,6 +15,8 @@ Memory systems enable AI to maintain context across multiple interactions, makin
 
 All memory types support multi-tenant isolation through `userId` and `conversationId` parameters:
 
+> **v3.8+**: every memory type honors the `userId` and `conversationId` of a call. `window`, `summary` and `jdbc` memory used to ignore them, so every user of one memory shared one list. A call that names another user or conversation now reads and writes a list (or a `jdbc` row) of its own. A call with no ids, or with the ids the memory was built with, uses the memory's own list.
+
 ### 🏗️ Multi-Tenant Architecture
 
 ```mermaid
@@ -203,6 +205,12 @@ memory = aiMemory( memory: "window",
     conversationId: "chat456",
     config: { maxMessages: 10 }
 )
+```
+
+**Per user and conversation (v3.8+):** one window memory serves every user of an agent. A call that names another `userId` or `conversationId` gets a list of its own, which lives in the process (lost on a restart, not shared between servers: use `cache` or `jdbc` memory for that). `maxConversations` caps how many of those other lists one memory keeps, `1000` by default, `0` for no limit. Past it the least recently used list is dropped. The memory's own list never is. `summary` and `hybrid` memory follow.
+
+```java
+memory = aiMemory( memory: "window", config: { maxMessages: 20, maxConversations: 500 } )
 ```
 
 **Best for:**
@@ -429,6 +437,8 @@ memory = aiMemory( memory: "jdbc",
 )
 // Queries automatically filter by: WHERE user_id = 'user123' AND conversation_id = 'support-ticket-456'
 ```
+
+**Per user and conversation (v3.8+):** a call that names another scope reads and writes the row `<key>::<userId>::<conversationId>` (its `memory_key`), with `user_id` and `conversation_id` filled, so no table change is needed. The row is read afresh on every call, so two processes on one database see each other's messages. Adds to one conversation take a lock, so threads do not overwrite each other. Messages kept in the old single row stay under the memory's own key.
 
 **Best for:**
 

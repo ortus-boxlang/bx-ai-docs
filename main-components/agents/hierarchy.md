@@ -171,6 +171,15 @@ coordinator = aiAgent(
 )
 ```
 
+### Same User and Conversation as the Parent (v3.8+)
+
+The delegation tool passes the parent's `userId` and `conversationId` on to the sub-agent, so a sub-agent with its own memory keeps each user's conversation apart instead of using one shared bucket. With none set on the parent, nothing changes.
+
+```javascript
+coordinator.run( "Write the report", {}, { userId: "alice", conversationId: "report-1" } )
+// researcher and writer run for alice / report-1, using their own memory for that scope
+```
+
 ## Sub-Agents with Profiles (v3.7+)
 
 Give a sub-agent its own [profile](../profiles.md) when you create it, for example a stronger model for the researcher:

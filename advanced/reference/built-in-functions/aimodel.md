@@ -352,6 +352,7 @@ result2 = aiMessage( "Search for AI" ).to( model ).run();
 * ⚙️ **Service Options**: Pass `options` struct to configure provider-specific settings (baseURL, timeout, headers) (v2.1.0+)
 * 🎯 **Predefined Providers**: Configure default `params` and `options` for providers in module settings for centralized management - see [Module Configuration](../../../getting-started/configuration.md) (v2.1.0+)
 * 💡 **Difference**: Use `aiModel()` for pipelines, `aiService()` for direct invocation
+* 🔎 **Config** (v3.8+): `getConfig().provider` is the service display name (`OpenAICompatible`), `getConfig().providerId` is the id that `aiService()` and `aiChat()` accept (`openai-compatible`). Pass `providerId` back into the API
 * ⚡ **Performance**: Same underlying service, just different interface
 
 ## Related Functions

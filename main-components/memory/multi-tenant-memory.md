@@ -373,7 +373,7 @@ memory = aiMemory( memory: "window",
 )
 ```
 
-**Isolation method**: In-memory arrays per userId/conversationId combination
+**Isolation method**: In-memory lists per userId/conversationId combination, capped by `maxConversations` (default `1000`, `0` for no limit). They live in the process, so use `cache` or `jdbc` memory when they must survive a restart (v3.8+)
 
 #### Summary Memory
 
@@ -460,7 +460,7 @@ memory = aiMemory( memory: "jdbc",
 )
 ```
 
-**Isolation method**: Database columns with WHERE filtering
+**Isolation method**: One row per user and conversation. The row key is `<key>::<userId>::<conversationId>`, and `user_id` and `conversation_id` are filled so you can query by them (v3.8+; before, a `jdbc` memory held one row for everyone)
 
 **Table structure:**
 
